@@ -1,0 +1,1646 @@
+// Maperitive rendering ruleset for hiking maps. The map style resembles
+// that of paper hiking maps produced by Israel Trails Committee (ITC)
+//
+// http://maperitive.net
+
+// Created by Igor Brejc
+// Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
+
+// History:
+// --------
+// 2014-11-08: Improve trail visibility. Show two-coloured tracks, height for viewpoints. 
+// 2014-11-03: Added purple and orange trails, block and debris barriers, trees.
+//		Differentiated grade4 and grade5 tracks.
+//		Removed duplicate shields for dual-carriage roads. 
+//		Annotated the inner side of natural reserve boundaries.
+// 2014-06-07: Added Area A, Area B, and Haifa Wadis Trail
+// 2014-05-23: Added fuel stations, regional trails on one side, changed to "glow" icons, refined text size, contour emphasis
+// 2014-04-14: Moved parking to areas, added bridge and tunnels, removed shields from roundabouts
+// 2014-02-14: Show short primary roads at zoom 14 and up
+// 2013-08-03: Show forest labels according to the forest's size
+// 2013-08-02: whitespace cleanup
+// 2013-06-21: Fixed a bug regarding multi tags in one POI, moved most of the labels to one place
+// 2013-05-18: Added Cliffs, gates, blue border to lakes, fence and wall, water tower
+// 2013-05-15: Icon moved to a separate folder, reduced some density by moving text to zoom 15, added scrub areas
+// 2013-05-11: Added Legend, fields, orchards, vineyard, quarry areas, guidepost
+//				quarry pattern was taken from http://subtlepatterns.com/.
+// 2013-04-27: Added archaeological, ruins, memorial, church, mosque, synagogue, power line towers, beach, picnic and parking names.
+//		Changed bicycle routes, Fixed natural reserve
+// 2013-04-05: Added picnic, camp-site, parking, and coast to coast
+// 2013-03-15: Use ITM Grid Lines
+// 2013-03-02: Added Grid Lines
+// 2013-02-24: Uploaded to GitHub
+// 2013-02-17: Updated by Harel Mazor and Zeev Stadler
+//		- Modify to ITC Style
+// 2011-11-26: Updated by Igor Brejc
+//		- made a finer distinction between major and minor contour lines (now that Maperitive supports subpixel accuracy)
+// 2011-09-20: Updated by Igor Brejc
+//		- turned off forest texture
+//		- moved alpine hut in front of peaks
+//		- added rendering of living_street, highway=construction and (railway|public_transport)=platform
+//		- added special rendering for tunnels
+
+// TODO? (stuff still missing, not sure whether to add them or not)
+// riding directions in bike trails
+// pools
+// farmland/farmyard
+// waterfalls
+
+features
+	points, areas
+		church worship: amenity=place_of_worship AND (religion=christian OR religion=Christian)
+		mosque worship: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+		synagogue worship: amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		bahai worship: amenity=place_of_worship AND (religion=bahai OR religion=Bahai)
+		railway station : railway=station
+		parking : amenity=parking
+		power tower : @isOneOf(power, tower, station, sub_station)
+		legend : @isOneOf(legend, header, background, area_missing)
+		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
+		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance) OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking, place_of_worship) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR legend=point_missing OR railway=station
+		forest label: (landuse=forest OR natural=wood) AND length
+		fuel: amenity=fuel
+		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+
+	points
+		place : place OR landuse=farmyard
+		peak : natural=peak
+		water spring : natural=spring
+		water well : man_made=water_well
+		water cistern : man_made=cistern
+		water waterhole : natural=waterhole
+		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
+		camp site : tourism=camp_site
+		view : tourism=viewpoint
+		ruins : historic=ruins
+		archaeological : historic=archaeological_site
+		memorial : historic=memorial
+		cave : natural=cave_entrance
+		tree : node[natural=tree]
+		guidepost : information=guidepost
+		watertower : man_made=water_tower
+		monument : historic=monument
+		gate : node[barrier]
+		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
+		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
+
+	lines
+//		aerialway : aerialway
+		contour major : contour[@isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
+		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")]
+		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
+		hiking regional kineret roundabout trail : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
+		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
+		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")]
+		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
+		hiking regional haifa wadis: relation[network = rwn @isMatch(int_name,"Haifa Wadis Trail")]
+		hiking national: relation[network = nwn]
+
+		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
+		path : highway=path AND NOT bicycle=designated
+		foot path : highway=footway
+		steps path : highway=steps
+		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road minor : @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		track major : highway=track AND @isOneOf(tracktype, grade1, grade2)
+		track minor : highway=track AND (tracktype=grade3 OR NOT tracktype)
+		track grade4 : highway=track AND tracktype=grade4
+		track grade5 : highway=track AND tracktype=grade5
+		track major colour2 : highway=track AND @isOneOf(tracktype, grade1, grade2) AND @isMatch(colour, ";")
+		track minor colour2 : highway=track AND (tracktype=grade3 OR NOT tracktype) AND @isMatch(colour, ";")
+		track grade4 colour2 : highway=track AND tracktype=grade4 AND @isMatch(colour, ";")
+		track grade5 colour2 : highway=track AND tracktype=grade5 AND @isMatch(colour, ";")
+		railway rail : railway=rail
+		power line : @isOneOf(power, line, minor_line)
+		stream : @isOneOf(waterway, stream, river, wadi)
+		cliff : natural=cliff
+		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
+		wall  : way[barrier=wall]
+		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
+		grid : grid
+		legend : legend=line_missing
+		nature reserve boundary : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+
+	areas
+		building : building=yes
+		cemetery : landuse=cemetery OR amenity=grave_yard
+		forest : landuse=forest OR natural=wood
+		grass : @isOneOf(landuse, grass, greenfield, village_green) OR @isOneOf(natural, scrub, heath, grassland) OR leisure=park
+		water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
+		military : landuse=military OR military=danger_area
+		beach :  @isOneOf(natural, beach, sand)
+		quarry : landuse=quarry
+		field : @isOneOf(landuse, field, meadow)
+		plantation : @isOneOf(landuse, orchard, vineyard)
+		farm : @isOneOf(landuse, farmland, farmyard)
+		residential : landuse=residential
+		Area A : relation[boundary=administrative AND admin_level=3 AND name="Area A"]
+		Area B : relation[boundary=administrative AND admin_level=3 AND name="Area B"]
+
+properties
+	// curved : true
+	text-halo-width : 30%
+	text-halo-opacity : 0.75
+	map-background-color : white
+	map-background-opacity : 1
+
+rules
+	target : place
+		for : place=city
+			define
+				min-zoom : 8
+				max-zoom : 14
+				font-size : 8:12;10:16;14:20
+		elsefor : place=town
+			define
+				min-zoom : 11
+				font-size : 10:12;16:20
+		elsefor : place=village
+			define
+				min-zoom : 13
+				font-size : 13:10;16:20
+		elsefor : place=hamlet
+			define
+				min-zoom : 14.5
+				font-size : 14.5:10;16:16
+		elsefor : place=farm OR landuse=farmyard
+			define
+				min-zoom : 15
+				font-size : 15:8;16:14
+		else
+			stop
+		define
+			font-weight : bold
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : peak
+		define
+			fill-color : black
+			line-style : none
+			min-zoom : 13
+			shape : circle
+			shape-size : 11:2;15:3
+		draw : shape
+
+	target : water *
+		define
+			shape : circle
+			shape-size : 4
+			line-color : blue
+			line-style : solid
+			line-width: 2
+			min-zoom : 12
+			fill-opacity : 0
+		if : water spring
+			define
+				fill-color : blue
+				fill-opacity : 100%
+				line-style : none
+		draw : shape
+
+	target : water well
+		// create the inner dot for water well
+		define
+			shape : circle
+			shape-size : 1.5
+			line-style : none
+			min-zoom : 12
+			fill-color : blue
+		draw : shape
+
+	target : picnic
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_picnic.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : parking
+		define
+			min-zoom : 15
+			icon-image : israelhiking/icons/SJJB/transport_parking.n.32.png
+			icon-width : 14
+		for : legend
+			define
+				min-zoom : 13
+		draw : icon
+
+	target : fuel
+		define
+			min-zoom : 15
+			icon-image : israelhiking/icons/SJJB/transport_fuel.glow.32.png
+			icon-width : 24
+		draw : icon
+
+	target : camp site
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/accommodation_camping.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : view
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_view_point.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : ruins
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_ruin.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : archaeological
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_archaeological2.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : memorial
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_memorial.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : tree
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/landuse_deciduous.green.glow.24.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : cave
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/poi_cave.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target: *worship
+		if : church*
+			define
+				icon-image : israelhiking/icons/SJJB/place_of_worship_christian3.glow.32.png
+		elseif : mosque*
+			define
+				icon-image : israelhiking/icons/SJJB/place_of_worship_islamic3.glow.32.png
+		elseif : synagogue*
+			define
+				icon-image : israelhiking/icons/SJJB/place_of_worship_jewish3.glow.32.png
+		elseif : bahai*
+			define
+				icon-image : israelhiking/icons/SJJB/place_of_worship_bahai3.glow.32.png
+		define
+			icon-width : 14:16;20:30
+			min-zoom : 13
+		draw : icon
+
+	target : railway station
+		define
+			min-zoom : 11
+			shape : square
+			shape-size : 11:0;15:6;17:20
+			fill-color : white
+		draw : shape
+
+	target : power tower
+		define
+			min-zoom : 15
+			shape : square
+			shape-size : 16:7;20:12
+			fill-color : black
+			line-style : none
+		draw : shape
+
+	target : guidepost
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_guidepost.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : watertower
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/water_tower.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+	
+	target : monument
+		define
+			min-zoom : 13
+			icon-image : israelhiking/icons/SJJB/tourist_monument.glow.32.png
+			icon-width : 14:16;15:24
+		draw : icon
+
+	target : gate
+		define
+			min-zoom : 15
+			icon-width : 16
+		for : barrier=gate
+			for : access=no OR motor_vehicle=no
+				define
+					icon-image : israelhiking/icons/SJJB/barrier_gate.n.32.png
+			else
+				define
+					icon-image : israelhiking/icons/SJJB/barrier_gate.glow.32.png
+		elsefor : barrier=kissing_gate OR barrier=stile
+			define
+				icon-image : israelhiking/icons/SJJB/barrier_kissing_gate.glow.32.png
+		elsefor : barrier=lift_gate
+			define
+				icon-image : israelhiking/icons/SJJB/barrier_lift_gate.glow.32.png
+		elsefor : barrier=block OR barrier=debris
+			define
+				icon-image : israelhiking/icons/SJJB/barrier_blocks.n.32.png
+		elsefor : barrier=cattle_grid
+			define
+				icon-image : israelhiking/icons/SJJB/barrier_cattle_grid.glow.32.png
+				icon-width: 24
+		for : legend
+			define
+				min-zoom : 13
+				icon-width : 18
+		draw : icon
+
+// by using this statement we make sure only one label is written for POI with more than one tag
+// it also reduces code duplication and creates unity among the labels
+	target : POI text
+		define
+			min-zoom : 15
+			font-size : 10
+			text-offset-vertical : 120%
+			text : name
+		for : natural=peak OR tourism=viewpoint
+			define
+				font-family : Cambria
+				font-style : italic
+				font-weight : bold
+				font-size : 13:10;15:18
+				min-zoom : 13
+				text-color : black
+				text-max-width : 15
+				text-halo-width : 30%
+				text-halo-opacity : 0.75
+			for : ele
+				// If ele is set
+				define
+					text-align-horizontal : far
+					text-align-vertical : center
+					text-offset-vertical : 20%
+					text-offset-horizontal : -70%
+					text : ele
+				draw : text
+			for : name
+				// If name is defined
+				define
+					text-align-vertical : far
+					text-align-horizontal : center
+					text-offset-vertical : -70%
+					text-offset-horizontal : 0
+				for : legend
+					define
+						font-size : 13:8;16:18
+						text-offset-vertical : 175%
+		elsefor : natural=spring OR man_made=water_well OR man_made=cistern
+			define
+				text-color : blue
+				min-zoom : 13
+		for : legend
+			define
+				min-zoom : 13
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : nature reserve label
+		define
+			min-zoom : 13
+			font-size : 12
+			text-color : green
+			font-weight : normal
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+
+////////////////////////// lines ////////////////////////////////
+
+//	target : aerialway
+//		define
+//			shape-size : 12:2;16:6
+//			shape-spacing : 11:1;13:4;14:6
+//		for : aerialway=cable_car OR aerialway=gondola
+//			define
+//				min-zoom : 12.5
+//				fill-color : white
+//				line-width : 13:2;15:3
+//		elsefor : aerialway=chair_lift
+//			define
+//				min-zoom : 13.5
+//				fill-color : black
+//				line-width : 13:1;14:2
+//		else
+//			define
+//				min-zoom : 14
+//				fill-color : black
+//				line-width : 13:1;14:2
+//		draw : line
+//		define
+//			line-width : 2
+//		draw : shape
+
+	target : power line
+		define
+			curved : false
+			min-zoom : 15
+			line-width : 1
+		for : legend
+			define
+				min-zoom : 13
+		draw : line
+		define
+			shape : circle
+			shape-spacing : 20
+			shape-size : 2.5
+			fill-opacity : 0
+		draw : shape
+
+	target : railway rail
+		define
+			min-zoom : 13
+			line-style : dashlong
+			line-color : white
+			line-width : 2
+			border-style : solid
+			border-color : gray
+			border-width : 25%
+		draw : line
+		define
+			min-zoom : 6
+			max-zoom : 13
+			line-style : dashlong
+			line-color : white black 30%
+			line-width : 6:1;8:1;12:1.5
+		draw : line
+		define
+			min-zoom : 13
+			line-color : gray
+			line-width : 2
+		draw : line
+	target : railway rail
+		for : bridge=yes
+			define
+				min-zoom : 13
+				line-style : solid
+				line-color : black
+				line-offset : 2
+				line-width : 2
+				line-offset-sides : both
+			draw : line
+
+	target : road *
+		if : * motorway
+			define
+				min-zoom : 6
+				line-color : blue
+				text-color : blue
+				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * trunk
+			define
+				min-zoom : 7
+				line-color : red
+				text-color : red
+				// X values:	-31, -26, -24, 0, 24, 26, 31
+				// Y values:	-21, -16, -12, 0, 12, 16, 21
+				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+				// Rounded rectangular corners, as in the line below hit a Maperitive bug
+				// shape-def : p:white;pw:1.5;f:red;m:-26,-21;a:5,5,-31,-16;l:-31,16;a:5,5,-26,21;l:26,21;a:5,5,31,16;l:31,-16;a:5,5,26,-21;l:-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * primary
+			define
+				min-zoom : 9
+				line-color : green
+				text-color : green
+				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * secondary
+			define
+				min-zoom : 10
+				line-color : #8B4513
+				text-color : #8B4513
+				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * tertiary
+			define
+				min-zoom : 11
+				line-color : #FFE66B
+		elseif : * minor
+			for : colour
+				define
+					line-color : white
+					min-zoom : 13
+			else
+				define
+					min-zoom : 14
+					line-color : white
+
+		// Colors for Hiking Trail on roads
+		for : colour = red
+			define
+				border-color : red
+		elsefor : colour = blue
+			define
+				border-color : blue
+		elsefor : colour = black
+			define
+				border-color : black
+		elsefor : colour = green
+			define
+				border-color : green
+		elsefor : colour = purple
+			define
+				border-color : purple
+		elsefor : colour = orange
+			define
+				border-color : orange
+		else
+			define
+				border-color : black
+				border-opacity : 0.8
+
+		define
+			line-width : 10:0.5;13:2;14:2;16:3
+			border-style : solid
+			border-width : 80%
+
+		for : tunnel
+			define
+				border-style : dot
+				line-style : dot
+
+		for : bridge=yes
+			define
+				border-width : 150%
+
+		draw : line
+
+// Major Road Shields
+// The length in Km is computed by a Python routine
+
+		// default min-zoom is set for safety
+		define
+			min-zoom : 22
+
+		for : length < 1
+			stop
+		for : junction = roundabout
+			stop
+		if : * motorway
+			for : length > 16
+				define
+					min-zoom : 7
+			elsefor : length > 8
+				define
+					min-zoom : 8
+			elsefor : length > 6
+				define
+					min-zoom : 9
+			elsefor : length > 4
+				define
+					min-zoom : 10
+			elsefor : length > 2
+				define
+					min-zoom : 11
+			else
+				define
+					min-zoom : 12
+		elseif : * trunk
+			for : length > 32
+				define
+					min-zoom : 7
+			elsefor : length > 16
+				define
+					min-zoom : 8
+			elsefor : length > 8
+				define
+					min-zoom : 9
+			elsefor : length > 6
+				define
+					min-zoom : 10
+			elsefor : length > 4
+				define
+					min-zoom : 11
+			else
+				define
+					min-zoom : 12
+		elseif : * primary
+			for : length > 16
+				define
+					min-zoom : 9
+			elsefor : length > 8
+				define
+					min-zoom : 10
+			elsefor : length > 6
+				define
+					min-zoom : 11
+			elsefor : length > 4
+				define
+					min-zoom : 12
+			elsefor : length > 2
+				define
+					min-zoom : 13
+			else
+				define
+					min-zoom : 14
+		elseif : * secondary
+			for : length > 8
+				define
+					min-zoom : 11
+			elsefor : length > 4
+				define
+					min-zoom : 12
+			elsefor : length > 2
+				define
+					min-zoom : 13
+			else
+				define
+					min-zoom : 15
+
+		for : oneway=yes
+			// Hide duplicate labels for dual-carriageways
+			// https://groups.google.com/forum/#!topic/maperitive/fT00HvHIEjg
+			for : @isMulti(ref, 2)
+				// Even-numbered North-South highways
+				for : direction < 90 AND direction >= -90
+					// Hide Northbound labels
+					stop
+			else
+				// Odd-numbered East-West highways
+				for : direction > 0
+					// Hide Eastbound labels
+					stop
+				
+		define
+			font-family : Tahoma
+			font-weight : bold
+			text-align-horizontal : center
+			text-align-vertical : center
+			text : ref
+			font-size : 12
+			text-halo-width : 0
+			shape : custom
+			shield-padding-left : 8
+			shield-padding-right : 8
+			shield-padding-top : 10
+			shield-padding-bottom : 10
+			shield-resize-mode : free
+		draw : shield
+
+// Street names
+	target : road *
+		if : $regex("(.* motorway)|(.* trunk)|(.* primary)|(.* secondary)")
+			stop
+		define
+			min-zoom : 14.5
+			font-weight : bold
+			font-family : Verdana
+			text-max-width : 7
+			text-halo-width : 66%
+			text-halo-opacity : 0.66
+			text-align-horizontal : center
+			text-align-vertical : center
+			font-stretch : 0.9
+		// Hebrew preference for lines
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+				define
+					text-direction : rtl
+		draw : text
+
+	target : road *
+	// Narrow 1px lines at low zoom levels
+		if : * minor
+			define
+				min-zoom : 11
+				line-color : black
+			for : colour
+				define
+					max-zoom : 13
+			else
+				define
+					max-zoom : 14
+		elseif : * tertiary
+			define
+				min-zoom : 10
+				max-zoom : 11
+				line-color : #FFE66B black 10%
+		elseif : * secondary
+			define
+				min-zoom : 9
+				max-zoom : 10
+				line-color : brown yellow 20%
+		elseif : * primary
+			define
+				min-zoom : 8
+				max-zoom : 9
+				line-color : green
+
+		define
+			line-width : 1
+			border-style : none
+		draw : line
+
+	target : track*
+		define
+			line-width : 13:2;16:3
+			line-offset : 13:1.5;16:2.5
+			line-offset-sides : both
+			min-zoom : 13
+		if : *major*
+			define
+				line-style : solid
+		elseif : *minor*
+			define
+				line-style : dash
+		elseif : *grade4*
+			define
+				line-style : dashdot
+		elseif : *grade5*
+			define
+				line-style : dashdotdot
+		for : @isMatch(colour, ";")
+			// Two colours
+			if : *colour2
+				// Right colour
+				define
+					line-offset-sides : right
+				for : @isMatch(colour, "^red;")
+					define
+						line-color : red
+				elsefor : @isMatch(colour, "^blue;")
+					define
+						line-color : blue
+				elsefor : @isMatch(colour, "^black;")
+					define
+						line-color : black
+				elsefor : @isMatch(colour, "^green;")
+					define
+						line-color : green
+				elsefor : @isMatch(colour, "^purple;")
+					define
+						line-color : purple
+				elsefor : @isMatch(colour, "^orange;")
+					define
+						line-color : orange
+				else
+					stop
+			else
+				// Left colour
+				define
+					line-offset-sides : left
+				for : @isMatch(colour, ";red$")
+					define
+						line-color : red
+				elsefor : @isMatch(colour, ";blue$")
+					define
+						line-color : blue
+				elsefor : @isMatch(colour, ";black$")
+					define
+						line-color : black
+				elsefor : @isMatch(colour, ";green$")
+					define
+						line-color : green
+				elsefor : @isMatch(colour, ";purple$")
+					define
+						line-color : purple
+				elsefor : @isMatch(colour, ";orange$")
+					define
+						line-color : orange
+				else
+					stop
+		else
+			// Single colour or no colour
+			for : colour = red
+				define
+					line-color : red
+			elsefor : colour = blue
+				define
+					line-color : blue
+			elsefor : colour = black
+				define
+					line-color : black
+			elsefor : colour = green
+				define
+					line-color : green
+			elsefor : colour = purple
+				define
+					line-color : purple
+			elsefor : colour = orange
+				define
+					line-color : orange
+			else
+				define
+					min-zoom : 14
+					line-color : black white 40%
+					line-width : 13:1.2;16:2.5
+		for : tunnel
+			define
+				border-width : 80%
+				border-style : dot
+		for : bridge=yes
+			define
+				border-width : 150%
+		draw : line
+		define
+			min-zoom : 14
+			font-size : 12:12;14:14;15:15
+			text-max-width : 10
+			text-offset-vertical : 50%
+			text-align-vertical : far
+		// Hebrew preference for lines
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+				define
+					text-direction : rtl
+		for : legend
+			define
+				min-zoom : 13
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+				text-offset-vertical : 100%
+		draw : text
+
+	target : track *
+		for :  @isOneOf(colour, red, blue, black, green, purple, orange)
+			stop
+		else
+			// Show non-coloured tracks as long single dashes in zoom 13
+			define
+				min-zoom : 13
+				max-zoom : 14
+				line-color : black white 40%
+				line-width : 1.5
+				line-style : dashlong
+				border-style : none
+		draw : line
+
+	target : *path
+		// foot paths, steps, generic paths, and cycle paths
+		define
+			line-width : 13:2;16:3
+			line-style : dash
+			min-zoom : 13
+		// Also set fill-color for steps
+		for : colour = red
+			define
+				line-color : red
+				fill-color : red
+		elsefor : colour = blue
+			define
+				line-color : blue
+				fill-color : blue
+		elsefor : colour = black
+			define
+				line-color : black
+				fill-color : black
+		elsefor : colour = green
+			define
+				line-color : green
+				fill-color : green
+		elsefor : colour = purple
+			define
+				line-color : purple
+				fill-color : purple
+		elsefor : colour = orange
+			define
+				line-color : orange
+				fill-color : orange
+		else
+			define
+				min-zoom : 14
+				line-color : black white 40%
+				fill-color : black white 40%
+				line-width : 13:1.5;16:2.5
+		if : cycle*
+			define
+				// cycle paths
+				line-style : dashdot
+		elseif : foot*
+			// foot paths
+			define
+				line-style : dot
+		elseif : steps*
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1.5;16:2;20:3
+				shape-aspect : 3
+				line-style : none
+			draw : shape
+		for : tunnel
+			define
+				border-width : 80%
+				border-style : dot
+		for : bridge=yes
+			define
+				border-width : 150%
+		draw : line
+		define
+			font-size : 13:8;16:14
+		// Hebrew preference for lines
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+				define
+					text-direction : rtl
+		for : legend
+			define
+				min-zoom : 13
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+				text-offset-vertical : 100%
+		draw : text
+
+	target : hiking regional *
+		define
+			line-style : dashlong
+			min-zoom : 7
+			line-width : 7:1;10:1.5;11:3;13:4;15:5
+			line-offset : 7:1;10:1.5;11:3;13:4;15:6
+			line-offset-sides : left
+
+		if : * jerusalem trail
+			define
+				line-color : blue
+		elseif : * golan trail
+			define
+				line-color : blue
+		elseif : * jesus trail
+			define
+				line-color : orange
+		elseif : * kineret roundabout trail
+			define
+				line-color : purple
+		elseif : * northern galilee trail
+			define
+				line-color : purple
+		elseif : * coast to coast
+			define
+				line-color : yellow
+		elseif : * haifa wadis
+			define
+				line-color : green
+		else
+			stop
+		draw : line
+
+	target : hiking regional *
+		// draw other/background color
+		define
+			line-style : solid
+			min-zoom : 7
+			line-width : 7:1;10:1.5;11:3;13:4;15:5
+			line-offset : 7:1;10:1.5;11:3;13:4;15:6
+			line-offset-sides : left
+		if : * jerusalem trail
+			define
+				line-color : yellow
+		elseif : * golan trail
+			define
+				line-color : green
+		elseif : * jesus trail
+			define
+				line-color : white black 10%
+		elseif : * kineret roundabout trail
+			define
+				line-color : white black 10%
+		elseif : * northern galilee trail
+			define
+				line-color : white black 10%
+		elseif : * coast to coast
+			define
+				line-color : white black 10%
+		elseif : * haifa wadis
+			define
+				line-color : red
+		else
+			stop
+		draw : line
+
+	target : hiking national
+		define
+			min-zoom : 13
+			// create a border around a transparent track
+			line-opacity : 0%
+			// track definitions - reused
+			line-width : 13:1;14:2
+			line-offset : 13:0.75;15:1.5;16:2
+			line-offset-sides : both
+			// Border
+			border-opacity : 80%
+			border-width : 250%
+			border-style : solid
+			border-color : orange
+		draw : line
+
+	target : hiking national
+		define
+			min-zoom : 6
+			max-zoom : 13
+			line-width : 10:1.5;13:2
+			line-opacity : 80%
+			line-color : orange
+		draw : line
+
+	target : stream
+		define
+			min-zoom : 13
+			line-color : #78C1C1
+			line-width : 10:1;15:3
+		for : waterway = wadi OR intermittent = yes
+			define
+				line-style : dash
+		draw : line
+		define
+			min-zoom : 13
+			font-size : 13:8;15:10;17:17
+			font-style : italic
+			font-weight : bold
+			text-color : #78C1C1 black 10%
+			map.rendering.lflp.min-buffer-space : 5
+			map.rendering.lflp.max-allowed-corner-angle : 90
+		// Hebrew preference for lines
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+				define
+					text-direction : rtl
+		for : legend
+			define
+				min-zoom : 13
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+				text-offset-vertical : 100%
+
+		draw : text
+
+	target : cliff
+		define
+			min-zoom : 13
+			line-color : gray
+			line-width : 1
+			shape : custom
+			shape-def : f:gray;0,0;1,-1;2,-4;3,-1;4,0;z
+			shape-spacing : 0.5
+			shape-size : 13:8;14:12;15:14;16:16
+		draw : shape
+		define
+			min-zoom : 13
+			line-color : gray
+			line-width : 1
+		draw : line
+
+	target : wall
+		define
+			min-zoom : 14
+			line-color : black
+			line-width : 2
+			line-style : solid
+		draw : line
+	target : fence
+		define
+			min-zoom : 14
+			line-color : black
+			line-width : 1.5
+		draw : line
+		define
+			shape : custom
+			shape-def : 2,2;-2,-2;m:2,-2;-2,2
+			shape-spacing : 3
+			shape-size : 5
+		draw : shape
+
+	target : legend
+		define
+			min-zoom : 13
+		for : legend=background
+			define
+				line-style : none
+				line-width : 1
+				fill-color : #F0FFFF
+				painting-cycle : 580
+			draw : fill
+		else
+			define
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+				text : name
+				text-align-horizontal : center
+				text-align-vertical : center
+				text-direction : rtl
+			for : legend=line_missing
+				define
+					text-offset-vertical : 100%
+			elsefor : legend=header
+				define
+					font-size : 13:18;14:26;16:48
+					text-halo-width : 30%
+					text-halo-opacity : 0.75
+			draw : text
+
+	target: contour*
+		define
+			line-color : #7f3300
+			line-opacity : 0.8
+			curved : true
+		if : *major
+			define
+				map.rendering.contour.label : true
+				min-zoom : 12
+				line-width : 11:0.75;13:1.25;15:2
+				font-size : 10
+				font-style : italic
+				font-weight : normal
+				text-halo-width : 35%
+				text-halo-opacity : 1
+				text-halo-color : #F1EEE8
+		else
+			define
+				min-zoom : 13
+				line-width : 0.65
+		draw : contour
+
+	target : grid label *
+		if : grid label north
+			define
+				text : north
+				text-align-horizontal : near
+				text-offset-horizontal : 120%
+		elseif : grid label east
+			define
+				text : east
+				text-align-vertical : far
+				text-offset-vertical : -120%
+		define
+			font-size : 14
+			min-zoom : 13
+			text-opacity : 80%
+			painting-cycle : 580
+		draw : text
+
+	target : grid
+		define
+			line-width : 11:0.5;12:2
+		for : @isMulti(name, 20)
+			define
+				min-zoom : 8
+		elsefor : @isMulti(name, 10)
+			define
+				min-zoom : 9
+		else
+			define
+				min-zoom : 12
+				line-width : 0.5
+		define
+			line-color : black
+			curved : true
+			line-opacity : 80%
+			painting-cycle : 570
+		draw : line
+
+	target : nature reserve boundary
+		define
+			min-zoom : 9
+			line-color : #8DC56C black 20%
+			line-opacity : 0.9
+			line-width : 9:1.5;13:2.5
+			line-style : dashdotdot
+		draw : line
+
+	// Annotate the inner side of natural reserve boundaries.
+	// Use the "clockwise" tag created by the Maperipy script
+	// AddWayLengthTags.py
+	target : nature reserve boundary
+		define
+			min-zoom : 13
+			line-color : #8DC56C black 20%
+			line-opacity : 0.9
+			line-width : 2
+			line-style : dot
+			line-offset : 3
+			line-offset-miter-limit : 2
+		for : clockwise = yes 
+			define
+				line-offset-sides : right
+			define
+				line-offset-sides : right
+		elsefor : clockwise = no
+			define
+				line-offset-sides : left
+		else
+			stop
+		draw : line
+
+	target : nature reserve boundary
+		define
+			min-zoom : 13
+			line-color : #8DC56C black 20%
+			line-opacity : 0.9
+			line-width : 1.5
+			line-style : dot
+			line-offset : 6
+			line-offset-miter-limit : 2
+		for : clockwise = yes
+			define
+				line-offset-sides : right
+		elsefor : clockwise = no
+			define
+				line-offset-sides : left
+		else
+			stop
+		draw : line
+
+/////////////////////////////// areas ////////////////////////////
+
+	target : building
+		define
+			fill-color : black
+			line-style : none
+			min-zoom : 12
+		draw : fill
+
+	target : military
+		define
+			fill-color : red
+			fill-hatch : swne
+			fill-hatch-color : white
+			fill-hatch-opacity : 0
+			fill-opacity : 60%
+			line-style : none
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		for : legend=area
+			define
+				min-zoom : 13
+				font-size : 12
+				text-color : red
+				font-weight : normal
+			// Hebrew preference for points & areas
+			for : @isMatch(name, "[א-ת]")
+				define
+					text : name
+			else
+				define
+					text : @any([[name:he]], [[name:en]], name)
+			draw : text
+
+	target : boundary*
+		// Avoid maritime borders
+		for : maritime=yes
+			stop
+		define
+			line-color : #9E1A99
+			line-opacity : 0.75
+		if : boundary country
+			for : @isMatch(name, "1949 .*$")
+				// 1949 armistice line - "The Green Line"
+				define
+					line-color : green
+			elsefor : note = "UN Resolution 497, UNDOF"
+				// Israel-Syria Agreement on Disengagement Line A "Alpha"
+				define
+					line-color : blue
+			elsefor : note = "UNDOF line Bravo"
+				// Israel-Syria Agreement on Disengagement Line B "Bravo"
+				define
+					line-color : red
+			elsefor : note = "DMZ"
+				stop
+			else
+				define
+					line-color : black
+					line-width : 1.5
+					shape : custom
+					shape-def : 0,3;0,-3;m:3,0;-3,0
+					shape-spacing : 0.5
+					shape-size : 6
+				draw : shape
+				define
+					line-style : none
+			define
+				line-width : 6:1;9:3;10:6
+		draw : line
+
+	target : water
+		define
+			line-width : 1
+			line-color : #78C1C1 blue 10%
+			fill-color : #78C1C1 white 10%
+		for : intermittent = yes
+			define
+				min-zoom : 13
+				line-style : dashlong
+			draw : line
+		else
+			draw : fill
+		define
+			min-zoom : 14.1
+			font-size : 15:10;17:17
+			font-style : italic
+			font-weight : bold
+			text-color : #78C1C1 black 10%
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : cemetery
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #CCCCCC
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		define
+			min-zoom : 13
+			font-size : 12
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : forest label
+		for : length > 5
+			define
+				min-zoom : 11
+		elsefor : length > 2
+			define
+				min-zoom : 12
+		elsefor : length > 1
+			define
+				min-zoom : 13
+		elsefor : length > 0.5
+			define
+				min-zoom : 14
+		elsefor : length > 0.2
+			define
+				min-zoom : 15
+		elsefor : length > 0.1
+			define
+				min-zoom : 16
+		else
+			stop
+		define
+			font-size : 12
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+	target : forest
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 9
+			// fill-color : #8DC56C white 60%
+			fill-texture : Textures/ForestNoiseLight.jpg
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+
+	target : beach
+		for : natural=sand
+			define
+				fill-opacity : 0.2
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #FFEC8B
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		define
+			min-zoom : 13
+			font-size : 12
+			text-color : black
+			text : name
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : quarry
+		define
+			line-style : none
+			line-width : 0
+			min-zoom : 9
+			// fill-texture : israelhiking/icons/quarry.png
+			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/quarry.png
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		define
+			min-zoom : 13
+			font-size : 12
+			text-color : black
+			text : name
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+	target : field
+		define
+			line-style : none
+			line-width : 0
+			//fill-color : #E6DDD0
+			// fill-texture : israelhiking/icons/field.png
+			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/field.png
+			fill-opacity : 0.3
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+
+	target : grass
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #E9FDE0
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		define
+			line-style : none
+			line-width : 0
+			fill-texture : israelhiking/icons/SJJB/landuse_grass.p.32.png
+		draw : fill
+
+	target : plantation
+// based on : http://wiki.openstreetmap.org/wiki/Tag:landuse%3Dorchard#Rendering
+		define
+			line-style : none
+			line-width : 0
+			// fill-texture : israelhiking/icons/plantation.png
+			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/plantation.png
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+
+	target : Area *
+		define
+			line-style : solid
+			line-width : 1
+			line-color : orange
+			min-zoom : 9
+			fill-opacity : 50%
+		draw : line
+		if : * A
+			define
+				fill-color : orange white 40%
+		elseif : * B
+			define
+				fill-color : orange white 70%
+		else
+			stop
+		draw : fill
+
+
+// residential should be last
+	target : residential
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #DCDCDC white 30%
+		for : legend
+			define
+				painting-cycle : 590
+		draw : fill
+		define
+			min-zoom : 17
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
+		draw : text
+
+// vim: set autoindent noexpandtab:

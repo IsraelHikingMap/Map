@@ -1,0 +1,365 @@
+// Maperitive rendering ruleset for hiking maps. The map style resembles
+// that of paper hiking maps produced by Israel Trails Committee (ITC)
+//
+// http://maperitive.net
+
+// Created by Igor Brejc
+// Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
+
+// History:
+// --------
+// 2013-06-21: Fixed a bug regarding multi tags in one POI, moved most of the labels to one place
+// 2013-05-18: Added Cliffs, gates, blue border to lakes, fence and wall, water tower
+// 2013-05-15: Icon moved to a separate folder, reduced some density by moving text to zoom 15, added scrub areas
+// 2013-05-11: Added Legend, fields, orchards, vineyard, quarry areas, guidepost
+//				quarry pattern was taken from http://subtlepatterns.com/.
+// 2013-04-27: Added archaeological, ruins, memorial, church, mosque, synagogue, power line towers, beach, picnic and parking names.
+//             Changed bicycle routes, Fixed natural reserve
+// 2013-04-05: Added picnic, camp-site, parking, and coast to coast
+// 2013-03-15: Use ITM Grid Lines
+// 2013-03-02: Added Grid Lines
+// 2013-02-24: Uploaded to GitHub
+// 2013-02-17: Updated by Harel Mazor and Zeev Stadler
+//		- Modify to ITC Style
+// 2011-11-26: Updated by Igor Brejc
+//		- made a finer distinction between major and minor contour lines (now that Maperitive supports subpixel accuracy)
+// 2011-09-20: Updated by Igor Brejc
+//		- turned off forest texture
+//		- moved alpine hut in front of peaks
+//		- added rendering of living_street, highway=construction and (railway|public_transport)=platform
+//		- added special rendering for tunnels
+
+// TODO? (stuff still missing, not sure whether to add them or not)
+// riding directions in bike trails
+// pools
+// farmland/farmyard
+
+features
+	points, areas
+		church worship: amenity=place_of_worship AND (religion=christian OR religion=Christian)
+		mosque worship: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+		synagogue worship: amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		bahai worship: amenity=place_of_worship AND (religion=bahai OR religion=Bahai)
+		railway station : railway=station
+		power tower : @isOneOf(power, tower, station, sub_station)
+		legend : @isOneOf(legend, header, background, area_missing)
+		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
+		POI text : natural=peak OR natural=spring OR man_made=water_well OR man_made=cistern OR @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site OR amenity=parking OR tourism=camp_site OR tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR historic=memorial OR natural=cave_entrance OR legend=point_missing OR railway=station OR amenity=place_of_worship
+		forest label: (landuse=forest OR natural=wood) AND length
+
+	points
+		place : place OR landuse=farmyard
+		peak : natural=peak
+		water spring : natural=spring
+		water well : man_made=water_well
+		water cistern : man_made=cistern
+		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
+		parking : amenity=parking
+		camp site : tourism=camp_site
+		view : tourism=viewpoint
+		ruins : historic=ruins
+		archaeological : historic=archaeological_site
+		memorial : historic=memorial
+		cave : natural=cave_entrance
+		guidepost : information=guidepost
+		watertower : man_made=water_tower
+		gate : @isOneOf(barrier, gate, lift_gate, kissing_gate, stile)
+		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
+		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
+
+	lines
+//		aerialway : aerialway
+		contour major : contour[@isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
+		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")]
+		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
+		hiking regional kineret roundabout trail : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
+		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
+		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")]
+		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
+		hiking national: relation[network = nwn]
+
+		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
+		path : highway=path AND NOT bicycle=designated
+		foot path : highway=footway
+		steps path : highway=steps
+		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road major tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road minor : @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		track major : highway=track AND @isOneOf(tracktype, grade1, grade2)
+		track minor : highway=track AND (@isOneOf(tracktype, grade3, grade4, grade5) OR NOT tracktype)
+		railway rail : railway=rail
+		power line : @isOneOf(power, line, minor_line)
+		stream : @isOneOf(waterway, stream, river, wadi)
+		cliff : natural=cliff
+		fence : barrier=fence
+		wall : barrier=wall
+		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
+		grid : grid
+		legend : legend=line_missing
+
+	areas
+		building : building=yes
+		cemetery : landuse=cemetery OR amenity=grave_yard
+		forest : landuse=forest OR natural=wood
+		grass : @isOneOf(landuse, grass, greenfield, village_green) OR @isOneOf(natural, scrub, heath, grassland) OR leisure=park
+		water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
+		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+		military : landuse=military OR military=danger_area
+		beach :  @isOneOf(natural, beach, sand)
+		quarry : landuse=quarry
+		field : @isOneOf(landuse, field, meadow)
+		plantation : @isOneOf(landuse, orchard, vineyard)
+		farm : @isOneOf(landuse, farmland, farmyard)
+		residential : landuse=residential
+
+properties
+	// curved : true
+	text-halo-width : 30%
+	text-halo-opacity : 0.75
+	map-background-color : white
+	map-background-opacity : 0
+
+rules
+
+
+
+	target : road *
+		if : * motorway
+			define
+//				min-zoom : 6
+				line-color : blue
+				text-color : blue
+				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * trunk
+			define
+//				min-zoom : 7
+				line-color : red
+				text-color : red
+				// X values:	-31, -26, -24,  0, 24, 26, 31
+				// Y values:	-21, -16, -12,  0, 12, 16, 21
+				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+				// Rounded rectangular corners, as in the line below hit a Maperitive bug
+				// shape-def : p:white;pw:1.5;f:red;m:-26,-21;a:5,5,-31,-16;l:-31,16;a:5,5,-26,21;l:26,21;a:5,5,31,16;l:31,-16;a:5,5,26,-21;l:-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * primary
+			define
+//				min-zoom : 9
+				line-color : green
+				text-color : green
+				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * secondary
+			define
+//				min-zoom : 10
+				line-color : #8B4513
+				text-color : #8B4513
+				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+		elseif : * tertiary
+			define
+//				min-zoom : 11
+				line-color : #FFE66B
+		elseif : * minor
+			define
+//				min-zoom : 14
+				line-color : white
+
+		// Colors for Hiking Trail on roads
+		for : colour = red
+			define
+				border-color : red
+		elsefor : colour = blue
+			define
+				border-color : blue
+		elsefor : colour = black
+			define
+				border-color : black
+		elsefor : colour = green
+			define
+				border-color : green
+		else
+			stop
+		define
+			line-width : 10:0.5;13:2;14:2;16:3
+			border-style : solid
+			border-width : 80%
+		draw : line
+
+	target : track *
+		define
+			line-width : 13:1;14:2
+			line-offset : 13:0.75;15:1.5;16:2
+			line-offset-sides : both
+		if : *major
+			define
+//				min-zoom : 13
+				line-style : solid
+		elseif : *minor
+			define
+//				min-zoom : 13
+				line-style : dash
+
+		for : colour = red
+			define
+				line-color : red
+		elsefor : colour = blue
+			define
+				line-color : blue
+		elsefor : colour = black
+			define
+				line-color : black
+		elsefor : colour = green
+			define
+				line-color : green
+		else
+			stop
+
+		draw : line
+
+	target : *path
+		// foot paths, steps, generic paths, and cycle paths
+		define
+			line-width : 12:1;13:1.5;14:2
+			line-style : dash
+//			min-zoom : 13
+		for : colour = red
+			define
+				line-color : red
+				fill-color : red
+		elsefor : colour = blue
+			define
+				line-color : blue
+				fill-color : blue
+		elsefor : colour = black
+			define
+				line-color : black
+				fill-color : black
+		elsefor : colour = green
+			define
+				line-color : green
+				fill-color : green
+		else
+			stop
+		if : cycle*
+			define
+				// cycle paths
+				line-style : dashdot
+		elseif : foot*
+			// foot paths
+			define
+//				min-zoom : 13
+				line-width : 12:1;13:1.5;16:3
+				line-style : dot
+		elseif : steps*
+			define
+//				min-zoom : 13
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1.5;16:2;20:3
+				shape-aspect : 3
+				line-style : none
+			draw : shape
+		draw : line
+
+	target : hiking regional *
+		define
+			line-style : dashlong
+//			min-zoom : 7
+			line-width : 7:1;10:1;11:2;13:2;15:2.5
+			line-offset : 12:0;13:2;14:3;15:3
+			line-offset-sides : left
+
+		if : * jerusalem trail
+			define
+				line-color : blue
+		elseif : * golan trail
+			define
+				line-color : blue
+		elseif : * jesus trail
+			define
+				line-color : orange
+		elseif : * kineret roundabout trail
+			define
+				line-color : purple
+		elseif : * northern galilee trail
+			define
+				line-color : purple
+		elseif : * coast to coast
+			define
+				line-color : yellow
+		else
+			stop
+		draw : line
+
+	target : hiking regional *
+		// draw other/background color
+		define
+			line-style : solid
+//			min-zoom : 7
+			line-width : 7:1;10:1;11:2;13:2;15:2.5
+			line-offset : 12:0;13:2;14:3;15:3
+			line-offset-sides : left
+		if : * jerusalem trail
+			define
+				line-color : yellow
+		elseif : * golan trail
+			define
+				line-color : green
+		elseif : * jesus trail
+			define
+				line-color : white black 10%
+		elseif : * kineret roundabout trail
+			define
+				line-color : white black 10%
+		elseif : * northern galilee trail
+			define
+				line-color : white black 10%
+		elseif : * coast to coast
+			define
+				line-color : white black 10%
+		else
+			stop
+		draw : line
+
+	target : hiking national
+		define
+			min-zoom : 13
+			// create a border around a transparent track
+			line-opacity : 0%
+			// track definitions - reused
+			line-width : 13:1;14:2
+			line-offset : 13:0.75;15:1.5;16:2
+			line-offset-sides : right
+			// Border
+			border-opacity : 40%
+			border-width : 200%
+			border-style : solid
+			border-color : orange
+		draw : line
+
+	target : hiking national
+		define
+			min-zoom : 6
+			max-zoom : 13
+			line-width : 10:1.5;13:2
+			line-opacity : 80%
+			line-color : orange
+		draw : line
+
+
+
+/////////////////////////////// areas ////////////////////////////
+
+	target : military
+		define
+			fill-color : red
+			fill-hatch : swne
+			fill-hatch-color : white
+			fill-hatch-opacity : 0
+			fill-opacity : 60%
+			line-style : none
+		draw : fill
+
+// vim: set autoindent noexpandtab:
