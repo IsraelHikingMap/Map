@@ -168,7 +168,7 @@ rules
 			define
 				min-zoom : 14.5
 				font-size : 14.5:10;16:16
-		elsefor : place=farm OR landuse=farmyard
+		elsefor : place=farm OR landuse=farmyard OR landuse=farmland
 			define
 				min-zoom : 15
 				font-size : 15:8;16:14
