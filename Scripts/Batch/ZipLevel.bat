@@ -16,7 +16,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 @REM Script is located at IsraelHiking\Scripts\Batch 
 PUSHD %~dp0\..\..
 SET ISRAELHIKING=%CD%
-CD Site
+CD %ISRAELHIKING%\Site
 
 ECHO Positional Parameters 0-9: %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
 ECHO Positional Parameters *  : %*
@@ -76,12 +76,13 @@ FOR /D %%L in ( %LEVEL% ) DO (
 	IF %%~nD LEQ %DIRMAX% (
 	  SET ZIPPATH="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.zip"
 	  SET ZIPLST="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.lst"
-	  REM Delete zip file it already exists
+	  REM Delete zip file if it already exists
 	  IF EXIST !ZIPPATH! (
 	    DEL !ZIPPATH!
 	  )
 	  @ECHO ON
 	  IF [%NEWER%]==[] (
+            @ECHO Creating !ZIPPATH!...
 	    "%~d0\Program Files\7-ZipPortable\App\7-Zip\7z" a -tzip !ZIPPATH! -r %%D\*.png > NUL
 	    CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
 	  ) ELSE (

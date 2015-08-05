@@ -1,4 +1,5 @@
-@REM TODO SETLOCAL
+@ECHO off
+SETLOCAL
 PUSHD %~dp0\..\..
 SET ISRAELHIKING=%CD%
 
@@ -20,7 +21,6 @@ IF "%2"=="" (
   SET SITES= %2 %3 %4 %5 %6 %7 %8 %9
 )
 
-@REM TODO @ECHO off
 REM If needed, start Pageant: an SSH authentication agent for WinSCP and Plink
 IF EXIST .\PuTTYOSM.ppk (
   TASKLIST | FIND /i "pageant.exe" > NUL
@@ -36,8 +36,10 @@ IF EXIST .\PuTTYOSM.ppk (
 )
 
 SET ERRORLEVELWAS=0
+@ECHO SITES=%SITES%
 FOR %%S in (%SITES%) DO (
-  @ECHO %DATE% %TIME%
+
+  @ECHO %DATE% %TIME%: Uploading to %%S
   REM Generate temporary script to upload %ZIPFILE%
    > %ZIPFILE%.scp ECHO option batch abort
   >> %ZIPFILE%.scp ECHO option confirm off
@@ -45,19 +47,27 @@ FOR %%S in (%SITES%) DO (
   >> %ZIPFILE%.scp ECHO open %%S
   >> %ZIPFILE%.scp ECHO cd
   >> %ZIPFILE%.scp ECHO put -resume -preservetime -transfer=binary %ZIPPATH% temp/
-  >> %ZIPFILE%.scp ECHO call unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^&^& echo unzip Completed successfully ^|^| echo unzip Failed
-  >> %ZIPFILE%.scp ECHO call ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^&^& echo File transfered successfully ^|^| echo File transfered failed
+  >> %ZIPFILE%.scp ECHO call ^(unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^&^& echo unzip Completed successfully ^|^| ^( echo unzip failed ; false ^)^) ^&^& ^( ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^&^& echo File transfered successfully ^|^| ^( echo File transfer failed ; false ^)^)
   >> %ZIPFILE%.scp ECHO exit
 
   REM Execute script
-  @ECHO on
-  "%ISRAELHIKING%\..\..\WinSCP\WinSCP.com" /timeout=360 /script=%ZIPFILE%.scp
-
-  @REM Save ERRORLEVEL in a variable
-  IF ERRORLEVEL 1 SET ERRORLEVELWAS=%ERRORLEVEL%
-
-  @REM Delete temporary script
-  DEL %ZIPFILE%.scp
+  WinSCP.com /timeout=360 /script=%ZIPFILE%.scp /log=%ZIPFILE%.log
+  IF ERRORLEVEL 1 (
+    @ECHO WinSCP returned an error
+    SET ERRORLEVELWAS=1
+  ) else (
+    @REM WinSCP does not report errors in call commands
+    @REM Check if upload has failed at any stage
+    FIND /c "Script: failed" %ZIPFILE%.log > nul
+    IF NOT ERRORLEVEL 1 (
+      @ECHO "failed" is found, there was an upload error:
+      FIND "Script: failed" %ZIPFILE%.log
+      SET ERRORLEVELWAS=1
+    ) else (
+      @ECHO Delete temporary script and log files
+      DEL %ZIPFILE%.scp %ZIPFILE%.log
+    )
+  )
 )
 
 IF %ERRORLEVELWAS%==0 echo All Uploads were successful
