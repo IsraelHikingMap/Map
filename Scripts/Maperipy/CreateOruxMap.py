@@ -1,4 +1,4 @@
-import os.path, datetime
+import os, os.path, datetime, string
 from maperipy import *
 import GenIsraelHikingTiles
 
@@ -16,14 +16,29 @@ os.chdir(IsraelHikingDir)
 # Keep the name of the Tile Upload command
 upload_tiles = os.path.join(IsraelHikingDir, "Scripts", "Batch", "UploadTiles.bat")
 
+def add_to_PATH(app_dir):
+    full_app_dir=os.path.join(ProgramFiles, app_dir)
+    for path_dir in (string.split(os.environ["PATH"], os.pathsep)):
+        if os.path.basename(path_dir) == app_dir:
+            # Application already found in PATH
+            return
+    if not os.path.isdir(full_app_dir):
+        # Application not a sibling of Maperitive
+        App.log("Warning: " + app_dir + " location not found. Could not add it to PATH.")
+        return
+    os.environ["PATH"] = string.join([os.environ["PATH"],full_app_dir], os.pathsep)
+
+add_to_PATH("wget")
+add_to_PATH("WinSCP")
+add_to_PATH("Mobile Atlas Creator")
+
 def zip_and_upload(zip_file):
     if os.path.exists(upload_tiles):
         App.log("=== Create a Zip file with new tiles ===")
         App.run_command('zip base-dir="' + os.path.join(IsraelHikingDir, 'Site') + '" zip-file="' + zip_file + '"')
-        zip_file_basename = os.path.basename(zip_file)
-        App.log("=== Upload " + zip_file_basename + "===")
-        App.log('App.start_program("' + upload_tiles + '", [' + zip_file_basename + '])')
-        App.start_program(upload_tiles, [zip_file_basename])
+        App.log("=== Upload " + zip_file + "===")
+        App.log('App.start_program("' + upload_tiles + '", [' + zip_file + '])')
+        App.start_program(upload_tiles, [zip_file])
 
 gen_cmd =  GenIsraelHikingTiles.IsraelHikingTileGenCommand(BoundingBox(Srid.Wgs84LonLat, 34.00842, 29.32535, 35.92745, 33.398339999), 7, 16)
 
@@ -32,7 +47,7 @@ if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpda
         and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip')):
     App.log("=== Update israel-and-palestine-latest.osm.pbf ===")
     # wget for Windows: http://gnuwin32.sourceforge.net/packages/wget.htm
-    App.run_program(os.path.join(ProgramFiles, 'wget', 'wget.exe'), 1200,
+    App.run_program('wget.exe', 1200,
                     ["--timestamping",
                      "--no-directories", "--no-verbose",
                      '--directory-prefix="' + os.path.join(IsraelHikingDir, 'Cache') + '"',
