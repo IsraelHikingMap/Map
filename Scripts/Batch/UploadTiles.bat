@@ -49,6 +49,7 @@ FOR %%S in (%SITES%) DO (
   >> %ZIPFILE%.scp ECHO put -resume -preservetime -transfer=binary %ZIPPATH% temp/
   >> %ZIPFILE%.scp ECHO call ^(unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^&^& echo unzip Completed successfully ^|^| ^( echo unzip failed ; false ^)^) ^&^& ^( ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^&^& echo File transfered successfully ^|^| ^( echo File transfer failed ; false ^)^)
   >> %ZIPFILE%.scp ECHO exit
+  DEL %ZIPFILE%.log
 
   REM Execute script
   WinSCP.com /timeout=360 /script=%ZIPFILE%.scp /log=%ZIPFILE%.log
@@ -58,10 +59,11 @@ FOR %%S in (%SITES%) DO (
   ) else (
     @REM WinSCP does not report errors in call commands
     @REM Check if upload has failed at any stage
-    FIND /c "Script: failed" %ZIPFILE%.log > nul
+    FINDSTR "Script:.[^c].*failed" %ZIPFILE%.log > nul
     IF NOT ERRORLEVEL 1 (
-      @ECHO "failed" is found, there was an upload error:
-      FIND "Script: failed" %ZIPFILE%.log
+      @ECHO.
+      @ECHO Upload failed:
+      FINDSTR "Script:.[^c].*failed" %ZIPFILE%.log
       SET ERRORLEVELWAS=1
     ) else (
       @ECHO Delete temporary script and log files
@@ -70,10 +72,11 @@ FOR %%S in (%SITES%) DO (
   )
 )
 
-IF %ERRORLEVELWAS%==0 echo All Uploads were successful
-@REM Delete Zip file if upload and extraction was successful
-@REM TODO ERRORLEVEL from WinSCP is unreliable. Do not delete the zip file
-@REM TODO IF %ERRORLEVELWAS%==0 echo. 2> %ZIPPATH%
+IF %ERRORLEVELWAS%==0 (
+  echo All Uploads were successful
+  @REM Delete Zip file if upload and extraction was successful
+  echo. 2> %ZIPPATH%
+)
 
 POPD
 
@@ -82,13 +85,12 @@ POPD
 @REM Set NOPAUSE to a command to execute instead of PAUSE
 @REM For example, SET NOPAUSE=REM
 IF DEFINED NOPAUSE (
+  @REM
   %NOPAUSE%
-  @REM Check real ERRORLEVEL of the above command
-  IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 ) ELSE (
   PAUSE
 )
 
-EXIT /B %ERRORLEVEL%
+EXIT /B %ERRORLEVELWAS%
 
 @REM vim:sw=2:ai:ic:expandtab
