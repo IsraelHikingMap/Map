@@ -58,13 +58,13 @@ if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpda
 	    App.run_command("pause 15000")
     # Create LastModified.js file and add it to zip file
     App.log("=== Create Last Update info:" + LastModified.strftime("%d-%m-%Y") + " ===")
-    jsFile = open(os.path.join(IsraelHikingDir, 'Site', 'js', 'LastModified.js'), 'w')
+    jsFile = open(os.path.join(IsraelHikingDir, 'Site', 'scripts', 'LastModified.js'), 'w')
     jsFile.write("function getLastModifiedDate() { return '"
                  + LastModified.strftime("%d-%m-%Y")
                  + "'; }")
     jsFile.close()
     App.run_command('zip base-dir="' + os.path.join(IsraelHikingDir, 'Site') 
-        + '" files="' + os.path.join(IsraelHikingDir, 'Site', 'js', 'LastModified.js')
+        + '" files="' + os.path.join(IsraelHikingDir, 'Site', 'scripts', 'LastModified.js')
         + '" zip-file="' + os.path.join(IsraelHikingDir, 'output', 'LastModified.zip') + '"')
 else :
     App.log('=== Continueing execution of the previous build ===')  
@@ -114,14 +114,15 @@ if not os.path.exists(zip_file) :
     App.collect_garbage()
     zip_and_upload(zip_file)
 
-if          os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip')) \
-        and os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip')) \
-        and os.path.exists(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip')):
+zip_file = os.path.join(IsraelHikingDir, 'output', 'LastModified.zip')
+if          os.path.exists(zip_file) \
+        and os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip')) \
+        and os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip')):
     # All zip files were created
     if os.path.exists(upload_tiles):
         App.log("=== Upload Last Update info ===")
-        App.log('App.start_program("' + upload_tiles + '", ["LastModified.zip"])')
-        App.start_program(upload_tiles, ["LastModified.zip"])
+        App.log('App.start_program("' + upload_tiles + '", [' + zip_file + '])')
+        App.start_program(upload_tiles, [zip_file])
 
 App.collect_garbage()
 os.chdir(MaperitiveDir)
