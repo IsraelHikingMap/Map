@@ -68,7 +68,7 @@ features
 		water spring : natural=spring
 		water well : man_made=water_well
 		water cistern : man_made=cistern
-		water waterhole : natural=waterhole
+		water waterhole : natural=waterhole OR water=pond
 		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
