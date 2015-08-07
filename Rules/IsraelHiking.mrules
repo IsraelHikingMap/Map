@@ -99,7 +99,7 @@ features
 
 		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
 		path : highway=path AND NOT bicycle=designated
-		foot path : highway=footway
+		foot path : highway=footway OR highway=pedestrian
 		steps path : highway=steps
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
