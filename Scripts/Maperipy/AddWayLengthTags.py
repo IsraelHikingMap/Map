@@ -67,9 +67,11 @@ def escapeXML(text) :
         .replace(">", "&gt;")\
         .replace("<", "&lt;")
 
-IsraelHikingDir = os.path.dirname(os.path.dirname(App.script_dir))
-App.log('APP.script_dir: ' + App.script_dir + ', IsraelHikingDir: ' + IsraelHikingDir)
+IsraelHikingDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
+# App.log('App.script_dir: ' + App.script_dir)
+# App.log('IsraelHikingDir: ' + IsraelHikingDir)
 App.run_command('change-dir dir="' + IsraelHikingDir +'"')
+os.chdir(IsraelHikingDir)
 
 App.collect_garbage()
 
