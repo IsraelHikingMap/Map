@@ -121,7 +121,7 @@ class IsraelHikingTileGenCommand(TileGenCommand):
       self.polygon.style.fill_opacity = 0
       # Add the plygon to the layer
       self.layer.add_symbol(self.polygon.add(self.gen_polygon))
-    if self.gen_clean_file and not result:
+    if not result:
       for xshift in xrange(width):
 	for yshift in xrange(height):
 	  self.skip_tile(zoom, x+xshift, y+yshift)
@@ -131,11 +131,11 @@ class IsraelHikingTileGenCommand(TileGenCommand):
     if self.gen_clean_file:
       filename = "{0}/{1}/{2}.png".format(zoom, x, y)
       self.list_file.write("rm -f " + filename + "*\n")
-      self.delete_tile(filename)
-      self.delete_tile(filename+".finger")
+    self.delete_tile(filename)
+    self.delete_tile(filename+".finger")
 
-  def delete_tile(self, filename):
-    filename = os.path.join(self.tiles_dir, filename)
+  def delete_tile(self, tilename):
+    filename = os.path.join(self.tiles_dir, tilename)
     if os.path.exists(filename):
       os.remove(filename)
 
@@ -159,10 +159,6 @@ class IsraelHikingTileGenCommand(TileGenCommand):
         tile.zoom < 11 or \
         self.tile_in_polygon( \
             tile.zoom, tile.tile_x, tile.tile_y, 1, 1, self.israel_and_palestine)
-    # Collect names if tile files to be deleted
-    if self.gen_clean_file and not save:
-      filename = "rm -f {0}/{1}/{2}.png*\n".format(tile.zoom, tile.tile_x, tile.tile_y)
-      self.list_file.write(filename)
     return save
 
   def __init__(self, print_bounds, min_zoom, max_zoom):
