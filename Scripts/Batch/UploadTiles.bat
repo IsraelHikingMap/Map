@@ -39,7 +39,9 @@ SET ERRORLEVELWAS=0
 @ECHO SITES=%SITES%
 FOR %%S in (%SITES%) DO (
 
-  @ECHO %DATE% %TIME%: Uploading to %%S
+  @ECHO %DATE%%TIME%: Uploading to %%S
+  @ECHO Current Directory: %CD%
+  @ECHO Uploading: %ZIPPATH%
   REM Generate temporary script to upload %ZIPFILE%
    > %ZIPFILE%.scp ECHO option batch abort
   >> %ZIPFILE%.scp ECHO option confirm off
@@ -47,9 +49,11 @@ FOR %%S in (%SITES%) DO (
   >> %ZIPFILE%.scp ECHO open %%S
   >> %ZIPFILE%.scp ECHO cd
   >> %ZIPFILE%.scp ECHO put -resume -preservetime -transfer=binary %ZIPPATH% temp/
-  >> %ZIPFILE%.scp ECHO call ^(unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^&^& echo unzip Completed successfully ^|^| ^( echo unzip failed ; false ^)^) ^&^& ^( ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^&^& echo File transfered successfully ^|^| ^( echo File transfer failed ; false ^)^)
+  @REM exit 2 is required to abort a WinSCP script in case of call failure
+  >> %ZIPFILE%.scp ECHO call unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^|^| exit 2
+  >> %ZIPFILE%.scp ECHO call ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^|^| exit 2
   >> %ZIPFILE%.scp ECHO exit
-  DEL %ZIPFILE%.log
+  ECHO. 2> %ZIPFILE%.log
 
   REM Execute script
   WinSCP.com /timeout=360 /script=%ZIPFILE%.scp /log=%ZIPFILE%.log
@@ -57,25 +61,14 @@ FOR %%S in (%SITES%) DO (
     @ECHO WinSCP returned an error
     SET ERRORLEVELWAS=1
   ) else (
-    @REM WinSCP does not report errors in call commands
-    @REM Check if upload has failed at any stage
-    FINDSTR "Script:.[^c].*failed" %ZIPFILE%.log > nul
-    IF NOT ERRORLEVEL 1 (
-      @ECHO.
-      @ECHO Upload failed:
-      FINDSTR "Script:.[^c].*failed" %ZIPFILE%.log
-      SET ERRORLEVELWAS=1
-    ) else (
-      @ECHO Delete temporary script and log files
-      DEL %ZIPFILE%.scp %ZIPFILE%.log
-    )
+    DEL %ZIPFILE%.scp %ZIPFILE%.log
   )
 )
 
 IF %ERRORLEVELWAS%==0 (
-  echo All Uploads were successful
-  @REM Delete Zip file if upload and extraction was successful
-  echo. 2> %ZIPPATH%
+  ECHO All Uploads were successful
+  @REM Keep empty Zip file if upload was successful
+  ECHO. 2> %ZIPPATH%
 )
 
 POPD
@@ -85,7 +78,7 @@ POPD
 @REM Set NOPAUSE to a command to execute instead of PAUSE
 @REM For example, SET NOPAUSE=REM
 IF DEFINED NOPAUSE (
-  @REM
+  @REM To ensure non-empty parenthesis
   %NOPAUSE%
 ) ELSE (
   PAUSE
