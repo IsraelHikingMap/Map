@@ -90,7 +90,8 @@ features
 		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")]
 		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
-		hiking regional kineret roundabout trail : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
+		hiking regional kinneret perimeter cycle route : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
+		hiking regional kinneret trail : relation[network = rwn @isMatch(name:en,"Kinneret Trail")]
 		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
 		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")]
 		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
@@ -1050,9 +1051,15 @@ rules
 		elseif : * jesus trail
 			define
 				line-color : orange
-		elseif : * kineret roundabout trail
+		elseif : * kinneret perimeter cycle route
 			define
-				line-color : purple
+				line-color : yellow
+				line-offset-sides : right
+		elseif : * kinneret trail
+			define
+				// line-color : purple white 20%
+				// sampled from https://www.facebook.com/shvil.kinneret/photos/a.432607486313.232937.241694931313/10151081212611314/?type=3&theater
+				line-color : #7b5ca0
 		elseif : * northern galilee trail
 			define
 				line-color : purple
@@ -1080,18 +1087,15 @@ rules
 		elseif : * golan trail
 			define
 				line-color : green
-		elseif : * jesus trail
+		elseif : * kinneret perimeter cycle route
 			define
-				line-color : white black 10%
-		elseif : * kineret roundabout trail
+				line-color : blue 
+				line-offset-sides : right
+		elseif : * kinneret trail
 			define
-				line-color : white black 10%
-		elseif : * northern galilee trail
-			define
-				line-color : white black 10%
-		elseif : * coast to coast
-			define
-				line-color : white black 10%
+				// line-color : blue
+				// sampled from https://www.facebook.com/shvil.kinneret/photos/a.432607486313.232937.241694931313/10151081212611314/?type=3&theater
+				line-color : #1765ad
 		elseif : * haifa wadis
 			define
 				line-color : red
