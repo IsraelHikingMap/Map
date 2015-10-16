@@ -1,4 +1,4 @@
-import os, os.path, datetime, string
+import os, os.path, datetime, string, errno
 from maperipy import *
 import GenIsraelHikingTiles
 
@@ -15,6 +15,14 @@ os.chdir(IsraelHikingDir)
 
 # Keep the name of the Tile Upload command
 upload_tiles = os.path.join(IsraelHikingDir, "Scripts", "Batch", "UploadTiles.bat")
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc: # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else: raise
 
 def add_to_PATH(app_dir):
     full_app_dir=os.path.join(ProgramFiles, app_dir)
@@ -58,6 +66,7 @@ if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpda
 	    App.run_command("pause 15000")
     # Create LastModified.js file and add it to zip file
     App.log("=== Create Last Update info:" + LastModified.strftime("%d-%m-%Y") + " ===")
+    mkdir_p(os.path.join(IsraelHikingDir, 'Site', 'scripts'))   # For initial creation of LastModified.js
     jsFile = open(os.path.join(IsraelHikingDir, 'Site', 'scripts', 'LastModified.js'), 'w')
     jsFile.write("function getLastModifiedDate() { return '"
                  + LastModified.strftime("%d-%m-%Y")
