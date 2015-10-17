@@ -23,6 +23,12 @@ change-directory ..
 set-setting name=map.coastline.mode value=ignore
 // =========================================
 
+// =====================
+// === No WGS84 Grid ===
+// =====================
+set-setting name=map.decoration.grid value=False
+// =====================
+
 // ================================================
 // === Load the Israel Hiking Overlay Map rules ===
 // ================================================
