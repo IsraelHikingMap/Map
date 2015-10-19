@@ -94,6 +94,8 @@ if not os.path.exists(zip_file) :
         App.start_program(program_line, [])
     zip_and_upload(zip_file)
     App.collect_garbage()
+else :
+    App.log('Skipped: ' + zipfile + ' already exists.')
 
 zip_file = os.path.join(IsraelHikingDir, 'output', 'OverlayTiles.zip')
 if not os.path.exists(zip_file) :
@@ -112,6 +114,8 @@ if not os.path.exists(zip_file) :
         App.log('App.start_program("' + program_line + '", [])')
         App.start_program(program_line, [])
     App.collect_garbage()
+else :
+    App.log('Skipped: ' + zipfile + ' already exists.')
 
 zip_file = os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip')
 if not os.path.exists(zip_file) :
@@ -122,6 +126,8 @@ if not os.path.exists(zip_file) :
     gen_cmd.GenToDirectory(16, 16, os.path.join(IsraelHikingDir, 'Site', 'Tiles'))
     App.collect_garbage()
     zip_and_upload(zip_file)
+else :
+    App.log('Skipped: ' + zipfile + ' already exists.')
 
 zip_file = os.path.join(IsraelHikingDir, 'output', 'LastModified.zip')
 if          os.path.exists(zip_file) \

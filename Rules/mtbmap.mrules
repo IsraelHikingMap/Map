@@ -1,0 +1,1161 @@
+// Maperitive rendering ruleset for Mountain Bike Map
+// http://maperitive.net
+
+// Created by Ola Endre Reitstøen http://www.reitstoen.com/
+// Working example: http://osm.reitstoen.com/
+// Highly modified version of Hiking map by Igor Brejc
+// Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
+
+// Icons
+// Map icons CC-0 from SJJB Management (http://www.sjjb.co.uk/mapicons)
+// Ghost http://iconbug.com/detail/icon/2017/cute-ghost/
+// http://norgedigitalt.no/Norge_digitalt/Norsk/Teknologi/Tegneregler_og_symboler/
+
+// History:
+// --------
+// Version 2.2
+// 2014-06-25: Updated by Ola Endre Reitstøen
+
+
+features
+	church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
+	food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
+	shelter : amenity=shelter
+	place : node[place OR landuse=farmyard]
+	railway station : railway=station
+	legend : legend
+	building : area[building]
+	building point: node[building and not building=entrance]
+	parking : node[amenity=parking] area[amenity=parking]
+	swimming : node[leisure=swimming] area[leisure=swimming]
+	dam : area[waterway=dam]
+
+	points, areas
+		cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
+
+	points
+		peak : natural=peak
+		hill : natural=hill
+		power tower : @isOneOf(power, tower, pole, station, sub_station)
+		drinkingwater: amenity=drinking_water or drinking_water=yes
+		cafe : amenity=cafe
+		attraction : tourism=attraction
+		viewpoint : tourism=viewpoint
+		bench : amenity=bench
+		picnic : tourism=picnic_site
+		barrier : barrier
+		information : tourism=information
+
+
+
+	lines
+		aerialway : aerialway and not aerialway=station
+		aeroway : aeroway
+		contour major : contour[@isMulti(elevation, 100) and not elevation=0 ]
+		contour medium : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) and not (@isMulti(elevation, 100) or @isMulti(elevation, 20))]
+		hiking route : relation[type=route route=foot] way[trailblazed=yes]
+		foot path major : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) AND (NOT trail_visibility OR @isOneOf(trail_visibility, excellent, good)) and not area=yes
+		foot path minor : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) AND (trail_visibility AND NOT @isOneOf(trail_visibility, excellent, good)) and not area=yes
+		road major : @isOneOf(highway,motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary,secondary_link,tertiary) and not area=yes
+		road minor : @isOneOf(highway,residential,unclassified,living_street,service,road) and not area=yes
+		track : highway=track
+		railway : railway=rail or railway=tram
+		power line : @isOneOf(power, line, minor_line)
+		stream : waterway=stream or waterway=river or waterway=canal or waterway=drain or waterway=ditch
+		mtb_scale : mtb:scale and @isOneOf(highway,track,pedestrian,footway,cycleway,bridleway,path,steps)
+		coastline : natural=coastline
+		cliff : natural=cliff
+		// fylker : admin_level=4
+		bridge : bridge
+		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
+		pier : man_made=pier
+		line barrier : @isOneOf(barrier,wall,fence,hedge)
+		
+
+	areas
+		sports : leisure=stadium or leisure=common or leisure=track
+		residential : landuse=residential
+		industrial : landuse=industrial or @isOneOf(power,substation,sub_station,plant)
+		commercial : landuse=commercial or landuse=retail
+		wood : landuse=forest OR natural=wood OR leisure=park
+		glacier : natural=glacier
+		water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
+		military : landuse=military OR military=danger_area
+		construction : landuse=construction
+		quarry : landuse=quarry
+		wetland : natural=wetland
+		farmland : landuse=farmland OR landuse=farmyard OR landuse=farm
+		grass : landuse=grass OR natural=heath OR landuse=meadow OR leisure=golf_course OR leisure=pitch OR leisure=park OR leisure=garden OR landuse=recreation_ground OR landuse=cemetery OR amenity=grave_yard OR natural=grassland
+		beach : natural=beach
+		cafearea : amenity=cafe
+		ghost : landuse=cemetery OR amenity=grave_yard
+		nocycle area: (bicycle=no or bicycle=dismount) and not highway
+		breakwater : man_made=breakwater
+	
+
+properties
+	curved : false
+//	font-family : Arial
+	font-family : Clear Sans
+	text-offset-vertical : -12%
+	text-halo-color : #fff
+	text-halo-width : 18%
+	text-halo-opacity : 0.9
+	text-line-spacing : 0.7
+	map-background-color : #f1eee8
+	map-background-opacity : 1
+	map-sea-color : #b5d9fb
+	line-end-cap : none
+	line-start-cap : none
+
+
+rules
+
+	target : barrier
+		define
+			icon-width : 11:12;15:16
+			align-vertical : center
+			min-zoom : 14			
+		for : barrier=gate
+			define
+				icon-image : icons/SJJB/png/black/barrier_gate.glow.000000.32.png
+		for : barrier=lift_gate
+			define
+				icon-image : icons/SJJB/png/black/barrier_lift_gate.glow.000000.32.png
+		for : barrier=toll_booth
+			define
+				icon-image : icons/SJJB/png/black/barrier_toll_booth.glow.000000.32.png
+		draw : icon
+		
+	target : place
+		for : place=city
+			define
+				min-zoom : 9
+				max-zoom : 14
+				font-size : 8:12;10:16;14:20
+		elsefor : place=town
+			define
+				min-zoom : 10
+				font-size : 9:10;10:12;16:20
+		elsefor : place=village
+			define
+				min-zoom : 12
+				font-size : 10:10;13:12;16:20
+		elsefor : place=hamlet
+			define
+				min-zoom : 14
+				font-size : 14:12;16:16
+		elsefor : place=suburb
+			define
+				min-zoom : 14
+				font-size : 14:12;16:16
+		elsefor : place=locality AND not natural=hill
+			define
+				min-zoom : 14
+				font-size : 14:12;16:16	
+		elsefor : place=farm OR landuse=farmyard OR landuse=farm
+			define
+				min-zoom : 15
+				font-size : 15:10;16:12	
+		else
+			stop
+		define
+			font-weight : bold
+			text-color : #333
+		draw : text
+
+	target : viewpoint
+		define
+			icon-image : mtbmap/icons/viewpoint.png
+			icon-width : 13:9;14:12;15:16
+			align-vertical : center
+			min-zoom : 14
+		for : man_made=tower
+			define
+				icon-image : mtbmap/icons/viewpoint_tower.png
+		draw : icon
+		for : not (natural=peak or natural=hill)
+			define
+				font-weight : bold
+				font-size : 14:9;15:10
+				font-stretch : 1
+				text-offset-vertical : 60%
+				min-zoom : 15
+				text-align-vertical : near
+			draw : text
+
+	target : parking
+		define
+			icon-image : icons/SJJB/png/transport_parking.glow.32.png
+			icon-width : 14:10
+			align-vertical : center
+			min-zoom : 14
+		for : access=private
+			define
+				icon-image : none
+		for : hiking=yes
+			define
+				icon-image : mtbmap/icons/parkering_black.png
+				min-zoom : 13
+				icon-width : 13:9;14:12;15:16
+		draw : icon
+		for : hiking=yes
+			define
+				font-weight : bold
+				font-size : 14:9;15:10
+				font-stretch : 1
+				text-offset-vertical : 60%
+				min-zoom : 14
+				text-align-vertical : near
+			draw : text
+
+
+
+	target : ghost
+		define
+			icon-image : mtbmap/icons//ghost.png
+			icon-width : 14:32
+			align-vertical : center
+			min-zoom : 15
+		draw : icon
+
+		
+		
+	target: cafe*
+		for : hiking=yes
+			define
+				icon-image : mtbmap/icons/cafe.png
+				icon-width : 13:10;14:14;15:16;16:18
+				align-vertical : center
+				min-zoom : 13
+			draw : icon
+			define
+				font-weight : bold
+				font-size : 14:9;15:10
+				font-stretch : 1
+				text-offset-vertical : 60%
+				min-zoom : 14
+				text-align-vertical : near
+			draw : text
+
+	target: attraction
+		define
+			icon-image : mtbmap/icons/attraction.png
+			icon-width : 13:10;14:14;15:16;16:18
+			align-vertical : center
+			min-zoom : 13
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+	target: alpine hut
+		define
+			icon-image : mtbmap/icons/hut.png
+			icon-width : 10:16
+			min-zoom : 10
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 12:9;14:10;15:11
+			min-zoom : 12
+			text-align-vertical : near
+			text-offset-vertical : 100%
+		draw : text
+		
+	target: cabin
+		define
+			icon-width : 10:10;12:16
+			min-zoom : 10
+		for : (tourism=cabin and emergency=yes) or shelter_type=basic_hut
+			define
+				min-zoom : 13
+				icon-image : mtbmap/icons/hut_emergency.png
+		for : (tourism=cabin and service=no) or tourism=wilderness_hut
+			define
+				min-zoom : 11
+				icon-image : mtbmap/icons/hut_no-service.png
+		for : (tourism=cabin and service=self) or (tourism=wilderness_hut and shop=provisions)
+			define
+				min-zoom : 11
+				icon-image : mtbmap/icons/hut_self-service.png
+		for : tourism=alpine_hut or (tourism=cabin and service=full)
+			define
+				icon-image : mtbmap/icons/hut.png
+		draw : icon
+		for : tourism=alpine_hut or (tourism=cabin and service)
+			define
+				font-weight : bold
+				font-size : 12:9;14:10;15:11
+				min-zoom : 12
+				text-align-vertical : near
+				text-offset-vertical : 60%
+			draw : text
+
+
+	target : peak
+		define
+			fill-color : #504030
+			line-style : none
+			min-zoom : 11
+			shape : triangle
+			shape-size : 10:6;14:12
+		draw : shape
+		define
+			font-style : italic
+			font-weight : bold
+			font-size : 13:10;15:15
+			min-zoom : 13
+			text : @if(name, name @if(ele, "\n(" ele ")"), ele)
+			text-align-vertical : near
+			text-line-spacing : 0.7
+			text-color : #443628
+			text-max-width : 15
+			text-offset-vertical : 0%
+		draw : text
+
+	target : hill
+		define
+			fill-color : #504030
+			line-style : none
+			min-zoom : 13
+			shape : custom
+			shape-def : p:#504030;pw:0;f:#504030;m:-10,-5;l: 0,6, 10,-5;z
+			shape-size : 10:4;14:8
+		draw : shape
+		define
+			font-style : italic
+			font-weight : bold
+			font-size : 13:9;15:14
+			min-zoom : 13
+			text : @if(name, name @if(ele, "\n(" ele ")"), ele)
+			text-align-vertical : near
+			text-line-spacing : 0.7
+			text-color : #443628
+			text-max-width : 15
+			text-offset-vertical : 10%
+		draw : text		
+
+
+	target: drinkingwater
+		define
+			icon-image : mtbmap/icons/sjjb/food_drinkingtap.glow.000000.32.png
+			icon-width : 11:16;15:24
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+
+	target : power tower
+		define
+			min-zoom : 15
+			shape : square
+			shape-size : 15:4;16:6
+			fill-color : #888
+			line-style : none
+		for : power=pole
+			define
+				shape : circle
+				shape-size:15:1.5;16:2
+		draw : shape
+
+	target: bench
+		define
+			icon-image : mtbmap/icons/sjjb/amenity_bench.glow.000000.32.png
+			icon-width : 14:16;15:20;16:24
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+
+	target: picnic
+		define
+			icon-image : mtbmap/icons/sjjb/tourist_picnic.glow.000000.32.png
+			icon-width : 14:16;15:20;16:24
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+
+	target: swimming
+		define
+			icon-image : mtbmap/icons/swimming.png
+			icon-width : 13:9;14:10;15:16
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+
+	target: information
+		define
+			icon-image : mtbmap/icons/sjjb/tourist_information.glow.000000.32.png
+			icon-width : 16:20
+			align-vertical : center
+			min-zoom : 16
+		for : information=guidepost
+			define
+				align-vertical : far
+				icon-image : mtbmap/icons/sjjb/tourist_guidepost.glow.000000.32.png
+		draw : icon
+
+// lines
+
+	target : fylker
+		define
+			curved : false
+			min-zoom : 7
+			max-zoom : 10
+			line-width : 2
+			line-color : #969
+		for : @isMatch(name, "Trøndelag")
+			define
+				max-zoom : 10
+		draw : line
+
+	target : aerialway
+		define
+			line-color : #666
+			fill-color : #666
+			shape-orientation: flow
+		for : aerialway=cable_car OR aerialway=gondola
+			define
+				min-zoom : 13
+				line-width : 13:1;15:3
+				shape-size : 13:3;15:6
+				shape-spacing : 13:15;15:30
+				shape : square
+		elsefor : aerialway=chair_lift
+			define
+				min-zoom : 14
+				line-width : 13:0.75;14:2
+				shape-size : 13:5;15:10
+				shape-spacing : 13:4;15:8
+				shape : custom
+				shape-def : pw:2;l:0,-1;0,1
+		else
+			define
+				min-zoom : 15
+				line-width : 13:0.5;15:1
+				shape-size : 13:4;15:8
+				shape-spacing : 13:4;15:8
+				shape : custom
+				shape-def : pw:1;l:0,-1;0,1
+		draw : line
+		draw : shape
+
+	target : aeroway
+		for : aeroway=runway
+			define
+				curved : false
+				min-zoom : 11
+				line-width : 11:3;12:4;13:8;14:16;15:32
+				line-color : #666
+		elsefor : aeroway=taxiway
+			define
+				min-zoom : 11
+				curved : false
+				line-width : 11:1;12:1;13:3;14:6;15:12
+				line-color : #666
+		else
+			stop
+		draw : line
+
+
+	target : cliff
+		define
+			curved : false
+			min-zoom : 13
+			line-width : 1
+			line-color : #504030
+		draw : line
+		define
+			shape : custom
+			shape-def : -10,0;0,-30;10,0;Z
+			shape-size : 13:6;15:10
+			shape-spacing : -0.2
+			shape-orientation: flow
+			fill-color : #504030
+		draw : shape
+
+
+	target : power line
+		define
+			curved : false
+			min-zoom : 15
+			line-width : 1
+			line-color : #888
+		draw : line
+
+
+	target : railway
+		define
+			line-width : 9:1;14:1.5
+			line-color : #333
+			shape : custom
+			shape-def : p:#000,0.5;pw:1;l:0,-1;0,1
+			shape-size : 9:3;14:5
+			shape-spacing : 0.66
+			shape-orientation: flow
+		for : tunnel
+			define
+				line-opacity : 0.4
+				shape-def : p:#000,0.3;pw:1;l:0,-1;0,1
+		draw : shape
+		draw : line
+
+	target : nocycle
+		define
+			min-zoom : 10
+			line-color : #ffcc66
+			line-style: solid
+			line-width : 12:2;13:2.5;14:3
+			line-opacity : 1
+		for : bicycle=dismount
+			define
+				line-color : #FFDD99
+		for : tunnel=yes
+			define
+				line-opacity : 0.5
+		draw : line
+
+
+	target : road *
+		if : road major
+			define
+				min-zoom : 10
+				line-color : #fff
+				line-width : 6:1;10:1.5;15:3.5;16:5
+			for : highway=trunk or higway=motorway
+				define
+					min-zoom : 6
+			for : highway=primary
+				define
+					min-zoom : 8
+		else
+			define
+				min-zoom : 11
+				line-color : #fff
+				line-width : 10:0.5;15:2.5;16:4
+		define
+			border-style : solid
+			border-color : #555
+			border-width : 40%
+			border-opacity : 1.0
+			
+		for : bicycle=no or bicycle=dismount
+			define
+				line-color : #FFE66B		
+			
+		for : tunnel=yes
+			define
+				line-opacity : 0.5
+				border-style : dot
+				border-opacity : 0.3
+		for : highway=service
+			define
+				min-zoom : 12
+				line-width : 10:0.25;15:2;16:3
+		for : service=parking_aisle
+			define
+				min-zoom : 14
+				line-width : 14:1;15:1.5
+				border-opacity : 0.5
+		for : bridge=yes
+			define
+				border-width : 70%
+				border-opacity : 0.9
+		draw : line
+		define
+			min-zoom : 15
+			font-size : 15:10;16:12
+			font-weight : bold
+			text-color : #fff
+			text-orientation: flow
+			text-halo-width : 2.5
+			text-halo-color : #000
+			text-halo-opacity : 0.80
+			map.rendering.lflp.max-allowed-corner-angle : 45
+		// Handle right-to-left texts
+		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			define
+				text-direction : rtl
+		draw : text
+
+
+	target : track
+		define
+			min-zoom : 10
+			line-color : black
+			line-width : 10:0.5;15:2.5
+		for : not tracktype
+			define
+				line-style : solid
+				line-color : #666
+		for : tracktype=grade1
+			define
+				line-style : solid
+		for : tracktype=grade2
+			define
+				line-style: dash
+		for : tracktype=grade3
+			define
+				line-style: dashdot
+		for : tracktype=grade4
+			define
+				line-style: dashdotdot
+		for : tracktype=grade5
+			define
+				min-zoom : 10
+				line-style: dashdotdot
+				line-width : 10:0.25;15:2.0
+		for : tunnel=yes
+			define
+				line-opacity : 0.5
+		for : class:bicycle:mtb < 0
+			define
+				line-opacity : 0.4
+		draw : line
+		define
+			min-zoom : 14
+			font-size : 14:10;15:11;16:12
+			font-weight : bold
+			font-stretch : 1
+			text-orientation: flow
+			text-color : #000
+			map.rendering.lflp.min-buffer-space : 3
+			map.rendering.lflp.max-allowed-corner-angle : 60
+			map.rendering.lflp.max-compression : 0.75
+		for : class:bicycle:mtb < 0
+			define
+				text-opacity : 0.6
+				text-halo-opacity : 0.5
+		// Handle right-to-left texts
+		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			define
+				text-direction : rtl
+		draw : text
+		
+		
+	target : foot path*
+		define
+			line-color : black
+			line-style : dot
+			border-style : none
+			line-opacity : 1
+		for : tunnel=yes
+			define
+				line-opacity : 0.5
+		for : highway=cycleway or bicycle=designated
+			define
+				line-style : solid
+				line-color : #0000ff
+		for : highway=bridleway
+			define
+				line-style : dash
+				line-color : #0000ff
+		for : (highway=footway or highway=pedestrian) and not mtb:scale
+			define
+				line-style : dot
+				line-color : #0000ff
+		for : class:bicycle:mtb < 0
+			define
+				line-opacity : 0.4
+		if : *major
+			define
+				min-zoom : 10
+				line-width : 10:0.25;15:2.0
+		else
+			define
+				min-zoom : 13
+				line-style : none
+			define
+				shape : square
+				shape-size : 10:0.25;15:1.5
+				shape-spacing : 3
+				shape-orientation: flow
+			for : class:bicycle:mtb < 0
+				define
+					fill-opacity : 0.4
+			for : trail_visibility=bad
+				define
+					shape-spacing : 5
+			for : trail_visibility=horrible or trail_visibility=no
+				define
+					shape-spacing : 10					
+			draw : shape					
+		draw : line
+		define
+			min-zoom : 14
+			font-size : 14:10;15:11;16:12
+			font-weight : bold
+			font-stretch : 1
+			text : @if(name, name @if([[mtb:name]], " (" [[mtb:name]] ")"), [[mtb:name]])
+			text-orientation: flow
+			text-color : #000
+			map.rendering.lflp.min-buffer-space : 3
+			map.rendering.lflp.max-allowed-corner-angle : 60
+			map.rendering.lflp.max-compression : 0.75
+		for : class:bicycle:mtb < 0
+			define
+				text-opacity : 0.6
+				text-halo-opacity : 0.5
+		// Handle right-to-left texts
+		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]") OR @isMatch(mtb:name, "[א-ת؀-ݭﬠ-ﻼ]")
+			define
+				text-direction : rtl
+		draw : text
+		
+//------------------------MTB:SCALE-------------------------------
+	target : mtb_scale 
+		define
+			min-zoom : 10
+			line-opacity : 1
+			line-width : 10:0.75;15:6
+		for : @isMatch(mtb:scale, "0")
+			define
+				line-color : #00ff22 white 40%
+		for : @isMatch(mtb:scale, "1")
+			define
+				line-color : #0033ff white 55%
+		for : @isMatch(mtb:scale, "2")
+			define
+				line-color : #ff0000 white 45%
+		for : @isMatch(mtb:scale, "3")
+			define
+				line-color : #666
+				line-style : solid
+		for : @isMatch(mtb:scale, "4")
+			define
+				line-color : #666
+				line-style : solid
+			define
+				shape : custom
+				shape-def : pw:1;p:#fc0;0,-2;0,2;Z
+				shape-size : 10:1;15:6
+				shape-spacing : 1.6
+				shape-orientation: flow
+			draw : shape
+		for : @isMatch(mtb:scale, "5")
+			define
+				line-color : #666
+				line-style : solid
+			define
+				shape-mode : linear
+				shape : custom
+				shape-def : pw:1;p:#ffcc00;-1,-2;-1,2;Z;pw:1;p:#ffcc00;1,-2;1,2;Z
+				shape-size : 10:1;15:6
+				shape-spacing : 1.6
+				shape-orientation: flow
+			draw : shape
+		for : @isMatch(mtb:scale, "6")
+			define
+				line-color : #666
+				line-style : dot
+				border-style : solid
+				border-color : #ffcc00
+				border-width : 0
+				border-opacity : 1
+		// Render how nice the trail is. Bad=transparent and Good=glow(class:bicycle:mtb)
+		for : class:bicycle:mtb < 0
+			define
+				line-opacity : 0.5
+				border-opacity : 0.5
+		draw : line
+		for : class:bicycle:mtb > 0
+			define
+				line-opacity : 0
+				border-style : solid
+				border-color : #ff0
+		for : class:bicycle:mtb = 1
+			define
+				border-opacity : 0.6
+				border-width : 40%
+			draw : line
+			define
+				border-opacity : 0.3
+				border-width : 70%
+			draw : line
+		for : class:bicycle:mtb = 2
+			define
+				border-opacity : 0.7
+				border-width : 40%
+			draw : line
+			define
+				border-opacity : 0.3
+				border-width : 70%
+			draw : line
+		for : class:bicycle:mtb = 3
+			define
+				border-opacity : 0.8
+				border-width : 40%
+			draw : line
+			define
+				border-opacity : 0.4
+				border-width : 70%
+			draw : line
+
+
+//----------------------------------------------------------------	
+
+
+	target : bridge
+		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) or highway=track
+			define
+				min-zoom : 13
+				line-color : #f1eee8
+				line-width : 12:2;13:4;14:6
+				line-opacity : 1
+				line-style : solid
+				border-style : solid
+				border-color : #000
+				border-width : 1
+				border-opacity : 0.8
+		else
+			stop
+		draw : line
+		
+	target : stream
+		define
+			min-zoom : 10
+			line-color : #AFD5F6
+			line-width : 10:1;13:2;14:4
+		for : waterway=stream
+			define
+				min-zoom : 13
+				line-width : 13:1;14:2
+		for : waterway=drain or waterway=ditch
+			define
+				min-zoom : 13
+				line-width : 13:0.5;14:1
+		draw : line
+		define
+			min-zoom : 15
+			font-size : 15:10
+			font-style : italic
+			font-weight : bold
+			text-color : #2D79B7
+			map.rendering.lflp.min-buffer-space : 5
+			map.rendering.lflp.max-allowed-corner-angle : 90
+		// Handle right-to-left texts
+		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			define
+				text-direction : rtl
+		draw : text
+
+	target : line barrier
+		define
+			min-zoom : 15
+			line-color : black
+			line-width : 1
+			shape : custom
+			shape-def : pw:1;l:0,0;3,2
+			shape-size : 15:6
+			shape-spacing : 15:1
+		for : barrier=fence
+			define
+				min-zoom:15
+				line-color:#777
+		for : barrier=hedge
+			define
+				min-zoom:15
+				line-width : 2
+				line-color:#A4CD91
+		draw : line
+		draw : shape
+
+	target: contour*
+		define
+			line-color : #664433
+			line-opacity : 0.5
+			curved : false
+		if : *major
+			define
+				map.rendering.contour.label : true
+				min-zoom : 10
+				line-width : 10:0.5;15:1.5
+				font-size : 9
+				font-style : italic
+				font-weight : normal
+				text-color : #320
+				text-opacity : 0.8
+				text-halo-width : 0
+				text-halo-opacity : 0.75
+				text-halo-color : #F1EEE8
+		elseif : *medium
+			define
+				min-zoom : 12
+				line-opacity : 0.3
+				line-width : 10:0.33;15:1
+		else
+			define
+				min-zoom : 14
+				line-opacity : 0.3
+				line-width : 10:0.33;15:1
+		draw : contour
+
+
+// areas
+
+	target : building
+		define
+			min-zoom : 13
+			fill-color : #aaa
+			line-color : #999
+			line-style : solid
+			line-width : 13:0.25;14:0.5;15:1
+		draw : fill
+	target : building point
+		define
+			min-zoom : 14
+			fill-color : #888
+			line-style : none
+			shape : square
+			shape-size : 14:3;16:6
+		draw : shape
+
+	target : sports
+		define
+			min-zoom : 13
+			fill-color : #ccc
+			line-color : #ccc
+			line-style : solid
+			line-width : 13:0.25;14:0.5;15:1
+		draw : fill
+		
+	target : dam 
+		define
+			min-zoom : 13
+			fill-color : #aaa
+			line-color : #999
+			line-style : solid
+			line-width : 13:0.25;14:0.5;15:1
+		draw : fill
+
+	target : parking
+		define
+			line-style : solid
+			line-color : #000
+			line-opacity : 0.5
+			line-width : 12:0.25;15:1
+			min-zoom : 12
+			fill-color : #fff
+		draw : fill	
+
+	target : military
+		define
+			fill-color : #FF9999
+			fill-opacity: 0.0
+			fill-hatch : swne
+			fill-hatch-color : #FF9999
+			fill-hatch-opacity : 0.8
+			line-style : solid
+			line-width : 0.5
+			line-color : #FF9999
+			line-opacity : 0.6
+		draw : fill
+
+	target : nocycle area
+		define
+			min-zoom : 10
+			fill-color : #ffcc66
+			fill-opacity : 0
+			fill-hatch : swne
+			fill-hatch-color : #ffcc66
+			fill-hatch-opacity : 0.8
+			line-style : solid
+			line-width : 0.5
+			line-color : #ffcc66
+			line-opacity : 0.6
+		for : bicycle=dismount
+			define
+				fill-hatch-opacity : 0.5
+		draw : fill
+
+	target : construction
+		define
+			fill-color : #aaa176
+			fill-opacity : 0.75
+			line-style : none
+		draw : fill
+
+	target : quarry
+		define
+			fill-color : #ccc
+			line-style : none
+		draw : fill		
+		
+	target : water
+		define
+			line-style : solid
+			line-color : #b5d9fb black 10%
+			line-width : 6:0.25;11:0.5;15:1
+			fill-color : #AFD5F6
+		draw : fill
+		define
+			min-zoom : 13
+			font-size : 13:9;14:12;15:14
+			font-style : italic
+			font-weight : bold
+			text-color : #2D79B7
+		draw : text
+
+	target : glacier
+		define
+			line-style : solid
+			line-color : #ddffff black 10%
+			line-width : 6:0.25;11:0.5;15:1
+			fill-color : #E7FFFF
+		draw : fill
+		define
+			min-zoom : 13
+			font-size : 13:9;14:12;15:14
+			font-style : italic
+			font-weight : bold
+			text-color : #75A5A5
+		draw : text
+
+	target : wetland
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 8
+			fill-color : #B9DBD3
+		draw : fill
+		define
+			min-zoom : 14
+			font-size : 14:10;15:12
+			font-style : italic
+			font-weight : bold
+			text-color : #407E6F
+		draw : text
+		
+	target : wood
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 8
+			fill-color : #CFE5C5
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text
+		
+	target : grass
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 8
+			fill-color : #deffd1
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text	
+
+	target : beach
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 8
+			fill-color : #FFFFA5
+		draw : fill
+	
+	target : farmland
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 8
+		for : landuse=farmland OR landuse=farm
+			define
+				fill-color : #ede8c1
+		for : landuse=farmyard
+			define
+				fill-color : #dcd7b3
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text		
+
+	target : residential
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #ddd
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text
+	target : industrial
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #ddd
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text
+	target : commercial
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #ddd
+		draw : fill
+		define
+			min-zoom : 17
+		draw : text
+
+	target : breakwater
+		define
+			line-style : solid
+			line-width : 6:0.25;15:1
+			line-color : #b5d9fb black 20%
+			fill-color : #f1eee8
+		draw : fill
+
+	target : pier
+		define
+			min-zoom : 12
+			line-style : solid
+			line-width : 12:0.5;15:4
+			line-color : #f1eee8
+		draw : line
+		
+	target : coastline
+		define
+			curved : false
+			line-width : 6:0.5;15:2
+			line-color : #b5d9fb black 20%
+			line-offset : 11:0.5;15:1
+			line-offset-sides : right
+			line-offset-miter-limit : 1
+		draw : line
+
+		
+//---- Style for creating legend ----
+// Custom tags in custom osm-file used to create legend
+// Render at zoom 15
+
+	target : legend
+		define
+			text : text
+			text-align-horizontal : near
+			text-max-width : 30
+			text-halo-width : 0
+			text-line-spacing : 0.5
+			text-avoid-overlaps : false
+		for : legend=heading
+			define
+				min-zoom: 14
+				font-size : 12
+				font-weight : bold
+		for : legend=text
+			define
+				min-zoom: 15
+				font-size : 10
+				text : text
+		draw : text
+		for : legend=paper
+			define
+				fill-color : #fff
+		draw : fill
