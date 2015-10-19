@@ -85,7 +85,8 @@ features
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
 
 	lines
-//		aerialway : aerialway
+		aerialway : aerialway and not aerialway=station
+		aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")]
@@ -120,7 +121,7 @@ features
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi)
 		cliff : natural=cliff
-		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
+		fence : way[barrier=fence] OR relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")] OR way[landuse=quarry]
 		wall  : way[barrier=wall]
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
@@ -1173,6 +1174,54 @@ rules
 				text-offset-vertical : 100%
 
 		draw : text
+
+	target : aerialway
+		define
+			line-color : #666
+			fill-color : #666
+			shape-orientation: flow
+		for : aerialway=cable_car OR aerialway=gondola
+			define
+				min-zoom : 13
+				line-width : 13:1;15:3
+				shape-size : 13:3;15:6
+				shape-spacing : 13:15;15:30
+				shape : square
+		elsefor : aerialway=chair_lift
+			define
+				min-zoom : 14
+				line-width : 13:0.75;14:2
+				shape-size : 13:5;15:10
+				shape-spacing : 13:4;15:8
+				shape : custom
+				shape-def : pw:2;l:0,-1;0,1
+		else
+			define
+				min-zoom : 15
+				line-width : 13:0.5;15:1
+				shape-size : 13:4;15:8
+				shape-spacing : 13:4;15:8
+				shape : custom
+				shape-def : pw:1;l:0,-1;0,1
+		draw : line
+		draw : shape
+
+	target : aeroway
+		for : aeroway=runway
+			define
+				curved : false
+				min-zoom : 11
+				line-width : 11:3;12:4;13:8;14:16;15:32
+				line-color : #666
+		elsefor : aeroway=taxiway
+			define
+				min-zoom : 11
+				curved : false
+				line-width : 11:1;12:1;13:3;14:6;15:12
+				line-color : #666
+		else
+			stop
+		draw : line
 
 	target : cliff
 		define
