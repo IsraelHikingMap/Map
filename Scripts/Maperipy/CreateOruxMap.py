@@ -66,14 +66,14 @@ if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpda
 	    App.run_command("pause 15000")
     # Create LastModified.js file and add it to zip file
     App.log("=== Create Last Update info:" + LastModified.strftime("%d-%m-%Y") + " ===")
-    mkdir_p(os.path.join(IsraelHikingDir, 'Site', 'scripts'))   # For initial creation of LastModified.js
-    jsFile = open(os.path.join(IsraelHikingDir, 'Site', 'scripts', 'LastModified.js'), 'w')
+    mkdir_p(os.path.join(IsraelHikingDir, 'Site', 'Tiles'))   # For initial creation of LastModified.js
+    jsFile = open(os.path.join(IsraelHikingDir, 'Site', 'Tiles', 'LastModified.js'), 'w')
     jsFile.write("function getLastModifiedDate() { return '"
                  + LastModified.strftime("%d-%m-%Y")
                  + "'; }")
     jsFile.close()
     App.run_command('zip base-dir="' + os.path.join(IsraelHikingDir, 'Site') 
-        + '" files="' + os.path.join(IsraelHikingDir, 'Site', 'scripts', 'LastModified.js')
+        + '" files="' + os.path.join(IsraelHikingDir, 'Site', 'Tiles', 'LastModified.js')
         + '" zip-file="' + os.path.join(IsraelHikingDir, 'output', 'LastModified.zip') + '"')
 else :
     App.log('=== Continueing execution of the previous build ===')  
