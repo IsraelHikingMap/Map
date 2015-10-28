@@ -29,7 +29,7 @@ The output of the map can be [seen here](http://osm.org.il/IsraelHiking/).
 * [Marble](https://marble.kde.org/install.php) on Linux (source files)
     * copy osm.org.il [directory](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to /usr/share/apps/marble/data/maps/earth/
     * copy mtb [directory](https://github.com/shtrb/marble/tree/master/earth/mtb) to /usr/share/apps/marble/data/maps/earth/
-    * copy route [directory](https://github.com/shtrb/marble/tree/master/earth/route) to /usr/share/apps/marble/data/maps/earth/
+    * copy routes [directory](https://github.com/shtrb/marble/tree/master/earth/routes) to /usr/share/apps/marble/data/maps/earth/
     * Select osm.org.il in the available maps
 * [Marble](https://marble.kde.org/install.php) on windows (compressed form)
     * Download the osm.org.il [archive file](https://github.com/shtrb/marble/blob/master/archive/osm.org.il.tar.bz2)
@@ -38,7 +38,7 @@ The output of the map can be [seen here](http://osm.org.il/IsraelHiking/).
 * [Marble](https://marble.kde.org/install.php) on Windows (source files)
     * copy osm.org.il [directory](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to %programfiles%\Marble\data\maps\earth\
     * copy mtb [directory](https://github.com/shtrb/marble/tree/master/earth/mtb) to %programfiles%\Marble\data\maps\earth\
-    * copy route [directory](https://github.com/shtrb/marble/tree/master/earth/route) to %programfiles%\Marble\data\maps\earth\
+    * copy routes [directory](https://github.com/shtrb/marble/tree/master/earth/routes) to %programfiles%\Marble\data\maps\earth\
     * Select osm.org.il in the available maps
 
 
