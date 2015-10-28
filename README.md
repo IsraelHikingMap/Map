@@ -22,23 +22,13 @@ The output of the map can be [seen here](http://osm.org.il/IsraelHiking/).
     * Define a name for it (i.e Israel Hiking).
     * Enter the this URL: `http://osm.org.il/IsraelHiking/Tiles/<zoom>/<x>/<y>.png`.
     * Select "Save".
-* [Marble](https://marble.kde.org/install.php) on Linux (compressed form)
-    * Download the osm.org.il [archive file](https://github.com/shtrb/marble/blob/master/archive/osm.org.il.tar.bz2)
-    * unpack archive in /usr/share/apps/marble/data/maps/
-    * Select osm.org.il in the available maps
-* [Marble](https://marble.kde.org/install.php) on Linux (source files)
-    * copy osm.org.il [directory](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to /usr/share/apps/marble/data/maps/earth/
-    * copy mtb [directory](https://github.com/shtrb/marble/tree/master/earth/mtb) to /usr/share/apps/marble/data/maps/earth/
-    * copy routes [directory](https://github.com/shtrb/marble/tree/master/earth/routes) to /usr/share/apps/marble/data/maps/earth/
-    * Select osm.org.il in the available maps
-* [Marble](https://marble.kde.org/install.php) on windows (compressed form)
-    * Download the osm.org.il [archive file](https://github.com/shtrb/marble/blob/master/archive/osm.org.il.tar.bz2)
-    * unpack archive in %programfiles%\Marble\data\maps\
-    * Select osm.org.il in the available maps
-* [Marble](https://marble.kde.org/install.php) on Windows (source files)
-    * copy osm.org.il [directory](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to %programfiles%\Marble\data\maps\earth\
-    * copy mtb [directory](https://github.com/shtrb/marble/tree/master/earth/mtb) to %programfiles%\Marble\data\maps\earth\
-    * copy routes [directory](https://github.com/shtrb/marble/tree/master/earth/routes) to %programfiles%\Marble\data\maps\earth\
+* [Marble](https://marble.kde.org/install.php) (source files)
+    * maps directory
+        * windows: %programfiles%\Marble\data\maps\earth\
+        * linux  : /usr/share/apps/marble/data/maps/earth/
+    * copy osm.org.il [directory](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to maps directory
+    * copy mtb [directory](https://github.com/shtrb/marble/tree/master/earth/mtb) to maps directory
+    * copy routes [directory](https://github.com/shtrb/marble/tree/master/earth/routes) to maps directory
     * Select osm.org.il in the available maps
 
 
