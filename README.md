@@ -87,4 +87,4 @@ You may choose to do it overnight, but you need to make sure you don't get out o
 15. Enjoy, open a OSM account and add trails to make this map better :-)
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31.3.13. Last Updated: 28.7.15
+Created by Harel Mazor and Zeev Stadler 31.3.13. Last Updated: 28.10.15
