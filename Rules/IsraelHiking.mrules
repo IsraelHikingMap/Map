@@ -121,7 +121,7 @@ features
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi)
 		cliff : natural=cliff
-		fence : way[barrier=fence] OR relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")] OR way[landuse=quarry]
+		fence : way[barrier=fence] way[landuse=quarry] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		wall  : way[barrier=wall]
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
@@ -225,14 +225,14 @@ rules
 	target : picnic
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_picnic.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_picnic.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : parking
 		define
 			min-zoom : 15
-			icon-image : israelhiking/icons/SJJB/transport_parking.n.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/transport_parking.n.32.png
 			icon-width : 14
 		for : legend
 			define
@@ -242,72 +242,72 @@ rules
 	target : fuel
 		define
 			min-zoom : 15
-			icon-image : israelhiking/icons/SJJB/transport_fuel.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/transport_fuel.glow.32.png
 			icon-width : 24
 		draw : icon
 
 	target : camp site
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/accommodation_camping.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/accommodation_camping.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : view
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_view_point.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_view_point.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : ruins
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_ruin.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_ruin.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : archaeological
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_archaeological2.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_archaeological2.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : memorial
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_memorial.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_memorial.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : tree
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/landuse_deciduous.green.glow.24.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/landuse_deciduous.green.glow.24.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : cave
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/poi_cave.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/poi_cave.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target: *worship
 		if : church*
 			define
-				icon-image : israelhiking/icons/SJJB/place_of_worship_christian3.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/place_of_worship_christian3.glow.32.png
 		elseif : mosque*
 			define
-				icon-image : israelhiking/icons/SJJB/place_of_worship_islamic3.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/place_of_worship_islamic3.glow.32.png
 		elseif : synagogue*
 			define
-				icon-image : israelhiking/icons/SJJB/place_of_worship_jewish3.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/place_of_worship_jewish3.glow.32.png
 		elseif : bahai*
 			define
-				icon-image : israelhiking/icons/SJJB/place_of_worship_bahai3.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/place_of_worship_bahai3.glow.32.png
 		define
 			icon-width : 14:16;20:30
 			min-zoom : 13
@@ -333,21 +333,21 @@ rules
 	target : guidepost
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_guidepost.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_guidepost.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
 	target : watertower
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/water_tower.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/water_tower.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 	
 	target : monument
 		define
 			min-zoom : 13
-			icon-image : israelhiking/icons/SJJB/tourist_monument.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_monument.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
 
@@ -358,22 +358,22 @@ rules
 		for : barrier=gate
 			for : access=no OR motor_vehicle=no
 				define
-					icon-image : israelhiking/icons/SJJB/barrier_gate.n.32.png
+					icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_gate.n.32.png
 			else
 				define
-					icon-image : israelhiking/icons/SJJB/barrier_gate.glow.32.png
+					icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_gate.glow.32.png
 		elsefor : barrier=kissing_gate OR barrier=stile
 			define
-				icon-image : israelhiking/icons/SJJB/barrier_kissing_gate.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_kissing_gate.glow.32.png
 		elsefor : barrier=lift_gate
 			define
-				icon-image : israelhiking/icons/SJJB/barrier_lift_gate.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_lift_gate.glow.32.png
 		elsefor : barrier=block OR barrier=debris
 			define
-				icon-image : israelhiking/icons/SJJB/barrier_blocks.n.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_blocks.n.32.png
 		elsefor : barrier=cattle_grid
 			define
-				icon-image : israelhiking/icons/SJJB/barrier_cattle_grid.glow.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_cattle_grid.glow.32.png
 				icon-width: 24
 		for : legend
 			define
@@ -1596,8 +1596,7 @@ rules
 			line-style : none
 			line-width : 0
 			min-zoom : 9
-			// fill-texture : israelhiking/icons/quarry.png
-			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/quarry.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/quarry.png
 		for : legend
 			define
 				painting-cycle : 590
@@ -1621,8 +1620,7 @@ rules
 			line-style : none
 			line-width : 0
 			//fill-color : #E6DDD0
-			// fill-texture : israelhiking/icons/field.png
-			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/field.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/field.png
 			fill-opacity : 0.3
 		for : legend
 			define
@@ -1641,7 +1639,7 @@ rules
 		define
 			line-style : none
 			line-width : 0
-			fill-texture : israelhiking/icons/SJJB/landuse_grass.p.32.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/landuse_grass.p.32.png
 		draw : fill
 
 	target : plantation
@@ -1649,8 +1647,7 @@ rules
 		define
 			line-style : none
 			line-width : 0
-			// fill-texture : israelhiking/icons/plantation.png
-			fill-texture : https://raw.githubusercontent.com/HarelM/IsraelHiking/master/Maperitive/Textures/plantation.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/plantation.png
 		for : legend
 			define
 				painting-cycle : 590

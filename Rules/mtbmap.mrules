@@ -119,13 +119,13 @@ rules
 			min-zoom : 14			
 		for : barrier=gate
 			define
-				icon-image : icons/SJJB/png/black/barrier_gate.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_gate.glow.000000.32.png
 		for : barrier=lift_gate
 			define
-				icon-image : icons/SJJB/png/black/barrier_lift_gate.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_lift_gate.glow.000000.32.png
 		for : barrier=toll_booth
 			define
-				icon-image : icons/SJJB/png/black/barrier_toll_booth.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_toll_booth.glow.000000.32.png
 		draw : icon
 		
 	target : place
@@ -167,13 +167,13 @@ rules
 
 	target : viewpoint
 		define
-			icon-image : mtbmap/icons/viewpoint.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/viewpoint.png
 			icon-width : 13:9;14:12;15:16
 			align-vertical : center
 			min-zoom : 14
 		for : man_made=tower
 			define
-				icon-image : mtbmap/icons/viewpoint_tower.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/viewpoint_tower.png
 		draw : icon
 		for : not (natural=peak or natural=hill)
 			define
@@ -186,20 +186,6 @@ rules
 			draw : text
 
 	target : parking
-		define
-			icon-image : icons/SJJB/png/transport_parking.glow.32.png
-			icon-width : 14:10
-			align-vertical : center
-			min-zoom : 14
-		for : access=private
-			define
-				icon-image : none
-		for : hiking=yes
-			define
-				icon-image : mtbmap/icons/parkering_black.png
-				min-zoom : 13
-				icon-width : 13:9;14:12;15:16
-		draw : icon
 		for : hiking=yes
 			define
 				font-weight : bold
@@ -209,12 +195,25 @@ rules
 				min-zoom : 14
 				text-align-vertical : near
 			draw : text
+		define
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/transport_parking.glow.32.png
+			icon-width : 14:10
+			align-vertical : center
+			min-zoom : 14
+		for : access=private
+			stop
+		for : hiking=yes
+			define
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/parkering_black.png
+				min-zoom : 13
+				icon-width : 13:9;14:12;15:16
+		draw : icon
 
 
 
 	target : ghost
 		define
-			icon-image : mtbmap/icons//ghost.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons//ghost.png
 			icon-width : 14:32
 			align-vertical : center
 			min-zoom : 15
@@ -225,7 +224,7 @@ rules
 	target: cafe*
 		for : hiking=yes
 			define
-				icon-image : mtbmap/icons/cafe.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/cafe.png
 				icon-width : 13:10;14:14;15:16;16:18
 				align-vertical : center
 				min-zoom : 13
@@ -241,7 +240,7 @@ rules
 
 	target: attraction
 		define
-			icon-image : mtbmap/icons/attraction.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/attraction.png
 			icon-width : 13:10;14:14;15:16;16:18
 			align-vertical : center
 			min-zoom : 13
@@ -257,7 +256,7 @@ rules
 		
 	target: alpine hut
 		define
-			icon-image : mtbmap/icons/hut.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/hut.png
 			icon-width : 10:16
 			min-zoom : 10
 		draw : icon
@@ -276,18 +275,18 @@ rules
 		for : (tourism=cabin and emergency=yes) or shelter_type=basic_hut
 			define
 				min-zoom : 13
-				icon-image : mtbmap/icons/hut_emergency.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/hut_emergency.png
 		for : (tourism=cabin and service=no) or tourism=wilderness_hut
 			define
 				min-zoom : 11
-				icon-image : mtbmap/icons/hut_no-service.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/hut_no-service.png
 		for : (tourism=cabin and service=self) or (tourism=wilderness_hut and shop=provisions)
 			define
 				min-zoom : 11
-				icon-image : mtbmap/icons/hut_self-service.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/hut_self-service.png
 		for : tourism=alpine_hut or (tourism=cabin and service=full)
 			define
-				icon-image : mtbmap/icons/hut.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/hut.png
 		draw : icon
 		for : tourism=alpine_hut or (tourism=cabin and service)
 			define
@@ -345,7 +344,7 @@ rules
 
 	target: drinkingwater
 		define
-			icon-image : mtbmap/icons/sjjb/food_drinkingtap.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/food_drinkingtap.glow.000000.32.png icon-width : 11:16;15:24
 			icon-width : 11:16;15:24
 			align-vertical : center
 			min-zoom : 14
@@ -366,7 +365,7 @@ rules
 
 	target: bench
 		define
-			icon-image : mtbmap/icons/sjjb/amenity_bench.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/amenity_bench.glow.000000.32.png
 			icon-width : 14:16;15:20;16:24
 			align-vertical : center
 			min-zoom : 14
@@ -374,7 +373,7 @@ rules
 
 	target: picnic
 		define
-			icon-image : mtbmap/icons/sjjb/tourist_picnic.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_picnic.glow.000000.32.png
 			icon-width : 14:16;15:20;16:24
 			align-vertical : center
 			min-zoom : 14
@@ -382,7 +381,7 @@ rules
 
 	target: swimming
 		define
-			icon-image : mtbmap/icons/swimming.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/swimming.png
 			icon-width : 13:9;14:10;15:16
 			align-vertical : center
 			min-zoom : 14
@@ -390,14 +389,14 @@ rules
 
 	target: information
 		define
-			icon-image : mtbmap/icons/sjjb/tourist_information.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_information.glow.000000.32.png
 			icon-width : 16:20
 			align-vertical : center
 			min-zoom : 16
 		for : information=guidepost
 			define
 				align-vertical : far
-				icon-image : mtbmap/icons/sjjb/tourist_guidepost.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_guidepost.glow.000000.32.png
 		draw : icon
 
 // lines
