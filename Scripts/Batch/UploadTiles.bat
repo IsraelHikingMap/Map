@@ -9,6 +9,7 @@ IF %ZIPPATH%=="" SET ZIPPATH="%ISRAELHIKING%\Output\TileUpdate.zip"
 @REM The FOR statement gets one full path and extracts its filename
 FOR %%Z in (%ZIPPATH%) DO (
   SET ZIPFILE="%%~nxZ"
+  SET ZIPDIR="%%~dpZ"
 )
 
 IF "%2"=="" (
@@ -39,7 +40,7 @@ SET ERRORLEVELWAS=0
 @ECHO SITES=%SITES%
 FOR %%S in (%SITES%) DO (
 
-  @ECHO %DATE%%TIME%: Uploading to %%S
+  @ECHO %DATE% %TIME%: Uploading to %%S
   @ECHO Current Directory: %CD%
   @ECHO Uploading: %ZIPPATH%
   REM Generate temporary script to upload %ZIPFILE%
@@ -63,11 +64,17 @@ FOR %%S in (%SITES%) DO (
   ) else (
     DEL %ZIPFILE%.scp %ZIPFILE%.log
   )
+  @ECHO %DATE% %TIME%: Completed uploading to %%S
 )
 
 IF %ERRORLEVELWAS%==0 (
   ECHO All Uploads were successful
-  @REM Keep empty Zip file if upload was successful
+  @REM If upload was successful move Zip to Archive
+  @REM and replace with an empty file 
+  IF NOT EXIST %ZIPDIR%\Archive (
+    MKDIR %ZIPDIR%\Archive
+  )
+  MOVE %ZIPPATH% %ZIPDIR%\Archive
   ECHO. 2> %ZIPPATH%
 )
 
