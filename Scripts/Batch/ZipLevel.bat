@@ -1,4 +1,4 @@
-@REM Create and uplaod a given Tiles levels
+@REM Create and upload a given Tiles levels
 @REM Usage
 @REM 	ZipLevel ["new"] [<Level> ...]
 @REM 		examples:

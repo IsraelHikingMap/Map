@@ -8,9 +8,10 @@
 clear-map
 // ===============================
 
-// ============================================
-// === Allow the use of relative file names ===
-// ============================================
+// ===================================================
+// === Allow the use of relative file names        ===
+// === Change directory to Israel Hiking Directory ===
+// ===================================================
 use-script-dir
 change-directory ..
 change-directory ..
@@ -40,6 +41,14 @@ use-ruleset location="Rules\IsraelHiking.mrules"
 // =============================================================================
 load-source Cache\israel-and-palestine-latest.osm.pbf
 
+// ====================================================
+// === Alternatively, rather than using GeoFabric's ===
+// === snapshot, download from the overpass server  ===
+// ====================================================
+// set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
+// download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
+// ========================================================
+
 // ===================================================
 // === Temporarily hide the Israel OSM map data to ===
 // === speed up loading of subsequent sources      ===
@@ -53,18 +62,9 @@ set-source index=1 visible=false
 geo-bounds-use-source index=1
 // ===========================================================
 
-// ====================================================
-// === Alternatively, rather than using GeoFabric's ===
-// === snapshot, download from the overpass server  ===
-// ====================================================
-// set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
-// download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
-// ========================================================
-
 // =======================================================
 // === Set the printing bounds to match the map bounds ===
 // =======================================================
-geo-bounds-use-source
 set-print-bounds-geo
 // =======================================================
 
@@ -112,6 +112,7 @@ load-source Cache\ASTER-35-33.contours
 // === Load legend source file created by hand ===   
 // ===============================================
 load-source Cache\Legend.osm
+// ===============================================
 
 // =====================================================================
 // == Load the relief file created using "IsraelHikingSetup.mscript" ===
