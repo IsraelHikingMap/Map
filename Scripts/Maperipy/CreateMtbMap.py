@@ -51,7 +51,7 @@ if not os.path.exists(zip_file) :
     zip_and_upload(zip_file)
     App.collect_garbage()
 else :
-    App.log('Skipped: ' + zipfile + ' already exists.')
+    App.log('Skipped: ' + zip_file + ' already exists.')
 
 os.chdir(MaperitiveDir)
 
