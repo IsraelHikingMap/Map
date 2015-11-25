@@ -50,10 +50,28 @@ def zip_and_upload(zip_file):
 
 gen_cmd =  GenIsraelHikingTiles.IsraelHikingTileGenCommand(BoundingBox(Srid.Wgs84LonLat, 34.00842, 29.32535, 35.92745, 33.398339999), 7, 16)
 
-if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip')) \
-        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip')) \
-        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip')) \
-        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'mtbTileUpdate.zip')):
+# Create a new map if all Zip files were created and uploaded
+try:
+    if          os.path.getsize(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip'   )) == 0 \
+            and os.path.getsize(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip' )) == 0 \
+            and os.path.getsize(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip' )) == 0 \
+            and os.path.getsize(os.path.join(IsraelHikingDir, 'output', 'OverlayTiles.zip' )) == 0 \
+            and os.path.getsize(os.path.join(IsraelHikingDir, 'output', 'mtbTileUpdate.zip')) == 0 :
+        # All zip files were created and uploded - delete them to start a new map
+        os.remove(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip'   ))
+        os.remove(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip' ))
+        os.remove(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip' ))
+        os.remove(os.path.join(IsraelHikingDir, 'output', 'OverlayTiles.zip' ))
+        os.remove(os.path.join(IsraelHikingDir, 'output', 'mtbTileUpdate.zip'))
+except OSError as exc:
+    # Never mind, some Zip files were probably not found
+    pass
+
+if          not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate.zip'   )) \
+        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'TileUpdate16.zip' )) \
+        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'LastModified.zip' )) \
+        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'OverlayTiles.zip' )) \
+        and not os.path.exists(os.path.join(IsraelHikingDir, 'output', 'mtbTileUpdate.zip')) :
     App.log("=== Update israel-and-palestine-latest.osm.pbf ===")
     # wget for Windows: http://gnuwin32.sourceforge.net/packages/wget.htm
     App.run_program('wget.exe', 1200,
@@ -152,7 +170,6 @@ if          os.path.exists(zip_file) \
     App.log('App.start_program("' + upload_tiles + '", [' + zip_file + '])')
     App.start_program(upload_tiles, [zip_file])
 
-App.collect_garbage()
-os.chdir(MaperitiveDir)
+App.run_command("exit")
 
 # vim: shiftwidth=4 expandtab
