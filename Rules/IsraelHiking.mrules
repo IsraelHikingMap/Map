@@ -1677,13 +1677,15 @@ rules
 // residential should be last
 	target : residential
 		define
-			line-style : none
+			line-style : solid
+			line-color : black white 40%
 			line-width : 1
-			fill-color : #DCDCDC white 30%
+			fill-color : white black 10%
 		for : legend
 			define
 				painting-cycle : 590
 		draw : fill
+		draw : line
 		define
 			min-zoom : 17
 		// Hebrew preference for points & areas
