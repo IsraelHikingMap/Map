@@ -8,10 +8,10 @@
 
 // History:
 // --------
-// 2014-11-08: Improve trail visibility. Show two-coloured tracks, height for viewpoints. 
+// 2014-11-08: Improve trail visibility. Show two-coloured tracks, height for viewpoints.
 // 2014-11-03: Added purple and orange trails, block and debris barriers, trees.
 //		Differentiated grade4 and grade5 tracks.
-//		Removed duplicate shields for dual-carriage roads. 
+//		Removed duplicate shields for dual-carriage roads.
 //		Annotated the inner side of natural reserve boundaries.
 // 2014-06-07: Added Area A, Area B, and Haifa Wadis Trail
 // 2014-05-23: Added fuel stations, regional trails on one side, changed to "glow" icons, refined text size, contour emphasis
@@ -58,7 +58,7 @@ features
 		legend : @isOneOf(legend, header, background, area_missing)
 		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
 		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR legend=point_missing OR railway=station
-		forest label: (landuse=forest OR natural=wood) AND length
+		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 
@@ -126,6 +126,8 @@ features
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
 		legend : legend=line_missing
+		nature reserve boundary outer : way[width (@isOneOf(boundary, national_park, protected_area) OR leisure=nature_reserve) (@isOneOf(outer_boundary, boundary, leisure) OR NOT @isOneOf(inner_boundary, boundary, leisure))]
+		nature reserve boundary inner : way[width (@isOneOf(boundary, national_park, protected_area) OR leisure=nature_reserve)  @isOneOf(inner_boundary, boundary, leisure)]
 		nature reserve boundary : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 
 	areas
@@ -356,7 +358,7 @@ rules
 			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/water_tower.glow.32.png
 			icon-width : 14:16;15:24
 		draw : icon
-	
+
 	target : monument
 		define
 			min-zoom : 13
@@ -433,7 +435,7 @@ rules
 					define
 						font-size : 13:8;16:18
 						text-offset-vertical : 175%
-		elsefor : @isOneOf(natural, spring, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern)  
+		elsefor : @isOneOf(natural, spring, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern)
 			define
 				text-color : blue
 				min-zoom : 13
@@ -455,11 +457,27 @@ rules
 		draw : text
 
 	target : nature reserve label
+		for : inner_boundary OR inner_leisure
+			stop
 		define
-			min-zoom : 13
 			font-size : 12
 			text-color : green
 			font-weight : normal
+		for : width > 10
+			define
+				min-zoom : 11
+		elsefor : width > 5
+			define
+				min-zoom : 12
+		elsefor : width > 2
+			define
+				min-zoom : 13
+		elsefor : width > 1
+			define
+				min-zoom : 14
+		else
+			define
+				min-zoom : 15
 		// Hebrew preference for points & areas
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -723,7 +741,7 @@ rules
 				for : direction > 0
 					// Hide Eastbound labels
 					stop
-				
+
 		define
 			font-family : Tahoma
 			font-weight : bold
@@ -1103,7 +1121,7 @@ rules
 				line-color : green
 		elseif : * kinneret perimeter cycle route
 			define
-				line-color : blue 
+				line-color : blue
 				line-offset-sides : right
 		elseif : * kinneret trail
 			define
@@ -1362,7 +1380,7 @@ rules
 			painting-cycle : 570
 		draw : line
 
-	target : nature reserve boundary
+	target : nature reserve boundary*
 		define
 			min-zoom : 9
 			line-color : #8DC56C black 20%
@@ -1374,7 +1392,7 @@ rules
 	// Annotate the inner side of natural reserve boundaries.
 	// Use the "clockwise" tag created by the Maperipy script
 	// AddWayLengthTags.py
-	target : nature reserve boundary
+	target : nature reserve boundary outer
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
@@ -1383,9 +1401,7 @@ rules
 			line-style : dot
 			line-offset : 3
 			line-offset-miter-limit : 2
-		for : clockwise = yes 
-			define
-				line-offset-sides : right
+		for : clockwise = yes
 			define
 				line-offset-sides : right
 		elsefor : clockwise = no
@@ -1395,7 +1411,7 @@ rules
 			stop
 		draw : line
 
-	target : nature reserve boundary
+	target : nature reserve boundary outer
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
@@ -1410,6 +1426,47 @@ rules
 		elsefor : clockwise = no
 			define
 				line-offset-sides : left
+		else
+			stop
+		draw : line
+
+	// Annotate the inner side of natural reserve boundaries.
+	// Use the "clockwise" tag created by the Maperipy script
+	// AddWayLengthTags.py
+	target : nature reserve boundary inner
+		define
+			min-zoom : 13
+			line-color : #8DC56C black 20%
+			line-opacity : 0.9
+			line-width : 2
+			line-style : dot
+			line-offset : 3
+			line-offset-miter-limit : 2
+		for : clockwise = yes
+			define
+				line-offset-sides : left
+		elsefor : clockwise = no
+			define
+				line-offset-sides : right
+		else
+			stop
+		draw : line
+
+	target : nature reserve boundary inner
+		define
+			min-zoom : 13
+			line-color : #8DC56C black 20%
+			line-opacity : 0.9
+			line-width : 1.5
+			line-style : dot
+			line-offset : 6
+			line-offset-miter-limit : 2
+		for : clockwise = yes
+			define
+				line-offset-sides : left
+		elsefor : clockwise = no
+			define
+				line-offset-sides : right
 		else
 			stop
 		draw : line
@@ -1525,22 +1582,22 @@ rules
 		draw : fill
 
 	target : forest label
-		for : length > 10
+		for : width > 10
 			define
 				min-zoom : 11
-		elsefor : length > 5
+		elsefor : width > 5
 			define
 				min-zoom : 12
-		elsefor : length > 2
+		elsefor : width > 2
 			define
 				min-zoom : 13
-		elsefor : length > 1
+		elsefor : width > 1
 			define
 				min-zoom : 14
-		elsefor : length > 0.5
+		elsefor : width > 0.5
 			define
 				min-zoom : 15
-		elsefor : length > 0.2
+		elsefor : width > 0.2
 			define
 				min-zoom : 16
 		else
@@ -1681,6 +1738,7 @@ rules
 			line-color : black white 40%
 			line-width : 1
 			fill-color : white black 10%
+			min-zoom : 10
 		for : legend
 			define
 				painting-cycle : 590

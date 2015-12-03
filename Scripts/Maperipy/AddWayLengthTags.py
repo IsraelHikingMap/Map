@@ -52,6 +52,10 @@ def setClockwise(way) :
                 length2 += node0.location.x * node1.location.y - node1.location.x * node0.location.y
                 node0 = node1
             osmLayer.way(way.id).set_tag("clockwise", "yes" if length2 < 0 else "no")
+            # Add width of areas for label placement
+            wayBBox= osmLayer.get_way_geometry(way.id).bounding_box
+            width = getLength4(wayBBox.min_x, (wayBBox.min_y + wayBBox.max_y)/2, wayBBox.max_x, (wayBBox.min_y + wayBBox.max_y)/2 )
+            osmLayer.way(way.id).set_tag("width", str(width))
 
 def escapeXML(text) :
     # Special Character   Escape Sequence Purpose  
@@ -94,21 +98,24 @@ try:
             for way in osmLayer.find_ways(lambda x : x.has_tag("highway")):
                 setLengthAndDirection(way)
 
-            # Set clockwise for boundaries and nature reserves 
+            # Set clockwise and width for national parks and nature reserves 
             # 1. for ways
             for way in osmLayer.find_ways(lambda x : (x.has_tag("boundary", "national_park") or x.has_tag("boundary", "protected_area") or x.has_tag("leisure", "nature_reserve"))):
                 setClockwise(way)
-            # 2. for multi-polygons
+            # 2. for relation members
             for osmRelation in osmLayer.find_relations(lambda x : (x.has_tag("boundary", "national_park") or x.has_tag("boundary", "protected_area") or x.has_tag("leisure", "nature_reserve"))):
                 for osmMember in osmRelation.members:
                     if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
                         osmWay = osmLayer.way(osmMember.ref_id)
                         setClockwise(osmWay)
-                        # TODO!?: handle inner members and inner members that are also outer members of another relarion
-                        if (osmMember.role == "" or osmMember.role == "outer"):
-                            for osmTag in ("boundary", "leisure"):
-                                if (osmRelation.has_tag(osmTag) and not osmWay.has_tag(osmTag)):
+                        # Handle inner members and inner members that are also outer members of another relarion
+                        for osmTag in ("boundary", "leisure"):
+                            if (osmRelation.has_tag(osmTag)):
+                                if (osmMember.role == "" or osmMember.role == "outer") and not osmWay.has_tag(osmTag):
                                     osmWay.set_tag(osmTag, osmRelation.get_tag(osmTag))
+                                    osmWay.set_tag("outer_boundary", osmTag)
+                                elif (osmMember.role == "inner"):
+                                    osmWay.set_tag("inner_boundary", osmTag)
 
             # Copy forest names from every multi-polygons to its outer ways
             for osmRelation in osmLayer.find_relations(lambda x : ( (x.has_tag("landuse", "forest") or x.has_tag("natural", "wood")) and (x.has_tag("name") or x.has_tag("name:he") or x.has_tag("name:en")))):
@@ -124,8 +131,8 @@ try:
             for osmWay in osmLayer.find_ways(lambda x : ( (x.has_tag("landuse") or x.has_tag("natural")) and (x.has_tag("name") or x.has_tag("name:he") or x.has_tag("name:en")))):
                 if (osmWay.has_tag("landuse", "forest") or osmWay.has_tag("natural", "wood")):
                     wayBBox= osmLayer.get_way_geometry(osmWay.id).bounding_box
-                    # Label placement is de according to the shape's width
-                    length = getLength4(wayBBox.min_x, (wayBBox.min_y + wayBBox.max_y)/2, wayBBox.max_x, (wayBBox.min_y + wayBBox.max_y)/2 )
+                    # Label placement is done according to the shape's width
+                    width = getLength4(wayBBox.min_x, (wayBBox.min_y + wayBBox.max_y)/2, wayBBox.max_x, (wayBBox.min_y + wayBBox.max_y)/2 )
                     osmFile.write('  <node id="' + str(iId) + '" visible="true" lat="' + str((wayBBox.min_y + wayBBox.max_y)/2) + '" lon="' + str((wayBBox.min_x + wayBBox.max_x)/2) + '">' + "\n")
                     for osmTag in ( "landuse", "natural", "name", "name:he", "name:en", "is_in" ):
                         if (osmWay.has_tag(osmTag)):
@@ -134,7 +141,7 @@ try:
                             except:
                                 print ("Error: ", sys.exc_info()[0]," when writing ", osmTag,  "=", osmWay.get_tag(osmTag))
                                 raise
-                    osmFile.write('    <tag k="length" v="' + str(length) + '"/>' + "\n")
+                    osmFile.write('    <tag k="width" v="' + str(width) + '"/>' + "\n")
                     # Add OSM id for debugging
                     osmFile.write('    <!-- tag k="OSM_id" v="' + str(osmWay.id) + '" -->' + "\n")
                     osmFile.write('  </node>' + "\n")
