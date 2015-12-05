@@ -121,7 +121,7 @@ features
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi)
 		cliff : natural=cliff
-		fence : way[barrier=fence] way[landuse=quarry] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
+		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		wall  : way[barrier=wall]
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
@@ -1652,14 +1652,16 @@ rules
 
 	target : quarry
 		define
-			line-style : none
-			line-width : 0
+			line-style : solid
+			line-color : black white 40%
+			line-width : 1
 			min-zoom : 9
-			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/quarry.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/Rendering-landuse-quarry-mapnik.png
 		for : legend
 			define
 				painting-cycle : 590
 		draw : fill
+		draw : line
 		define
 			min-zoom : 13
 			font-size : 12
@@ -1679,7 +1681,7 @@ rules
 			line-style : none
 			line-width : 0
 			//fill-color : #E6DDD0
-			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/field.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/field.png
 			fill-opacity : 0.3
 		for : legend
 			define
@@ -1706,7 +1708,7 @@ rules
 		define
 			line-style : none
 			line-width : 0
-			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Maperitive/Textures/plantation.png
+			fill-texture : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/plantation.png
 		for : legend
 			define
 				painting-cycle : 590
