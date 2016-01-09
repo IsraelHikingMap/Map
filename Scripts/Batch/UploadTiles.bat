@@ -6,6 +6,8 @@ SET ISRAELHIKING=%CD%
 SET ZIPPATH="%~f1"
 IF %ZIPPATH%=="" SET ZIPPATH="%ISRAELHIKING%\Output\TileUpdate.zip"
 
+PATH %PATH%;%~d0\Program Files\WinSCP;%ProgramFiles%\WinSCP;%ProgramFiles(x86)%\WinSCP
+
 @REM The FOR statement gets one full path and extracts its filename
 FOR %%Z in (%ZIPPATH%) DO (
   SET ZIPFILE="%%~nxZ"
