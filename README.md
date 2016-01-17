@@ -44,6 +44,7 @@ Note that this might be tricky on PCs that has windows 32bit and less than 8GB R
 [Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and MAC.
 
 One-time setup for Maperitive and the IsraelHiking Map generation:
+
 1. Download the [latest Maperitive version](http://maperitive.net/download/Maperitive-latest.zip) from the [Maperitive site](http://maperitive.net/)
 2. Extract the contents of the zip file to a desired location. If you have Administrator permission for your Windows machine, you can unzip to the "Program Files" directory, but this is not a requirement.
 ...On Linux and MacOS, Maperitive requires the use of [Mono](http://www.mono-project.com/Main_Page).
@@ -53,6 +54,7 @@ One-time setup for Maperitive and the IsraelHiking Map generation:
 6. Rename the top `Map-master` directory to `IsraelHikingMap`.
 
 Map tiles generation:
+
 1. Ensure you have Internet connection to enable downloading of the latest OpenStreetMap data.
 2. Double-click on the `IsraelHikingMap\Scripts\Maperipy\CreateOruxMap.py` script file.
 3. If asked how to open the file, please choose `maperitive.exe` from the Maperitive instalation directory. 
