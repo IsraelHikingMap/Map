@@ -49,7 +49,7 @@ def zip_and_upload(zip_file):
         App.start_program(upload_tiles, [zip_file])
 
 # Cleanup partially completed runs, and incompletly uploaded zip files
-App.run_program(os.path.join(IsraelHikingDir, "Scripts", "Batch", "FindUpdatedTiles.bat"), 1800, [])
+App.run_program(os.path.join(IsraelHikingDir, "Scripts", "Batch", "FindUpdatedTiles.bat"), 7200, [])
 
 gen_cmd =  GenIsraelHikingTiles.IsraelHikingTileGenCommand(BoundingBox(Srid.Wgs84LonLat, 34.00842, 29.32535, 35.92745, 33.398339999), 7, 16)
 
