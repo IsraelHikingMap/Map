@@ -1,7 +1,7 @@
 #Israel Hiking Map
 This Repository is part of the IsraelHikingMap project, and it holds all the file and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to Israel Trails Committee (ITC).
 
-The output of the map can be [seen here](http://osm.org.il/IsraelHiking/).
+The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 
 ###Ready-to-use maps
@@ -20,7 +20,7 @@ The output of the map can be [seen here](http://osm.org.il/IsraelHiking/).
   * Scroll down.
   * Select "add new type".
   * Define a name for it (i.e Israel Hiking).
-  * Enter the this URL: `http://osm.org.il/IsraelHiking/Tiles/<zoom>/<x>/<y>.png`.
+  * Enter the this URL: `http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`.
   * Select "Save".
 * [Marble](https://marble.kde.org/install.php) (source files)
   * maps directory
