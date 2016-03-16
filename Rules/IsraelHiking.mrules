@@ -122,7 +122,8 @@ features
 		stream : @isOneOf(waterway, stream, river, wadi)
 		cliff : natural=cliff
 		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
-		wall  : way[barrier=wall]
+		// Avoid rendering more than 7500 barrier=wall around Battir - http://overpass-turbo.eu/s/eNU
+		wall  : way[barrier=wall AND NOT SYMBOL=519.0]
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
 		legend : legend=line_missing
