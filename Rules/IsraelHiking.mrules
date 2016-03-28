@@ -119,7 +119,7 @@ features
 		track grade5 colour2 : highway=track AND tracktype=grade5 AND @isMatch(colour, ";")
 		railway rail : railway=rail
 		power line : @isOneOf(power, line, minor_line)
-		stream : @isOneOf(waterway, stream, river, wadi, canal)
+		stream : @isOneOf(waterway, stream, river, wadi)
 		cliff : natural=cliff
 		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		// Avoid rendering more than 7500 barrier=wall around Battir - http://overpass-turbo.eu/s/eNU
