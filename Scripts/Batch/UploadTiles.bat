@@ -17,8 +17,8 @@ FOR %%Z in (%ZIPPATH%) DO (
 IF "%2"=="" (
   IF "%SITES%"=="" (
     SET SITES=Upload-osm.org.il
-    @REM zip files of the Tiles directory are uploaded to trailze
-    IF %ZIPFILE:~1,4%==Tile SET SITES=Upload-osm.org.il trailze
+    @REM zip files of the Tiles directory are no longer uploaded to trailze
+    @REM IF %ZIPFILE:~1,4%==Tile SET SITES=Upload-osm.org.il trailze
   )
 ) ELSE (
   SET SITES= %2 %3 %4 %5 %6 %7 %8 %9

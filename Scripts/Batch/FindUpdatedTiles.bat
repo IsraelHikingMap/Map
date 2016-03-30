@@ -16,7 +16,7 @@ REM FindUpdatedTiles mtbTiles
 REM FindUpdatedTiles Tiles\15 Tiles\16
 REM
 
-SETLOCAL
+SETLOCAL EnableDelayedExpansion
 PUSHD %~dp0\..\..
 SET UPLOADTILES="%CD%\Scripts\Batch\UploadTiles.bat"
 PATH %PATH%;%~d0\Program Files\7-Zip;%CD%\Scripts\Batch\UploadTiles
@@ -47,14 +47,29 @@ IF NOT [%1]==[] (
   ) ELSE (
     ECHO All zip files were found
   )
+  SET NUMZIPFILES=0
   FOR %%Z in (output\TileUpdate.zip ^
 	      output\OverlayTiles.zip ^
 	      output\TileUpdate16.zip ^
-	      output\LastModified.zip ^
-	      output\mtbTileUpdate.zip ) DO IF %%~zZ NEQ 0 (
-      ECHO Restarting upload of %%Z
-      CALL %UPLOADTILES% %%Z
+	      output\mtbTileUpdate.zip ) DO (
+    IF EXIST %%Z (
+      SET /A NUMZIPFILES=!NUMZIPFILES! + 1
+      IF %%~zZ NEQ 0 (
+	ECHO Restarting upload of %%Z
+	CALL %UPLOADTILES% %%Z
+      )
     )
+  )
+  IF !NUMZIPFILES!==4 (
+    @REM All zip files were found and uploaded
+    @REM Can also upload LastModified.zip
+    FOR %%Z in ( output\LastModified.zip ) DO (
+      IF %%~zZ NEQ 0 (
+	ECHO Restarting upload of %%Z
+	CALL %UPLOADTILES% %%Z
+      )
+    )
+  )
 )
 IF "%TILES%"=="" GOTO :EOF
 
