@@ -128,11 +128,11 @@ class IsraelHikingTileGenCommand(TileGenCommand):
     return result
 
   def skip_tile(self, zoom, x, y):
-    if self.gen_clean_file:
-      filename = "{0}/{1}/{2}.png".format(zoom, x, y)
-      self.list_file.write("rm -f " + filename + "*\n")
+    filename = "{0}/{1}/{2}.png".format(zoom, x, y)
     self.delete_tile(filename)
     self.delete_tile(filename+".finger")
+    if self.gen_clean_file:
+      self.list_file.write("rm -f " + filename + "*\n")
 
   def delete_tile(self, tilename):
     filename = os.path.join(self.tiles_dir, tilename)
@@ -147,7 +147,7 @@ class IsraelHikingTileGenCommand(TileGenCommand):
         zoom < 11 or \
         self.tile_in_polygon( \
           zoom, x, y, width, height, self.israel_and_palestine)
-    if self.visualize:
+    if self.verbose:
       print "Generating tile batch: {0}/{1}/{2} ({3}x{4} tiles): {5}" \
           .format(zoom, x, y, width, height, generate)
     return generate
@@ -159,13 +159,17 @@ class IsraelHikingTileGenCommand(TileGenCommand):
         tile.zoom < 11 or \
         self.tile_in_polygon( \
             tile.zoom, tile.tile_x, tile.tile_y, 1, 1, self.israel_and_palestine)
+    if self.verbose:
+      print "Saving tile: {0}/{1}/{2}: {3}" \
+          .format(tile.zoom, tile.tile_x, tile.tile_y, save)
     return save
 
   def __init__(self, print_bounds, min_zoom, max_zoom):
     # super(IsraelHikingTileGenCommand, self).__init__(BoundingBox(Srid.Wgs84LonLat, 34.00842, 29.32535, 35.92745, 33.398339999), 7, 16)
         # israel_and_palestine.bounding_box, min_zoom, max_zoom)
     self.visualize = False	# Show polygon and skipped areas on the map
-    self.gen_clean_file = True	# Create a sh file that removes all skipped tiles
+    self.verbose = False	# Show tile generation progress
+    self.gen_clean_file = False	# Create a sh file that removes all skipped tiles
     self.subpixel_precision = 3
     self.use_fingerprint = True
     self.tile_save_filter = self.save_filter
