@@ -25,7 +25,8 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
     * Place both files in the "Israel Hiking" folder on your device.
     * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
 
-###[OpenMaps for iOS](http://izeize.com/openmaps/) (this is a guess since we don't have an iOS device)
+###[OpenMaps for iOS](http://izeize.com/openmaps/)
+This is a guess since we don't have an iOS device
   * Select "Settings" from the menu.
   * Select "Type" under "Map".
   * Select "Edit".
@@ -35,7 +36,9 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * Enter the this URL: `http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`.
   * Select "Save".
 
-###[Marble](https://marble.kde.org/install.php) (source files)
+###[Marble](https://marble.kde.org/install.php)
+Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
+Setup instructions:
   * Maps folder location is
     * Windows: `%programfiles%\Marble\data\maps\earth\`
     * Linux  : `/usr/share/apps/marble/data/maps/earth/`
