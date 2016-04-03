@@ -80,7 +80,7 @@ You may choose to do it overnight, but you need to make sure you don't get out o
 
 1. In order to use an offline version of this map in an android device first install [Oruxmaps](http://www.oruxmaps.com/index_en.html) from the [play store](https://play.google.com/store/apps/details?id=com.orux.oruxmaps). Oruxmaps is free of charge and does not have ads. It was not created by any of us, yet we recommend you buy the [donate version](https://play.google.com/store/apps/details?id=com.orux.oruxmapsDonate).
 2. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
-3. Open `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to where the full path of th edircetory were the tiles were created, such as `...\{IsraelHikingMAp Install folder}\Site\Tiles`.
+3. Open `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to where the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMAp Install folder}\Site\Tiles`.
 4. Place the `IsraelHiking.xml` file in the `{MOBAC installtion folder}\mapsources` folder.
 5. Open MOBAC (it takes some time since it runs on java) and choose _"oruxmaps sqlite"_ as the atlas format.
 6. On the left side under _"Map Source"_ choose _"Isreal Hiking"_.
