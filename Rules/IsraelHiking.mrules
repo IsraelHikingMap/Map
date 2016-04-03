@@ -830,7 +830,8 @@ rules
 			line-width : 13:2;16:3
 			line-offset : 13:1.5;16:2.5
 			line-offset-sides : both
-			min-zoom : 13
+			// min-zoom for coloured trails
+			min-zoom : 9
 		if : *major*
 			define
 				line-style : solid
@@ -915,6 +916,7 @@ rules
 					line-color : orange
 			else
 				define
+					// min-zoom for non-coloured trails
 					min-zoom : 14
 					line-color : black white 40%
 					line-width : 13:1.2;16:2.5
@@ -979,7 +981,8 @@ rules
 		define
 			line-width : 13:2;16:3
 			line-style : dash
-			min-zoom : 13
+			// min-zoom for coloured trails
+			min-zoom : 9
 		// Also set fill-color for steps
 		for : colour = red
 			define
@@ -1007,6 +1010,7 @@ rules
 				fill-color : orange
 		else
 			define
+				// min-zoom for non-coloured trails
 				min-zoom : 14
 				line-color : black white 40%
 				fill-color : black white 40%
@@ -1136,8 +1140,9 @@ rules
 		draw : line
 
 	target : hiking national
+		// View for high zoom levels
 		define
-			min-zoom : 13
+			min-zoom : 9
 			// create a border around a transparent track
 			line-opacity : 0%
 			// track definitions - reused
@@ -1152,9 +1157,10 @@ rules
 		draw : line
 
 	target : hiking national
+		// View for low zoom levels
 		define
 			min-zoom : 6
-			max-zoom : 13
+			max-zoom : 9
 			line-width : 10:1.5;13:2
 			line-opacity : 80%
 			line-color : orange
