@@ -23,7 +23,9 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
       * [Google Drive](https://googledrive.com/host/0B-qrsEBJWXhQUGVBM3lHZTF2eXc/Israel Hiking/) (mirror, usually faster).
       * [IsraelHiking.osm.org.il](http://IsraelHiking.osm.org.il/Oruxmaps/mapfiles/Israel Hiking/) (origin).
     * Place both files in the "Israel Hiking" folder on your device.
-    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_###[OpenMaps for iOS](http://izeize.com/openmaps/) (this is a guess since we don't have an iOS device)
+    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
+
+###[OpenMaps for iOS](http://izeize.com/openmaps/) (this is a guess since we don't have an iOS device)
   * Select "Settings" from the menu.
   * Select "Type" under "Map".
   * Select "Edit".
@@ -32,6 +34,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * Define a name for it (i.e Israel Hiking).
   * Enter the this URL: `http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`.
   * Select "Save".
+
 ###[Marble](https://marble.kde.org/install.php) (source files)
   * Maps folder location is
     * Windows: `%programfiles%\Marble\data\maps\earth\`
