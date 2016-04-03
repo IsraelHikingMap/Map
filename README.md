@@ -5,13 +5,16 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ## Contents
 * [Ready-to-use maps](#ready-to-use-maps)
+  * [Oruxmaps](#oruxmaps)
+  * [OpenMaps for iOS](#openmaps-for-ios)
+  * [Marble](#marble)
 * [Building the map](#building-the-map)
   * [Tile Generation with Maperitive](#tile-generation-with-maperitive)
   * [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac)
 
 ##Ready-to-use maps
 
-* [OruxMaps](http://www.oruxmaps.com/index_en.html): 
+###[OruxMaps](http://www.oruxmaps.com/index_en.html): 
   * The map is available for Online use as part of OruxMaps builtin maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
@@ -20,8 +23,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
       * [Google Drive](https://googledrive.com/host/0B-qrsEBJWXhQUGVBM3lHZTF2eXc/Israel Hiking/) (mirror, usually faster).
       * [IsraelHiking.osm.org.il](http://IsraelHiking.osm.org.il/Oruxmaps/mapfiles/Israel Hiking/) (origin).
     * Place both files in the "Israel Hiking" folder on your device.
-    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
-* [OpenMaps for iOS](http://izeize.com/openmaps/) (this is a guess since we don't have an iOS device)
+    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_###[OpenMaps for iOS](http://izeize.com/openmaps/) (this is a guess since we don't have an iOS device)
   * Select "Settings" from the menu.
   * Select "Type" under "Map".
   * Select "Edit".
@@ -30,7 +32,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * Define a name for it (i.e Israel Hiking).
   * Enter the this URL: `http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`.
   * Select "Save".
-* [Marble](https://marble.kde.org/install.php) (source files)
+###[Marble](https://marble.kde.org/install.php) (source files)
   * Maps folder location is
     * Windows: `%programfiles%\Marble\data\maps\earth\`
     * Linux  : `/usr/share/apps/marble/data/maps/earth/`
