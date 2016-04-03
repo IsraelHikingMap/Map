@@ -7,7 +7,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 * [Ready-to-use maps](#ready-to-use-maps)
 * [Building the map](#building-the-map)
   * [Tile Generation with Maperitive](#tile-generation-with-maperitive)
-  * [OruxMaps map generation with MOBAC](#oruxMaps-map-generation-with-MOBAC)
+  * [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac)
 
 ##Ready-to-use maps
 
@@ -44,7 +44,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 Building the map is composed of two steps:
 * [Tile Generation with Maperitive](#tile-generation-with-maperitive): The first part of following manual will explain how to create an Israel hiking style map (256x256 PNG tiles).
 Note that this might be tricky on PCs that has windows 32bit and less than 8GB RAM).
-* MOBAC: The second part of the following manual will explain how to convert the map for offline use on an android device.
+* [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac): The second part of the following manual will explain how to convert the map for offline use on an android device.
 
 
 
@@ -93,8 +93,8 @@ You may choose to do it overnight, but you need to make sure you don't get out o
 ...this should result in adding the name to the tree, opening the tree should show the selected zoom levels (7 - 15).
 11. Click _"Create Atlas"_.
 12. A window should pop up with progress, make sure to check "ignore download errors", the operation should take about 20 Minutes.
-13. Once finished you should be able to find an `Israel Hiking` folder under `{MOBAC installation folder}\atlases\Israel Hiking\{Creation Date}`.
-14. Copy the inner `Israel Hiking` folder ,__not `Israel Hiking\{Creation Date}`__, to your Android device under the `oruxmaps/mapfiles` folder on your device.
+13. Once finished you should be able to find the OruxMaps map at the `{MOBAC installation folder}\atlases\Israel Hiking\{Creation Date}\Israel Hiking` folder.
+14. Copy the inner `Israel Hiking` folder (__not `{MOBAC installation folder}\atlases\Israel Hiking`!__) into the `oruxmaps/mapfiles` folder on your Android device.
 15. Enjoy, open a OSM account and add trails to make this map better :-)
 
 -------------------------
