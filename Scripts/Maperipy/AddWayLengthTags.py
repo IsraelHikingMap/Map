@@ -41,21 +41,26 @@ def setLengthAndDirection(way) :
             direction = math.degrees(math.atan2(node2.location.x - node1.location.x, node2.location.y - node1.location.y))
             osmLayer.way(way.id).set_tag("direction", str(direction))
 
-def setClockwise(way) :
-    if len(way.nodes) > 0 :
-        if way.nodes[0] == way.nodes[way.nodes_count-1]:
+def setClockwise(osmWay) :
+    if len(osmWay.nodes) > 0 :
+        if osmWay.nodes[0] == osmWay.nodes[osmWay.nodes_count-1]:
             # Will not tag unclosed members
             length2 = 0.0
-            node0 = osmLayer.node(way.nodes[0])
-            for i in list(range(1, way.nodes_count)):
-                node1 = osmLayer.node(way.nodes[i])
+            node0 = osmLayer.node(osmWay.nodes[0])
+            for i in list(range(1, osmWay.nodes_count)):
+                node1 = osmLayer.node(osmWay.nodes[i])
                 length2 += node0.location.x * node1.location.y - node1.location.x * node0.location.y
                 node0 = node1
-            osmLayer.way(way.id).set_tag("clockwise", "yes" if length2 < 0 else "no")
+            osmLayer.way(osmWay.id).set_tag("clockwise", "yes" if length2 < 0 else "no")
             # Add width of areas for label placement
-            wayBBox= osmLayer.get_way_geometry(way.id).bounding_box
-            width = getLength4(wayBBox.min_x, (wayBBox.min_y + wayBBox.max_y)/2, wayBBox.max_x, (wayBBox.min_y + wayBBox.max_y)/2 )
-            osmLayer.way(way.id).set_tag("width", str(width))
+            osmWayBBox= osmLayer.get_way_geometry(osmWay.id).bounding_box
+            width = getLength4(osmWayBBox.min_x, (osmWayBBox.min_y + osmWayBBox.max_y)/2, osmWayBBox.max_x, (osmWayBBox.min_y + osmWayBBox.max_y)/2 )
+            osmLayer.way(osmWay.id).set_tag("width", str(width))
+# For debugging purposes
+#        else:
+#            print "setClockwise: osmWay", osmWay.id, "osmWay.nodes[0] != osmWay.nodes["+str(osmWay.nodes_count-1)+"]"
+    else:
+        print "setClockwise: osmWay", osmWay.id, "has no nodes"
 
 def escapeXML(text) :
     # Special Character   Escape Sequence Purpose  
@@ -95,19 +100,27 @@ try:
             osmLayer = layer.osm
 
             # Add length and direction to highways
-            for way in osmLayer.find_ways(lambda x : x.has_tag("highway")):
-                setLengthAndDirection(way)
+            for osmWay in osmLayer.find_ways(lambda x : x.has_tag("highway")):
+                setLengthAndDirection(osmWay)
 
             # Set clockwise and width for national parks and nature reserves 
             # 1. for ways
-            for way in osmLayer.find_ways(lambda x : (x.has_tag("boundary", "national_park") or x.has_tag("boundary", "protected_area") or x.has_tag("leisure", "nature_reserve"))):
-                setClockwise(way)
+            for osmWay in osmLayer.find_ways(lambda x : (x.has_tag("boundary", "national_park") or x.has_tag("boundary", "protected_area") or x.has_tag("leisure", "nature_reserve"))):
+                setClockwise(osmWay)
+                # Handle as outer boundaries
+                for osmTag in ("boundary", "leisure"):
+                    if (osmWay.has_tag(osmTag)):
+                        osmWay.set_tag("outer_boundary", osmTag)
             # 2. for relation members
             for osmRelation in osmLayer.find_relations(lambda x : (x.has_tag("boundary", "national_park") or x.has_tag("boundary", "protected_area") or x.has_tag("leisure", "nature_reserve"))):
                 for osmMember in osmRelation.members:
                     if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
                         osmWay = osmLayer.way(osmMember.ref_id)
-                        setClockwise(osmWay)
+                        #########################################
+                        # For some unknown reason, setClockwise() cannot be called before the loop below
+                        #########################################
+                        # setClockwise(osmWay)
+
                         # Handle inner members and inner members that are also outer members of another relarion
                         for osmTag in ("boundary", "leisure"):
                             if (osmRelation.has_tag(osmTag)):
@@ -116,6 +129,10 @@ try:
                                     osmWay.set_tag("outer_boundary", osmTag)
                                 elif (osmMember.role == "inner"):
                                     osmWay.set_tag("inner_boundary", osmTag)
+                        #########################################
+                        # For some unknown reason, setClockwise() needs to be called after the loop above
+                        #########################################
+                        setClockwise(osmWay)
 
             # Copy forest names from every multi-polygons to its outer ways
             for osmRelation in osmLayer.find_relations(lambda x : ( (x.has_tag("landuse", "forest") or x.has_tag("natural", "wood")) and (x.has_tag("name") or x.has_tag("name:he") or x.has_tag("name:en")))):

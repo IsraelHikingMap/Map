@@ -127,9 +127,8 @@ features
 		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline
 		grid : grid
 		legend : legend=line_missing
-		nature reserve boundary outer : way[width (@isOneOf(boundary, national_park, protected_area) OR leisure=nature_reserve) (@isOneOf(outer_boundary, boundary, leisure) OR NOT @isOneOf(inner_boundary, boundary, leisure))]
-		nature reserve boundary inner : way[width (@isOneOf(boundary, national_park, protected_area) OR leisure=nature_reserve)  @isOneOf(inner_boundary, boundary, leisure)]
-		nature reserve boundary : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+		nature reserve boundary outer : way[@isOneOf(outer_boundary, boundary, leisure)]
+		nature reserve boundary inner : way[@isOneOf(inner_boundary, boundary, leisure)]
 
 	areas
 		building : building=yes
