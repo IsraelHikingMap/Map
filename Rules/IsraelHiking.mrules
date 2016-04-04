@@ -97,7 +97,8 @@ features
 		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")]
 		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
 		hiking regional haifa wadis: relation[network = rwn @isMatch(int_name,"Haifa Wadis Trail")]
-		hiking national: relation[network = nwn]
+		hiking regional : relation[network = rwn]
+		hiking national : relation[network = nwn]
 
 		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
 		path : highway=path AND NOT bicycle=designated
@@ -1070,7 +1071,8 @@ rules
 				text-offset-vertical : 100%
 		draw : text
 
-	target : hiking regional *
+	target : hiking regional*
+		// Draw primary/only colour
 		define
 			line-style : dashlong
 			min-zoom : 7
@@ -1106,10 +1108,11 @@ rules
 			define
 				line-color : green
 		else
-			stop
+			define
+				line-color : purple
 		draw : line
 
-	target : hiking regional *
+	target : hiking regional*
 		// draw other/background color
 		define
 			line-style : solid
