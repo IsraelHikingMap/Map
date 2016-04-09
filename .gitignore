@@ -2,6 +2,5 @@
 *.ffs_db
 *.ffs_gui
 Site
-Site/*
-Cache/Forests.osm
-Cache/israel-and-palestine-latest.osm.pbf
+Cache/*
+Output
