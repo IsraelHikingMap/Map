@@ -1,43 +1,50 @@
 ﻿clear-map
 
-// ============================================
-// === Allow the use of relative file names ===
-// ============================================
+// ===================================================
+// === Allow the use of relative file names        ===
+// === Change directory to Israel Hiking Directory ===
+// ===================================================
 use-script-dir
+change-directory ..
+change-directory ..
+// ===================================================
 
-// Set bounnds to match 
-// http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
+// ===============================================================================
+// === Copy missing DEM and icon files, if any, to the Maperitive Installation ===
+// ===============================================================================
+run-python "Scripts\Maperipy\IsraelHikingInstallOnce.py"
+// ===============================================================================
+
+// =================================
+// === Create the legend picture ===
+// =================================
+run-script file="Scripts\Maperitive\IsraelHikingLegend.mscript"
+// =================================
+
+// =============================================================================
+// === Set bounds to match                                                   ===
+// === http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf ===
+// =============================================================================
 set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
+// =============================================================================
 
-// create and save the relief-igor background
+// ==================================================
+// === Create and save the relief-igor background ===
+// ==================================================
 generate-relief-igor intensity=6 color=#808080
-save-source relief_Hiking_Igor.png
+// Avoid 'Object is currently in use elsewhere' exception
+pause 0
+save-source Cache\relief_Hiking_Igor.png
+// ==================================================
 
-// create and save the relief-slopeshading background
-//generate-relief-slopeshading
-//save-source relief_Hiking_Slopeshading.png
+// ====================================
+// === Create and save the contours ===
+// ====================================
+run-python "Scripts\Maperipy\GenASTERContours.py"
+// ====================================
 
-// Create and save the contours
-// ============================
-// Avoid contoures over the sea
-
-set-dem-source name=SRTM3
-generate-contours interval=10 min-ele=10
-save-source IsraelAboveSeaLevel.contours
-
-// Contours above the Kinneret level
-// Bounds were locked to source Contours (SQLite): 
-// 35.1366666666667,30.5131673177083,35.843515625,32.9775716145833
-
-generate-contours interval=10 max-ele=0 min-ele=-200 bounds=35.1366666666667,30.5131673177083,35.843515625,32.9775716145833
-save-source IsraelAboveKinneretLevel.contours
-
-// Contours below the Kinneret level and latitude
-// Bounds were locked to source Contours (SQLite):
-// 35.2763899739583,30.7922916666667,35.6541666666667,32.7020833333333
-
-generate-contours interval=10 max-ele=-210 bounds=35.2763899739583,30.7922916666667,35.6541666666667,32.7020833333333
-save-source IsraelBelowKinneretLevel.contours
-
-// create and save grid lines file
-run-python file="CreateITMGridOsm.py"
+// =======================================
+// === Create and save grid lines file ===
+// =======================================
+run-python file="Scripts\Maperipy\CreateITMGridOsm.py"
+// =======================================

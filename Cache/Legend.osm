@@ -62,7 +62,7 @@
   <node id='-404' visible='true' lat='32.7924' lon='35.5655' />
   <node id='-402' visible='true' lat='32.843' lon='35.5705'>
     <tag k='amenity' v='place_of_worship' />
-    <tag k='legend' v='point' />
+    <tag k='legend' v='point_missing' />
     <tag k='name' v='כנסיה' />
     <tag k='name:en' v='Church' />
     <tag k='name:he' v='כנסיה' />
@@ -70,7 +70,7 @@
   </node>
   <node id='-400' visible='true' lat='32.8408' lon='35.5705'>
     <tag k='amenity' v='place_of_worship' />
-    <tag k='legend' v='point' />
+    <tag k='legend' v='point_missing' />
     <tag k='name' v='מסגד' />
     <tag k='name:en' v='Mosque' />
     <tag k='name:he' v='מסגד' />
@@ -78,7 +78,7 @@
   </node>
   <node id='-398' visible='true' lat='32.8386' lon='35.5705'>
     <tag k='amenity' v='place_of_worship' />
-    <tag k='legend' v='point' />
+    <tag k='legend' v='point_missing' />
     <tag k='name' v='בית כנסת' />
     <tag k='name:en' v='Synagogue' />
     <tag k='name:he' v='בית כנסת' />
@@ -86,7 +86,7 @@
   </node>
   <node id='-396' action='modify' visible='true' lat='32.8364' lon='35.5705'>
     <tag k='amenity' v='place_of_worship' />
-    <tag k='legend' v='point' />
+    <tag k='legend' v='point_missing' />
     <tag k='name' v='אתר בהאי' />
     <tag k='name:en' v='Bahai Place of Worship' />
     <tag k='name:he' v='אתר בהאי' />
@@ -433,8 +433,10 @@
     <nd ref='-416' />
     <nd ref='-418' />
     <tag k='clockwise' v='yes' />
+    <tag k='width' v='3' />
     <tag k='legend' v='area' />
-    <tag k='leisure' v='nature_reserve' />
+    <tag k='boundary' v='protected_area' />
+    <tag k='outer_boundary' v='boundary' />
     <tag k='name' v='גן לאומי או שמורת טבע' />
     <tag k='name:en' v='Nature reserve' />
     <tag k='name:he' v='גן לאומי או שמורת טבע' />
@@ -569,7 +571,7 @@
     <nd ref='-334' />
     <tag k='landuse' v='orchard' />
     <tag k='legend' v='area_missing' />
-    <tag k='name' v='מטעים או כרמים' />
+    <tag k='name' v='מטע או כרם' />
     <tag k='name:en' v='Orchard or Vineyard' />
     <tag k='name:he' v='מטעים או כרמים' />
   </way>

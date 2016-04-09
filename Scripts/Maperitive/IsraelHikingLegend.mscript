@@ -1,0 +1,25 @@
+﻿// ================================================================
+// === This script creates the legend for the Israel Hiking Map ===
+// ================================================================
+
+// ===============================
+// === Start with an empty map ===
+// ===============================
+clear-map
+// ===============================
+
+// ===================================================
+// === Allow the use of relative file names        ===
+// === Change directory to Israel Hiking Directory ===
+// ===================================================
+use-script-dir
+change-directory ..
+change-directory ..
+// ============================================
+
+use-ruleset location="Rules\IsraelHiking.mrules"
+load-source "Cache\Legend.osm"
+geo-bounds-use-source
+set-print-bounds-geo
+zoom 14
+export-bitmap file="output\legend.png" subpixel=3 dpi=121

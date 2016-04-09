@@ -1589,6 +1589,18 @@ rules
 			define
 				painting-cycle : 590
 		draw : fill
+		for : legend
+			define
+				min-zoom : 13
+				font-size : 12
+			// Hebrew preference for points & areas
+			for : @isMatch(name, "[א-ת]")
+				define
+					text : name
+			else
+				define
+					text : @any([[name:he]], [[name:en]], name)
+			draw : text
 
 	target : forest label
 		for : width > 10

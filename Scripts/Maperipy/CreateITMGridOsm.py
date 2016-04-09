@@ -7,6 +7,7 @@
 from maperipy import *
 from maperipy.osm import *
 import math
+import os
 
 
 #=================================================
@@ -20,7 +21,7 @@ iGridStartE = 100000
 iGridEndE = 300000
 iGridStep = 1000
 
-sFileName = 'IsraelHiking\ITMGrid.osm'
+sFileName = 'Cache\ITMGrid.osm'
 
 # WGS84 Data
 WGS84_a = 6378137.0                     # Equatorial earth radius
@@ -153,6 +154,12 @@ def MolodenskyGRS80ToWGS84(ilat, ilon) :
 #       once this matrix of nodes is written to the file we will add
 #       ways between every line in this matrix
 #====================================================== 
+
+IsraelHikingDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
+# App.log('App.script_dir: ' + App.script_dir)
+# App.log('IsraelHikingDir: ' + IsraelHikingDir)
+App.run_command('change-dir dir="' + IsraelHikingDir +'"')
+os.chdir(IsraelHikingDir)
 
 osmFile = open(sFileName, 'w')
 iId = 0
