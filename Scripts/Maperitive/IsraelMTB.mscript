@@ -1,0 +1,139 @@
+﻿// =======================================================
+// === This script creates a OSM Hiking Map for Israel ===
+// =======================================================
+
+// ===============================
+// === Start with an empty map ===
+// ===============================
+clear-map
+// ===============================
+
+// ===================================================
+// === Allow the use of relative file names        ===
+// === Change directory to Israel Hiking Directory ===
+// ===================================================
+use-script-dir
+change-directory ..
+change-directory ..
+// ============================================
+
+// ================================================
+// === Set the coastline & seas  rendering mode ===
+// ================================================
+set-setting name=map.coastline.mode value=loose
+// ================================================
+
+// =====================
+// === No WGS84 Grid ===
+// =====================
+set-setting name=map.decoration.grid value=False
+// =====================
+
+// ==============================
+// === Load the MTB Map rules ===
+// ==============================
+use-ruleset location="Rules\mtbmap.mrules"
+// ==============================
+
+// =============================================================================
+// === Load GeoFabric's Israel OSM map data snapshot downloaded from:        ===
+// === http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf ===
+// =============================================================================
+load-source Cache\israel-and-palestine-latest.osm.pbf
+
+// ====================================================
+// === Alternatively, rather than using GeoFabric's ===
+// === snapshot, download from the overpass server  ===
+// ====================================================
+// set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
+// download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
+// ========================================================
+
+// ===================================================
+// === Temporarily hide the Israel OSM map data to ===
+// === speed up loading of subsequent sources      ===
+// ===================================================
+set-source index=1 visible=false
+// ===================================================
+
+// ===========================================================
+// === Set the bounds according to the OSM snapshot bounds ===
+// ===========================================================
+geo-bounds-use-source index=1
+// ===========================================================
+
+// =======================================================
+// === Set the printing bounds to match the map bounds ===
+// =======================================================
+set-print-bounds-geo
+// =======================================================
+
+// ===================================================
+// === Add way lengths to the OSM data sources and ===
+// === create Forest labels data in "Forests.osm"  ===
+// ===================================================
+// run-python file="Scripts\Maperipy\AddWayLengthTags.py"
+// ===================================================
+
+// =======================================================================
+// === Load the Forest labels data created using "AddWayLengthTags.py" ===
+// =======================================================================
+// load-source Cache\Forests.osm
+// =======================================================================
+
+// =======================================================================
+// === Load the Grid lines created using "Israel Hiking Setup.mscript" ===
+// =======================================================================
+// load-source Cache\ITMGrid.osm
+// =======================================================================
+
+// ===========================================================================
+// === Load the contours files created using "Israel Hiking Setup.mscript" ===
+// ===========================================================================
+// load-source Cache\IsraelAboveSeaLevel.contours
+// load-source Cache\IsraelAboveKinneretLevel.contours
+// load-source Cache\IsraelBelowKinneretLevel.contours
+
+// ============================================================================
+// === Load the ASTER contours files created using "CreateASTERContours.py" ===
+// ============================================================================
+load-source Cache\ASTER-34-29.contours
+load-source Cache\ASTER-34-30.contours
+load-source Cache\ASTER-34-31.contours
+load-source Cache\ASTER-34-32.contours
+load-source Cache\ASTER-34-33.contours
+load-source Cache\ASTER-35-29.contours
+load-source Cache\ASTER-35-30.contours
+load-source Cache\ASTER-35-31.contours
+load-source Cache\ASTER-35-32.contours
+load-source Cache\ASTER-35-33.contours
+
+// ========================
+// === Load legend image file ===   
+// ========================
+load-image file=Cache\IL_MTB_legend_retina.png background=false
+// ========================
+
+// =======================================================================
+// == Load the relief file created using "Israel Hiking Setup.mscript" ===
+// =======================================================================
+load-image file=Cache\relief_Hiking_Igor.png background=false
+
+// ========================================
+// === Alternatively, create the relief ===
+// ========================================
+// generate-relief-igor intensity=6 color=#808080 
+// ========================================
+
+apply-ruleset
+// ========================================
+
+// ========================================
+// Unhide the Israel OSM map data after loading of all sources
+set-source index=1 visible=true
+
+// ===================================================
+// === Calculate the total length of hiking trails ===
+// ===================================================
+// run-python file="Scripts\Maperipy\TrailsLength.py"
+// ===================================================
