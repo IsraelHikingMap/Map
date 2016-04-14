@@ -89,15 +89,17 @@ features
 		aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
-		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")]
+		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
 		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
 		hiking regional kinneret perimeter cycle route : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
 		hiking regional kinneret trail : relation[network = rwn @isMatch(name:en,"Kinneret Trail")]
 		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
-		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")]
+		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")].way[NOT colour=purple]
 		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
 		hiking regional haifa wadis: relation[network = rwn @isMatch(int_name,"Haifa Wadis Trail")]
-		hiking regional : relation[network = rwn]
+		hiking regional ramat menashe: relation[network = rwn @isMatch(name:en,"Ramat Menashe Regional Trail")].way[NOT colour=orange]
+		hiking regional purple : relation[network = rwn "osmc:symbol"="purple:white:purple_stripe"].way[NOT colour=purple]
+		hiking regional orange : relation[network = rwn "osmc:symbol"="orange:white:orange_stripe"].way[NOT colour=orange]
 		hiking national : relation[network = nwn]
 
 		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
@@ -1107,9 +1109,17 @@ rules
 		elseif : * haifa wadis
 			define
 				line-color : green
-		else
+		elseif : * ramat menashe
+			define
+				line-color : orange
+		elseif : * purple
 			define
 				line-color : purple
+		elseif : * orange
+			define
+				line-color : orange
+		else
+			stop
 		draw : line
 
 	target : hiking regional*
@@ -1166,7 +1176,7 @@ rules
 			max-zoom : 9
 			line-width : 2
 			// line-opacity : 80%
-			line-color : orange
+			line-color : orange black 30%
 		draw : line
 
 	target : stream
