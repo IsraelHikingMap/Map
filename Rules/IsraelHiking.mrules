@@ -829,7 +829,7 @@ rules
 	target : track*
 		define
 			line-width : 13:2;16:3
-			line-offset : 13:1.5;16:2.5
+			line-offset : 12:0;13:1.5;16:2.5
 			line-offset-sides : both
 			// min-zoom for coloured trails
 			min-zoom : 9
@@ -1076,8 +1076,8 @@ rules
 		define
 			line-style : dashlong
 			min-zoom : 7
-			line-width : 7:1;10:1.5;11:3;13:4;15:5
-			line-offset : 7:1;10:1.5;11:3;13:4;15:6
+			line-width : 7:1;10:1.5;11:2;15:3
+			line-offset : 7:1;10:1.5;11:2;13:4;15:6
 			line-offset-sides : left
 
 		if : * jerusalem trail
@@ -1117,15 +1117,15 @@ rules
 		define
 			line-style : solid
 			min-zoom : 7
-			line-width : 7:1;10:1.5;11:3;13:4;15:5
-			line-offset : 7:1;10:1.5;11:3;13:4;15:6
+			line-width : 7:1;10:1.5;11:2;15:3
+			line-offset : 7:1;10:1.5;11:2;13:4;15:6
 			line-offset-sides : left
 		if : * jerusalem trail
 			define
 				line-color : yellow
 		elseif : * golan trail
 			define
-				line-color : green
+				line-color : green white 30%
 		elseif : * kinneret perimeter cycle route
 			define
 				line-color : blue
@@ -1149,12 +1149,12 @@ rules
 			// create a border around a transparent track
 			line-opacity : 0%
 			// track definitions - reused
-			line-width : 13:1;14:2
-			line-offset : 13:0.75;15:1.5;16:2
+			line-width : 13:2;16:3
+			line-offset : 12:0;13:1.5;16:2.5
 			line-offset-sides : both
 			// Border
 			border-opacity : 80%
-			border-width : 250%
+			border-width : 100%
 			border-style : solid
 			border-color : orange
 		draw : line
@@ -1164,8 +1164,8 @@ rules
 		define
 			min-zoom : 6
 			max-zoom : 9
-			line-width : 10:1.5;13:2
-			line-opacity : 80%
+			line-width : 2
+			// line-opacity : 80%
 			line-color : orange
 		draw : line
 
