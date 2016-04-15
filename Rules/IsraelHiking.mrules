@@ -1565,16 +1565,19 @@ rules
 
 	target : water
 		define
-			line-width : 1
+			line-width : 2
 			line-color : #78C1C1 blue 10%
 			fill-color : #78C1C1 white 10%
 		for : intermittent = yes
 			define
 				min-zoom : 13
 				line-style : dashlong
-			draw : line
-		else
-			draw : fill
+				fill-hatch : nwse
+				fill-hatch-color : #78C1C1 white 10%
+				fill-hatch-opacity : 80%
+				fill-opacity : 0
+		draw : line
+		draw : fill
 		define
 			min-zoom : 14.1
 			font-size : 15:10;17:17
