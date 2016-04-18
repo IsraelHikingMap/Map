@@ -751,13 +751,13 @@ rules
 			text-align-horizontal : center
 			text-align-vertical : center
 			text : ref
-			font-size : 12
+			font-size : 11
 			text-halo-width : 0
 			shape : custom
-			shield-padding-left : 8
-			shield-padding-right : 8
-			shield-padding-top : 10
-			shield-padding-bottom : 10
+			shield-padding-left : 5
+			shield-padding-right : 5
+			shield-padding-top : 6
+			shield-padding-bottom : 6
 			shield-resize-mode : free
 		draw : shield
 
