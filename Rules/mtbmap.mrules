@@ -119,13 +119,13 @@ rules
 			min-zoom : 14			
 		for : barrier=gate
 			define
-				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_gate.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_gate.glow.000000.32.png
 		for : barrier=lift_gate
 			define
-				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_lift_gate.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_lift_gate.glow.000000.32.png
 		for : barrier=toll_booth
 			define
-				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/barrier_toll_booth.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/barrier_toll_booth.glow.000000.32.png
 		draw : icon
 		
 	target : place
@@ -196,7 +196,7 @@ rules
 				text-align-vertical : near
 			draw : text
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/transport_parking.glow.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/transport_parking.glow.32.png
 			icon-width : 14:10
 			align-vertical : center
 			min-zoom : 14
@@ -344,7 +344,7 @@ rules
 
 	target: drinkingwater
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/food_drinkingtap.glow.000000.32.png icon-width : 11:16;15:24
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/food_drinkingtap.glow.000000.32.png 
 			icon-width : 11:16;15:24
 			align-vertical : center
 			min-zoom : 14
@@ -365,7 +365,7 @@ rules
 
 	target: bench
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/amenity_bench.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/amenity_bench.glow.000000.32.png
 			icon-width : 14:16;15:20;16:24
 			align-vertical : center
 			min-zoom : 14
@@ -373,7 +373,7 @@ rules
 
 	target: picnic
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_picnic.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_picnic.glow.000000.32.png
 			icon-width : 14:16;15:20;16:24
 			align-vertical : center
 			min-zoom : 14
@@ -389,14 +389,14 @@ rules
 
 	target: information
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_information.glow.000000.32.png
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_information.glow.000000.32.png
 			icon-width : 16:20
 			align-vertical : center
 			min-zoom : 16
 		for : information=guidepost
 			define
 				align-vertical : far
-				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/sjjb/tourist_guidepost.glow.000000.32.png
+				icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/SJJB/tourist_guidepost.glow.000000.32.png
 		draw : icon
 
 // lines
