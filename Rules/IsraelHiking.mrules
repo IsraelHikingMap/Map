@@ -1344,6 +1344,8 @@ rules
 			line-color : #7f3300
 			line-opacity : 0.8
 			curved : true
+			// Contour lines below water areas and above all other area fills
+			painting-cycle : 520
 		if : *major
 			define
 				map.rendering.contour.label : true
@@ -1376,7 +1378,7 @@ rules
 			font-size : 14
 			min-zoom : 13
 			text-opacity : 80%
-			painting-cycle : 580
+			painting-cycle : 560
 		draw : text
 
 	target : grid
@@ -1396,7 +1398,7 @@ rules
 			line-color : black
 			curved : true
 			line-opacity : 80%
-			painting-cycle : 570
+			painting-cycle : 550
 		draw : line
 
 	target : nature reserve boundary*
@@ -1568,6 +1570,8 @@ rules
 			line-width : 2
 			line-color : #78C1C1 blue 10%
 			fill-color : #78C1C1 white 10%
+			// Contour lines below water areas and above all other area fills
+			painting-cycle : 530
 		for : intermittent = yes
 			define
 				min-zoom : 13
