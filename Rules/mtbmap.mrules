@@ -214,8 +214,8 @@ rules
 
 	target : ghost
 		define
-			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons//ghost.png
-			icon-width : 14:32
+			icon-image : https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Icons/tombstone.png
+			icon-width : 12
 			align-vertical : center
 			min-zoom : 15
 		draw : icon
@@ -1132,7 +1132,6 @@ rules
 		draw : line
 
 	target : network cycle *
-		// View for high zoom levels
 		define
 			min-zoom : 10
 			line-width : 10:0.75;15:6
