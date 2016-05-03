@@ -13,9 +13,7 @@
 
 // History:
 // --------
-// Version 2.2
-// 2014-06-25: Updated by Ola Endre Reitstøen
-
+// See https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
 features
 	church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
@@ -71,7 +69,10 @@ features
 		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
 		pier : man_made=pier
 		line barrier : @isOneOf(barrier,wall,fence,hedge)
-		
+		network cycle local : relation[network = lcn]
+		network cycle regional : relation[network = rcn]
+		network cycle national : relation[network = ncn]
+
 
 	areas
 		sports : leisure=stadium or leisure=common or leisure=track
@@ -1128,6 +1129,31 @@ rules
 			line-offset : 11:0.5;15:1
 			line-offset-sides : right
 			line-offset-miter-limit : 1
+		draw : line
+
+	target : network cycle *
+		// View for high zoom levels
+		define
+			min-zoom : 10
+			line-width : 10:0.75;15:6
+			line-opacity : 0
+			border-style : solid
+		if : * local
+			define
+				border-color : yellow 
+		elseif : * regional
+			define
+				border-color : red 
+		elseif : * national
+			define
+				border-color : blue
+		define
+			border-opacity : 0.6
+			border-width : 40%
+		draw : line
+		define
+			border-opacity : 0.3
+			border-width : 70%
 		draw : line
 
 		
