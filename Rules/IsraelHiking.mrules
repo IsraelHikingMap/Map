@@ -6,8 +6,14 @@
 // Created by Igor Brejc
 // Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
 
+// Icons/SJJB: http://www.sjjb.co.uk/
+
 // History:
 // --------
+//
+// From  2015-07-29: https://github.com/IsraelHikingMap/Map/commits/master/Rules/IsraelHiking.mrules
+// Until 2015-07-04: https://github.com/HarelM/IsraelHiking/commits/master/Maperitive/Rules/IsraelHiking.mrules         
+//
 // 2014-11-08: Improve trail visibility. Show two-coloured tracks, height for viewpoints.
 // 2014-11-03: Added purple and orange trails, block and debris barriers, trees.
 //		Differentiated grade4 and grade5 tracks.
@@ -388,7 +394,7 @@ rules
 				icon-image : Icons/SJJB/barrier_lift_gate.glow.32.png
 		elsefor : barrier=block OR barrier=debris
 			define
-				icon-image : Icons/SJJB/barrier_blocks.n.32.png
+				icon-image : Icons/jersey_barrier.png
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/SJJB/barrier_cattle_grid.glow.32.png
