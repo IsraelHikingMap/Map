@@ -53,7 +53,7 @@ FOR %%S in (%SITES%) DO (
   >> %ZIPFILE%.scp ECHO cd
   >> %ZIPFILE%.scp ECHO put -resume -preservetime -transfer=binary %ZIPPATH% temp/
   @REM exit 2 is required to abort a WinSCP script in case of call failure
-  >> %ZIPFILE%.scp ECHO call unzip -q -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^|^| exit 2
+  >> %ZIPFILE%.scp ECHO call ^( unzip -d ~/public_html/IsraelHiking -o ~/temp/%ZIPFILE% ^| perl -ne ^'!^($.%%1000^)^&^&print $^|=1' ^) ^|^| exit 2
   >> %ZIPFILE%.scp ECHO call ~/script/post_transfer.sh ~/temp/%ZIPFILE% ^|^| exit 2
   >> %ZIPFILE%.scp ECHO exit
   ECHO. 2> %ZIPFILE%.log

@@ -18,6 +18,7 @@ REM
 
 SETLOCAL EnableDelayedExpansion
 PUSHD %~dp0\..\..
+SET ERRORLEVELWAS=0
 SET UPLOADTILES="%CD%\Scripts\Batch\UploadTiles.bat"
 PATH %PATH%;%~d0\Program Files\7-Zip;%CD%\Scripts\Batch\UploadTiles
 
@@ -102,7 +103,15 @@ IF EXIST ..\output\%UNIQUEID%.zip (
 ECHO Uploading the tiles...
 CALL %UPLOADTILES% output\%UNIQUEID%.zip
 
+IF ERRORLEVEL 1 (
+  @ECHO UploadTiles returned an error
+  SET ERRORLEVELWAS=1
+)
+@ECHO %DATE% %TIME%: Completed uploading to %%S
+
 REM Restore original Directory
 POPD
+
+EXIT /B %ERRORLEVELWAS%
 
 @REM vim:sw=2:ai
