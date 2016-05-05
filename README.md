@@ -24,6 +24,8 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
     * Place both files in the "Israel Hiking" folder on your device.
     * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
 
+To update the offline maps, just re-download the two files.
+
 ###[OpenMaps for iOS](http://izeize.com/openmaps/)
 This is a guess since we don't have an iOS device
   * Select "Settings" from the menu.
@@ -104,7 +106,7 @@ You may choose to do it overnight, but you need to make sure you don't get out o
 
 This is an optional stage in case you want to make the locally generated tiles available for offline use.
 
-1. Follow the instructions to [prepare a map for offline use](preparing-a-map-for-offline-use), and exit MOBAC. 
+1. Follow the instructions to [prepare a map for offline use](#prepare-a-map-for-offline-use), and exit MOBAC. 
 2. Download [`Israel Hiking.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking.xml) to the `{MOBAC installtion folder}\mapsources` folder.
 3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
 4. Run MOBAC
