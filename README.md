@@ -10,7 +10,6 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * [Marble](#marble)
 * [Prepare a map for offline use](#prepare-a-map-for-offline-use)
 * [Building the map](#building-the-map)
-  * [Tile Generation with Maperitive](#tile-generation-with-maperitive)
 
 ##Ready-to-use maps
 
@@ -50,12 +49,12 @@ Setup instructions:
 
 ##Prepare a map for offline use
 
-[MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/) is used to create offline maps for  for [many navigation applications](http://mobac.sourceforge.net/#features), including OruxMapx. It is a JAVA program that runs on Windows, Linux, MAC, and more.
+[MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/) is used to create offline maps for  for [many navigation applications](http://mobac.sourceforge.net/#features), including OruxMaps. It is a JAVA program that runs on Windows, Linux, MAC, and more.
 
 iPhone and iOS users can find instructions for using MOBAC to create offline maps for
 [Galileo](https://galileo-app.com/manual.html#offline_maps)
 and
-[Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac) 
+[Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac).
 
 1. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
 2. Download [`Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking%20Online.xml) to the `{MOBAC installtion folder}\mapsources` folder.
@@ -78,8 +77,6 @@ and
 ##Building the map
 
 Follow the process below if you want to create your own tiles or modify the map style.
-* [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac): The second part of the following manual will explain how to convert the map for offline use on an android device.
-
 [Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and MAC.
 Note that this might be tricky on PCs that has windows 32bit and less than 8GB RAM).
 
@@ -106,6 +103,7 @@ You may choose to do it overnight, but you need to make sure you don't get out o
 ###Preparing locally generated map for offline use
 
 This is an optional stage in case you want to make the locally generated tiles available for offline use.
+
 1. Follow the instructions to [prepare a map for offline use](preparing-a-map-for-offline-use), and exit MOBAC. 
 2. Download [`Israel Hiking.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking.xml) to the `{MOBAC installtion folder}\mapsources` folder.
 3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to where the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
