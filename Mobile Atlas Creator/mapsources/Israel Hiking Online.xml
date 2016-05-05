@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customMapSource>
+    <name>Israel Hiking Online</name>
+    <!-- http://IsraelHiking.osm.org.il/ -->
+    <minZoom>7</minZoom>
+    <maxZoom>16</maxZoom>
+    <tileType>png</tileType>
+    <!---<tileUpdate>ifNoneMatch</tileUpdate>--> <!-- tested -->
+    <tileUpdate>eTag</tileUpdate>
+    <url>http://israelhiking.osm.org.il/Tiles/{$z}/{$x}/{$y}.png</url>
+</customMapSource>
