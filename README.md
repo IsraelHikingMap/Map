@@ -106,7 +106,7 @@ This is an optional stage in case you want to make the locally generated tiles a
 
 1. Follow the instructions to [prepare a map for offline use](preparing-a-map-for-offline-use), and exit MOBAC. 
 2. Download [`Israel Hiking.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking.xml) to the `{MOBAC installtion folder}\mapsources` folder.
-3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to where the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
+3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
 n. Run MOBAC
 4. On the left side under _"Map Source"_ choose _"Isreal Hiking Local"_.
 5. Re-create the atlas using your locally generated map.
