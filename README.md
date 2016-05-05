@@ -8,9 +8,9 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * [Oruxmaps](#oruxmaps)
   * [OpenMaps for iOS](#openmaps-for-ios)
   * [Marble](#marble)
+* [Prepare a map for offline use](#prepare-a-map-for-offline-use)
 * [Building the map](#building-the-map)
   * [Tile Generation with Maperitive](#tile-generation-with-maperitive)
-  * [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac)
 
 ##Ready-to-use maps
 
@@ -52,9 +52,10 @@ Setup instructions:
 
 [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/) is used to create offline maps for  for [many navigation applications](http://mobac.sourceforge.net/#features), including OruxMapx. It is a JAVA program that runs on Windows, Linux, MAC, and more.
 
-iPhone and iOS users can find instructions for using MOBAC to create offline maps for:
-* [Galileo](https://galileo-app.com/manual.html#offline_maps)
-* [Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac) 
+iPhone and iOS users can find instructions for using MOBAC to create offline maps for
+[Galileo](https://galileo-app.com/manual.html#offline_maps)
+and
+[Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac) 
 
 1. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
 2. Download [`Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking%20Online.xml) to the `{MOBAC installtion folder}\mapsources` folder.
@@ -79,12 +80,10 @@ iPhone and iOS users can find instructions for using MOBAC to create offline map
 Follow the process below if you want to create your own tiles or modify the map style.
 * [OruxMaps map generation with MOBAC](#oruxmaps-map-generation-with-mobac): The second part of the following manual will explain how to convert the map for offline use on an android device.
 
-###Tile Generation with Maperitive
-
 [Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and MAC.
 Note that this might be tricky on PCs that has windows 32bit and less than 8GB RAM).
 
-####One-time setup for Maperitive and the IsraelHiking Map generation:
+###One-time setup for Maperitive and the IsraelHiking Map generation:
 
 1. Download the [latest Maperitive version](http://maperitive.net/download/Maperitive-latest.zip) from the [Maperitive site](http://maperitive.net/)
 2. Extract the contents of the zip file to a desired location.
@@ -95,7 +94,7 @@ Note that this might be tricky on PCs that has windows 32bit and less than 8GB R
 5. Unzip the zip file to chosen location.
 6. Rename the top `Map-master` folder to `IsraelHikingMap`.
 
-####Map tiles generation:
+###Map tiles generation:
 
 1. Ensure you have Internet connection to enable downloading of the latest OpenStreetMap data.
 2. Double-click on the `IsraelHikingMap\Scripts\Maperipy\CreateOruxMap.py` script file.
@@ -104,7 +103,7 @@ Note that this might be tricky on PCs that has windows 32bit and less than 8GB R
 This should generate 256x256 png tile files inside the `IsraelHikingMap\Site\Tiles` folder and would take several hours.
 You may choose to do it overnight, but you need to make sure you don't get out of memory.
 
-####Preparing locally generated map for offline use
+###Preparing locally generated map for offline use
 
 This is an optional stage in case you want to make the locally generated tiles available for offline use.
 1. Follow the instructions to [prepare a map for offline use](preparing-a-map-for-offline-use), and exit MOBAC. 
@@ -115,4 +114,4 @@ n. Run MOBAC
 5. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 3-Apr-15
+Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 5-May-16
