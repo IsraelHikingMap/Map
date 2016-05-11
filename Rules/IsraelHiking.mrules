@@ -63,7 +63,7 @@ features
 		power tower : @isOneOf(power, tower, station, sub_station)
 		legend : @isOneOf(legend, header, background, area_missing)
 		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
-		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR legend=point_missing OR railway=station
+		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR legend=point_missing OR railway=station
 		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
@@ -81,7 +81,7 @@ features
 		ruins : historic=ruins
 		archaeological : historic=archaeological_site
 		memorial : historic=memorial
-		cave : natural=cave_entrance
+		cave : natural=cave_entrance OR tomb=hypogeum
 		tree : node[natural=tree]
 		guidepost : information=guidepost
 		watertower : man_made=water_tower
@@ -1310,7 +1310,7 @@ rules
 		draw : line
 		define
 			shape : custom
-			shape-def : 2,2;-2,-2;m:2,-2;-2,2
+			shape-def : 4,7;-4,-7;m:4,-7;-4,7
 			shape-spacing : 3
 			shape-size : 5
 		draw : shape
