@@ -13,7 +13,7 @@
 
 // History:
 // --------
-// See https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
+// See also https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
 features
 	church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
