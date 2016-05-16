@@ -21,3 +21,6 @@ App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikin
 
 App.log("Copy missing Icons, if any, to the Maperitive Installation")
 App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Icons")+'"', '"'+os.path.join(MaperitiveDir, "icons")+'"'])
+
+App.log("Copy missing Textures, if any, to the Maperitive Installation")
+App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Textures")+'"', '"'+os.path.join(MaperitiveDir, "icons")+'"'])
