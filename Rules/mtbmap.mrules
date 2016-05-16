@@ -13,11 +13,19 @@
 
 // History:
 // --------
+// v 3.6
+// temp fix of imba and trail visibility
+// Aeroway - Fix rendering when area, made lighter (#888 to #bbb) and added apron
+// Adding cape/peninsula
+// Added scree again
+// Added strait
+// If Russian/Cyrillic text on place, road and areacover, try to render english or norwegian
 // v 3.3
-// Added scree, but removed temporarily due to bad rendering of patterns (scaling issue) 
+// Added scree (temp removed)
 // v 3.2
 // Fixing missing trail_visibility=intermediate (was missing)
-// v 3.0
+// Version 3.0
+// 2015-05-26: Updated by Ola Endre Reitstøen
 // Building point added to z13, and a bit smaller
 // Swimming moved to z16
 // Added turningcircle
@@ -103,6 +111,8 @@
 // added glacier
 
 // Painting Cycle
+// painting-cycle : *
+//
 //	map legend : 1000
 //	highlights : 950
 //	web maps : 900
@@ -131,6 +141,15 @@
 
 // TODO:
 // -----
+// natural reserve
+// bus stop
+// hiking routes
+// tower
+// ruins
+// camping
+// information table/map
+// guideposts
+// barrier/fences
 
 
 features
@@ -149,6 +168,9 @@ features
 //	dam : way[waterway=dam] area[waterway=dam]
 	dam : area[waterway=dam]
 	pier : man_made=pier
+//	area bay : area[@isOneOf(natural,bay,fjord,strait)] way[@isOneOf(natural,bay,fjord,strait) and not type=multipolygon]
+	area bay : area[@isOneOf(natural,bay,fjord,strait)] node[@isOneOf(natural,bay,fjord,strait)]
+	aeroway : aeroway
 
 	points, areas
 		cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
@@ -172,7 +194,7 @@ features
 
 	lines
 		aerialway : aerialway and not aerialway=station
-		aeroway : aeroway
+//		aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100) and not elevation=0 ]
 		contour medium : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) and not (@isMulti(elevation, 100) or @isMulti(elevation, 20))]
@@ -192,7 +214,7 @@ features
 		bridge : bridge
 		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
 //		pier : man_made=pier
-		line barrier : @isOneOf(barrier,wall,fence,hedge)
+		line barrier : @isOneOf(barrier,wall,fence,hedge,yes)
 		cutline : man_made=cutline
 		ferry : route=ferry
 		
@@ -207,17 +229,18 @@ features
 		area glacier : natural=glacier
 		area water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
 		military : landuse=military OR military=danger_area
-		construction : landuse=construction
+		construction : @isOneOf(landuse,construction,brownfield)
 		quarry : landuse=quarry
 		farmyard : landuse=farmyard
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
 		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden) OR amenity=grave_yard
 		area sand : natural=beach or natural=sand
-//		area scree : natural=scree
+		area scree : natural=scree
 		nocycle area: (bicycle=no or bicycle=dismount) and not highway
 		breakwater : man_made=breakwater
-		area island : place=island
+		area island : @isOneOf(place,island,islet)
+		area cape : @isOneOf(natural,cape,peninsula,headland) or @isOneOf(place,cape,peninsula,headland)
 
 properties
 	curved : false
@@ -297,6 +320,9 @@ rules
 			text-color : #333
 			text-letter-spacing : -0.03
 			text-avoid-overlaps : true
+		for : @isMatch(name, "[А-Я]")
+			define
+				text : @any([[name:en]], [[name:no]], name)
 		draw : text
 
 	target : viewpoint
@@ -762,6 +788,7 @@ rules
 			line-style: solid
 			line-width : 12:2;13:2.5;14:3
 			line-opacity : 1
+//			painting-cycle : 650
 		for : bicycle=dismount
 			define
 //				line-opacity : 0.5
@@ -857,6 +884,10 @@ rules
 		else
 			define
 				min-zoom : 15
+		for : @isMatch(name, "[А-Я]")
+			define
+				text : @any([[name:en]], [[name:no]], name)
+//				text-color : #f0f
 		draw : text
 
 
@@ -1000,7 +1031,7 @@ rules
 		for : class:bicycle:mtb < 0
 			define
 				fill-opacity : 0.4
-		for : trail_visibility=intermediate
+		for : trail_visibility=intermediate and not mtb:scale:imba
 			define
 				line-style : none
 				shape : square
@@ -1008,8 +1039,9 @@ rules
 				shape-size : 10:0.25;15:2
 				shape-spacing : 2
 				shape-orientation: flow
+				painting-cycle : 600
 			draw : shape
-		for : trail_visibility=bad
+		for : trail_visibility=bad and not mtb:scale:imba
 			define
 				line-style : none
 				shape : square
@@ -1017,8 +1049,9 @@ rules
 				shape-size : 10:0.25;15:2
 				shape-orientation: flow
 				shape-spacing : 4
+				painting-cycle : 600
 			draw : shape
-		for : trail_visibility=horrible or trail_visibility=no
+		for : (trail_visibility=horrible or trail_visibility=no) and not mtb:scale:imba
 			define
 				line-style : none
 				shape : square
@@ -1026,6 +1059,7 @@ rules
 				shape-size : 10:0.25;15:2
 				shape-orientation: flow
 				shape-spacing : 8
+				painting-cycle : 600
 			draw : shape					
 		draw : line
 		define
@@ -1044,6 +1078,7 @@ rules
 			map.rendering.lflp.min-buffer-space : 3
 			map.rendering.lflp.max-allowed-corner-angle : 60
 			map.rendering.lflp.max-compression : 0.75
+			painting-cycle : 800
 		for : class:bicycle:mtb < 0
 			define
 				text-opacity : 0.6
@@ -1053,7 +1088,8 @@ rules
 				// Create py-script that removes mtb:name if equal to name
 //				text : @if(ref, ref @if(name, " " name ), name)
 //				text : @if(name, name @if([[mtb:name]], " (" [[mtb:name]] ")"), [[mtb:name]])
-				text : @if(name, name @if([[mtb:name]], " / " [[mtb:name]]), [[mtb:name]])
+//				text : @if(name, name @if([[mtb:name]], " / " [[mtb:name]]), [[mtb:name]])
+				text : @if(ref, ref " ") @if(name, name @if([[mtb:name]], " / " [[mtb:name]]), [[mtb:name]])
 //				text-color : #fff
 //				text-halo-width : 25%
 //				text-halo-opacity : 1
@@ -1062,7 +1098,7 @@ rules
 			for : ref
 				define
 //					text : @if(name, ref " " name @if([[mtb:name]], " (" [[mtb:name]] ")"), ref " " [[mtb:name]])
-					text : @if(name, ref " " name @if([[mtb:name]], " / " [[mtb:name]]), ref " " [[mtb:name]])
+//					text : @if(name, ref " " name @if([[mtb:name]], " / " [[mtb:name]]), ref " " [[mtb:name]])
 			for : @isMatch(mtb:scale:imba, "0")
 				define
 //					text-halo-color : #0b0
@@ -1275,21 +1311,30 @@ rules
 		draw : line
 
 	target : aeroway
+		define
+			line-color : #bbb
+			line-style : none
+			fill-color : #bbb
 		for : aeroway=runway
 			define
 				curved : false
 				min-zoom : 11
+				line-style : solid
 				line-width : 11:3;12:4;13:8;14:16;15:32
 //				line-width : 10:1;15:20
-				line-color : #888
-		elsefor : aeroway=taxiway
+//				line-color : #888
+		for : aeroway=taxiway
 			define
 				min-zoom : 11
 				curved : false
+				line-style : solid
 				line-width : 11:1;12:1;13:3;14:6;15:12
-				line-color : #888
-		else
-			stop
+//				line-color : #888
+		for : area=yes or aeroway=apron
+			define
+				min-zoom : 12
+				line-style : none
+			draw : fill
 		draw : line
 	
 	target : bridge
@@ -1314,6 +1359,9 @@ rules
 			line-color : #b5d9fb black 10%
 			line-width : 10:1; 13:2; 14:4
 			painting-cycle : 500
+		for : intermittent=yes
+			define
+				line-style : dash
 		for : waterway=river
 			define
 				min-zoom : 10
@@ -1356,21 +1404,44 @@ rules
 	target : line barrier
 		define
 			min-zoom : 15
-			line-color : black
+			line-color : #666
+			fill-color : #666
 			line-width : 1
 			shape : custom
-			shape-def : pw:1;l:0,0;3,2
-			shape-size : 15:6
-			shape-spacing : 15:1
+			shape-def : pw:1; m:0,0; l:10,10
+			shape-size : 15:5
+			shape-spacing : 15:2
 		for : barrier=fence
 			define
-				min-zoom:15
-				line-color:#777
+//				line-color:#777
+		for : height >= 1.5
+			define
+				shape-def : pw:1; m:-5,0; l:5,10; m:5,0; l:15,10
+				shape-size : 15:8
+				shape-spacing : 15:1.5
+				line-color : #333
+				fill-color : #666
+		for : height <= 0.5
+			define
+				line-color : #999
+				fill-color : #999
+		for : barrier=wall and wall=dry_stone
+			define
+				shape-def : pw:0;m:0,-10;a:10,10,0,10;a:10,10,0,-10;z
+				shape-size : 15:5
+			for : height >= 1.5
+				define
+					shape-def : pw:0;m:-15,-10;a:10,10,-15,10;a:10,10,-15,-10;z;m:15,-10;a:10,10,15,10;a:10,10,15,-10;z
+					shape-size : 15:7
 		for : barrier=hedge
 			define
 				min-zoom:15
-				line-width : 2
-				line-color:#A4CD91
+				line-width : 1.5
+				line-color:#8fc278
+		for : fence_type=barbed_wire
+			define
+				shape-def : pw:1;m:-10,-10; l:10,10; m:-10,10; l:10,-10;
+				shape-size : 15:4
 		draw : line
 		draw : shape
 
@@ -1475,13 +1546,33 @@ rules
 			fill-color : #fff
 		draw : fill	
 
+//	target : military
+//		define
+//			fill-color : #ff3333
+//			fill-opacity: 1.0
+//			fill-hatch : swne
+//			fill-hatch-color : #ff3333
+//			fill-hatch-opacity : 0.0
+//			line-style : solid
+//			line-width : 0.5
+//			line-color : #ff3333
+//			line-opacity : 1.0
+//		draw : fill
+//		define
+//			min-zoom : 15
+//			font-size : 14:9;15:11
+//			font-style : italic
+//			font-weight : bold
+//			text-color : #A32929
+//		draw : text
+
 	target : military
 		define
 			fill-color : #FF9999
-			fill-opacity: 0.8
+			fill-opacity: 0.0
 			fill-hatch : swne
 			fill-hatch-color : #FF9999
-			fill-hatch-opacity : 0.0
+			fill-hatch-opacity : 0.8
 			line-style : solid
 			line-width : 0.5
 			line-color : #FF9999
@@ -1498,42 +1589,37 @@ rules
 //	target : nocycle area
 //		define
 //			min-zoom : 10
-//			line-style: solid
-//			line-color : #ff0000
-//			line-width : 10:0.5;13:1
-//			fill-color : #ff0000 white 50%
-//			line-opacity : 0.5
-//			fill-opacity : 0.4
+//			fill-color : #ffcc66
+//			fill-opacity : 1
+//			fill-hatch : swne
+//			fill-hatch-color : #fff
+//			fill-hatch-opacity : 0.1
+//			line-style : solid
+//			line-width : 0.5
+//			line-color : #ffcc66
+//			line-opacity : 1
 //		for : bicycle=dismount
 //			define
-//				fill-opacity : 0.25
+//				fill-opacity : 0.3
+//				line-opacity : 0.3
 //		draw : line
 //		draw : fill
+
 	target : nocycle area
 		define
 			min-zoom : 10
-//			line-style: solid
-//			line-color : #ff0000
-//			line-width : 10:0.5;13:1
-//			fill-color : #ff0000 white 50%
-//			line-opacity : 0.5
-//			fill-opacity : 0.4
-//
 			fill-color : #ffcc66
-			fill-opacity : 1
+			fill-opacity : 0
 			fill-hatch : swne
-//			fill-hatch-color : #ffcc66
-			fill-hatch-color : #fff
-			fill-hatch-opacity : 0.1
+			fill-hatch-color : #ffcc66
+			fill-hatch-opacity : 0.8
 			line-style : solid
 			line-width : 0.5
 			line-color : #ffcc66
-			line-opacity : 1
+			line-opacity : 0.6
 		for : bicycle=dismount
 			define
-				fill-opacity : 0.3
-				line-opacity : 0.3
-//				fill-hatch-opacity : 0.5
+				fill-hatch-opacity : 0.5
 //		draw : line
 		draw : fill
 
@@ -1595,10 +1681,18 @@ rules
 //			text-line-spacing : 2.5
 //			text : [[size]]
 //			text : "Text with a very long name"
+			text-orientation: fixed
+		for : @isMatch(name, "[А-Я]")
+			define
+				text : @any([[name:en]], [[name:no]], name)
+//				font-style : normal
 		for : water=river
 			define
 				text : none
 		if : area water
+			define
+				text-color : #2D79B7
+		if : area bay
 			define
 				text-color : #2D79B7
 		if : area glacier
@@ -1620,6 +1714,9 @@ rules
 			define
 				text-color : #867A3D
 		if : area island
+			define
+				text-color : #5F594D
+		if : area cape
 			define
 				text-color : #5F594D
 		for : size > 10
@@ -1656,6 +1753,7 @@ rules
 				font-size : 8:1;15:9
 		draw : text
 
+
 	target : area glacier
 		define
 			line-style : solid
@@ -1686,14 +1784,15 @@ rules
 		draw : fill
 
 
-//	target : area scree
-//		define
-//			line-style : none
-//			line-width : 1
-//			min-zoom : 8
+	target : area scree
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 12
 //			fill-color : #DEFED2
 //			fill-texture : mtbmap/patterns/temp/jsdotpattern_03.png
-//		draw : fill
+			fill-texture : mtbmap/patterns/scree.png
+		draw : fill
 		
 	target : area grass
 		define
