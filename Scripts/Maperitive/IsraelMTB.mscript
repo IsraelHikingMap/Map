@@ -49,10 +49,10 @@ load-source Cache\israel-and-palestine-latest.osm.pbf
 // download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
 // ========================================================
 
-// ===================================================
-// === Temporarily hide the Israel OSM map data to ===
-// === speed up loading of subsequent sources      ===
-// ===================================================
+// ==============================================
+// === Temporarily hide the OSM map data to   ===
+// === speed up loading of subsequent sources ===
+// ==============================================
 set-source index=1 visible=false
 // ===================================================
 
@@ -68,31 +68,11 @@ geo-bounds-use-source index=1
 set-print-bounds-geo
 // =======================================================
 
-// ===================================================
-// === Add way lengths to the OSM data sources and ===
-// === create Forest labels data in "Forests.osm"  ===
-// ===================================================
-// run-python file="Scripts\Maperipy\AddWayLengthTags.py"
-// ===================================================
-
-// =======================================================================
-// === Load the Forest labels data created using "AddWayLengthTags.py" ===
-// =======================================================================
-// load-source Cache\Forests.osm
-// =======================================================================
-
-// =======================================================================
-// === Load the Grid lines created using "Israel Hiking Setup.mscript" ===
-// =======================================================================
-// load-source Cache\ITMGrid.osm
-// =======================================================================
-
-// ===========================================================================
-// === Load the contours files created using "Israel Hiking Setup.mscript" ===
-// ===========================================================================
-// load-source Cache\IsraelAboveSeaLevel.contours
-// load-source Cache\IsraelAboveKinneretLevel.contours
-// load-source Cache\IsraelBelowKinneretLevel.contours
+// =====================================================
+// === Add size=* tag to natural/landuse/place areas ===
+// =====================================================
+run-python file="Scripts\Maperipy\mtbmap.py"
+// =====================================================
 
 // ============================================================================
 // === Load the ASTER contours files created using "CreateASTERContours.py" ===
@@ -129,11 +109,5 @@ apply-ruleset
 // ========================================
 
 // ========================================
-// Unhide the Israel OSM map data after loading of all sources
+// Unhide the OSM map data after loading of all sources
 set-source index=1 visible=true
-
-// ===================================================
-// === Calculate the total length of hiking trails ===
-// ===================================================
-// run-python file="Scripts\Maperipy\TrailsLength.py"
-// ===================================================
