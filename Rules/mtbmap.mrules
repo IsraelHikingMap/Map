@@ -10,6 +10,7 @@
 // Map icons CC-0 from SJJB Management (http://www.sjjb.co.uk/mapicons)
 // Ghost http://iconbug.com/detail/icon/2017/cute-ghost/
 // http://norgedigitalt.no/Norge_digitalt/Norsk/Teknologi/Tegneregler_og_symboler/
+// Map icons CC-0 from https://github.com/gmgeo/osmic
 
 // History:
 // --------
@@ -156,11 +157,14 @@
 
 features
 	church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-	food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
+	// food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
+	// Food should not be a line
 //	alpine hut : tourism=alpine_hut
 //	wilderness hut : node[tourism=wilderness_hut] area[tourism=wilderness_hut]
 	shelter : amenity=shelter
-	place : node[place OR landuse=farmyard] area[place OR landuse=farmyard or landuse=farm]
+	// place : node[place OR landuse=farmyard] area[place OR landuse=farmyard or landuse=farm]
+	// Too many duplicate names in MTB IL
+	place : node[place OR landuse=farmyard]
 	railway station : railway=station
 	legend : legend
 	building : area[building]
@@ -177,8 +181,12 @@ features
 	points, areas
 		cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
 		bikeshop : shop=bicycle or service:bicycle:retail=yes
-		cafe : amenity=cafe and hiking=yes
+		// cafe : amenity=cafe and hiking=yes
+		// MTB IL ignores hiking tag, adds convenience shops
+		cafe : amenity=cafe
+		convenience : shop=convenience
 		beer : amenity=biergarten or beer_garden=yes or biergarten=yes or(amenity=pub and outdoor_seating=yes)
+		food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
 
 	points
 		peak : natural=peak
@@ -424,6 +432,40 @@ rules
 		draw : icon
 		define
 //			font-family : Arial
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+
+	target: food
+		define
+			icon-image : Icons/mtbmap/restaurant.png
+//			icon-width : 13:10;14:14;15:16;16:18
+			icon-width : 13:10;16:18
+			align-vertical : center
+			min-zoom : 13
+		draw : icon
+		define
+//			font-family : Arial
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+
+	target: convenience
+		define
+			icon-image : Icons/mtbmap/convenience.png
+			icon-width : 13:10;16:18
+			align-vertical : center
+			min-zoom : 13
+		draw : icon
+		define
 			font-weight : bold
 			font-size : 14:9;15:10
 			font-stretch : 1
@@ -852,7 +894,9 @@ rules
 					min-zoom : 8
 		else
 			define
-				min-zoom : 11
+				// min-zoom : 11
+				// Use higher zoom values for MTB IL
+				min-zoom : 13
 				line-color : #fff
 				line-width : 10:0.5;15:2.5;16:4
 		define
@@ -1744,6 +1788,9 @@ rules
 			define
 				text-color : #3290CB
 		if : area grass
+			// Icon only in MTB IL
+			for : (landuse=cemetery OR amenity=grave_yard)
+				stop
 			define
 				text-color : #5BA931
 		if : area sand
@@ -1851,12 +1898,15 @@ rules
 				fill-hatch : horizontal
 				fill-hatch-opacity : 0
 		draw : fill
-		for : (landuse=cemetery OR amenity=grave_yard) and not name
+		// for : (landuse=cemetery OR amenity=grave_yard) and not name
+		// Icon only in MTB IL
+		for : (landuse=cemetery OR amenity=grave_yard)
 			define
 				icon-image : Icons/mtbmap/ghost.png
 				// Different icon for MTB IL
 				icon-image : Icons/mtbmap/tombstone.png
-				icon-width : 14:28
+				// icon-width : 14:28
+				icon-width : 8
 				align-vertical : center
 				min-zoom : 15
 			draw : icon
