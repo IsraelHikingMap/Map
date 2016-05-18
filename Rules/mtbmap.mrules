@@ -3,6 +3,7 @@
 
 // Created by Ola Endre Reitstøen http://www.reitstoen.com/
 // Working example: http://osm.reitstoen.com/
+// Adapted for Israel by Zeev Stadler - http://IsraelHiking.osm.org.il/IsraelMTBmap.html
 // Highly modified version of Hiking map by Igor Brejc
 // Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
 
@@ -14,7 +15,7 @@
 
 // History:
 // --------
-// See also https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
+// For Israel adaptations, see https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 //
 // v 3.6
 // temp fix of imba and trail visibility
@@ -165,6 +166,7 @@ features
 	// place : node[place OR landuse=farmyard] area[place OR landuse=farmyard or landuse=farm]
 	// Too many duplicate names in MTB IL
 	place : node[place OR landuse=farmyard]
+	// --
 	railway station : railway=station
 	legend : legend
 	building : area[building]
@@ -185,6 +187,7 @@ features
 		// MTB IL ignores hiking tag, adds convenience shops
 		cafe : amenity=cafe
 		convenience : shop=convenience
+		// --
 		beer : amenity=biergarten or beer_garden=yes or biergarten=yes or(amenity=pub and outdoor_seating=yes)
 		food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
 
@@ -233,6 +236,7 @@ features
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
+		// --
 
 
 	areas
@@ -304,30 +308,35 @@ rules
 				// Use higher zoom values for MTB IL
 				min-zoom : 9
 				max-zoom : 14
+				// --
 		elsefor : place=town
 			define
 				min-zoom : 8
 				font-size : 8:10;16:20
 				// Use higher zoom values for MTB IL
 				min-zoom : 10
+				// --
 		elsefor : place=village
 			define
 				min-zoom : 10
 				font-size : 8:8;16:18
 				// Use higher zoom values for MTB IL
 				min-zoom : 12
+				// --
 		elsefor : place=hamlet
 			define
 				min-zoom : 13
 				font-size : 8:6;16:16
 				// Use higher zoom values for MTB IL
 				min-zoom : 14
+				// --
 		elsefor : place=suburb
 			define
 				min-zoom : 13
 				font-size : 8:4;16:14
 				// Use higher zoom values for MTB IL
 				min-zoom : 14
+				// --
 		elsefor : place=neighbourhood or place=neighborhood
 			define
 				min-zoom : 14
@@ -342,6 +351,7 @@ rules
 				font-size : 8:2;16:12
 				// Use higher zoom values for MTB IL
 				min-zoom : 15
+				// --
 		else
 			stop
 		define
@@ -349,7 +359,7 @@ rules
 			text-color : #333
 			// text-letter-spacing : -0.03
 			// text-avoid-overlaps : true
-			// The above lines don't working with RTL languages
+			// The above lines do not work with RTL languages
 		for : @isMatch(name, "[А-Я]")
 			define
 				text : @any([[name:en]], [[name:no]], name)
@@ -894,9 +904,10 @@ rules
 					min-zoom : 8
 		else
 			define
-				// min-zoom : 11
+				min-zoom : 11
 				// Use higher zoom values for MTB IL
 				min-zoom : 13
+				// --
 				line-color : #fff
 				line-width : 10:0.5;15:2.5;16:4
 		define
@@ -1660,14 +1671,17 @@ rules
 			line-color : #FF9999
 			line-opacity : 0.6
 		draw : fill
+		// Avoid military names in MTB IL
+		if : military
+			stop
+		// --
 		define
 			min-zoom : 15
 			font-size : 14:9;15:11
 			font-style : italic
 			font-weight : bold
 			text-color : #A32929
-		//draw : text
-		// Avoid military names in MTB IL
+		draw : text
 
 //	target : nocycle area
 //		define
@@ -1791,6 +1805,7 @@ rules
 			// Icon only in MTB IL
 			for : (landuse=cemetery OR amenity=grave_yard)
 				stop
+			// --
 			define
 				text-color : #5BA931
 		if : area sand
@@ -1901,12 +1916,14 @@ rules
 		// for : (landuse=cemetery OR amenity=grave_yard) and not name
 		// Icon only in MTB IL
 		for : (landuse=cemetery OR amenity=grave_yard)
+		// --
 			define
 				icon-image : Icons/mtbmap/ghost.png
-				// Different icon for MTB IL
+				icon-width : 14:28
+				// Different icon and width for MTB IL
 				icon-image : Icons/mtbmap/tombstone.png
-				// icon-width : 14:28
 				icon-width : 8
+				// --
 				align-vertical : center
 				min-zoom : 15
 			draw : icon
@@ -1987,7 +2004,7 @@ rules
 			painting-cycle : 150
 		draw : line
 
-	// Add background for cycle networks in MTB IL
+// Add background for cycle networks in MTB IL
 	target : network cycle *
 		define
 			min-zoom : 10
@@ -2018,6 +2035,7 @@ rules
 			border-opacity : 0.3
 			border-width : 70%
 		draw : line
+// --
 
 		
 //---- Style for creating legend ----
@@ -2034,14 +2052,10 @@ rules
 			text-avoid-overlaps : false
 		for : legend=heading
 			define
-				// MTB IL also shows the legend on the map itself
-				min-zoom: 14
 				font-size : 12
 				font-weight : bold
 		for : legend=text
 			define
-				// MTB IL also shows the legend on the map itself
-				min-zoom: 15
 				font-size : 9
 				font-weight : bold
 				text-color : #666
