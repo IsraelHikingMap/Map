@@ -71,7 +71,7 @@ set-print-bounds-geo
 // =====================================================
 // === Add size=* tag to natural/landuse/place areas ===
 // =====================================================
-run-python file="Scripts\Maperipy\mtbmap.py"
+//TEMPORARY// run-python file="Scripts\Maperipy\mtbmap.py"
 // =====================================================
 
 // ============================================================================
