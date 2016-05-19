@@ -1700,7 +1700,7 @@ rules
 			line-color : black white 40%
 			line-width : 1
 			min-zoom : 9
-			fill-texture : Icons/Rendering-landuse-quarry-mapnik.png
+			fill-texture : Textures/Rendering-landuse-quarry-mapnik.png
 		for : legend
 			define
 				painting-cycle : 590
@@ -1725,7 +1725,7 @@ rules
 			line-style : none
 			line-width : 0
 			//fill-color : #E6DDD0
-			fill-texture : Icons/field.png
+			fill-texture : Textures/field.png
 			fill-opacity : 0.3
 		for : legend
 			define
@@ -1752,7 +1752,7 @@ rules
 		define
 			line-style : none
 			line-width : 0
-			fill-texture : Icons/plantation.png
+			fill-texture : Textures/plantation.png
 		for : legend
 			define
 				painting-cycle : 590
