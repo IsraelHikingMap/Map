@@ -1192,7 +1192,6 @@ rules
 		for : waterway = wadi OR intermittent = yes
 			define
 				line-style : dash
-		draw : line
 		define
 			min-zoom : 13
 			font-size : 13:8;15:10;17:17
@@ -1229,6 +1228,7 @@ rules
 				text-offset-vertical : 100%
 		for : NOT tunnel AND (NOT layer OR layer=0)
 			draw : text
+		draw : line
 
 	target : aerialway
 		define
