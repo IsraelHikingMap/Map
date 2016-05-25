@@ -2009,15 +2009,11 @@ rules
 		define
 			min-zoom : 10
 			// Draw only the background
+			// Adapt the class:bicycle:mtb size and style
+			line-width : 10:1;15:6
 			line-opacity : 0
-			// Adapt the mtb:scale:imba size and style
-			line-width : 10:0.5;15:3.0
 			line-style : solid
 			border-style : solid
-			border-width : 40%
-		for : highway=track
-			define
-				line-width : 10:0.5;15:4.0
 		if : * local
 			define
 				border-color : yellow 
