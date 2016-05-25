@@ -1647,6 +1647,7 @@ rules
 		else
 			stop
 		define
+			painting-cycle : 590
 			font-size : 12
 		// Hebrew preference for points & areas
 		for : @isMatch(name, "[א-ת]")
