@@ -69,7 +69,7 @@ features
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 
 	points
-		place : place OR landuse=farmyard
+		place : place OR landuse=farmyard OR landuse=farmland
 		peak : natural=peak
 		water spring : natural=spring OR water=pond
 		water well : man_made=water_well
@@ -150,7 +150,6 @@ features
 		quarry : landuse=quarry
 		field : @isOneOf(landuse, field, meadow)
 		plantation : @isOneOf(landuse, orchard, vineyard)
-		farm : @isOneOf(landuse, farmland, farmyard)
 		residential : landuse=residential
 		Area A : relation[boundary=administrative AND admin_level=3 AND name="Area A"]
 		Area B : relation[boundary=administrative AND admin_level=3 AND name="Area B"]
@@ -1228,8 +1227,8 @@ rules
 				font-weight : normal
 				font-size : 13:8;16:18
 				text-offset-vertical : 100%
-
-		draw : text
+		for : NOT tunnel AND (NOT layer OR layer=0)
+			draw : text
 
 	target : aerialway
 		define
