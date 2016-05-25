@@ -1625,22 +1625,16 @@ rules
 			draw : text
 
 	target : forest label
-		for : width > 10
-			define
-				min-zoom : 11
-		elsefor : width > 5
-			define
-				min-zoom : 12
-		elsefor : width > 2
+		for : width > 5
 			define
 				min-zoom : 13
-		elsefor : width > 1
+		elsefor : width > 2
 			define
 				min-zoom : 14
-		elsefor : width > 0.5
+		elsefor : width > 1
 			define
 				min-zoom : 15
-		elsefor : width > 0.2
+		elsefor : width > 0.5
 			define
 				min-zoom : 16
 		else
