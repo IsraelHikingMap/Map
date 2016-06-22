@@ -158,6 +158,12 @@ if not os.path.exists(zip_file) :
     #Original# App.run_command("generate-tiles minzoom=7 maxzoom=15 subpixel=3 tilesdir=" + IsraelHikingDir + "\Site\Tiles use-fprint=true")
     gen_cmd.GenToDirectory(7, 16, os.path.join(IsraelHikingDir, 'Site', 'mtbTiles'))
     App.collect_garbage()
+
+    program_line = os.path.join(ProgramFiles, "Mobile Atlas Creator", "Create Israel MTB.bat")
+    if os.path.exists(program_line):
+        App.log("=== Launch creation of Oruxmaps Israel MTB map ===")
+        App.log('App.start_program("' + program_line + '", [])')
+        App.start_program(program_line, [])
     zip_and_upload(zip_file)
     App.collect_garbage()
 else :
