@@ -151,8 +151,8 @@ features
 		field : @isOneOf(landuse, field, meadow)
 		plantation : @isOneOf(landuse, orchard, vineyard)
 		residential : landuse=residential
-		Area A : relation[boundary=administrative AND admin_level=3 AND name="Area A"]
-		Area B : relation[boundary=administrative AND admin_level=3 AND name="Area B"]
+		Area A : relation[boundary=administrative AND name="Area A"]
+		Area B : relation[boundary=administrative AND name="Area B"]
 
 properties
 	// curved : true
