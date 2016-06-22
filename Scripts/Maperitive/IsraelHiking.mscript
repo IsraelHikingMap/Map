@@ -45,7 +45,7 @@ load-source Cache\israel-and-palestine-latest.osm.pbf
 // === Alternatively, rather than using GeoFabric's ===
 // === snapshot, download from the overpass server  ===
 // ====================================================
-// set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
+// set-geo-bounds 34.07929,29.37711,35.91531,33.35091
 // download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
 // ========================================================
 
