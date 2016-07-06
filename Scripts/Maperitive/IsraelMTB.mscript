@@ -98,12 +98,16 @@ load-image file=Cache\IL_MTB_legend_retina.png background=false
 // == Load the relief file created using "Israel Hiking Setup.mscript" ===
 // =======================================================================
 load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false
 
-// ========================================
-// === Alternatively, create the relief ===
-// ========================================
-// generate-relief-igor intensity=6 color=#808080 
-// ========================================
+// =================================================
+// === Alternatively, create the relief  3 times ===
+// =================================================
+// generate-relief-igor
+// generate-relief-igor
+// generate-relief-igor
+// =================================================
 
 apply-ruleset
 // ========================================

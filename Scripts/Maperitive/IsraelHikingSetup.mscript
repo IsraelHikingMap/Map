@@ -37,7 +37,7 @@ set-geo-bounds 34.07929,29.37711,35.91531,33.35091
 // ==================================================
 // === Create and save the relief-igor background ===
 // ==================================================
-generate-relief-igor intensity=6 color=#808080
+generate-relief-igor
 // Avoid 'Object is currently in use elsewhere' exception
 pause 0
 save-source Cache\relief_Hiking_Igor.png
