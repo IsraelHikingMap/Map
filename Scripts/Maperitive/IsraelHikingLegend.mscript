@@ -22,4 +22,4 @@ load-source "Cache\Legend.osm"
 geo-bounds-use-source
 set-print-bounds-geo
 zoom 14
-export-bitmap file="output\legend.png" subpixel=3 dpi=121
+export-bitmap file="output\legend.png" subpixel=2 dpi=121
