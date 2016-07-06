@@ -67,6 +67,8 @@ features
 		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+		ruins : historic=ruins
+		archaeological : historic=archaeological_site
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -78,8 +80,6 @@ features
 		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
-		ruins : historic=ruins
-		archaeological : historic=archaeological_site
 		memorial : historic=memorial
 		cave : natural=cave_entrance OR tomb=hypogeum
 		tree : node[natural=tree]
@@ -94,7 +94,8 @@ features
 		aerialway : aerialway and not aerialway=station
 		aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100)]
-		contour minor : contour[@isMulti(elevation, 10) and not @isMulti(elevation, 100)]
+		contour labels : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
 		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
 		hiking regional kinneret perimeter cycle route : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
@@ -116,8 +117,8 @@ features
 		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road minor : @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road street residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		track major : highway=track AND @isOneOf(tracktype, grade1, grade2)
 		track minor : highway=track AND (tracktype=grade3 OR NOT tracktype)
 		track grade4 : highway=track AND tracktype=grade4
@@ -148,7 +149,7 @@ features
 		military : landuse=military OR military=danger_area
 		beach :  @isOneOf(natural, beach, sand)
 		quarry : landuse=quarry
-		field : @isOneOf(landuse, field, meadow)
+		farmland : @isOneOf(landuse, meadow, farmland, farm)
 		plantation : @isOneOf(landuse, orchard, vineyard)
 		residential : landuse=residential
 		Area A : relation[boundary=administrative AND name="Area A"]
@@ -156,7 +157,7 @@ features
 
 properties
 	// curved : true
-	text-halo-width : 30%
+	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
 	map-background-opacity : 1
@@ -174,7 +175,7 @@ rules
 				font-size : 10:12;16:20
 		elsefor : place=village
 			define
-				min-zoom : 13
+				min-zoom : 12
 				font-size : 13:10;16:20
 		elsefor : place=hamlet
 			define
@@ -498,30 +499,6 @@ rules
 
 ////////////////////////// lines ////////////////////////////////
 
-//	target : aerialway
-//		define
-//			shape-size : 12:2;16:6
-//			shape-spacing : 11:1;13:4;14:6
-//		for : aerialway=cable_car OR aerialway=gondola
-//			define
-//				min-zoom : 12.5
-//				fill-color : white
-//				line-width : 13:2;15:3
-//		elsefor : aerialway=chair_lift
-//			define
-//				min-zoom : 13.5
-//				fill-color : black
-//				line-width : 13:1;14:2
-//		else
-//			define
-//				min-zoom : 14
-//				fill-color : black
-//				line-width : 13:1;14:2
-//		draw : line
-//		define
-//			line-width : 2
-//		draw : shape
-
 	target : power line
 		define
 			curved : false
@@ -602,9 +579,9 @@ rules
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
-				min-zoom : 11
+				min-zoom : 12
 				line-color : #FFE66B
-		elseif : * minor
+		elseif : * residential
 			for : colour
 				define
 					line-color : white
@@ -767,9 +744,7 @@ rules
 		draw : shield
 
 // Street names
-	target : road *
-		if : $regex("(.* motorway)|(.* trunk)|(.* primary)|(.* secondary)")
-			stop
+	target : road street *
 		define
 			min-zoom : 14.5
 			font-weight : bold
@@ -795,47 +770,66 @@ rules
 		else
 			define
 				text : name
-			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
 		draw : text
 
 	target : road *
 	// Narrow 1px lines at low zoom levels
-		if : * minor
-			define
-				min-zoom : 11
-				line-color : black
+		define
+			line-width : 1
+		elseif : * street *
+			if : * tertiary
+				define
+					min-zoom : 11
+					max-zoom : 12
+					line-color : #FFE66B black 10%
+					line-color : brown yellow 20%
+			elseif : * residential
+				define
+					min-zoom : 13
+					line-color : black
+					max-zoom : 14
 			for : colour
 				define
-					max-zoom : 13
+					min-zoom : 9
+					line-width : 1.6
+				for : colour = red
+					define
+						line-color : red
+				elsefor : colour = blue
+					define
+						line-color : blue
+				elsefor : colour = black
+					define
+						line-color : black
+				elsefor : colour = green
+					define
+						line-color : green
+				elsefor : colour = purple
+					define
+						line-color : purple
+				elsefor : colour = orange
+					define
+						line-color : orange
 			else
-				define
-					max-zoom : 14
-		elseif : * tertiary
-			define
-				min-zoom : 10
-				max-zoom : 11
-				line-color : #FFE66B black 10%
+				stop
 		elseif : * secondary
 			define
 				min-zoom : 9
 				max-zoom : 10
 				line-color : brown yellow 20%
-		elseif : * primary
+		if : * primary
 			define
 				min-zoom : 8
 				max-zoom : 9
 				line-color : green
-
-		define
-			line-width : 1
-			border-style : none
 		draw : line
 
 	target : track*
 		define
-			line-width : 13:2;16:3
+			line-width : 13:1.5;14:2
 			line-offset : 12:0;13:1.5;16:2.5
 			line-offset-sides : both
 			// min-zoom for coloured trails
@@ -843,6 +837,7 @@ rules
 		if : *major*
 			define
 				line-style : solid
+				line-width : 13:1.6;14:2
 		elseif : *minor*
 			define
 				line-style : dash
@@ -927,7 +922,6 @@ rules
 					// min-zoom for non-coloured trails
 					min-zoom : 14
 					line-color : black white 40%
-					line-width : 13:1.2;16:2.5
 		for : tunnel
 			define
 				border-width : 80%
@@ -957,7 +951,7 @@ rules
 		else
 			define
 				text : name
-			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
 		for : legend
@@ -971,23 +965,23 @@ rules
 		draw : text
 
 	target : track *
-		for :  @isOneOf(colour, red, blue, black, green, purple, orange)
+		for :  colour
 			stop
 		else
-			// Show non-coloured tracks as long single dashes in zoom 13
+			// Show non-coloured tracks as thin lines in zoom 13
 			define
 				min-zoom : 13
 				max-zoom : 14
-				line-color : black white 40%
-				line-width : 1.5
-				line-style : dashlong
+				line-color : black white 75%
+				line-width : 1
+				line-style : solid
 				border-style : none
 		draw : line
 
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
 		define
-			line-width : 13:2;16:3
+			line-width : 13:1.5;14:2
 			line-style : dash
 			// min-zoom for coloured trails
 			min-zoom : 9
@@ -1022,7 +1016,6 @@ rules
 				min-zoom : 14
 				line-color : black white 40%
 				fill-color : black white 40%
-				line-width : 13:1.5;16:2.5
 		if : cycle*
 			define
 				// cycle paths
@@ -1031,6 +1024,7 @@ rules
 			// foot paths
 			define
 				line-style : dot
+				line-width : 13:1.8;14:2
 		elseif : steps*
 			define
 				shape : custom
@@ -1065,7 +1059,7 @@ rules
 		else
 			define
 				text : name
-			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
 		for : legend
@@ -1186,6 +1180,7 @@ rules
 
 	target : stream
 		define
+			curved : true
 			min-zoom : 13
 			line-color : #78C1C1
 			line-width : 10:1;15:3
@@ -1215,7 +1210,7 @@ rules
 		else
 			define
 				text : name
-			for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
 		for : legend
@@ -1270,7 +1265,7 @@ rules
 				line-color : #666
 		elsefor : aeroway=taxiway
 			define
-				min-zoom : 11
+				min-zoom : 13
 				curved : false
 				line-width : 11:1;12:1;13:3;14:6;15:12
 				line-color : #666
@@ -1351,10 +1346,13 @@ rules
 			curved : true
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 520
-		if : *major
+			map.rendering.contour.label : true
+		if : * minor
 			define
-				map.rendering.contour.label : true
-				min-zoom : 12
+				map.rendering.contour.label : false
+		if : * major
+			define
+				min-zoom : 13
 				line-width : 11:0.75;13:1.25;15:2
 				font-size : 10
 				font-style : italic
@@ -1364,8 +1362,8 @@ rules
 				text-halo-color : #F1EEE8
 		else
 			define
-				min-zoom : 13
-				line-width : 0.65
+				min-zoom : 14
+				line-width : 0.75
 		draw : contour
 
 	target : grid label *
@@ -1418,7 +1416,7 @@ rules
 	// Annotate the inner side of natural reserve boundaries.
 	// Use the "clockwise" tag created by the Maperipy script
 	// AddWayLengthTags.py
-	target : nature reserve boundary outer
+	target : nature reserve boundary *
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
@@ -1428,16 +1426,24 @@ rules
 			line-offset : 3
 			line-offset-miter-limit : 2
 		for : clockwise = yes
-			define
-				line-offset-sides : right
+			if : * outer
+				define
+					line-offset-sides : right
+			else
+				define
+					line-offset-sides : left
 		elsefor : clockwise = no
-			define
-				line-offset-sides : left
+			if : * outer
+				define
+					line-offset-sides : left
+			else
+				define
+					line-offset-sides : right
 		else
 			stop
 		draw : line
 
-	target : nature reserve boundary outer
+	target : nature reserve boundary *
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
@@ -1447,52 +1453,19 @@ rules
 			line-offset : 6
 			line-offset-miter-limit : 2
 		for : clockwise = yes
-			define
-				line-offset-sides : right
+			if : * outer
+				define
+					line-offset-sides : right
+			else
+				define
+					line-offset-sides : left
 		elsefor : clockwise = no
-			define
-				line-offset-sides : left
-		else
-			stop
-		draw : line
-
-	// Annotate the inner side of natural reserve boundaries.
-	// Use the "clockwise" tag created by the Maperipy script
-	// AddWayLengthTags.py
-	target : nature reserve boundary inner
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 2
-			line-style : dot
-			line-offset : 3
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : left
-		elsefor : clockwise = no
-			define
-				line-offset-sides : right
-		else
-			stop
-		draw : line
-
-	target : nature reserve boundary inner
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 1.5
-			line-style : dot
-			line-offset : 6
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : left
-		elsefor : clockwise = no
-			define
-				line-offset-sides : right
+			if : * outer
+				define
+					line-offset-sides : left
+			else
+				define
+					line-offset-sides : right
 		else
 			stop
 		draw : line
@@ -1503,7 +1476,7 @@ rules
 		define
 			fill-color : black
 			line-style : none
-			min-zoom : 12
+			min-zoom : 15
 		draw : fill
 
 	target : military
@@ -1512,8 +1485,10 @@ rules
 			fill-hatch : swne
 			fill-hatch-color : white
 			fill-hatch-opacity : 0
-			fill-opacity : 60%
-			line-style : none
+			fill-opacity : 80%
+			min-zoom : 9
+			line-width : 0.5
+			line-color : red
 		for : legend
 			define
 				painting-cycle : 590
@@ -1655,8 +1630,7 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 9
-			// fill-color : #8DC56C white 60%
-			fill-texture : Textures/ForestNoiseLight.jpg
+			fill-texture : Textures/ForestNoiseLighter.jpg
 		for : legend
 			define
 				painting-cycle : 590
@@ -1665,7 +1639,7 @@ rules
 	target : beach
 		for : natural=sand
 			define
-				fill-opacity : 0.2
+				fill-opacity : 10%
 		define
 			line-style : none
 			line-width : 1
@@ -1694,7 +1668,7 @@ rules
 			line-color : black white 40%
 			line-width : 1
 			min-zoom : 9
-			fill-texture : Textures/Rendering-landuse-quarry-mapnik.png
+			fill-texture : Textures/Rendering-landuse-quarry-mapnik-light.png
 		for : legend
 			define
 				painting-cycle : 590
@@ -1714,12 +1688,12 @@ rules
 				text : @any([[name:he]], [[name:en]], name)
 		draw : text
 
-	target : field
+	target : farmland
 		define
 			line-style : none
 			line-width : 0
 			//fill-color : #E6DDD0
-			fill-texture : Textures/field.png
+			fill-texture : Textures/farmland.png
 			fill-opacity : 0.3
 		for : legend
 			define
@@ -1746,7 +1720,7 @@ rules
 		define
 			line-style : none
 			line-width : 0
-			fill-texture : Textures/plantation.png
+			fill-texture : Textures/plantation-light.png
 		for : legend
 			define
 				painting-cycle : 590
@@ -1758,14 +1732,17 @@ rules
 			line-width : 1
 			line-color : orange
 			min-zoom : 9
-			fill-opacity : 50%
+			fill-opacity : 75%
+			fill-hatch-opacity : 0
 		draw : line
 		if : * A
 			define
-				fill-color : orange white 40%
+				fill-color : orange white 5%
+				fill-hatch : diagonalcross
 		elseif : * B
 			define
-				fill-color : orange white 70%
+				fill-color : orange white 10%
+				fill-hatch : nwse
 		else
 			stop
 		draw : fill
@@ -1778,7 +1755,7 @@ rules
 			line-color : black white 40%
 			line-width : 1
 			fill-color : white black 10%
-			min-zoom : 10
+			min-zoom : 12
 		for : legend
 			define
 				painting-cycle : 590
