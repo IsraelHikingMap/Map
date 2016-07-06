@@ -48,6 +48,9 @@ def zip_and_upload(zip_file):
         App.log('App.start_program("' + upload_tiles + '", [' + zip_file + '])')
         App.start_program(upload_tiles, [zip_file])
 
+# Keep batch windows open up to 24 hours
+os.environ["NOPAUSE"] = "TIMEOUT /T 86400"
+
 # Cleanup partially completed runs, and incompletly uploaded zip files
 App.run_program(os.path.join(IsraelHikingDir, "Scripts", "Batch", "FindUpdatedTiles.bat"), 14400, [])
 
