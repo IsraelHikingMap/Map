@@ -779,7 +779,7 @@ rules
 	// Narrow 1px lines at low zoom levels
 		define
 			line-width : 1
-		elseif : * street *
+		if : * street *
 			if : * tertiary
 				define
 					min-zoom : 11
@@ -820,11 +820,13 @@ rules
 				min-zoom : 9
 				max-zoom : 10
 				line-color : brown yellow 20%
-		if : * primary
+		elseif : * primary
 			define
 				min-zoom : 8
 				max-zoom : 9
 				line-color : green
+		else
+			stop
 		draw : line
 
 	target : track*
