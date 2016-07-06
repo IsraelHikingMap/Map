@@ -10,8 +10,10 @@
 @REM		Start at a given directory number of a single level
 @REM
 
-@REM TODO @ECHO OFF
+@ECHO OFF
 SETLOCAL ENABLEDELAYEDEXPANSION
+
+PATH %PATH%;%~d0\Program Files\7-Zip;%~d0\Program Files\7-ZipPortable\App\7-Zip
 
 @REM Script is located at IsraelHiking\Scripts\Batch 
 PUSHD %~dp0\..\..
@@ -83,7 +85,7 @@ FOR /D %%L in ( %LEVEL% ) DO (
 	  @ECHO ON
 	  IF [%NEWER%]==[] (
             @ECHO Creating !ZIPPATH!...
-	    "%~d0\Program Files\7-ZipPortable\App\7-Zip\7z" a -tzip !ZIPPATH! -r %%D\*.png > NUL
+	    7z a -tzip !ZIPPATH! -r %%D\*.png > NUL
 	    CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
 	  ) ELSE (
 	    "%~d0\Program Files\UnxUtils\usr\local\wbin\find.exe" %%D -name "*.png" -newer "%ISRAELHIKING%\Cache\israel-and-palestine-latest.osm.pbf" -print > !ZIPLST!
@@ -103,7 +105,7 @@ FOR /D %%L in ( %LEVEL% ) DO (
 	      dir %%Z
 	      if %%~zZ GTR 0 (
 		@REM Creates non-empty zip file and Upload it
-		"%~d0\Program Files\7-ZipPortable\App\7-Zip\7z" a -tzip !ZIPPATH! @!ZIPLST! > NUL
+		7z a -tzip !ZIPPATH! @!ZIPLST! > NUL
 		CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
 	      )
 	    )
