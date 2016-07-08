@@ -1318,7 +1318,7 @@ rules
 			define
 				line-style : none
 				line-width : 1
-				fill-color : #F0FFFF
+				fill-color : #E8FCFF
 				painting-cycle : 580
 			draw : fill
 		else

@@ -191,18 +191,24 @@
   <node id='-322' action='modify' visible='true' lat='32.8386' lon='35.5805'>
     <tag k='legend' v='point' />
     <tag k='man_made' v='cistern' />
-    <tag k='name' v='בור מים, גב' />
+    <tag k='name' v='בור מים' />
     <tag k='name:en' v='Cistern' />
-    <tag k='name:he' v='בור מים, גב' />
+    <tag k='name:he' v='בור מים' />
   </node>
   <node id='-320' action='modify' visible='true' lat='32.8364' lon='35.5805'>
+    <tag k='legend' v='point' />
+    <tag k='natural' v='waterhole' />
+    <tag k='name' v='גב' />
+    <tag k='name:en' v='Cistern' />
+    <tag k='name:he' v='גב' />
+  </node>
+  <node id='-318' action='modify' visible='true' lat='32.8342' lon='35.5805'>
     <tag k='legend' v='point_missing' />
     <tag k='man_made' v='water_tower' />
     <tag k='name' v='מגדל מים' />
     <tag k='name:en' v='Water Tower' />
     <tag k='name:he' v='מגדל מים' />
   </node>
-  <node id='-318' action='modify' visible='true' lat='32.8342' lon='35.5805' />
   <node id='-316' action='modify' visible='true' lat='32.832' lon='35.5805' />
   <node id='-314' visible='true' lat='32.8298' lon='35.5805' />
   <node id='-312' visible='true' lat='32.8276' lon='35.5805' />
@@ -449,9 +455,9 @@
     <nd ref='-414' />
     <tag k='landuse' v='grass' />
     <tag k='legend' v='area_missing' />
-    <tag k='name' v='פארק או דשא' />
+    <tag k='name' v='שטח ירוק' />
     <tag k='name:en' v='Park or Grass' />
-    <tag k='name:he' v='פארק או דשא' />
+    <tag k='name:he' v='שטח ירוק' />
   </way>
   <way id='-484' visible='true'>
     <nd ref='-410' />
@@ -459,10 +465,10 @@
     <nd ref='-368' />
     <nd ref='-408' />
     <nd ref='-410' />
-    <tag k='landuse' v='field' />
+    <tag k='landuse' v='farmland' />
     <tag k='legend' v='area_missing' />
     <tag k='name' v='שדה' />
-    <tag k='name:en' v='Field' />
+    <tag k='name:en' v='Farmland' />
     <tag k='name:he' v='שדה' />
   </way>
   <way id='-482' action='modify' visible='true'>
