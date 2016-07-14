@@ -1713,11 +1713,6 @@ rules
 			define
 				painting-cycle : 590
 		draw : fill
-		define
-			line-style : none
-			line-width : 0
-			fill-texture : Icons/SJJB/landuse_grass.p.32.png
-		draw : fill
 
 	target : plantation
 // based on : http://wiki.openstreetmap.org/wiki/Tag:landuse%3Dorchard#Rendering
