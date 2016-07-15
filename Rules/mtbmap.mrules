@@ -2040,8 +2040,12 @@ rules
 
 	target : legend
 		define
-			text : text
-			text-align-horizontal : near
+			// Hebrew legend in MTB IL
+			// text : text
+			text : [[text:he]]
+			text-direction : rtl
+			//
+			text-align-horizontal : far
 			text-max-width : 30
 			text-halo-width : 0
 			text-line-spacing : 0.5
@@ -2055,7 +2059,6 @@ rules
 				font-size : 9
 				font-weight : bold
 				text-color : #666
-				text : text
 		draw : text
 		for : legend=paper
 			define
