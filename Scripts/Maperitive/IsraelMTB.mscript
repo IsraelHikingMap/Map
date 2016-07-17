@@ -91,7 +91,8 @@ load-source Cache\ASTER-35-33.contours
 // ========================
 // === Load legend image file ===   
 // ========================
-load-image file=Cache\IL_MTB_legend_retina.png background=false
+// Disabled until the legend is relocated to Israel.
+// load-image file=Cache\IL_MTB_legend_retina.png background=false
 // ========================
 
 // =======================================================================

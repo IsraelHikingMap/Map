@@ -18,7 +18,7 @@ change-directory ..
 // ============================================
 
 use-ruleset location="Rules\IsraelHiking.mrules"
-load-source "Cache\Legend.osm"
+load-source "Legends\Legend.osm"
 geo-bounds-use-source
 set-print-bounds-geo
 zoom 14
