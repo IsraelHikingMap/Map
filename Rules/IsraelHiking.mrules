@@ -127,7 +127,7 @@ features
 		track minor colour2 : highway=track AND (tracktype=grade3 OR NOT tracktype) AND @isMatch(colour, ";")
 		track grade4 colour2 : highway=track AND tracktype=grade4 AND @isMatch(colour, ";")
 		track grade5 colour2 : highway=track AND tracktype=grade5 AND @isMatch(colour, ";")
-		railway rail : railway=rail
+		railway rail : @isOneOf(railway, rail, funicular)
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi, canal)
 		cliff : natural=cliff
@@ -526,6 +526,10 @@ rules
 			border-style : solid
 			border-color : gray
 			border-width : 25%
+		for : tunnel AND NOT tunnel=no
+			define
+				// border-style : dot
+				line-style : dash
 		draw : line
 		define
 			min-zoom : 6
@@ -533,6 +537,8 @@ rules
 			line-style : dashlong
 			line-color : white black 30%
 			line-width : 6:1;8:1;12:1.5
+		for : tunnel AND NOT tunnel=no
+			stop
 		draw : line
 		define
 			min-zoom : 13
@@ -540,7 +546,7 @@ rules
 			line-width : 2
 		draw : line
 	target : railway rail
-		for : bridge=yes
+		for : bridge AND NOT bridge=no
 			define
 				min-zoom : 13
 				line-style : solid
@@ -592,7 +598,6 @@ rules
 				define
 					min-zoom : 14
 					line-color : white
-
 		// Colors for Hiking Trail on roads
 		for : colour = red
 			define
@@ -616,30 +621,23 @@ rules
 			define
 				border-color : black
 				border-opacity : 0.8
-
 		define
 			line-width : 10:0.5;13:2;14:2;16:3
 			border-style : solid
 			border-width : 80%
-
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				border-style : dot
 				line-style : dot
-
-		for : bridge=yes
+		for : bridge AND NOT bridge=no
 			define
 				border-width : 150%
-
 		draw : line
-
 // Major Road Shields
 // The length in Km is computed by a Python routine
-
 		// default min-zoom is set for safety
 		define
 			min-zoom : 22
-
 		for : length < 1
 			stop
 		for : junction = roundabout
@@ -714,7 +712,6 @@ rules
 			else
 				define
 					min-zoom : 15
-
 		for : oneway=yes
 			// Hide duplicate labels for dual-carriageways
 			// https://groups.google.com/forum/#!topic/maperitive/fT00HvHIEjg
@@ -728,7 +725,6 @@ rules
 				for : direction > 0
 					// Hide Eastbound labels
 					stop
-
 		define
 			font-family : Tahoma
 			font-weight : bold
@@ -744,7 +740,6 @@ rules
 			shield-padding-bottom : 6
 			shield-resize-mode : free
 		draw : shield
-
 // Street names
 	target : road street *
 		define
@@ -925,14 +920,19 @@ rules
 				define
 					// min-zoom for non-coloured trails
 					min-zoom : 14
-					line-color : black white 40%
-		for : tunnel
+					line-color : black white 50%
+		for : tunnel AND NOT tunnel=no
 			define
 				border-width : 80%
 				border-style : dot
-		for : bridge=yes
+		draw : line
+		for : bridge AND NOT bridge=no
 			define
-				border-width : 150%
+				line-width : 13:1.5;14:2
+				line-offset : 12:0;13:4;16:5.0
+				line-style : solid
+				line-color : black
+				line-offset-sides : both
 		draw : line
 		define
 			min-zoom : 14
@@ -1038,13 +1038,18 @@ rules
 				shape-aspect : 3
 				line-style : none
 			draw : shape
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				border-width : 80%
 				border-style : dot
-		for : bridge=yes
+		draw : line
+		for : bridge AND NOT bridge=no
 			define
-				border-width : 150%
+				line-width : 13:1.5;14:2
+				line-offset : 3
+				line-style : solid
+				line-color : black
+				line-offset-sides : both
 		draw : line
 		define
 			font-size : 13:8;16:14
@@ -1084,7 +1089,6 @@ rules
 			line-width : 7:1;10:1.5;11:2;15:3
 			line-offset : 7:1;10:1.5;11:2;13:4;15:6
 			line-offset-sides : left
-
 		if : * jerusalem trail
 			define
 				line-color : blue
@@ -1191,6 +1195,9 @@ rules
 		for : waterway = wadi OR intermittent = yes
 			define
 				line-style : dash
+		for : tunnel AND NOT tunnel=no
+			define
+				line-style : dot
 		define
 			min-zoom : 13
 			font-size : 13:8;15:10;17:17
@@ -1300,6 +1307,7 @@ rules
 			line-width : 2
 			line-style : solid
 		draw : line
+
 	target : fence
 		define
 			min-zoom : 14
