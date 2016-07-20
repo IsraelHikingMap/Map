@@ -1432,10 +1432,9 @@ rules
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 2
-			line-style : dot
-			line-offset : 3
+			line-opacity : 25%
+			line-width : 6
+			line-offset : 4.25
 			line-offset-miter-limit : 2
 		for : clockwise = yes
 			if : * outer
@@ -1459,10 +1458,9 @@ rules
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 1.5
-			line-style : dot
-			line-offset : 6
+			line-opacity : 15%
+			line-width : 12
+			line-offset : 7.25
 			line-offset-miter-limit : 2
 		for : clockwise = yes
 			if : * outer
