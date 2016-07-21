@@ -218,7 +218,7 @@ features
 		road major : @isOneOf(highway,motorway,motorway_link,trunk,trunk_link,primary,primary_link,secondary,secondary_link,tertiary) and not area=yes
 		road minor : @isOneOf(highway,residential,unclassified,living_street,service,road) and not area=yes
 		track : highway=track and not mtb:scale:imba
-		railway : @isOneOf(railway,rail,light_rail,tram,subway)
+		railway : @isOneOf(railway,rail,light_rail,tram,subway,funicular)
 		power line : @isOneOf(power, line, minor_line)
 		stream : waterway=stream or waterway=river or waterway=canal or waterway=drain or waterway=ditch
 		mtb_scale : mtb:scale and @isOneOf(highway,track,pedestrian,footway,cycleway,bridleway,path,steps) and not mtb:scale:imba
@@ -1670,6 +1670,10 @@ rules
 			line-width : 0.5
 			line-color : #FF9999
 			line-opacity : 0.6
+			// Soft fill for MTB IL
+			fill-hatch-opacity : 0
+			fill-opacity : 100%
+			// --
 		draw : fill
 		// Avoid military names in MTB IL
 		if : military
