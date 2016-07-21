@@ -225,7 +225,8 @@ features
 		coastline : natural=coastline
 		cliff : natural=cliff
 		// borders : admin_level=4 or admin_level=2
-		// No borders in MTB IL
+		// Land international borders only in MTB IL
+		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
 		bridge : bridge
 		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
 //		pier : man_made=pier
