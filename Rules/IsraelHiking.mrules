@@ -143,7 +143,7 @@ features
 		nature reserve boundary inner : way[@isOneOf(inner_boundary, boundary, leisure)]
 
 	areas
-		building : building=yes
+		building : building AND NOT @IsOneOf(building, no, construction, proposed)
 		cemetery : landuse=cemetery OR amenity=grave_yard
 		forest : landuse=forest OR natural=wood
 		grass : @isOneOf(landuse, grass, greenfield, village_green) OR @isOneOf(natural, scrub, heath, grassland) OR leisure=park
