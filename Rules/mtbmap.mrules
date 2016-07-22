@@ -227,7 +227,7 @@ features
 		// borders : admin_level=4 or admin_level=2
 		// Land international borders only in MTB IL
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
-		bridge : bridge
+		bridge : bridge AND NOT bridge=no
 		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
 //		pier : man_made=pier
 		line barrier : @isOneOf(barrier,wall,fence,hedge,yes)
@@ -824,7 +824,7 @@ rules
 //			shape-size : 9:3;14:5
 //			shape-spacing : 0.66
 //			shape-orientation: flow
-//		for : tunnel
+//		for : tunnel AND NOT tunnel=no
 //			define
 //				line-opacity : 0.4
 //				shape-def : p:#000,0.3;pw:1;l:0,-1;0,1
@@ -840,7 +840,7 @@ rules
 		for : railway=tram or railway=subway
 			define
 				min-zoom : 12
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.4
 		define
@@ -851,7 +851,7 @@ rules
 			line-width : 8:0.5;14:1.5
 			line-style : dashlong
 			line-color : #eee
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.6
 		draw : line
@@ -870,7 +870,7 @@ rules
 //				line-color : #ffcc66
 				line-color : #FFDD99
 //				line-style: dash
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.5
 		draw : line
@@ -925,7 +925,7 @@ rules
 		for : highway=road
 			define
 				line-color : #ccc
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.5
 				border-style : dot
@@ -1003,7 +1003,7 @@ rules
 				min-zoom : 10
 				line-style: dashdotdot
 				line-width : 10:0.25;15:2.0
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.5
 //		for : bridge=yes
@@ -1052,7 +1052,7 @@ rules
 			line-opacity : 1
 			min-zoom : 10
 			line-width : 10:0.25;15:2.0
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.5
 		for : highway=cycleway or bicycle=designated or cycleway=lane or cycleway:left=lane or cycleway:right=lane
@@ -1474,7 +1474,7 @@ rules
 				line-width : 13:0.5;14:1
 				line-color : #b5d9fb black 10%
 				border-style : none
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.25
 		draw : line
