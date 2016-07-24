@@ -1419,7 +1419,6 @@ rules
 		define
 			min-zoom : 9
 			line-color : #8DC56C black 20%
-			line-opacity : 0.9
 			line-width : 9:1.5;13:2.5
 			line-style : dashdotdot
 		draw : line
@@ -1457,9 +1456,35 @@ rules
 		define
 			min-zoom : 13
 			line-color : #8DC56C black 20%
-			line-opacity : 15%
+			line-opacity : 25%
 			line-width : 12
 			line-offset : 7.25
+			line-offset-miter-limit : 2
+		for : clockwise = yes
+			if : * outer
+				define
+					line-offset-sides : right
+			else
+				define
+					line-offset-sides : left
+		elsefor : clockwise = no
+			if : * outer
+				define
+					line-offset-sides : left
+			else
+				define
+					line-offset-sides : right
+		else
+			stop
+		draw : line
+
+	target : nature reserve boundary *
+		define
+			min-zoom : 13
+			line-color : #8DC56C black 20%
+			line-opacity : 25%
+			line-width : 18
+			line-offset : 10.25
 			line-offset-miter-limit : 2
 		for : clockwise = yes
 			if : * outer
