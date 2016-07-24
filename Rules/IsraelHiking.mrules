@@ -1504,6 +1504,43 @@ rules
 			stop
 		draw : line
 
+	target : boundary*
+		// Avoid maritime borders
+		for : maritime=yes
+			stop
+		define
+			line-color : #9E1A99
+			line-opacity : 0.75
+		if : boundary country
+			for : @isMatch(name, "1949 .*$")
+				// 1949 armistice line - "The Green Line"
+				define
+					line-color : green
+			elsefor : note = "UN Resolution 497, UNDOF"
+				// Israel-Syria Agreement on Disengagement Line A "Alpha"
+				define
+					line-color : blue
+			elsefor : note = "UNDOF line Bravo"
+				// Israel-Syria Agreement on Disengagement Line B "Bravo"
+				define
+					line-color : red
+			elsefor : note = "DMZ"
+				stop
+			else
+				define
+					line-color : black
+					line-width : 1.5
+					shape : custom
+					shape-def : 0,3;0,-3;m:3,0;-3,0
+					shape-spacing : 0.5
+					shape-size : 6
+				draw : shape
+				define
+					line-style : none
+			define
+				line-width : 6:1;9:3;10:6
+		draw : line
+
 /////////////////////////////// areas ////////////////////////////
 
 	target : building
@@ -1542,43 +1579,6 @@ rules
 					text : @any([[name:he]], [[name:en]], name)
 			draw : text
 
-	target : boundary*
-		// Avoid maritime borders
-		for : maritime=yes
-			stop
-		define
-			line-color : #9E1A99
-			line-opacity : 0.75
-		if : boundary country
-			for : @isMatch(name, "1949 .*$")
-				// 1949 armistice line - "The Green Line"
-				define
-					line-color : green
-			elsefor : note = "UN Resolution 497, UNDOF"
-				// Israel-Syria Agreement on Disengagement Line A "Alpha"
-				define
-					line-color : blue
-			elsefor : note = "UNDOF line Bravo"
-				// Israel-Syria Agreement on Disengagement Line B "Bravo"
-				define
-					line-color : red
-			elsefor : note = "DMZ"
-				stop
-			else
-				define
-					line-color : black
-					line-width : 1.5
-					shape : custom
-					shape-def : 0,3;0,-3;m:3,0;-3,0
-					shape-spacing : 0.5
-					shape-size : 6
-				draw : shape
-				define
-					line-style : none
-			define
-				line-width : 6:1;9:3;10:6
-		draw : line
-
 	target : water
 		define
 			line-width : 2
@@ -1610,6 +1610,27 @@ rules
 			define
 				text : @any([[name:he]], [[name:en]], name)
 		draw : text
+
+	target : Area *
+		define
+			line-style : solid
+			line-width : 1
+			line-color : orange
+			min-zoom : 9
+			fill-opacity : 75%
+			fill-hatch-opacity : 0
+		draw : line
+		if : * A
+			define
+				fill-color : orange white 5%
+				fill-hatch : diagonalcross
+		elseif : * B
+			define
+				fill-color : orange white 10%
+				fill-hatch : nwse
+		else
+			stop
+		draw : fill
 
 	target : cemetery
 		define
@@ -1753,27 +1774,6 @@ rules
 		for : legend
 			define
 				painting-cycle : 590
-		draw : fill
-
-	target : Area *
-		define
-			line-style : solid
-			line-width : 1
-			line-color : orange
-			min-zoom : 9
-			fill-opacity : 75%
-			fill-hatch-opacity : 0
-		draw : line
-		if : * A
-			define
-				fill-color : orange white 5%
-				fill-hatch : diagonalcross
-		elseif : * B
-			define
-				fill-color : orange white 10%
-				fill-hatch : nwse
-		else
-			stop
 		draw : fill
 
 
