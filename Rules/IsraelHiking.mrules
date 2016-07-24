@@ -381,13 +381,12 @@ rules
 		define
 			min-zoom : 15
 			icon-width : 16
-		for : @IsOneOf(barrier, gate, hampshire_gate)
-			for : access=no OR motor_vehicle=no
-				define
-					icon-image : Icons/SJJB/barrier_gate.n.32.png
-			else
-				define
-					icon-image : Icons/SJJB/barrier_gate.glow.32.png
+		for : @IsOneOf(access, no, private) OR @IsOneOf(motor_vehicle, no, private)
+			define
+				icon-image : Icons/SJJB/barrier_gate.n.32.png
+		elsefor : @IsOneOf(barrier, gate, hampshire_gate)
+			define
+				icon-image : Icons/SJJB/barrier_gate.glow.32.png
 		elsefor : barrier=kissing_gate OR barrier=stile
 			define
 				icon-image : Icons/SJJB/barrier_kissing_gate.glow.32.png
