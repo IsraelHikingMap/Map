@@ -39,7 +39,7 @@ set-geo-bounds 34.07929,29.37711,35.91531,33.35091
 // ==================================================
 generate-relief-igor
 // Avoid 'Object is currently in use elsewhere' exception
-pause 0
+pause 2
 save-source Cache\relief_Hiking_Igor.png
 // ==================================================
 

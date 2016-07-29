@@ -28,7 +28,7 @@ MinLat=int(Map.geo_bounds.min_y)
 MaxLat=int(math.ceil(Map.geo_bounds.max_y))
 
 App.run_command('set-dem-source ASTER')
-App.run_command('set-setting name=scripts.completion-signal.min-duration-sec value=0')
+App.run_command('set-setting name=scripts.completion-signal.min-duration-sec value=99999')
 
 App.log("Generating contours "+str(MinLon)+'-'+str(MinLat)+" to "+str(MaxLon)+'-'+str(MaxLat) )
 
