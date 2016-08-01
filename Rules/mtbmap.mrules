@@ -203,12 +203,12 @@ features
 		watertower : man_made=water_tower
 		monument : historic=monument
 		museum : tourism=museum
-//MTBIL//	aeroway : aeroway
 		antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
 		toilet : amenity=toilets
 
 	lines
 		aerialway : aerialway and not aerialway=station
+//MTBIL//	aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100) and not elevation=0 ]
 		contour medium : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
 		hiking route : relation[type=route route=foot] way[trailblazed=yes]
@@ -524,9 +524,7 @@ rules
 			align-vertical : center
 			min-zoom : 10
 		draw : icon
-
 		define
-
 			font-weight : bold
 			font-size : 13:11;15:15
 			min-zoom : 11
@@ -537,10 +535,8 @@ rules
 			text-max-width : 15
 			text-offset-vertical : -24
 		draw : text
-
 		define
 			font-style : italic
-
 			font-size : 13:8;15:13
 			min-zoom : 11
 			text : ele
@@ -778,7 +774,6 @@ rules
 			border-color : #555
 			border-width : 40%
 			border-opacity : 1.0
-
 		for : bicycle=no or bicycle=dismount
 			define
 				line-color : #FFE66B		
