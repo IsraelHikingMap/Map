@@ -157,54 +157,86 @@
 
 
 features
+	makam: amenity=place_of_worship AND (religion=druze OR religion=Druze)
+	mosque: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+	synagogue: amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
 	church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
 	// food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
 	// Food should not be a line
-//	alpine hut : tourism=alpine_hut
-//	wilderness hut : node[tourism=wilderness_hut] area[tourism=wilderness_hut]
-	shelter : amenity=shelter
+	//	alpine hut : tourism=alpine_hut
+	//	wilderness hut : node[tourism=wilderness_hut] area[tourism=wilderness_hut]
+	//	shelter : amenity=shelter
 	// place : node[place OR landuse=farmyard] area[place OR landuse=farmyard or landuse=farm]
 	// Too many duplicate names in MTB IL
 	place : node[place OR landuse=farmyard]
 	// --
-	railway station : railway=station
+	// railway station : railway=station
 	legend : legend
 	building : area[building]
 	building point: node[building and not building=entrance]
 	parking : node[amenity=parking] area[amenity=parking]
-	swimming : node[leisure=swimming] area[leisure=swimming]
+	// swimming : node[leisure=swimming] area[leisure=swimming]
 //	dam : way[waterway=dam] area[waterway=dam]
-	dam : area[waterway=dam]
-	pier : man_made=pier
+//	dam : area[waterway=dam]
+//	pier : man_made=pier
 //	area bay : area[@isOneOf(natural,bay,fjord,strait)] way[@isOneOf(natural,bay,fjord,strait) and not type=multipolygon]
 	area bay : area[@isOneOf(natural,bay,fjord,strait)] node[@isOneOf(natural,bay,fjord,strait)]
-	aeroway : aeroway
-
+//	aeroway : aeroway
+	antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
+	toilet : amenity=toilets
+	medical : amenity=hopital OR amenity=clinic
+	lodging : tourism=guest_house OR tourism=hotel
+		
 	points, areas
-		cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
+		
+		// cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
 		bikeshop : shop=bicycle or service:bicycle:retail=yes
 		// cafe : amenity=cafe and hiking=yes
 		// MTB IL ignores hiking tag, adds convenience shops
 		cafe : amenity=cafe
-		convenience : shop=convenience
+		convenience : shop=convenience OR shop=supermarket
 		// --
-		beer : amenity=biergarten or beer_garden=yes or biergarten=yes or(amenity=pub and outdoor_seating=yes)
-		food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
-
+		// beer : amenity=biergarten or beer_garden=yes or biergarten=yes or(amenity=pub and outdoor_seating=yes)
+		food : amenity=restaurant OR amenity=fast_food 
+		lodging : tourism=guest_house OR tourism=hotel
+		mosque worship : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+		makam worship : amenity=place_of_worship AND (religion=druze OR religion=Druze)
+		synagogue worship : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		church worship : amenity=place_of_worship AND (religion=christian OR religion=Christian)
+		medical : amenity=hopital OR amenity=clinic
+			
 	points
+		gas : amenity=fuel
 		peak : natural=peak
-		hill : natural=hill
+		// hill : natural=hill
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		drinkingwater: amenity=drinking_water or drinking_water=yes
 		attraction : tourism=attraction
 		viewpoint : tourism=viewpoint
-		bench : amenity=bench
-		picnic : tourism=picnic_site
-		barrier : barrier
+		// picnic : tourism=picnic_site
+		picnic : leisure=picnic_table OR tourism=picnic_site
+		// barrier : barrier
 		information : tourism=information
 		airport : aeroway=aerodrome
 		turningcircle : highway=turning_circle
-
+		cave : natural=cave_entrance OR tomb=hypogeum
+		tower : man_made=tower
+		spring : natural=spring
+		well : man_made=water_well
+		cistern : man_made=cistern
+		waterhole : natural=waterhole
+		camping : tourism=camp_site
+		ruins : historic=ruins
+		archaeological : historic=archaeological_site
+		memorial : historic=memorial				
+		tree : node[natural=tree]
+		watertower : man_made=water_tower
+		monument : historic=monument
+		gate : node[barrier]
+		museum : tourism=museum
+		antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
+		toilet : amenity=toilets
+		
 	lines
 		aerialway : aerialway and not aerialway=station
 //		aeroway : aeroway
@@ -227,7 +259,7 @@ features
 		// borders : admin_level=4 or admin_level=2
 		// No borders in MTB IL
 		bridge : bridge
-		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
+//		nocycle : ((bicycle=no or bicycle=dismount) and highway) or ((motorroad=yes or highway=motorway) and not (bicycle=yes or highway=proposed))
 //		pier : man_made=pier
 		line barrier : @isOneOf(barrier,wall,fence,hedge,yes)
 		cutline : man_made=cutline
@@ -257,7 +289,7 @@ features
 		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden) OR amenity=grave_yard
 		area sand : natural=beach or natural=sand
 		area scree : natural=scree
-		nocycle area: (bicycle=no or bicycle=dismount) and not highway
+//		nocycle area: (bicycle=no or bicycle=dismount) and not highway
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
 		area cape : @isOneOf(natural,cape,peninsula,headland) or @isOneOf(place,cape,peninsula,headland)
@@ -282,20 +314,34 @@ properties
 rules
 
 
-	target : barrier
+	target : gate
 		define
-			icon-width : 11:12;15:16
-			align-vertical : center
-			min-zoom : 14			
+			min-zoom : 15
+			icon-width : 17
 		for : barrier=gate
+			for : access=no OR bicycle=no
+				define
+					icon-image : Icons/mtbmap/gate_closed.png
+			else
+				define
+					icon-image : Icons/mtbmap/gate_open.png
+		elsefor : barrier=kissing_gate OR barrier=stile
 			define
-				icon-image : Icons/SJJB/barrier_gate.glow.000000.32.png
-		for : barrier=lift_gate
+				icon-image : Icons/mtbmap/gate_open.png
+		elsefor : barrier=lift_gate
 			define
-				icon-image : Icons/SJJB/barrier_lift_gate.glow.000000.32.png
-		for : barrier=toll_booth
+				icon-image : Icons/mtbmap/gate_open.png
+		elsefor : barrier=block OR barrier=debris
 			define
-				icon-image : Icons/SJJB/barrier_toll_booth.glow.000000.32.png
+				icon-image : none
+		elsefor : barrier=cattle_grid
+			define
+				icon-image : Icons/mtbmap/cattle_grid.png
+				icon-width: 17
+		for : legend
+			define
+				min-zoom : 13
+				icon-width : 17
 		draw : icon
 		
 	target : place
@@ -341,7 +387,8 @@ rules
 			define
 				min-zoom : 14
 				font-size : 8:4;16:14
-		elsefor : place=locality AND not natural=hill
+		elsefor : place=locality 
+		// AND not natural=hill
 			define
 				min-zoom : 14
 				font-size : 8:4;16:14
@@ -367,16 +414,16 @@ rules
 
 	target : viewpoint
 		define
-			icon-image : Icons/mtbmap/viewpoint.png
+			icon-image : Icons/mtbmap/viewpoint new.png
 //			icon-width : 13:10;16:18
-			icon-width : 13:10;15:15
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 14
 		for : man_made=tower
 			define
-				icon-image : Icons/mtbmap/viewpoint_tower.png
+				icon-image : Icons/mtbmap/tower.png
 		draw : icon
-		for : not (natural=peak or natural=hill)
+		for : not natural=peak
 			define
 //				font-family : Arial
 				font-weight : bold
@@ -389,20 +436,20 @@ rules
 
 	target : parking
 		define
-			icon-image : Icons/SJJB/transport_parking.glow.32.png
-			icon-width : 14:10
+			icon-image : Icons/mtbmap/parking.png
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 14
+			min-zoom : 15
 		for : access=private
 			define
 				icon-image : none
 		for : hiking=yes
 			define
-				icon-image : Icons/mtbmap/parkering_black.png
+				icon-image : Icons/mtbmap/parking.png
 				min-zoom : 13
-//				icon-width : 13:9;14:12;15:16
+//				icon-width : 13:9;14:15;15:16
 //				icon-width : 13:10;16:18
-				icon-width : 13:10;15:15
+				icon-width : 13:17
 		draw : icon
 		for : hiking=yes
 			define
@@ -417,9 +464,9 @@ rules
 		
 	target: cafe
 		define
-			icon-image : Icons/mtbmap/cafe.png
+			icon-image : Icons/mtbmap/cup.png
 //			icon-width : 13:10;14:14;15:16;16:18
-			icon-width : 13:10;16:18
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
@@ -433,15 +480,14 @@ rules
 			text-align-vertical : near
 		draw : text
 		
-	target: beer
+	target: tower
 		define
-			icon-image : Icons/mtbmap/beer.png
-			icon-width : 13:12;16:22
+			icon-image : Icons/mtbmap/tower.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
 		define
-//			font-family : Arial
 			font-weight : bold
 			font-size : 14:9;15:10
 			font-stretch : 1
@@ -449,62 +495,113 @@ rules
 			min-zoom : 14
 			text-align-vertical : near
 		draw : text
+		
+//	target: beer
+//		define
+//			icon-image : Icons/mtbmap/beer.png
+//			icon-width : 13:12;16:22
+//			align-vertical : center
+//			min-zoom : 13
+//		draw : icon
+//		define
+//			font-family : Arial
+//			font-weight : bold
+//			font-size : 14:9;15:10
+//			font-stretch : 1
+//			text-offset-vertical : 60%
+//			min-zoom : 14
+//			text-align-vertical : near
+//		draw : text
 
 	target: food
 		define
-			icon-image : Icons/mtbmap/restaurant.png
-//			icon-width : 13:10;14:14;15:16;16:18
-			icon-width : 13:10;16:18
+			icon-image : Icons/mtbmap/food.png
+//			icon-width : 13:17
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
 		define
 //			font-family : Arial
 			font-weight : bold
-			font-size : 14:9;15:10
+			font-size : 15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		draw : text
-
-	target: convenience
+		
+	target: lodging
 		define
-			icon-image : Icons/mtbmap/convenience.png
-			icon-width : 13:10;16:18
+			icon-image : Icons/mtbmap/hotel.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:9;15:10
+			font-size : 15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
+			min-zoom : 15
+			text-align-vertical : near
+		draw : text
+		
+
+	target: convenience
+		define
+			icon-image : Icons/mtbmap/shopping.png
+			icon-width : 14:17
+			align-vertical : center
 			min-zoom : 14
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 15
 			text-align-vertical : near
 		draw : text
 
 	target: bikeshop
 		define
-			icon-image : Icons/mtbmap/bikeshop.png
-			icon-width : 13:10;16:18
+			icon-image : Icons/mtbmap/bike-repair.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:9;15:10
+			font-size : 15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		draw : text
+		
+	target: medical
+		define
+			icon-image : Icons/mtbmap/first_aid.png
+			icon-width : 11:17
+			align-vertical : center
+			min-zoom : 11
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 15
+			text-align-vertical : near
+		draw : text	
+		
 
 	target: attraction
 		define
-			icon-image : Icons/mtbmap/attraction.png
+			icon-image : Icons/mtbmap/star.png
 //			icon-width : 13:10;14:14;15:16;16:18
-			icon-width : 13:10;16:18
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
@@ -535,115 +632,134 @@ rules
 //			text-offset-vertical : 100%
 //		draw : text
 		
-	target: cabin
-		define
+//	target: cabin
+//		define
 //			icon-width : 10:10;12:16
-			icon-width : 13:10;15:15
-			min-zoom : 15
+//			icon-width : 13:10;15:15
+//			min-zoom : 15
 //			icon-image : mtbmap/icons/sjjb/accommodation_alpinehut.glow.000000.32.png
-		for : (tourism=cabin and emergency=yes) or shelter_type=basic_hut
-			define
-				min-zoom : 12
-				icon-image : Icons/mtbmap/hut_emergency.png
-		for : (tourism=cabin and service=no) or tourism=wilderness_hut
-			define
-				min-zoom : 11
-				icon-image : Icons/mtbmap/hut_no-service.png
-		for : (tourism=cabin and service=self) or (tourism=wilderness_hut and shop=provisions)
-			define
-				min-zoom : 11
-				icon-image : Icons/mtbmap/hut_self-service.png
-		for : tourism=alpine_hut or (tourism=cabin and service=full)
-			define
-				min-zoom : 10
-				icon-image : Icons/mtbmap/hut.png
-		draw : icon
-		for : tourism=alpine_hut or (tourism=cabin and service)
-			define
+//		for : (tourism=cabin and emergency=yes) or shelter_type=basic_hut
+//			define
+//				min-zoom : 12
+//				icon-image : Icons/mtbmap/hut_emergency.png
+//		for : (tourism=cabin and service=no) or tourism=wilderness_hut
+//			define
+//				min-zoom : 11
+//				icon-image : Icons/mtbmap/hut_no-service.png
+//		for : (tourism=cabin and service=self) or (tourism=wilderness_hut and shop=provisions)
+//			define
+//				min-zoom : 11
+//				icon-image : Icons/mtbmap/hut_self-service.png
+//		for : tourism=alpine_hut or (tourism=cabin and service=full)
+//			define
+//				min-zoom : 10
+//				icon-image : Icons/mtbmap/hut.png
+//		draw : icon
+//		for : tourism=alpine_hut or (tourism=cabin and service)
+//			define
 //				font-family : Arial
-				font-weight : bold
-				font-size : 12:9;14:10;15:11
-				min-zoom : 12
-				text-align-vertical : near
-				text-offset-vertical : 60%
-			draw : text
-		for : tourism=wilderness_hut
-			define
+//				font-weight : bold
+//				font-size : 12:9;14:10;15:11
+//				min-zoom : 12
+//				text-align-vertical : near
+//				text-offset-vertical : 60%
+//			draw : text
+//		for : tourism=wilderness_hut
+//			define
 //				font-family : Arial
-				font-weight : bold
-				font-size : 12:9;14:10;15:11
-				min-zoom : 13
-				text-align-vertical : near
-				text-offset-vertical : 60%
-			draw : text
-
-
+//				font-weight : bold
+//				font-size : 12:9;14:10;15:11
+//				min-zoom : 13
+//				text-align-vertical : near
+//				text-offset-vertical : 60%
+//			draw : text
+		
 	target : peak
 		define
+			icon-image : Icons/mtbmap/peak.png
+			icon-width : 10:17
+			align-vertical : center
+			min-zoom : 10
+		draw : icon
+		
 //			fill-color : black
 //			fill-color : #724426
 //			fill-color : #605040
 //			fill-color : #504030
-			fill-color : #5C4024
-			line-style : none
-			min-zoom : 11
-			shape : triangle
-			shape-size : 10:4;14:10
-		draw : shape
-		define
-			font-style : italic
-			font-weight : bold
-			font-size : 13:9;15:14
-//		********************************************************* OPPDAL EDIT *********************************************************
-			min-zoom : 13
+//			fill-color : #5C4024
+//			line-style : none
 //			min-zoom : 11
-			text : @if(name, name @if(ele, "\n(" ele ")"), ele)
+//			shape : triangle
+//			shape-size : 10:4;14:10
+//		draw : shape
+		define
+			
+			font-weight : bold
+			font-size : 13:11;15:15
+			min-zoom : 11
+			text : name
 			text-align-vertical : near
 			text-line-spacing : 0.7
-//			text-color : black
-//			text-color : #7C4F35
-//			text-color : #605040
-//			text-color : #504030
-//			text-color : #443628
-			text-color : #4F361D
+			text-color : black
 			text-max-width : 15
-			text-offset-vertical : 0%
+			text-offset-vertical : -24
+		draw : text
+		
+		define
+			font-style : italic
+		
+			font-size : 13:8;15:13
+			min-zoom : 11
+			text : ele
+			text-align-vertical : near
+			text-line-spacing : 0.7
+			text-color : black
+			text-max-width : 15
+			text-offset-vertical : 6
 		draw : text
 
-	target : hill
-		define
+//	target : hill
+//		define
 //			fill-color : black
 //			fill-color : #664433
-			fill-color : #504030
-			line-style : none
-			min-zoom : 13
-			shape : custom
+//			fill-color : #504030
+//			line-style : none
+//			min-zoom : 13
+//			shape : custom
 //			shape-def : p:black;pw:0;f:black;m:-10,-5;l: 0,6, 10,-5;z
 //			shape-def : p:#504030;pw:0;f:#504030;m:-10,-5;l: 0,6, 10,-5;z
-			shape-def : -10,-5;l: 0,6, 10,-5;z
-			shape-aspect : 1
-			shape-size : 10:3;14:6
-		draw : shape
-		define
-			font-style : italic
-			font-weight : bold
-			font-size : 13:8;15:13
-			min-zoom : 13
-			text : @if(name, name @if(ele, "\n(" ele ")"), ele)
-			text-align-vertical : near
-			text-line-spacing : 0.7
+//			shape-def : -10,-5;l: 0,6, 10,-5;z
+//			shape-aspect : 1
+//			shape-size : 10:3;14:6
+//		draw : shape
+//		define
+//			font-style : italic
+//			font-weight : bold
+//			font-size : 13:8;15:13
+//			min-zoom : 13
+//			text : @if(name, name @if(ele, "\n(" ele ")"), ele)
+//			text-align-vertical : near
+//			text-line-spacing : 0.7
 //			text-color : black
-			text-color : #443628
-			text-max-width : 15
-			text-offset-vertical : 0%
-		draw : text		
+//			text-color : #443628
+//			text-max-width : 15
+//			text-offset-vertical : 0%
+//		draw : text		
 
 
 	target: drinkingwater
 		define
-			icon-image : Icons/mtbmap/water.png
+			icon-image : Icons/mtbmap/tap.png
 //			icon-width : 13:10;16:18
-			icon-width : 13:10;15:15
+			icon-width : 13:17
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+		
+	target: toilet
+		define
+			icon-image : Icons/mtbmap/toilet.png
+			icon-width : 14:17
 			align-vertical : center
 			min-zoom : 14
 		draw : icon
@@ -665,53 +781,61 @@ rules
 	target: picnic
 		define
 //			icon-image : mtbmap/icons/sjjb/tourist_picnic.glow.000000.32.png
-			icon-image : Icons/mtbmap/picnic-area.png
+			icon-image : Icons/mtbmap/picnic.png
 //			icon-width : 14:16;15:20;16:24
 //			icon-width : 13:10;16:18
-			icon-width : 13:10;15:15
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 14
 		draw : icon
 
-	target: bench
+//	target: bench
+//		define
+//			icon-image : Icons/SJJB/amenity_bench.glow.000000.32.png
+//			icon-width : 14:16;15:20;16:24
+//			align-vertical : center
+//			min-zoom : 14
+//		draw : icon
+		
+	target: cave
 		define
-			icon-image : Icons/SJJB/amenity_bench.glow.000000.32.png
-			icon-width : 14:16;15:20;16:24
+			icon-image : Icons/mtbmap/cave.png
+			icon-width : 13:17
 			align-vertical : center
-			min-zoom : 14
+			min-zoom : 13
 		draw : icon
 
-	target: swimming
-		define
-			icon-image : Icons/mtbmap/swimming.png
+//	target: swimming
+//		define
+//			icon-image : Icons/mtbmap/swimming.png
 //			icon-width : 13:9;14:10;15:16
 //			icon-width : 13:10;16:18
-			icon-width : 13:10;15:15
-			align-vertical : center
-			min-zoom : 16
-		draw : icon
+//			icon-width : 13:10;15:17
+//			align-vertical : center
+//			min-zoom : 16
+//		draw : icon
 
 	target: information
 		define
-			icon-image : Icons/SJJB/tourist_information.glow.000000.32.png
-			icon-width : 16:20
+			icon-image : Icons/mtbmap/sign.png
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 16
+			min-zoom : 15
 		for : information=guidepost
 			define
 				align-vertical : far
-				icon-image : Icons/sjjb/tourist_guidepost.glow.000000.32.png
+				icon-image : Icons/mtbmap/sign.png
 //		for : information=map
 //			define
-//				icon-image : mtbmap/icons/sjjb/tourist_map.glow.000000.32.png
+//				icon-image : Icons/mtbmap/sign.png
 		draw : icon
 
 	target: airport
 		define
 			min-zoom : 10
-			icon-image : Icons/mtbmap/airport.png
+			icon-image : Icons/mtbmap/plane.png
 //			icon-width : 10:10;12:16
-			icon-width : 13:10;15:15
+			icon-width : 13:17
 			align-vertical : center
 		draw : icon
 		define
@@ -721,6 +845,23 @@ rules
 			min-zoom : 12
 			text-align-vertical : near
 			text-offset-vertical : 60%
+		draw : text
+		
+		
+	target: spring
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/spring.png
+			icon-width : 13:9
+			align-vertical : center
+		draw : icon
+		define
+			min-zoom : 15
+			font-weight : bold
+			font-size : 15:9;16:11
+			min-zoom : 1
+			text-align-vertical : near
+			text-offset-vertical : 30%
 		draw : text
 
 
@@ -855,24 +996,24 @@ rules
 				line-opacity : 0.6
 		draw : line
 
-	target : nocycle
-		define
-			min-zoom : 10
-			line-color : #ffcc66
-			line-style: solid
-			line-width : 12:2;13:2.5;14:3
-			line-opacity : 1
+//	target : nocycle
+//		define
+//			min-zoom : 10
+//			line-color : #ffcc66
+//			line-style: solid
+//			line-width : 12:2;13:2.5;14:3
+//			line-opacity : 1
 //			painting-cycle : 650
-		for : bicycle=dismount
-			define
+//		for : bicycle=dismount
+//			define
 //				line-opacity : 0.5
 //				line-color : #ffcc66
-				line-color : #FFDD99
+//				line-color : #FFDD99
 //				line-style: dash
-		for : tunnel
-			define
-				line-opacity : 0.5
-		draw : line
+//		for : tunnel
+//			define
+//				line-opacity : 0.5
+//		draw : line
 
 
 	target : turningcircle
@@ -1661,26 +1802,26 @@ rules
 
 	target : military
 		define
-			fill-color : #FF9999
-			fill-opacity: 0.0
+			fill-color : #999966
+			fill-opacity: 0.8
 			fill-hatch : swne
-			fill-hatch-color : #FF9999
-			fill-hatch-opacity : 0.8
+			fill-hatch-color : #999966
+			fill-hatch-opacity : 0.2
 			line-style : solid
-			line-width : 0.5
-			line-color : #FF9999
-			line-opacity : 0.6
+			line-width : 0.75
+			line-color : #999966
+			line-opacity : 0.8
 		draw : fill
 		// Avoid military names in MTB IL
-		if : military
-			stop
+		//if : military
+			//stop
 		// --
 		define
 			min-zoom : 15
 			font-size : 14:9;15:11
 			font-style : italic
 			font-weight : bold
-			text-color : #A32929
+			text-color : #000000
 		draw : text
 
 //	target : nocycle area
@@ -1702,23 +1843,23 @@ rules
 //		draw : line
 //		draw : fill
 
-	target : nocycle area
-		define
-			min-zoom : 10
-			fill-color : #ffcc66
-			fill-opacity : 0
-			fill-hatch : swne
-			fill-hatch-color : #ffcc66
-			fill-hatch-opacity : 0.8
-			line-style : solid
-			line-width : 0.5
-			line-color : #ffcc66
-			line-opacity : 0.6
-		for : bicycle=dismount
-			define
-				fill-hatch-opacity : 0.5
+//	target : nocycle area
+//		define
+//			min-zoom : 10
+//			fill-color : #ffcc66
+//			fill-opacity : 0
+//			fill-hatch : swne
+//			fill-hatch-color : #ffcc66
+//			fill-hatch-opacity : 0.8
+//			line-style : solid
+//			line-width : 0.5
+//			line-color : #ffcc66
+//			line-opacity : 0.6
+//		for : bicycle=dismount
+//			define
+//				fill-hatch-opacity : 0.5
 //		draw : line
-		draw : fill
+//		draw : fill
 
 		
 	target : pier
@@ -1918,11 +2059,11 @@ rules
 		for : (landuse=cemetery OR amenity=grave_yard)
 		// --
 			define
-				icon-image : Icons/mtbmap/ghost.png
-				icon-width : 14:28
+				//icon-image : Icons/mtbmap/ghost.png
+				//icon-width : 14:28
 				// Different icon and width for MTB IL
-				icon-image : Icons/mtbmap/tombstone.png
-				icon-width : 8
+				icon-image : Icons/mtbmap/cemetery.png
+				icon-width : 15:17
 				// --
 				align-vertical : center
 				min-zoom : 15
@@ -1934,7 +2075,8 @@ rules
 			line-width : 1
 			min-zoom : 8
 //			fill-color : #eeee22 white 40%
-			fill-color : #FFFFA5
+//			fill-color : #FFFFA5 bright yellow
+			fill-color : #FFFFE9
 		draw : fill
 
 	target : farmyard
@@ -2031,7 +2173,182 @@ rules
 			border-opacity : 0.3
 			border-width : 70%
 		draw : line
-// --
+		
+	target : well
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/well.png
+			icon-width : 14:9
+		draw : icon
+
+	target : picnic
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/table.png
+			icon-width : 13:17
+		draw : icon
+		
+	target : antenna
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/antenna.png
+			icon-width : 13:17
+		draw : icon
+		
+	target : ruins
+		define
+			min-zoom : 14
+			icon-image : Icons/mtbmap/ruins.png
+			icon-width : 14:17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 15
+			text-align-vertical : near
+		draw : text
+		
+	target : cistern
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/cistern.png
+			icon-width : 14:9
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+	target : waterhole
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/water_hole.png
+			icon-width : 14:12
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 14:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+		
+	target : camping
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/camping.png
+			icon-width : 13:17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+				
+	target : archaeological
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/jar.png
+			icon-width : 13:17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+	target : memorial
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/monument.png
+			icon-width : 13:17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 13:17
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+	target : museum
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/museum.png
+			icon-width : 13:17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 13:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		draw : text
+		
+	target: *worship
+		if : church*
+			define
+				icon-image : Icons/mtbmap/church.png
+		elseif : mosque*
+			define
+				icon-image : Icons/mtbmap/mosque.png
+		elseif : synagogue*
+			define
+				icon-image : Icons/mtbmap/synagogue.png
+		elseif : makam*
+			define
+				icon-image : Icons/mtbmap/makam.png
+		define
+			icon-width : 13:17
+		for : tourism=attraction
+			define
+				min-zoom : 13
+		else
+			define
+				min-zoom : 15
+		draw : icon
+		
+		
+	target : tree
+		define
+			min-zoom : 15
+			icon-image : Icons/mtbmap/tree.png
+			icon-width : 15:17
+		draw : icon
+				
+	target : watertower
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/water_tower.png
+			icon-width : 13:17
+		draw : icon
+		
+	target : gas
+		define
+			min-zoom : 13
+			icon-image : Icons/mtbmap/gas.png
+			icon-width : 13:17
+		draw : icon
+
+		
+	// --
 
 		
 //---- Style for creating legend ----
