@@ -418,13 +418,13 @@ rules
 
 	target : viewpoint
 		define
-			icon-image : Icons/mtbmap/viewpoint new.png //MTBIL//
-			icon-width : 13:17 //MTBIL//
+			icon-image : Icons/mtbmap/viewpoint new.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 14
 		for : man_made=tower
 			define
-				icon-image : Icons/mtbmap/tower.png //MTBIL//
+				icon-image : Icons/mtbmap/tower.png
 		draw : icon
 //MTBIL//		for : not (natural=peak or natural=hill)
 		for : not natural=peak
@@ -440,18 +440,18 @@ rules
 
 	target : parking
 		define
-			icon-image : Icons/mtbmap/parking.png //MTBIL//
-			icon-width : 15:17 //MTBIL//
+			icon-image : Icons/mtbmap/parking.png
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 15 //MTBIL//
+			min-zoom : 15
 		for : access=private
 			define
 				icon-image : none
 		for : hiking=yes
 			define
-				icon-image : Icons/mtbmap/parking.png //MTBIL//
+				icon-image : Icons/mtbmap/parking.png
 				min-zoom : 13
-				icon-width : 13:17 //MTBIL//
+				icon-width : 13:17
 		draw : icon
 		for : hiking=yes
 			define
@@ -466,8 +466,8 @@ rules
 		
 	target: cafe
 		define
-			icon-image : Icons/mtbmap/cup.png //MTBIL//
-			icon-width : 13:17 //MTBIL//
+			icon-image : Icons/mtbmap/cup.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
@@ -516,8 +516,8 @@ rules
 
 	target: food
 		define
-			icon-image : Icons/mtbmap/food.png //MTBIL//
-			icon-width : 13:17 //MTBIL//
+			icon-image : Icons/mtbmap/food.png
+			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
