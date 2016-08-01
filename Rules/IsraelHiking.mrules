@@ -61,7 +61,7 @@ features
 		railway station : railway=station
 		parking : amenity=parking
 		power tower : @isOneOf(power, tower, station, sub_station)
-		legend : legend
+		legend : @isOneOf(legend, header, background, area_missing)
 		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
 		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR legend=point_missing OR railway=station
 		forest label: (landuse=forest OR natural=wood) AND width
@@ -163,9 +163,6 @@ properties
 	text-halo-opacity : 0.75
 	map-background-color : white
 	map-background-opacity : 1
-	// Re-establish some defaults
-	border-style : none
-	line-opacity : 100%
 
 rules
 	target : place
@@ -1323,67 +1320,35 @@ rules
 			shape-size : 5
 		draw : shape
 
-//	target : legend
-//		define
-//			min-zoom : 14
-//		for : legend=background
-//			define
-//				line-style : none
-//				line-width : 1
-//				fill-color : #E8FCFF
-//				painting-cycle : 580
-//			draw : fill
-//		else
-//			define
-//				font-family : Arial
-//				font-style : normal
-//				font-weight : normal
-//				font-size : 13:8;16:18
-//				text : @any([[name:he]], [[text:he]], name)
-//				text-align-horizontal : far
-//				text-align-vertical : center
-//				text-direction : rtl
-//			for : legend=line_missing
-//				define
-//					text-offset-vertical : 100%
-//			elsefor : legend=header
-//				define
-//					font-size : 13:18;14:26;16:48
-//					text-halo-width : 30%
-//					text-halo-opacity : 0.75
-//			draw : text
-
-		
-//---- Style for creating legend ----
-// Custom tags in custom osm-file used to create legend
-// Render at zoom 14
-
 	target : legend
 		define
-			min-zoom : 14
-			text : [[text:he]]
-			text-direction : rtl
-			text-align-horizontal : far
-			text-max-width : 30
-			text-halo-width : 0
-			text-line-spacing : 0.5
-			text-avoid-overlaps : false
-		for : legend=heading
+			min-zoom : 13
+		for : legend=background
 			define
-				font-size : 12
-				font-weight : bold
-		for : legend=text
-			define
-				font-size : 9
-				font-weight : bold
-				text-color : #666
-		draw : text
-		for : legend=paper
-			define
-				fill-color : #fff
+				line-style : none
+				line-width : 1
 				fill-color : #E8FCFF
-				painting-cycle : 280
-		draw : fill
+				painting-cycle : 580
+			draw : fill
+		else
+			define
+				font-family : Arial
+				font-style : normal
+				font-weight : normal
+				font-size : 13:8;16:18
+				text : name
+				text-align-horizontal : center
+				text-align-vertical : center
+				text-direction : rtl
+			for : legend=line_missing
+				define
+					text-offset-vertical : 100%
+			elsefor : legend=header
+				define
+					font-size : 13:18;14:26;16:48
+					text-halo-width : 30%
+					text-halo-opacity : 0.75
+			draw : text
 
 	target: contour*
 		define
