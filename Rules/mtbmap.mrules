@@ -154,20 +154,12 @@
 // barrier/fences
 
 features
-	worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-	worship makam: amenity=place_of_worship AND (religion=druze OR religion=Druze)
-	worship mosque: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
-	worship synagogue: amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
 	place : node[place OR landuse=farmyard]
 	legend : legend
 	building : area[building]
 	building point: node[building and not building=entrance]
-	parking : node[amenity=parking] area[amenity=parking]
+
 	area bay : area[@isOneOf(natural,bay,fjord,strait)] node[@isOneOf(natural,bay,fjord,strait)]
-	antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
-	toilet : amenity=toilets
-	medical : amenity=hopital OR amenity=clinic
-	lodging : tourism=guest_house OR tourism=hotel
 
 	points, areas
 		bikeshop : shop=bicycle or service:bicycle:retail=yes
@@ -176,6 +168,12 @@ features
 		food : amenity=restaurant OR amenity=fast_food 
 		lodging : tourism=guest_house OR tourism=hotel
 		medical : amenity=hopital OR amenity=clinic
+		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
+		worship makam : amenity=place_of_worship AND (religion=druze OR religion=Druze)
+		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		parking : amenity=parking
+		archaeological : historic=archaeological_site
 
 	points
 		peak : natural=peak
@@ -197,7 +195,6 @@ features
 		waterhole : natural=waterhole
 		camping : tourism=camp_site
 		ruins : historic=ruins
-		archaeological : historic=archaeological_site
 		memorial : historic=memorial				
 		tree : natural=tree
 		watertower : man_made=water_tower
@@ -211,6 +208,7 @@ features
 //MTBIL//	aeroway : aeroway
 		contour major : contour[@isMulti(elevation, 100) and not elevation=0 ]
 		contour medium : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) and not (@isMulti(elevation, 100) or @isMulti(elevation, 20))]
 		hiking route : relation[type=route route=foot] way[trailblazed=yes]
 		// TODO: no bicycle access for footways in MTB IL 
 		foot path major : (@isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) AND (NOT trail_visibility OR @isOneOf(trail_visibility, excellent, good)) and not area=yes) or (cycleway=lane or cycleway:left=lane or cycleway:right=lane) OR (highway=track and mtb:scale:imba)
@@ -300,53 +298,46 @@ rules
 				icon-width : 17
 		draw : icon
 
+// imported from IHM
+
 	target : place
 		for : place=city
 			define
-				font-size : 8:12;14:22
-				min-zoom : 9
+				min-zoom : 8
 				max-zoom : 14
+				font-size : 8:12;10:16;14:20
 		elsefor : place=town
 			define
-				font-size : 8:10;16:20
-				min-zoom : 10
+				min-zoom : 11
+				font-size : 10:12;16:20
 		elsefor : place=village
 			define
-				font-size : 8:8;16:18
 				min-zoom : 12
+				font-size : 13:10;16:20
 		elsefor : place=hamlet
 			define
-				font-size : 8:6;16:16
-				min-zoom : 14
-		elsefor : place=suburb
+				min-zoom : 14.5
+				font-size : 14.5:10;16:16
+		elsefor : place=farm OR landuse=farmyard OR landuse=farmland
 			define
-				font-size : 8:4;16:14
-				min-zoom : 14
-		elsefor : place=neighbourhood or place=neighborhood
-			define
-				min-zoom : 14
-				font-size : 8:4;16:14
-		elsefor : place=locality 
-			define
-				min-zoom : 14
-				font-size : 8:4;16:14
-		elsefor : place=farm OR landuse=farmyard OR landuse=farm
-			define
-				font-size : 8:2;16:12
 				min-zoom : 15
+				font-size : 15:8;16:14
 		else
 			stop
 		define
 			font-weight : bold
-			text-color : #333
-		for : @isMatch(name, "[А-Я]")
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
 			define
-				text : @any([[name:en]], [[name:no]], name)
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
 		draw : text
 
 	target : viewpoint
 		define
-			icon-image : Icons/mtbmap/viewpoint new.png
+			icon-image : Icons/mtbmap/viewpoint.png
 			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 14
@@ -504,9 +495,9 @@ rules
 	target: attraction
 		define
 			icon-image : Icons/mtbmap/star.png
-			icon-width : 13:17
+			icon-width : 14:17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 			font-weight : bold
@@ -524,7 +515,9 @@ rules
 			align-vertical : center
 			min-zoom : 10
 		draw : icon
+
 		define
+
 			font-weight : bold
 			font-size : 13:11;15:15
 			min-zoom : 11
@@ -533,8 +526,9 @@ rules
 			text-line-spacing : 0.7
 			text-color : black
 			text-max-width : 15
-			text-offset-vertical : -24
+			text-offset-vertical : -20
 		draw : text
+
 		define
 			font-style : italic
 			font-size : 13:8;15:13
@@ -544,7 +538,7 @@ rules
 			text-line-spacing : 0.7
 			text-color : black
 			text-max-width : 15
-			text-offset-vertical : 6
+			text-offset-vertical : 8
 		draw : text
 
 	target: drinkingwater
@@ -558,9 +552,9 @@ rules
 	target: toilet
 		define
 			icon-image : Icons/mtbmap/toilet.png
-			icon-width : 14:17
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 14
+			min-zoom : 15
 		draw : icon
 
 	target : power tower
@@ -594,7 +588,7 @@ rules
 
 	target: information
 		define
-			icon-image : Icons/mtbmap/sign.png
+			icon-image : Icons/mtbmap/info.png
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
@@ -630,7 +624,6 @@ rules
 			min-zoom : 15
 			font-weight : bold
 			font-size : 15:9;16:11
-			min-zoom : 1
 			text-align-vertical : near
 			text-offset-vertical : 30%
 		draw : text
@@ -1352,8 +1345,8 @@ rules
 
 	target: contour*
 		define
-			line-color : #664433
-			line-opacity : 0.5
+			line-color : #993300
+			line-opacity : 0.75
 			curved : false
 			painting-cycle : 401
 		if : *major
@@ -1372,12 +1365,12 @@ rules
 		elseif : *medium
 			define
 				min-zoom : 12
-				line-opacity : 0.3
+				line-opacity : 0.5
 				line-width : 10:0.33;15:1
 		else
 			define
 				min-zoom : 14
-				line-opacity : 0.3
+				line-opacity : 0.4
 				line-width : 10:0.33;15:1
 		draw : contour
 
@@ -1501,6 +1494,9 @@ rules
 			define
 				text : none
 		if : area water
+			define
+				text-color : #2D79B7
+		if : area bay
 			define
 				text-color : #2D79B7
 		if : area glacier
@@ -1696,6 +1692,7 @@ rules
 			painting-cycle : 150
 		draw : line
 
+// Add background for cycle networks in MTB IL
 	target : network cycle *
 		define
 			min-zoom : 10
@@ -1722,6 +1719,7 @@ rules
 			border-opacity : 0.3
 			border-width : 70%
 		draw : line
+// --
 
 	target : well
 		define
