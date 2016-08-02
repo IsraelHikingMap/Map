@@ -111,19 +111,23 @@ load-source Cache\ASTER-35-33.contours
 // ===============================================
 // === Load legend source file created by hand ===   
 // ===============================================
-load-source Cache\Legend.osm
+load-source Legends\Legend.osm
 // ===============================================
 
 // =====================================================================
 // == Load the relief file created using "IsraelHikingSetup.mscript" ===
 // =====================================================================
 load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false
 
-// ========================================
-// === Alternatively, create the relief ===
-// ========================================
-// generate-relief-igor intensity=6 color=#808080 
-// ========================================
+// =================================================
+// === Alternatively, create the relief  3 times ===
+// =================================================
+// generate-relief-igor
+// generate-relief-igor
+// generate-relief-igor
+// =================================================
 
 apply-ruleset
 // ========================================

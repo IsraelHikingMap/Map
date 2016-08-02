@@ -33,6 +33,7 @@ set-setting name=map.decoration.grid value=False
 // === Load the Israel Hiking Overlay Map rules ===
 // ================================================
 use-ruleset location="Rules\IsraelHikingOverlay.mrules"
+pause 1
 // ================================================
 
 // =============================================================================

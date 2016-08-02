@@ -170,7 +170,7 @@ class IsraelHikingTileGenCommand(TileGenCommand):
     self.visualize = False	# Show polygon and skipped areas on the map
     self.verbose = False	# Show tile generation progress
     self.gen_clean_file = False	# Create a sh file that removes all skipped tiles
-    self.subpixel_precision = 3
+    self.subpixel_precision = 2
     self.use_fingerprint = True
     self.tile_save_filter = self.save_filter
     self.tile_generation_filter = self.generation_filter

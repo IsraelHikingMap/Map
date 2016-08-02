@@ -15,10 +15,10 @@ import os
 #=================================================
 # Grid creation boundries - in meters
 # TODO: calculate the grid boundaries from Maperitive geo boundaries
-iGridStartN = 340000
-iGridEndN = 820000
-iGridStartE = 100000
-iGridEndE = 300000
+iGridStartN = 375000
+iGridEndN = 805000
+iGridStartE = 120000
+iGridEndE = 285000
 iGridStep = 1000
 
 sFileName = 'Cache\ITMGrid.osm'

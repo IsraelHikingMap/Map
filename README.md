@@ -1,11 +1,11 @@
 #Israel Hiking Map
-This Repository is part of the IsraelHikingMap project, and it holds all the file and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to Israel Trails Committee (ITC).
+This Repository is part of the Israel Hiking Map project, and it holds all the file and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to Israel Trails Committee (ITC).
 
 The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ## Contents
 * [Ready-to-use maps](#ready-to-use-maps)
-  * [Oruxmaps](#oruxmaps)
+  * [OruxMaps](#oruxmaps)
   * [OpenMaps for iOS](#openmaps-for-ios)
   * [Marble](#marble)
 * [Prepare a map for offline use](#prepare-a-map-for-offline-use)
@@ -14,7 +14,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 ##Ready-to-use maps
 
 ###[OruxMaps](http://www.oruxmaps.com/index_en.html): 
-  * The map is available for Online use as part of OruxMaps builtin maps.
+  * The map is available for Online use as part of OruxMaps built-in maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
     * Create an `Israel Hiking` folder under the `oruxmaps/mapfiles` folder on your Android device.
@@ -33,7 +33,7 @@ This is a guess since we don't have an iOS device
   * Select "Edit".
   * Scroll down.
   * Select "Add new type".
-  * Define a name for it (i.e Israel Hiking).
+  * Define a name for it (i.e., Israel Hiking).
   * Enter this URL: `http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`.
   * Select "Save".
 
@@ -60,7 +60,7 @@ and
 
 1. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
 2. Download [`Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking%20Online.xml) to the `{MOBAC installtion folder}\mapsources` folder.
-3. Open MOBAC (it takes some time since it runs on java) and choose _"oruxmaps sqlite"_ or any other atlas format, as accepted by the map application.
+3. Open MOBAC (it takes some time since it runs on Java) and choose _"oruxmaps sqlite"_ or any other atlas format, as accepted by the map application.
 4. On the left side under _"Map Source"_ choose _"Isreal Hiking Online"_.
 5. Move zoom on the top of the screen to 7 and by mouse drag select the whole country (the selected area should be red)
    * Alternatively, you can select the required area using a polygon and avoid spending disk space for the Mediterranean Sea and foreign countries.
@@ -82,22 +82,26 @@ Follow the process below if you want to create your own tiles or modify the map 
 [Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and MAC.
 Note that this might be tricky on PCs that has windows 32bit and less than 8GB RAM).
 
-###One-time setup for Maperitive and the IsraelHiking Map generation:
+###One-time setup for Maperitive and the Israel Hiking Map generation:
 
 1. Download the [latest Maperitive version](http://maperitive.net/download/Maperitive-latest.zip) from the [Maperitive site](http://maperitive.net/)
-2. Extract the contents of the zip file to a desired location.
-...If you have Administrator permission for your Windows machine, you can unzip to the `Program Files` folder, but this is not a requirement.
-...On Linux and MacOS, Maperitive requires the use of [Mono](http://www.mono-project.com/Main_Page).
-3. Download the [Israel Hiking Map zip file](https://github.com/IsraelHikingMap/Map/archive/master.zip) from the [IsraelHikingMap/Map on GitHub](https://github.com/IsraelHikingMap/Map) site (this site if you read this file in github).
+2. Extract the contents of the zip file to a desired location. 
+   * If you have Administrator permission for your Windows machine, you can unzip to the `Program Files` folder, but this is not a requirement.
+   * If MOBAC will be used for creation of offline maps, the two installation directories need to have the same parent directory or the MOBAC directory needs to be added to the `PATH` environment variable.
+   * On Linux and MacOS, Maperitive requires the use of [Mono](http://www.mono-project.com/Main_Page).
+3. Download the [Israel Hiking Map zip file](https://github.com/IsraelHikingMap/Map/archive/master.zip) from the [IsraelHikingMap/Map on GitHub](https://github.com/IsraelHikingMap/Map) site (this site if you read this file in GitHub).
 4. Choose a location on a disk with no less than 10GB of free space. Our favorite locations are in the Maperitive Install folder, or within the Documents folders hierarchy.
 5. Unzip the zip file to chosen location.
 6. Rename the top `Map-master` folder to `IsraelHikingMap`.
+7. Download the [wget zip file](https://eternallybored.org/misc/wget/releases/wget-1.18-win32.zip).
+6. Create a `wget` directory in the same parent directory as the Maperitive installation directory. Alternatively, place the wget directory elsewhere and add it to the `PATH` environment variable.
+7. Extract the contents of the zip file to the wget directory.
 
 ###Map tiles generation:
 
 1. Ensure you have Internet connection to enable downloading of the latest OpenStreetMap data.
 2. Double-click on the `IsraelHikingMap\Scripts\Maperipy\CreateOruxMap.py` script file.
-3. If asked how to open the file, please choose `maperitive.exe` from the Maperitive instalation folder. 
+3. If asked how to open the file, please choose `maperitive.exe` from the Maperitive installation folder. 
 
 This should generate 256x256 png tile files inside the `IsraelHikingMap\Site\Tiles` folder and would take several hours.
 You may choose to do it overnight, but you need to make sure you don't get out of memory.
@@ -108,10 +112,10 @@ This is an optional stage in case you want to make the locally generated tiles a
 
 1. Follow the instructions to [prepare a map for offline use](#prepare-a-map-for-offline-use), and exit MOBAC. 
 2. Download [`Israel Hiking.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking.xml) to the `{MOBAC installtion folder}\mapsources` folder.
-3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the dircetory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
+3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the directory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
 4. Run MOBAC
 5. On the left side under _"Map Source"_ choose _"Isreal Hiking Local"_.
 6. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 5-May-16
+Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 9-July-16
