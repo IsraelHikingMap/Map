@@ -157,14 +157,9 @@
 
 
 features
-	worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-	// Additional amenity=place_of_worship for MTB IL
-	worship makam: amenity=place_of_worship AND (religion=druze OR religion=Druze)
-	worship mosque: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
-	worship synagogue: amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+	
 	// --
-	// food : amenity=restaurant OR amenity=fast_food OR tourism=guest_house
-	// Food should not be a line
+
 //	alpine hut : tourism=alpine_hut
 //	wilderness hut : node[tourism=wilderness_hut] area[tourism=wilderness_hut]
 //MTBIL//	shelter : amenity=shelter
@@ -176,7 +171,7 @@ features
 	legend : legend
 	building : area[building]
 	building point: node[building and not building=entrance]
-	parking : node[amenity=parking] area[amenity=parking]
+
 //MTBIL//	swimming : node[leisure=swimming] area[leisure=swimming]
 //	dam : way[waterway=dam] area[waterway=dam]
 //MTBIL//	dam : area[waterway=dam]
@@ -184,10 +179,7 @@ features
 //	area bay : area[@isOneOf(natural,bay,fjord,strait)] way[@isOneOf(natural,bay,fjord,strait) and not type=multipolygon]
 	area bay : area[@isOneOf(natural,bay,fjord,strait)] node[@isOneOf(natural,bay,fjord,strait)]
 //MTBIL//	aeroway : aeroway
-	antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
-	toilet : amenity=toilets
-	medical : amenity=hopital OR amenity=clinic
-	lodging : tourism=guest_house OR tourism=hotel
+
 		
 	points, areas
 //MTBIL//		cabin : @isOneOf(tourism,alpine_hut,wilderness_hut,cabin) or (amenity=shelter and shelter_type=basic_hut)
@@ -203,6 +195,14 @@ features
 		food : amenity=restaurant OR amenity=fast_food 
 		lodging : tourism=guest_house OR tourism=hotel
 		medical : amenity=hopital OR amenity=clinic
+		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
+		// Additional amenity=place_of_worship for MTB IL
+		worship makam : amenity=place_of_worship AND (religion=druze OR religion=Druze)
+		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
+		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		parking : amenity=parking
+		archaeological : historic=archaeological_site
+		
 		// --
 			
 	points
@@ -228,7 +228,6 @@ features
 		waterhole : natural=waterhole
 		camping : tourism=camp_site
 		ruins : historic=ruins
-		archaeological : historic=archaeological_site
 		memorial : historic=memorial				
 		tree : natural=tree
 		watertower : man_made=water_tower
@@ -418,7 +417,7 @@ rules
 
 	target : viewpoint
 		define
-			icon-image : Icons/mtbmap/viewpoint new.png
+			icon-image : Icons/mtbmap/viewpoint.png
 			icon-width : 13:17
 			align-vertical : center
 			min-zoom : 14
@@ -533,8 +532,8 @@ rules
 
 	target: convenience
 		define
-			icon-image : Icons/mtbmap/convenience.png
-			icon-width : 13:10;16:18
+//			icon-image : Icons/mtbmap/convenience.png
+//			icon-width : 13:10;16:18
 			icon-image : Icons/mtbmap/shopping.png
 			icon-width : 14:17
 			align-vertical : center
@@ -601,9 +600,9 @@ rules
 	target: attraction
 		define
 			icon-image : Icons/mtbmap/star.png
-			icon-width : 13:17
+			icon-width : 14:17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 //			font-family : Arial
@@ -702,7 +701,7 @@ rules
 			text-line-spacing : 0.7
 			text-color : black
 			text-max-width : 15
-			text-offset-vertical : -24
+			text-offset-vertical : -20
 		draw : text
 		
 		define
@@ -715,7 +714,7 @@ rules
 			text-line-spacing : 0.7
 			text-color : black
 			text-max-width : 15
-			text-offset-vertical : 6
+			text-offset-vertical : 8
 		draw : text
 
 //	target : hill
@@ -759,9 +758,9 @@ rules
 	target: toilet
 		define
 			icon-image : Icons/mtbmap/toilet.png
-			icon-width : 14:17
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 14
+			min-zoom : 15
 		draw : icon
 
 	target : power tower
@@ -817,7 +816,7 @@ rules
 
 	target: information
 		define
-			icon-image : Icons/mtbmap/sign.png
+			icon-image : Icons/mtbmap/info.png
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
@@ -859,7 +858,6 @@ rules
 			min-zoom : 15
 			font-weight : bold
 			font-size : 15:9;16:11
-			min-zoom : 1
 			text-align-vertical : near
 			text-offset-vertical : 30%
 		draw : text
