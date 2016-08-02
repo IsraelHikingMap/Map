@@ -347,72 +347,109 @@ rules
 		draw : icon
 		//--
 		
+//	target : place
+//		for : place=city
+//			define
+//				min-zoom : 8
+//				min-zoom : 5
+//				max-zoom : 16
+//				font-size : 8:12;14:22
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 9
+//				max-zoom : 14
+//				// --
+//		elsefor : place=town
+//			define
+//				min-zoom : 8
+//				font-size : 8:10;16:20
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 10
+//				// --
+//		elsefor : place=village
+//			define
+//				min-zoom : 10
+//				font-size : 8:8;16:18
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 12
+//				// --
+//		elsefor : place=hamlet
+//			define
+//				min-zoom : 13
+//				font-size : 8:6;16:16
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 14
+//				// --
+//		elsefor : place=suburb
+//			define
+//				min-zoom : 13
+//				font-size : 8:4;16:14
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 14
+//				// --
+//		elsefor : place=neighbourhood or place=neighborhood
+//			define
+//				min-zoom : 14
+//				font-size : 8:4;16:14
+//MTBIL//		elsefor : place=locality AND not natural=hill
+//		elsefor : place=locality 
+//			define
+//				min-zoom : 14
+//				font-size : 8:4;16:14
+//		elsefor : place=farm OR landuse=farmyard OR landuse=farm
+//			define
+//				min-zoom : 14
+//				font-size : 8:2;16:12
+//				// Use higher zoom values for MTB IL
+//				min-zoom : 15
+//				// --
+//		else
+//			stop
+//		define
+//			font-weight : bold
+//			text-color : #333
+//			// text-letter-spacing : -0.03
+//			// text-avoid-overlaps : true
+//			// The above lines do not work with RTL languages
+//		for : @isMatch(name, "[А-Я]")
+//			define
+//				text : @any([[name:en]], [[name:no]], name)
+//		draw : text
+		
+// imported from IHM
+
 	target : place
 		for : place=city
 			define
-//				min-zoom : 8
-				min-zoom : 5
-				max-zoom : 16
-				font-size : 8:12;14:22
-				// Use higher zoom values for MTB IL
-				min-zoom : 9
+				min-zoom : 8
 				max-zoom : 14
-				// --
+				font-size : 8:12;10:16;14:20
 		elsefor : place=town
 			define
-				min-zoom : 8
-				font-size : 8:10;16:20
-				// Use higher zoom values for MTB IL
-				min-zoom : 10
-				// --
+				min-zoom : 11
+				font-size : 10:12;16:20
 		elsefor : place=village
 			define
-				min-zoom : 10
-				font-size : 8:8;16:18
-				// Use higher zoom values for MTB IL
 				min-zoom : 12
-				// --
+				font-size : 13:10;16:20
 		elsefor : place=hamlet
 			define
-				min-zoom : 13
-				font-size : 8:6;16:16
-				// Use higher zoom values for MTB IL
-				min-zoom : 14
-				// --
-		elsefor : place=suburb
+				min-zoom : 14.5
+				font-size : 14.5:10;16:16
+		elsefor : place=farm OR landuse=farmyard OR landuse=farmland
 			define
-				min-zoom : 13
-				font-size : 8:4;16:14
-				// Use higher zoom values for MTB IL
-				min-zoom : 14
-				// --
-		elsefor : place=neighbourhood or place=neighborhood
-			define
-				min-zoom : 14
-				font-size : 8:4;16:14
-//MTBIL//		elsefor : place=locality AND not natural=hill
-		elsefor : place=locality 
-			define
-				min-zoom : 14
-				font-size : 8:4;16:14
-		elsefor : place=farm OR landuse=farmyard OR landuse=farm
-			define
-				min-zoom : 14
-				font-size : 8:2;16:12
-				// Use higher zoom values for MTB IL
 				min-zoom : 15
-				// --
+				font-size : 15:8;16:14
 		else
 			stop
 		define
 			font-weight : bold
-			text-color : #333
-			// text-letter-spacing : -0.03
-			// text-avoid-overlaps : true
-			// The above lines do not work with RTL languages
-		for : @isMatch(name, "[А-Я]")
+		// Hebrew preference for points & areas
+		for : @isMatch(name, "[א-ת]")
 			define
-				text : @any([[name:en]], [[name:no]], name)
+				text : name
+		else
+			define
+				text : @any([[name:he]], [[name:en]], name)
 		draw : text
 
 	target : viewpoint
