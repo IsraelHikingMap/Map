@@ -38,6 +38,8 @@ IF EXIST .\PuTTYOSM.ppk (
   )
 )
 
+@TITLE Uploading %ZIPFILE% to %SITES%
+
 SET ERRORLEVELWAS=0
 @ECHO SITES=%SITES%
 FOR %%S in (%SITES%) DO (
