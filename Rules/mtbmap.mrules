@@ -265,7 +265,7 @@ features
 		farmyard : landuse=farmyard
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden) OR amenity=grave_yard
+		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden)
 		area sand : natural=beach OR natural=sand
 		area scree : natural=scree
 		breakwater : man_made=breakwater
@@ -387,8 +387,8 @@ rules
 			align-vertical : center
 			min-zoom : 15
 		for : access=private
-			define
-				icon-image : none
+			stop
+		draw : icon
 		
 	target: cafe
 		define
@@ -778,10 +778,10 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:10
+			font-size : 15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		draw : text
 		
@@ -991,7 +991,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 50%
-				border-opacity : 1
+				border-opacity : 0.75
 				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
@@ -1001,7 +1001,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.75
+				border-opacity : 0.5
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
@@ -1374,8 +1374,7 @@ rules
 			font-size : 15:10
 			font-style : italic
 			font-weight : bold
-//			text-color : #99ccff black 20%
-//			text-color : #b5d9fb black 20%
+
 			text-color : #2D79B7
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
@@ -1398,7 +1397,6 @@ rules
 			shape-spacing : 15:2
 		for : barrier=fence
 			define
-//				line-color:#777
 		for : height >= 1.5
 			define
 				shape-def : pw:1; m:-5,0; l:5,10; m:5,0; l:15,10
@@ -1432,8 +1430,6 @@ rules
 
 	target: contour*
 		define
-//			line-color : #7f3300
-//			line-color : #663819
 			line-color : #993300
 			line-opacity : 0.75
 			curved : false
@@ -1442,16 +1438,13 @@ rules
 			define
 				map.rendering.contour.label : true
 				min-zoom : 10
-//				line-opacity : 10:0.3;11:0.4;12:0.5
-//				line-width : 10:0.5;11:0.6;12:0.75;14:1
 				line-width : 10:0.5;15:1.5
 				font-size : 9
 				font-style : italic
 				font-weight : normal
-//				text-color : #000
+
 				text-color : #320
 				text-opacity : 0.8
-//				text-halo-width : 20%
 				text-halo-width : 0
 				text-halo-opacity : 0.75
 				text-halo-color : #F1EEE8
@@ -1459,13 +1452,11 @@ rules
 			define
 				min-zoom : 12
 				line-opacity : 0.5
-//				line-width : 0.6
 				line-width : 10:0.33;15:1
 		else
 			define
 				min-zoom : 14
 				line-opacity : 0.4
-//				line-width : 0.6
 				line-width : 10:0.33;15:1
 		draw : contour
 
@@ -1475,10 +1466,6 @@ rules
 			line-color : #f1eee8
 			line-width : 10:0.5;15:6
 			line-opacity : 0.5
-//			border-style : solid
-//			border-color : #fff
-//			border-width : 40%
-//			border-opacity : 0.5
 			painting-cycle : 440
 		draw : line
 
@@ -1563,7 +1550,6 @@ rules
 
 	target : construction
 		define
-//			fill-color : #998833
 			fill-color : #aaa176
 			fill-opacity : 0.75
 			line-style : none
@@ -1614,7 +1600,7 @@ rules
 			text-orientation: fixed
 		for : @isMatch(name, "[А-Я]")
 			define
-				text : @any([[name:en]], [[name:no]], name)
+				text : @any([[name:he]], [[name:en]], name)
 
 		for : water=river
 			define
@@ -1626,8 +1612,8 @@ rules
 			define
 				text-color : #669B9B
 		if : area wood
-			define
-				text-color : #5A7E47
+			for : landuse=forest
+				stop
 		if : area wetland
 			define
 				text-color : #3290CB
@@ -1717,8 +1703,6 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 12
-//			fill-color : #DEFED2
-//			fill-texture : mtbmap/patterns/temp/jsdotpattern_03.png
 			fill-texture : Textures/scree.png
 		draw : fill
 		
@@ -1727,7 +1711,6 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 8
-//			fill-color : #9Dff74 white 60%
 			fill-color : #DEFED2
 		for : natural=fell or natural=moor
 			define
@@ -1735,31 +1718,37 @@ rules
 		draw : fill
 		for : natural=scrub
 			define
-				fill-color : #CFE5C5
-				fill-opacity : 1
+				//fill-color : #DFF5D5
+				//fill-opacity : 1
+				fill-texture : Textures/scrub.png
 		for : landuse=orchard OR landuse=vineyard
 			define
 				fill-texture : Textures/orchard.png
 				
 		draw : fill
-		// for : (landuse=cemetery OR amenity=grave_yard) and not name
-		// Icon only in MTB IL
+
 		for : (landuse=cemetery OR amenity=grave_yard)
-		// --
+
 			define
 				icon-image : Icons/mtbmap/cemetery.png
 				icon-width : 15:17
-				// --
 				align-vertical : center
 				min-zoom : 15
 			draw : icon
+			
+			define
+				line-style : solid
+				line-width : 1
+				line-color : #050
+				min-zoom : 8
+				fill-color : #DEFED2
+			draw : fill
 
 	target : area sand
 		define
 			line-style : none
 			line-width : 1
 			min-zoom : 8
-//			fill-color : #eeee22 white 40%
 			fill-color : #FFFFE9
 		draw : fill
 
@@ -1821,18 +1810,15 @@ rules
 	target : coastline
 		define
 			curved : false
-//			line-width : 6:0.5;15:2
 			line-width : 6:0.25;15:2
-//			line-color : #99ccff black 20%
 			line-color : #b5d9fb black 20%
-//			line-offset : 11:0.5;15:1
 			line-offset : 6:0.125;15:1
 			line-offset-sides : right
 			line-offset-miter-limit : 5
 			painting-cycle : 150
 		draw : line
 
-// Add background for cycle networks in MTB IL
+// Background for cycle networks in MTB IL
 	target : network cycle *
 		define
 			min-zoom : 10
@@ -1859,6 +1845,7 @@ rules
 			border-opacity : 0.3
 			border-width : 70%
 		draw : line
+
 // --
 		
 		
