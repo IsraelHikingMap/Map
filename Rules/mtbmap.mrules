@@ -286,6 +286,7 @@ properties
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
+	 
 //______________________________________________________________________________________________________________
 	
 rules
@@ -399,11 +400,29 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:9;15:10
+			text-color : black
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target: tower
@@ -413,14 +432,7 @@ rules
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
-		define
-			font-weight : bold
-			font-size : 14:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 14
-			text-align-vertical : near
-		draw : text
+
 
 	target: food
 		define
@@ -430,13 +442,30 @@ rules
 			min-zoom : 13
 		draw : icon
 		define
-
 			font-weight : bold
-			font-size : 15:10
+			text-color : black
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 
 	target: convenience
@@ -446,14 +475,7 @@ rules
 			align-vertical : center
 			min-zoom : 14
 		draw : icon
-		define
-			font-weight : bold
-			font-size : 15:10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		draw : text
+
 
 	target: lodging
 		define
@@ -464,11 +486,29 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 15:10
+			text-color : black
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 
 	target: bikeshop
@@ -480,11 +520,29 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 15:10
+			text-color : black
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target: medical
@@ -595,7 +653,6 @@ rules
 				shape-size:15:1.5;16:2
 		draw : shape
 
-
 	target: picnic
 		define
 			icon-image : Icons/mtbmap/picnic.png
@@ -612,11 +669,30 @@ rules
 			min-zoom : 13
 		draw : icon
 		define
-			min-zoom : 15
 			font-weight : bold
-			font-size : 15:9;16:11
+			text-color : black
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
 			text-align-vertical : near
-			text-offset-vertical : 30%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 
 	target: information
@@ -643,10 +719,28 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 12:9;15:11
+			font-size : 12:10;14:12
+			font-stretch : 1
+			text-offset-vertical : 60%
 			min-zoom : 12
 			text-align-vertical : near
-			text-offset-vertical : 60%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text		
 		
 	target: spring
@@ -657,12 +751,30 @@ rules
 			align-vertical : center
 		draw : icon
 		define
-			min-zoom : 15
 			font-weight : bold
 			text-color : blue
-			font-size : 15:9;16:11
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
 			text-align-vertical : near
-			text-offset-vertical : 30%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target : cistern
@@ -672,12 +784,30 @@ rules
 			icon-width : 14:9
 		draw : icon
 		define
-			min-zoom : 15
 			font-weight : bold
 			text-color : blue
-			font-size : 15:9;16:11
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
 			text-align-vertical : near
-			text-offset-vertical : 30%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target : waterhole
@@ -687,12 +817,29 @@ rules
 			icon-width : 14:12
 		draw : icon
 		define
-			min-zoom : 15
 			font-weight : bold
-			text-color : blue
-			font-size : 15:9;16:11
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
 			text-align-vertical : near
-			text-offset-vertical : 30%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 	
 	target : well
@@ -702,12 +849,29 @@ rules
 			icon-width : 14:9
 		draw : icon
 		define
-			min-zoom : 15
 			font-weight : bold
-			text-color : blue
-			font-size : 15:9;16:11
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
 			text-align-vertical : near
-			text-offset-vertical : 30%
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 
 	target : picnic
@@ -732,11 +896,28 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:9;15:10
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target : camping
@@ -752,6 +933,23 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 				
@@ -768,6 +966,23 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target : monument
@@ -778,11 +993,28 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 15:10
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 14
 			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 	target : museum
@@ -793,12 +1025,29 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:10
+			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 14
 			text-align-vertical : near
-		draw : text
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		drae : text
 		
 	target: worship *
 		if : * church
@@ -872,7 +1121,6 @@ rules
 		for : aerialway=cable_car OR aerialway=gondola
 			define
 				min-zoom : 12
-//				fill-color : black
 				line-width : 12:0.5;15:2
 				shape-size : 12:2;15:6
 				shape-spacing : 12:15;15:30
@@ -1025,11 +1273,19 @@ rules
 			for : colour
 				define
 					line-color : white
+					border-style : solid
+					border-color : black
+					border-width : 30%
+					border-opacity : 0.5
 					min-zoom : 13
 			else
 				define
 					min-zoom : 14
 					line-color : white
+					border-style : solid
+					border-color : black
+					border-width : 30%
+					border-opacity : 0.5
 		draw : line
 // shields
 		define
@@ -1277,18 +1533,29 @@ rules
 		draw : line
 				
 		define
+			map.rendering.lflp.max-allowed-corner-angle : 20
 			min-zoom : 14
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
 			
-			// Handle right-to-left text
-		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
+		for : @isMatch(name, "[א-ת]")
 			define
+				text : name
 				text-direction : rtl
-		for : @isMatch(name, "[А-Я]")
+		elsefor : name:he
 			define
-				text : @any([[name:en]], name)				
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
 		draw : text
 		
 		for : oneway=yes OR oneway=true
@@ -1296,11 +1563,14 @@ rules
 				min-zoom : 15
 				shape : custom
 				shape-def : 60,0,20,-40,20,-15,-60,-15,-60,15,20,15,20,40;Z
-				shape-size : 12
+				shape-size : 15
 				shape-aspect : 0.75
 				shape-spacing : 12
 				fill-color : black
-				line-style : none
+				line-style : solid
+				line-color : white
+				line-width : 0.5
+				
 			for : oneway=-1
 				define
 					angle : 180
@@ -1315,6 +1585,32 @@ rules
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
 		draw : line
+		
+		define
+			map.rendering.lflp.max-allowed-corner-angle : 20
+			min-zoom : 14
+			font-size : 14:10;15:11;16:12
+			font-weight : bold
+			text-offset-vertical : -8
+			
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
 	
 	
 	target : bridge
