@@ -1047,7 +1047,7 @@ rules
 			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
-		drae : text
+		draw : text
 		
 	target: worship *
 		if : * church
