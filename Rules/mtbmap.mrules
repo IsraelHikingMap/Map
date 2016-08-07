@@ -237,8 +237,8 @@ features
 		track : highway=track
 						
 		//  paths
-		MTBpath unknown: highway=path AND (not bicycle=no)AND NOT mtb:scale AND (not bicycle=designated)
-		MTBpath easy : ((highway=cycleway OR (highway=path AND bicycle=designated)) AND (mtb:scale=0 OR NOT mtb:scale))OR (highway=path AND bicycle=yes AND mtb:scale=0)
+		MTBpath unknown: highway=path AND (not bicycle=no)AND (NOT mtb:scale)
+		MTBpath easy : ((highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=0) OR (highway=cycleway AND NOT mtb:scale)
 		MTBpath medium : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=1
 		MTBpath hard : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND (mtb:scale=2 OR mtb:scale=3)
 		MTBpath hardest: (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND (mtb:scale=4 OR mtb:scale=5)
@@ -319,7 +319,7 @@ rules
 				icon-width: 17
 		for : legend
 			define
-				min-zoom : 13
+				min-zoom : 14
 				icon-width : 17
 		draw : icon
 		//--
@@ -363,7 +363,7 @@ rules
 	target : viewpoint
 		define
 			icon-image : Icons/mtbmap/viewpoint.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
 		for : man_made=tower
@@ -394,17 +394,17 @@ rules
 	target: cafe
 		define
 			icon-image : Icons/mtbmap/cup.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 			font-weight : bold
 			text-color : black
-			font-size : 13:9;15:10
+			font-size : 14:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -428,26 +428,26 @@ rules
 	target: tower
 		define
 			icon-image : Icons/mtbmap/tower.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 
 
 	target: food
 		define
 			icon-image : Icons/mtbmap/food.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 			font-weight : bold
 			text-color : black
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -480,17 +480,17 @@ rules
 	target: lodging
 		define
 			icon-image : Icons/mtbmap/hotel.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 			font-weight : bold
 			text-color : black
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -514,7 +514,7 @@ rules
 	target: bikeshop
 		define
 			icon-image : Icons/mtbmap/bike-repair.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
 			min-zoom : 13
 		draw : icon
@@ -524,7 +524,7 @@ rules
 			font-size : 13:9;15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -548,13 +548,13 @@ rules
 	target: medical
 		define
 			icon-image : Icons/mtbmap/first_aid.png
-			icon-width : 11:17
+			icon-width : 17
 			align-vertical : center
-			min-zoom : 11
+			min-zoom : 13
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 15
@@ -571,10 +571,10 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 14:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		draw : text
 				
@@ -582,15 +582,15 @@ rules
 		if : * bare
 			define
 				icon-image : Icons/mtbmap/peak.png
-				icon-width : 10:17
+				icon-width : 17
 				align-vertical : center
-				min-zoom : 10
+				min-zoom : 12
 			draw : icon
 		
 			define
 				font-weight : bold
-				font-size : 13:11;15:15
-				min-zoom : 11
+				font-size : 14:10;15:12
+				min-zoom : 14
 				text : name
 				text-line-spacing : 0.7
 				text-color : black
@@ -600,8 +600,8 @@ rules
 		
 			define
 				font-style : italic
-				font-size : 13:8;15:13
-				min-zoom : 11
+				font-size : 14:8;15:10
+				min-zoom : 14
 				text : @if(ele,"("ele")")
 				text-align-vertical : near
 				text-align-horizontal : center
@@ -613,8 +613,8 @@ rules
 		elseif: * occupied
 			define
 				font-style : italic
-				font-size : 13:8;15:13
-				min-zoom : 11
+				font-size : 14:8;15:10
+				min-zoom : 14
 				text : @if(ele,"("ele")")
 				text-align-vertical : near
 				text-align-horizontal : center
@@ -627,7 +627,7 @@ rules
 	target: drinkingwater
 		define
 			icon-image : Icons/mtbmap/tap.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
 		draw : icon
@@ -656,7 +656,7 @@ rules
 	target: picnic
 		define
 			icon-image : Icons/mtbmap/picnic.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
 		draw : icon
@@ -664,17 +664,17 @@ rules
 	target: cave
 		define
 			icon-image : Icons/mtbmap/cave.png
-			icon-width : 13:12
+			icon-width : 12
 			align-vertical : center
-			min-zoom : 13
+			min-zoom : 14
 		draw : icon
 		define
 			font-weight : bold
 			text-color : black
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -698,7 +698,7 @@ rules
 	target: information
 		define
 			icon-image : Icons/mtbmap/info.png
-			icon-width : 15:17
+			icon-width : 17
 			align-vertical : center
 			min-zoom : 15
 		for : information=guidepost
@@ -714,12 +714,12 @@ rules
 		define
 			min-zoom : 10
 			icon-image : Icons/mtbmap/plane.png
-			icon-width : 13:17
+			icon-width : 17
 			align-vertical : center
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 12:10;14:12
+			font-size : 12
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 12
@@ -745,18 +745,18 @@ rules
 		
 	target: spring
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/spring.png
-			icon-width : 13:9
+			icon-width : 9
 			align-vertical : center
 		draw : icon
 		define
 			font-weight : bold
 			text-color : blue
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -779,14 +779,14 @@ rules
 		
 	target : cistern
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/cistern.png
-			icon-width : 14:9
+			icon-width : 12
 		draw : icon
 		define
 			font-weight : bold
 			text-color : blue
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 14
@@ -812,16 +812,16 @@ rules
 		
 	target : waterhole
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/water_hole.png
-			icon-width : 14:12
+			icon-width : 12
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -844,16 +844,16 @@ rules
 	
 	target : well
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/well.png
-			icon-width : 14:9
+			icon-width : 9
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -876,23 +876,23 @@ rules
 
 	target : picnic
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/table.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		
 	target : antenna
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/antenna.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		
 	target : ruins
 		define
 			min-zoom : 14
 			icon-image : Icons/mtbmap/ruins.png
-			icon-width : 14:17
+			icon-width : 17
 		draw : icon
 		define
 			font-weight : bold
@@ -924,11 +924,11 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/mtbmap/camping.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 14
@@ -955,16 +955,16 @@ rules
 				
 	target : archaeological
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/jar.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -987,16 +987,16 @@ rules
 		
 	target : monument
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/monument.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -1019,16 +1019,16 @@ rules
 		
 	target : museum
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/museum.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		define
 			font-weight : bold
-			font-size : 13:9;15:10
+			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 14
+			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -1063,7 +1063,7 @@ rules
 			define
 				icon-image : Icons/mtbmap/makam.png
 		define
-			icon-width : 13:17
+			icon-width : 17
 		for : tourism=attraction
 			define
 				min-zoom : 13
@@ -1077,21 +1077,21 @@ rules
 		define
 			min-zoom : 15
 			icon-image : Icons/mtbmap/tree.png
-			icon-width : 15:17
+			icon-width : 17
 		draw : icon
 				
 	target : watertower
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/water_tower.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 		
 	target : gas
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/gas.png
-			icon-width : 13:17
+			icon-width : 17
 		draw : icon
 
 
@@ -1228,8 +1228,8 @@ rules
 				text-color : blue
 				border-style : solid
 				border-color : black
-				border-width : 50%
-				border-opacity : 1
+				border-width : 30%
+				border-opacity : 0.5
 				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * trunk
 			define
@@ -1238,8 +1238,8 @@ rules
 				text-color : red
 				border-style : solid
 				border-color : black
-				border-width : 50%
-				border-opacity : 0.75
+				border-width : 30%
+				border-opacity : 0.5
 				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
@@ -1254,12 +1254,12 @@ rules
 		elseif : * secondary
 			define
 				min-zoom : 10
-				line-color : #8B4513
-				text-color : #8B4513
+				line-color : #a98770
+				text-color : #a98770
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.75
+				border-opacity : 0.5
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
@@ -1286,6 +1286,10 @@ rules
 					border-color : black
 					border-width : 30%
 					border-opacity : 0.5
+		define
+			line-width : 10:0.5;13:2;14:2;16:3
+			border-style : solid
+			border-width : 80%
 		draw : line
 // shields
 		define
@@ -1395,7 +1399,7 @@ rules
 // Street names
 	target : road street *
 		define
-			min-zoom : 14.5
+			min-zoom : 15
 			font-weight : bold
 			font-family : Verdana
 			text-max-width : 7
@@ -1480,9 +1484,9 @@ rules
 	
 	target : track
 		define
-			min-zoom : 12
+			min-zoom : 13
 			line-color : white
-			line-width : 12:1;14:2
+			line-width : 13:1;15:2
 			border-style : dot
 			border-color : black
 			border-width : 50%
@@ -1490,8 +1494,8 @@ rules
 		draw : line
 		
 		define
-			min-zoom : 14
-			font-size : 14:10;15:11;16:12
+			min-zoom : 15
+			font-size : 15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
 			
@@ -1509,10 +1513,10 @@ rules
 	target : MTBpath *
 		if : * unknown
 			define
-				line-color : #999999
+				line-color : #777
 		elseif : * easy
 			define
-				line-color : #00bb00
+				line-color : #080
 		elseif : * medium
 			define
 				line-color : #5050ff

@@ -67,7 +67,11 @@ geo-bounds-use-source index=1
 // =======================================================
 set-print-bounds-geo
 // =======================================================
-
+// === Add way lengths to the OSM data sources and ===
+// === create Forest labels data in "Forests.osm"  ===
+// ===================================================
+run-python file="Scripts\Maperipy\AddWayLengthTags.py"
+// ===================================================
 // =====================================================
 // === Add size=* tag to natural/landuse/place areas ===
 // =====================================================
