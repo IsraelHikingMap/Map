@@ -1850,11 +1850,11 @@ rules
 		define
 			font-weight : bold
 			text-color : green
-			font-size : 15
+			font-size : 12
 			font-stretch : 1
 			text-offset-vertical : 60%
 			font-style: italic
-			min-zoom : 12
+			min-zoom : 13
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
 			define
