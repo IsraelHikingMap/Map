@@ -150,6 +150,7 @@
 // TODO:
 // -----
 // natural reserve
+// areas A and B
 
 features
 	
@@ -178,6 +179,7 @@ features
 		gas : amenity=fuel
 		camping : tourism=camp_site
 		museum : tourism=museum
+		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
 	//______________________________________________________________________________________________________________
 			
@@ -205,6 +207,7 @@ features
 		cistern : man_made=cistern
 		waterhole : natural=waterhole
 		watertower : man_made=water_tower
+		waterfall : waterway=waterfall
 		
 	//______________________________________________________________________________________________________________
 
@@ -237,7 +240,7 @@ features
 		track : highway=track
 						
 		//  paths
-		MTBpath unknown: highway=path AND (not bicycle=no)AND (NOT mtb:scale)
+		MTBpath unknown: highway=path AND (not bicycle=no) AND (NOT mtb:scale)
 		MTBpath easy : ((highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=0) OR (highway=cycleway AND NOT mtb:scale)
 		MTBpath medium : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=1
 		MTBpath hard : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND (mtb:scale=2 OR mtb:scale=3)
@@ -328,9 +331,17 @@ rules
 	target : place
 		for : place=city
 			define
+				icon-image : Icons/mtbmap/dot.png
+				icon-width : 10
+				min-zoom : 7
+				max-zoom : 9
+			draw : icon
+			define
+				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
 				font-size : 8:12;10:16;14:20
+				
 		elsefor : place=town
 			define
 				min-zoom : 11
@@ -888,6 +899,38 @@ rules
 			icon-width : 17
 		draw : icon
 		
+	target : waterfall
+		define
+			min-zoom : 14
+			icon-image : Icons/mtbmap/waterfall.png
+			icon-width : 17
+		draw : icon
+		define
+			font-weight : bold
+			font-size : 13:9;15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 14
+			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
+		
 	target : ruins
 		define
 			min-zoom : 14
@@ -1158,11 +1201,9 @@ rules
 		define
 			line-width : 0
 			shape : custom
-
-			shape-def : f:#643,0.6;-10,0;0,-30;10,0;Z
-			shape-size : 13:6;15:10
-
-			shape-spacing : -0.2
+			shape-def : f:#643,0.6;-10,0;0,-100;10,0;Z
+			shape-size : 13:15;15:30
+			shape-spacing : -0.7
 			shape-orientation: flow
 
 		draw : shape
@@ -1444,30 +1485,7 @@ rules
 					min-zoom : 13
 					line-color : black
 					max-zoom : 14
-			for : colour
-				define
-					min-zoom : 9
-					line-width : 1.6
-				for : colour = red
-					define
-						line-color : red
-				elsefor : colour = blue
-					define
-						line-color : blue
-				elsefor : colour = black
-					define
-						line-color : black
-				elsefor : colour = green
-					define
-						line-color : green
-				elsefor : colour = purple
-					define
-						line-color : purple
-				elsefor : colour = orange
-					define
-						line-color : orange
-			else
-				stop
+			
 		elseif : * secondary
 			define
 				min-zoom : 9
@@ -1526,8 +1544,7 @@ rules
 		elseif : * hardest
 			define
 				line-color : #000000
-		
-	
+			
 		define
 			min-zoom : 10
 			line-style : solid
@@ -1579,6 +1596,33 @@ rules
 				define
 					angle : 180
 			draw : shape
+// Background for cycle networks in MTB IL
+	target : network cycle *
+		define
+			min-zoom : 10
+			// Draw only the background
+			// Adapt the class:bicycle:mtb size and style
+			line-width : 10:1;15:5
+			line-opacity : 0
+			line-style : solid
+			border-style : solid
+		if : * local
+			define
+				border-color : yellow 
+		elseif : * regional
+			define
+				border-color : red 
+		elseif : * national
+			define
+				border-color : blue
+		define
+			border-opacity : 0.3
+			border-width : 40%
+		draw : line
+		define
+			border-opacity : 0.3
+			border-width : 70%
+		draw : line
 		
 	target : footpath
 	
@@ -1728,6 +1772,23 @@ rules
 		draw : line
 		draw : shape
 
+	target : aeroway
+		for : aeroway=runway
+			define
+				curved : false
+				min-zoom : 11
+				line-width : 11:3;12:4;13:8;14:15;15:20
+				line-color : #aaa
+		elsefor : aeroway=taxiway
+			define
+				min-zoom : 13
+				curved : false
+				line-width : 11:1;12:1;13:3;14:6;15:10
+				line-color : #aaa
+		else
+			stop
+		draw : line
+		
 	target: contour*
 		define
 			line-color : #993300
@@ -1745,9 +1806,10 @@ rules
 
 				text-color : #320
 				text-opacity : 0.8
-				text-halo-width : 0
+				text-halo-width : 25%
 				text-halo-opacity : 0.75
 				text-halo-color : #F1EEE8
+				
 		elseif : *medium
 			define
 				min-zoom : 12
@@ -1771,6 +1833,49 @@ rules
 
 // ___________________areas________________________
 
+	target : nature reserve
+		define
+			min-zoom : 9
+			line-color : green
+			line-width : 9:4;13:8
+			line-style : dashdotdot
+			line-opacity : 0.5
+			fill-color : green
+			fill-opacity : 0.4
+			fill-hatch : nwse
+			fill-hatch-color : green
+			fill-hatch-opacity : 0.025
+			painting-cycle : 495
+		draw : fill
+		define
+			font-weight : bold
+			text-color : green
+			font-size : 12
+			font-stretch : 1
+			text-offset-vertical : 60%
+			font-style: italic
+			min-zoom : 13
+			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
+		
+			
 	target : building
 		define
 			min-zoom : 13
@@ -1886,7 +1991,8 @@ rules
 			min-zoom : 1
 			line-style : solid
 			line-color : blue
-			line-width : 1:1
+			line-width : 1:0.1;13:0.5
+			line-opacity : 0.5
 			painting-cycle : 401
 		draw : fill
 
@@ -2081,7 +2187,7 @@ rules
 		draw : text
 	target : industrial
 		define
-			line-style : none
+			line-style : solid
 			line-width : 1
 			fill-color : #ddd
 		draw : fill
@@ -2118,33 +2224,6 @@ rules
 			painting-cycle : 150
 		draw : line
 
-// Background for cycle networks in MTB IL
-	target : network cycle *
-		define
-			min-zoom : 10
-			// Draw only the background
-			// Adapt the class:bicycle:mtb size and style
-			line-width : 10:1;15:5
-			line-opacity : 0
-			line-style : solid
-			border-style : solid
-		if : * local
-			define
-				border-color : yellow 
-		elseif : * regional
-			define
-				border-color : red 
-		elseif : * national
-			define
-				border-color : blue
-		define
-			border-opacity : 0.3
-			border-width : 40%
-		draw : line
-		define
-			border-opacity : 0.3
-			border-width : 70%
-		draw : line
 
 // --
 		
