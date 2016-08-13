@@ -72,7 +72,9 @@ IF NOT [%1]==[] (
     )
   )
 )
-IF "%TILES%"=="" GOTO :EOF
+IF "%TILES%"=="" (
+  EXIT /B
+)
 
 CD Site
 ECHO Finding updated Tiles in:
