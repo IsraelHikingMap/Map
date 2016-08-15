@@ -165,12 +165,12 @@ features
 		convenience : shop=convenience OR shop=supermarket
 		food : amenity=restaurant OR amenity=fast_food
 		lodging : tourism=guest_house OR tourism=hotel
-		medical : amenity=hopital OR amenity=clinic
+		medical : amenity=hospital OR amenity=clinic
 		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-		// Additional amenity=place_of_worship for MTB IL
-		worship makam : amenity=place_of_worship AND (religion=druze OR religion=Druze)
+		worship other : amenity=place_of_worship AND NOT (religion=christian OR religion=Christian OR religion=muslim OR religion=Muslim OR religion=jewish OR religion=Jewish)
 		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
 		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		holy grave : (tourism=monument OR tourism=memorial OR amenity=grave)
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
@@ -179,6 +179,7 @@ features
 		gas : amenity=fuel
 		camping : tourism=camp_site
 		museum : tourism=museum
+		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
 	//______________________________________________________________________________________________________________
@@ -195,7 +196,7 @@ features
 		// Additional icons for MTB IL
 		cave : natural=cave_entrance OR tomb=hypogeum
 		tower : (man_made=tower AND tower:type=observation)
-		monument : historic=memorial OR historic=monument				
+		monument : (historic=memorial OR historic=monument) AND NOT religion				
 		tree : natural=tree
 		antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
 		toilet : amenity=toilets
@@ -217,7 +218,7 @@ features
 		aeroway : aeroway
 		railway : @isOneOf(railway,rail,light_rail,tram,subway,funicular)
 		power line : @isOneOf(power, line, minor_line)
-		stream : waterway=stream or waterway=river or waterway=canal or waterway=drain or waterway=ditch
+		stream : waterway=stream or waterway=river or waterway=canal or waterway=drain or waterway=ditch or waterway=riverbank 
 		coastline : natural=coastline
 		cliff : natural=cliff
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
@@ -236,8 +237,10 @@ features
 		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		track : highway=track
+		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road street unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		track : highway=track and not (tracktype=grade1 OR tracktype=grade2)
+		gravel : highway=track and (tracktype=grade1 OR tracktype=grade2)
 						
 		//  paths
 		MTBpath unknown: highway=path AND (not bicycle=no) AND (NOT mtb:scale)
@@ -261,7 +264,7 @@ features
 		commercial : landuse=commercial or landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area glacier : natural=glacier
-		area water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
+		area water : natural=water OR landuse=reservoir OR landuse=basin
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
 		quarry : landuse=quarry
@@ -320,10 +323,7 @@ rules
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
 				icon-width: 17
-		for : legend
-			define
-				min-zoom : 14
-				icon-width : 17
+
 		draw : icon
 		//--
 		
@@ -332,7 +332,7 @@ rules
 		for : place=city
 			define
 				icon-image : Icons/mtbmap/dot.png
-				icon-width : 10
+				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
 			draw : icon
@@ -482,9 +482,9 @@ rules
 	target: convenience
 		define
 			icon-image : Icons/mtbmap/shopping.png
-			icon-width : 14:17
+			icon-width : 15:17
 			align-vertical : center
-			min-zoom : 14
+			min-zoom : 15
 		draw : icon
 
 
@@ -714,7 +714,7 @@ rules
 			min-zoom : 15
 		for : information=guidepost
 			define
-				align-vertical : far
+				align-vertical : center
 				icon-image : Icons/mtbmap/sign.png
 		for : information=map
 			define
@@ -763,7 +763,7 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			text-color : blue
+			text-color : #0000dd
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
@@ -796,7 +796,7 @@ rules
 		draw : icon
 		define
 			font-weight : bold
-			text-color : blue
+			text-color : #0000dd
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
@@ -832,6 +832,7 @@ rules
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
+			text-color : #0000dd
 			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
@@ -864,6 +865,7 @@ rules
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
+			text-color : #0000dd
 			min-zoom : 15
 			text-align-vertical : near
 		for : @isMatch(name, "[א-ת]")
@@ -1092,6 +1094,13 @@ rules
 					text-direction : rtl
 		draw : text
 		
+	target: holy grave
+		define
+			icon-image : Icons/mtbmap/holy_place.png
+			icon-width : 17
+			min-zoom : 15
+		draw : icon
+	
 	target: worship *
 		if : * church
 			define
@@ -1102,9 +1111,9 @@ rules
 		elseif : * synagogue
 			define
 				icon-image : Icons/mtbmap/synagogue.png
-		elseif : * makam
+		elseif : * other
 			define
-				icon-image : Icons/mtbmap/makam.png
+				icon-image : Icons/mtbmap/holy_place.png
 		define
 			icon-width : 17
 		for : tourism=attraction
@@ -1136,6 +1145,13 @@ rules
 			icon-image : Icons/mtbmap/gas.png
 			icon-width : 17
 		draw : icon
+		
+	target : railway station
+		define
+			min-zoom : 11
+			shape : square
+			shape-size : 5
+		draw : shape
 
 
 // ___________________lines________________________
@@ -1195,13 +1211,13 @@ rules
 			line-width : 10:0.5;15:1
 			line-offset : 10:0.25;15:0.5
 			line-offset-sides : left
-			line-color : #664433
+			line-color : brown
 			line-opacity : 0.6
 		draw : line
 		define
 			line-width : 0
 			shape : custom
-			shape-def : f:#643,0.6;-10,0;0,-100;10,0;Z
+			shape-def : f:brown,0.6;-10,0;-5,-30;0,-100;5,-30,10,0;Z
 			shape-size : 13:15;15:30
 			shape-spacing : -0.7
 			shape-orientation: flow
@@ -1311,26 +1327,24 @@ rules
 				border-width : 30%
 				border-opacity : 0.5
 		elseif : * residential
-			for : colour
-				define
-					line-color : white
-					border-style : solid
-					border-color : black
-					border-width : 30%
-					border-opacity : 0.5
-					min-zoom : 13
-			else
-				define
-					min-zoom : 14
-					line-color : white
-					border-style : solid
-					border-color : black
-					border-width : 30%
-					border-opacity : 0.5
+			define
+				line-color : #bbb
+				border-style : solid
+				border-color : #bbb
+				border-width : 1%
+				border-opacity : 1
+				min-zoom : 13
+		elseif : * unclassified
+			define
+				min-zoom : 14
+				line-color : white
+				border-style : solid
+				border-color : black
+				border-width : 30%
+				border-opacity : 0.5
+		
 		define
 			line-width : 10:0.5;13:2;14:2;16:3
-			border-style : solid
-			border-width : 80%
 		draw : line
 // shields
 		define
@@ -1341,9 +1355,6 @@ rules
 			stop
 		if : * motorway
 			for : length > 16
-				define
-					min-zoom : 7
-			elsefor : length > 8
 				define
 					min-zoom : 8
 			elsefor : length > 6
@@ -1485,6 +1496,11 @@ rules
 					min-zoom : 13
 					line-color : black
 					max-zoom : 14
+			elseif : * unclassified
+				define
+					min-zoom : 12
+					line-color : black
+					max-zoom : 14
 			
 		elseif : * secondary
 			define
@@ -1509,6 +1525,18 @@ rules
 			border-color : black
 			border-width : 50%
 			border-opacity : 1
+		draw : line
+		
+	target : gravel
+		define
+			min-zoom : 13
+			line-color : white
+			line-width : 13:1;15:2
+			border-style : solid
+			border-color : black
+			border-width : 30%
+			border-opacity : 0.5
+							
 		draw : line
 		
 		define
@@ -1712,6 +1740,12 @@ rules
 		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.25
+		for: waterway=riverbank
+			define
+				min-zoom : 13
+				line-width : 13:1; 14:2
+				line-color : #b5d9fb black 10%
+				border-style : none
 		draw : line
 		define
 			min-zoom : 15
@@ -1741,34 +1775,20 @@ rules
 			shape-spacing : 15:2
 		for : barrier=fence
 			define
-		for : height >= 1.5
+				min-zoom : 14
+				line-color : black
+				line-width : 1.5
+			draw : line
 			define
-				shape-def : pw:1; m:-5,0; l:5,10; m:5,0; l:15,10
-				shape-size : 15:8
-				shape-spacing : 15:1.5
-				line-color : #333
-				fill-color : #666
-		for : height <= 0.5
-			define
-				line-color : #999
-				fill-color : #999
-		for : barrier=wall and wall=dry_stone
+				shape : custom
+				shape-def : 4,7;-4,-7;m:4,-7;-4,7
+				shape-spacing : 3
+				shape-size : 5
+			draw : shape
+		for : barrier=wall
 			define
 				shape-def : pw:0;m:0,-10;a:10,10,0,10;a:10,10,0,-10;z
 				shape-size : 15:5
-			for : height >= 1.5
-				define
-					shape-def : pw:0;m:-15,-10;a:10,10,-15,10;a:10,10,-15,-10;z;m:15,-10;a:10,10,15,10;a:10,10,15,-10;z
-					shape-size : 15:7
-		for : barrier=hedge
-			define
-				min-zoom:15
-				line-width : 1.5
-				line-color:#8fc278
-		for : fence_type=barbed_wire
-			define
-				shape-def : pw:1;m:-10,-10; l:10,10; m:-10,10; l:10,-10;
-				shape-size : 15:4
 		draw : line
 		draw : shape
 
@@ -1777,13 +1797,13 @@ rules
 			define
 				curved : false
 				min-zoom : 11
-				line-width : 11:3;12:4;13:8;14:15;15:20
+				line-width : 11:3;12:4;13:8;14:13;15:15
 				line-color : #aaa
 		elsefor : aeroway=taxiway
 			define
 				min-zoom : 13
 				curved : false
-				line-width : 11:1;12:1;13:3;14:6;15:10
+				line-width : 11:1;12:1;13:3;14:6;15:8
 				line-color : #aaa
 		else
 			stop
@@ -1791,7 +1811,7 @@ rules
 		
 	target: contour*
 		define
-			line-color : #993300
+			line-color : brown
 			line-opacity : 0.75
 			curved : false
 			painting-cycle : 401
@@ -1799,16 +1819,16 @@ rules
 			define
 				map.rendering.contour.label : true
 				min-zoom : 10
-				line-width : 10:0.5;15:1.5
+				line-width : 10:0.5;15:1
 				font-size : 9
 				font-style : italic
 				font-weight : normal
 
 				text-color : #320
 				text-opacity : 0.8
-				text-halo-width : 25%
+				text-halo-width : 50%
 				text-halo-opacity : 0.75
-				text-halo-color : #F1EEE8
+				text-halo-color : #fff9e6
 				
 		elseif : *medium
 			define
@@ -1837,8 +1857,8 @@ rules
 		define
 			min-zoom : 9
 			line-color : green
-			line-width : 9:4;13:8
-			line-style : dashdotdot
+			line-width : 9:3;13:5
+			line-style : dashdot
 			line-opacity : 0.5
 			fill-color : green
 			fill-opacity : 0.4
@@ -1848,9 +1868,10 @@ rules
 			painting-cycle : 495
 		draw : fill
 		define
+			painting-cycle : 990
 			font-weight : bold
 			text-color : green
-			font-size : 12
+			font-size : 14
 			font-stretch : 1
 			text-offset-vertical : 60%
 			font-style: italic
@@ -1955,10 +1976,18 @@ rules
 
 	target : construction
 		define
-			fill-color : #aaa176
-			fill-opacity : 0.75
-			line-style : none
+			fill-color : #aaa
+			fill-opacity : 0.1
+			line-style : solid
+			line-width : 0.3
+			line-color : #999
+			fill-opacity : 0.5
 		draw : fill
+		define
+			icon-image : Icons/mtbmap/bulldozer.png
+			icon-width : 13:17
+			min-zoom : 13
+		draw : icon
 
 	target : quarry
 		define
@@ -2074,14 +2103,6 @@ rules
 		draw : text
 
 
-	target : area glacier
-		define
-			line-style : solid
-			line-color : #ddffff black 10%
-			line-width : 6:0.25;11:0.5;15:1
-			fill-color : #E7FFFF
-		draw : fill
-
 	target : area wetland
 		define
 			line-style : none
@@ -2103,7 +2124,6 @@ rules
 			fill-color : #CFE5C5
 		draw : fill
 
-
 	target : area scree
 		define
 			line-style : none
@@ -2118,15 +2138,11 @@ rules
 			line-width : 1
 			min-zoom : 8
 			fill-color : #DEFED2
-		for : natural=fell or natural=moor
+		
+		for : natural=scrub OR natural=meadow OR natural=heath OR natural=fell or natural=moor
 			define
-				fill-color : #E2F4DC
-		draw : fill
-		for : natural=scrub
-			define
-				//fill-color : #DFF5D5
-				//fill-opacity : 1
 				fill-texture : Textures/scrub.png
+		
 		for : landuse=orchard OR landuse=vineyard
 			define
 				fill-texture : Textures/orchard.png
@@ -2188,7 +2204,8 @@ rules
 	target : industrial
 		define
 			line-style : solid
-			line-width : 1
+			line-width : 0.5
+			line-color : #999
 			fill-color : #ddd
 		draw : fill
 		define
@@ -2235,29 +2252,43 @@ rules
 
 	target : legend
 		define
-			// Hebrew legend in MTB IL
-			// text : text
+
 			text : [[text:he]]
 			text-direction : rtl
-			//
 			text-align-horizontal : far
 			text-max-width : 30
 			text-halo-width : 0
 			text-line-spacing : 0.5
 			text-avoid-overlaps : false
+		for : legend=title
+			define
+				font-size : 18
+				font-weight : bold
+				text-direction : rtl
+				text-color : blue
+				
 		for : legend=heading
 			define
 				font-size : 12
 				font-weight : bold
+				text-direction : rtl
 		for : legend=text
 			define
 				font-size : 9
 				font-weight : bold
 				text-color : #666
+				text-direction : rtl
 		draw : text
 		for : legend=paper
 			define
+				fill-color : #eee
+		draw : fill
+		for : legend=box
+			define
 				fill-color : #fff
+				line-width : 1
+				line-color : #fff
+				line-style : solid
 		draw : fill
 		
 		

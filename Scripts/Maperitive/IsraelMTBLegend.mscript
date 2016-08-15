@@ -5,7 +5,7 @@ clear-map
 use-ruleset location="Rules\mtbmap.mrules"
 load-source file="Legends\legend_mtb.osm"
 zoom-bounds
-zoom 15
+zoom 15.5
 geo-bounds-use-source
 set-print-bounds-geo
-export-bitmap zoom=15 scale=3 subpixel=2 file=Cache\legend_mtb.png
+export-bitmap zoom=15.5 scale=3 subpixel=2 file=Cache\legend_mtb.png
