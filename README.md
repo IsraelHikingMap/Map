@@ -13,18 +13,15 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ##Ready-to-use maps
 
-###[OruxMaps](http://www.oruxmaps.com/index_en.html): 
+###[OruxMaps for Android](http://www.oruxmaps.com/index_en.html): 
   * The map is available for Online use as part of OruxMaps built-in maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
-    * Create an `Israel Hiking` folder under the `oruxmaps/mapfiles` folder on your Android device.
-    * Download both `Israel Hiking.otrk2.xml` and `OruxMapsImages.db` files from one of the following locations:
-      * [Google Drive](https://googledrive.com/host/0B-qrsEBJWXhQUGVBM3lHZTF2eXc/Israel Hiking/) (mirror, usually faster).
-      * [IsraelHiking.osm.org.il](http://IsraelHiking.osm.org.il/Oruxmaps/mapfiles/Israel Hiking/) (origin).
-    * Place both files in the "Israel Hiking" folder on your device.
+    * From your Android device, with OruxMaps 6.5.4 or later, go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMaps.html) page.
+    * Click on the link to the requested map. 
+    * The download may take several minutes, and afterwards you can enjoy the map with no need for a network connection.
     * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
-
-To update the offline maps, just re-download the two files.
+    * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
 ###[OpenMaps for iOS](http://izeize.com/openmaps/)
 This is a guess since we don't have an iOS device
@@ -119,3 +116,5 @@ This is an optional stage in case you want to make the locally generated tiles a
 
 -------------------------
 Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 9-July-16
+
+<!-- vim: set autoindent -->
