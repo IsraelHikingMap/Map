@@ -10,3 +10,4 @@
 * - Copy*
 .merged.*
 *.hidden*
+!/Site/*/*legend*
