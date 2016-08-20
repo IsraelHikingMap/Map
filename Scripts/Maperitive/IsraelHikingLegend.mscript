@@ -17,6 +17,8 @@ change-directory ..
 change-directory ..
 // ============================================
 
+set-setting name=map.decoration.scale value=False
+set-setting name=map.decoration.attribution value=False
 use-ruleset location="Rules\IsraelHiking.mrules"
 load-source "Legends\Legend.osm"
 geo-bounds-use-source
