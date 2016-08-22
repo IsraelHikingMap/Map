@@ -17,7 +17,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * The map is available for Online use as part of OruxMaps built-in maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
-    * From your Android device, with OruxMaps 6.5.4 or later, go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMaps.html) page.
+    * From your Android device, with OruxMaps 6.5.4 or later, go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
     * Click on the link to the requested map. 
     * The download may take several minutes, and afterwards you can enjoy the map with no need for a network connection.
     * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
