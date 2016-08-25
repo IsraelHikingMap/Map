@@ -17,10 +17,21 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * The map is available for Online use as part of OruxMaps built-in maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
-    * From your Android device, with OruxMaps 6.5.4 or later, go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
-    * Click on the link to the requested map. 
-    * The download may take several minutes, and afterwards you can enjoy the map with no need for a network connection.
-    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
+    * <a id="oruxmaps-offline-android"></a>From your Android device, with OruxMaps 6.5.4 or later
+      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
+      * Click on the link to the requested map. 
+      * The download may take several minutes. 
+      * Note: The free space required for the instalation is twice the size of the downloaded map.
+    * <a id="oruxmaps-offline-pc"></a>From a PC connected to your Android device with a USB cable
+      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
+      * Click on the link to the requested map. 
+      * Connect the Android device to your PC.
+      * On your Android device select "File transfers" instead of "USB for charging", if needed.
+      * On your PC
+        * Open the downloaded zip file and copy the directory it has.
+	* Paste the above directory onto the ```Oruxmaps\mapfiles``` directory of the connected Android device.
+    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrows)"_
+    * You can now enjoy the map with no need for a network connection.
     * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
 ###[OpenMaps for iOS](http://izeize.com/openmaps/)
@@ -117,4 +128,4 @@ This is an optional stage in case you want to make the locally generated tiles a
 -------------------------
 Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 9-July-16
 
-<!-- vim: set autoindent -->
+<!-- vim: set autoindent shiftwidth=2: -->
