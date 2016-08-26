@@ -3,9 +3,9 @@
     <id>EPSG:3857</id>
   </srs>
   <origin>
-    <x>1152970.9960586103</x>
-    <y>9210741.5744319037</y>
+    <x>1153124.2939031327</x>
+    <y>9210701.0640579555</y>
   </origin>
-  <cell-width>1.1260237715458079</cell-width>
-  <cell-height>-1.126023718971233</cell-height>
+  <cell-width>1.1260237431189364</cell-width>
+  <cell-height>-1.1260238342990432</cell-height>
 </georef>
