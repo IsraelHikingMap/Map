@@ -1,16 +1,22 @@
-@REM Create and upload a given Tiles levels
-@REM Usage
-@REM 	ZipLevel ["new"] [<Level> ...]
-@REM 		examples:
-@REM 		ZipLevel Tiles\16 
-@REM - The default directories are
-@REM   Tiles\7 Tiles\8 Tiles\9 Tiles\10 Tiles\11 Tiles\12 Tiles\13 Tiles\14 Tiles\15
-@REM
-@REM 	ZipLevel ["new"] <Level> "start" <dirnum>
-@REM		Start at a given directory number of a single level
-@REM
-
 @ECHO OFF
+
+IF [%1]==[/?] (
+  ECHO. Create and upload a given Tiles levels
+  ECHO. Usage
+  ECHO.    ZipLevel [/new] [^<Level^> ...]
+  ECHO.       Examples:
+  ECHO.         ZipLevel Tiles\16 
+  ECHO.         ZipLevel mtbTiles\*
+  ECHO.       The default directories are:
+  ECHO.         Tiles\7 Tiles\8 Tiles\9 Tiles\10 Tiles\11 Tiles\12 Tiles\13 Tiles\14 Tiles\15
+  ECHO.
+  ECHO.    ZipLevel [/new] ^<Level^> start ^<dirnum^>
+  ECHO.         Start at a given directory number of a single level
+  ECHO.
+  ECHO.    /new - upload tiles newer than the pdb file.
+
+  EXIT /B
+)
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 PATH %PATH%;%~d0\Program Files\7-Zip;%~d0\Program Files\7-ZipPortable\App\7-Zip
@@ -28,18 +34,18 @@ SET DIRMAX=99999999
 IF [%1]==[] (
   SET LEVEL=Tiles\7 Tiles\8 Tiles\9 Tiles\10 Tiles\11 Tiles\12 Tiles\13 Tiles\14 Tiles\15
 ) ELSE (
-  IF /I [%1]==[new] (
+  IF /I [%1]==[/new] (
     @REM TODO SHIFT /1 does not work well with %*
     SET NEWER=YES
     IF /I [%3]==[start] (
       SET LEVEL=%2
       SET DIRMIN=%4
       IF /I [%5]==[end] (
-	IF [%6]==[] (
-	  SET DIRMAX=%4
-	) ELSE (
-	  SET DIRMAX=%6
-	)
+        IF [%6]==[] (
+          SET DIRMAX=%4
+        ) ELSE (
+          SET DIRMAX=%6
+        )
       )
     ) ELSE (
       SET LEVEL=%*
@@ -49,11 +55,11 @@ IF [%1]==[] (
       SET LEVEL=%1
       SET DIRMIN=%3
       IF /I [%4]==[end] (
-	IF [%5]==[] (
-	  SET DIRMAX=%3
-	) ELSE (
-	  SET DIRMAX=%5
-	)
+        IF [%5]==[] (
+          SET DIRMAX=%3
+        ) ELSE (
+          SET DIRMAX=%5
+        )
       )
     ) ELSE (
       SET LEVEL=%*
@@ -64,9 +70,6 @@ IF [%1]==[] (
 @REM Upload script should not pause
 SET NOPAUSE=REM
 
-REM Change to Script's directory
-REM TODO Allow uploading of different tile sets
-
 FOR /D %%L in ( %LEVEL% ) DO (
   IF /I NOT [%%L]==[new] (
     SET ZIPNAME=%%L
@@ -75,48 +78,48 @@ FOR /D %%L in ( %LEVEL% ) DO (
     @REM ECHO ZIPNAME #2: !ZIPNAME!
     FOR /D  %%D in (%%L\*) DO (
       IF %%~nD GEQ %DIRMIN% (
-	IF %%~nD LEQ %DIRMAX% (
-	  SET ZIPPATH="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.zip"
-	  SET ZIPLST="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.lst"
-	  REM Delete zip file if it already exists
-	  IF EXIST !ZIPPATH! (
-	    DEL !ZIPPATH!
-	  )
-	  @ECHO ON
-	  IF [%NEWER%]==[] (
+        IF %%~nD LEQ %DIRMAX% (
+          SET ZIPPATH="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.zip"
+          SET ZIPLST="%ISRAELHIKING%\Output\!ZIPNAME!-%%~nD.lst"
+          REM Delete zip file if it already exists
+          IF EXIST !ZIPPATH! (
+            DEL !ZIPPATH!
+          )
+          @ECHO ON
+          IF [%NEWER%]==[] (
             @ECHO Creating !ZIPPATH!...
-	    7z a -tzip !ZIPPATH! -r %%D\*.png > NUL
-	    CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
-	  ) ELSE (
-	    "%~d0\Program Files\UnxUtils\usr\local\wbin\find.exe" %%D -name "*.png" -newer "%ISRAELHIKING%\Cache\israel-and-palestine-latest.osm.pbf" -print > !ZIPLST!
-	    echo %ERRORLEVEL%
-	    @REM TODO "%~d0\Program Files\UnxUtils\usr\local\wbin\find.exe" %%D -name "*.png" -print > !ZIPLST!
+            7z a -tzip !ZIPPATH! -r %%D\*.png > NUL
+            CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
+          ) ELSE (
+            "%~d0\Program Files\UnxUtils\usr\local\wbin\find.exe" %%D -name "*.png" -newer "%ISRAELHIKING%\Cache\israel-and-palestine-latest.osm.pbf" -print > !ZIPLST!
+            echo %ERRORLEVEL%
+            @REM TODO "%~d0\Program Files\UnxUtils\usr\local\wbin\find.exe" %%D -name "*.png" -print > !ZIPLST!
 
-	    @REM The FOR statement gets one list file
-	    @REM echo CD: %CD%
-	    @REM echo %D: %%D
-	    @REM ECHO ZIPPATH.lst is: !ZIPLST!
-	    @REM DIR !ZIPLST!
-	    @REM TODO
-	    @REM POPD
-	    @REM EXIT /B
-	    FOR %%Z in (!ZIPLST!) DO (
-	      echo Size of %%Z is %%~zZ
-	      dir %%Z
-	      if %%~zZ GTR 0 (
-		@REM Creates non-empty zip file and Upload it
-		7z a -tzip !ZIPPATH! @!ZIPLST! > NUL
-		CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
-	      )
-	    )
-	    DEL !ZIPLST!
-	  )
-	  @REM TODO @ECHO OFF
-	  IF NOT ERRORLEVEL 1 (
-	    @REM Remove Zip file
-	    @REM TODO DEL !ZIPPATH!
-	  )
-	)
+            @REM The FOR statement gets one list file
+            @REM echo CD: %CD%
+            @REM echo %D: %%D
+            @REM ECHO ZIPPATH.lst is: !ZIPLST!
+            @REM DIR !ZIPLST!
+            @REM TODO
+            @REM POPD
+            @REM EXIT /B
+            FOR %%Z in (!ZIPLST!) DO (
+              echo Size of %%Z is %%~zZ
+              dir %%Z
+              if %%~zZ GTR 0 (
+                @REM Creates non-empty zip file and Upload it
+                7z a -tzip !ZIPPATH! @!ZIPLST! > NUL
+                CALL ..\Scripts\Batch\UploadTiles.bat !ZIPPATH!
+              )
+            )
+            DEL !ZIPLST!
+          )
+          @REM TODO @ECHO OFF
+          IF NOT ERRORLEVEL 1 (
+            @REM Remove Zip file
+            @REM TODO DEL !ZIPPATH!
+          )
+        )
       )
     )
   )
