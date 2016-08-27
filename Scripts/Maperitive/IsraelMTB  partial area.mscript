@@ -88,11 +88,6 @@ load-source Cache\ASTER-35-31.contours
 // load-source Cache\ASTER-35-32.contours
 // load-source Cache\ASTER-35-33.contours
 
-// ========================
-// === Load legend image file ===   
-// ========================
-load-image file=Cache\IL_MTB_legend_retina.png background=false
-// ========================
 
 // =======================================================================
 // == Load the relief file created using "Israel Hiking Setup.mscript" ===

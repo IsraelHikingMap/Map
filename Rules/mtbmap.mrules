@@ -3,7 +3,7 @@
 
 // Created by Ola Endre Reitstøen http://www.reitstoen.com/
 // Working example: http://osm.reitstoen.com/
-// Adapted for Israel by Zeev Stadler - http://IsraelHiking.osm.org.il/IsraelMTBmap.html
+// Adapted for Israel by Zeev Stadler and Guy Shakhar - http://IsraelHiking.osm.org.il/IsraelMTBmap.html
 // Highly modified version of Hiking map by Igor Brejc
 // Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
 
@@ -25,47 +25,47 @@
 // MTB path colored by scale and scale aura removed
 
 // v 3.6
-// Aeroway - Fix rendering when area, made lighter (#888 to #bbb) and added apron
+// Aeroway - Fix rendering when area, made lighter (#888 to #bbb) AND added apron
 // Adding cape/peninsula
 // Added scree again
 // Added strait
-// If Russian/Cyrillic text on place, road and areacover, try to render english or norwegian
+// If Russian/Cyrillic text on place, road AND areacover, try to render english OR norwegian
 // v 3.3
 // Added scree (temp removed)
 // v 3.2
 // Fixing missing trail_visibility=intermediate (was missing)
 // Version 3.0
 // 2015-05-26: Updated by Ola Endre Reitstøen
-// Building point added to z13, and a bit smaller
+// Building point added to z13, AND a bit smaller
 // Swimming moved to z16
 // Added turningcircle
 // Cutline render below wetland (440 vs 450)
 // Moved contours below hillshading
-// Moved water and stream in front of hillshading
-// Added painting-cycle to water and stream. Stream rendered below water.
+// Moved water AND stream in front of hillshading
+// Added painting-cycle to water AND stream. Stream rendered below water.
 //--- New Maperitive version
 // Changed icon size of all icons. Same size.
 // Adjustments of trail_visibility
 //---
-// Added airport with icon and name
-// Changed lines on water, min-zoom and width depending on size
-// Changed minzoom for hamlet and suburb
+// Added airport with icon AND name
+// Changed lines on water, min-zoom AND width depending on size
+// Changed minzoom for hamlet AND suburb
 // Added place=neighbourhood/neighborhood
 // Added railway=subway
 // Road text only for major rendered at z14
 // A bit smaller text one peak/hill
 // Changing rendering of railway
-// area * feature for most landuse and natural to simplify rendering of text
+// area * feature for most landuse AND natural to simplify rendering of text
 // Change size of ghost
 // Changing water-icon
 // Adding Bier Garten
 // Adding object-size script
 //---
 // track color a bit lighter when no mtb:scale tag
-// Added orchard and moor
+// Added orchard AND moor
 // Render roadname at z14
-// Moving aeroway behind roads and changed color
-// Places: textsize and min-zoom
+// Moving aeroway behind roads AND changed color
+// Places: textsize AND min-zoom
 // Aerialway changes
 // Changes to coastline line width
 //---
@@ -84,8 +84,8 @@
 // Change render priority on different mtb:scales. 0 last -> render on top
 // Fixed missing barrier-icons
 // All tunnels are renderd (tunnel=yes -> tunnel)
-// Changing Restricted and no cycling areas
-// Added line barrier (fence, wall and hedge)
+// Changing Restricted AND no cycling areas
+// Added line barrier (fence, wall AND hedge)
 // Changed color for powerline to #666 (same as aerialway)
 // Added aerialway
 // Added natural=grassland to grass
@@ -94,8 +94,8 @@
 // Reduced opacity on nocycle in tunnels
 // added opacity for class:bicycle:mtb < 0 for minor path
 
-// area=yes on highway does not render
-// building=entrance does not render
+// area=yes on highway does NOT render
+// building=entrance does NOT render
 // Added general letterspacing
 // Parking area moved after building
 // Color changes (more muted)
@@ -110,37 +110,41 @@
 // Tweaked colors
 // Different style on mtb:scale > 3
 // Different style on minor path using shapes to fake dotted line
-// moved rules, icons and patterns to mtbmap-folder
+// moved rules, icons AND patterns to mtbmap-folder
 // moved bridge before stream
 // new font: Clear Sans (vertical offset set for new font!)
 // wider roads at zoom 16
-// mtb:scale only rendered for foot way and track
+// mtb:scale only rendered for foot way AND track
 // footway rendered black if mtb:scale present
 // class:bicycle:mtb < 0 rendered with 0.4 opacity
 // added glacier
 
-// Painting Cycle
-// painting-cycle : *
+// ___________________Painting Cycle________________________
+
 //
 //	map legend : 1000
 //	highlights : 950
 //	web maps : 900
 //		stream text : 800
 //	text labels : 800
-//	icons, shapes and shields : 700
-//	line and contour symbols : 600
+//	icons, shapes AND shields : 700
+//	line AND contour symbols : 600
 //		area water (fill) : 503
 //		river : 502
 //		stream : 500
 //	bitmap (foreground) : 500
 //		turningcircle : 490
 //		cutline : 440
-//		building point : 402
-//		building : 402
-//		contour : 401
+//		Pal Areas A & B 410
+//		Military 410
+//		building point : 404
+//		building : 404
+//		contour : 403
 //	fill symbols : 400
+//		area quarry : 401
 //		area wetland : 450
 //		area water (line) : 401
+// 		area residential : 401
 //	bitmap (background) : 300
 //	coastline islands : 200
 //		coastline : 150
@@ -149,18 +153,17 @@
 
 // TODO:
 // -----
-// natural reserve
-// areas A and B
+
 
 features
 	
 	place : node[place OR landuse=farmyard]
 	legend : legend
 	building : area[building]
-	building point: node[building and not building=entrance]
+	building point: node[building AND NOT building=entrance]
 		
 	points, areas
-		bikeshop : shop=bicycle or service:bicycle:retail=yes
+		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		cafe : amenity=cafe
 		convenience : shop=convenience OR shop=supermarket
 		food : amenity=restaurant OR amenity=fast_food
@@ -170,7 +173,6 @@ features
 		worship other : amenity=place_of_worship AND NOT (religion=christian OR religion=Christian OR religion=muslim OR religion=Muslim OR religion=jewish OR religion=Jewish)
 		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
 		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
-		holy grave : (tourism=monument OR tourism=memorial OR amenity=grave)
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
@@ -181,55 +183,41 @@ features
 		museum : tourism=museum
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
+		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
 	//______________________________________________________________________________________________________________
 			
 	points
-		peak bare : natural=peak AND NOT (tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=watertower)
-		peak occupied : natural=peak AND (tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=watertower)
+		POI : natural=peak OR tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=water_tower OR man_made=communications_tower OR natural=cave_entrance OR natural=tree OR  historic=memorial OR historic=monument OR tourism=attraction
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
-		viewpoint : tourism=viewpoint
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
 		information : tourism=information
 		turningcircle : highway=turning_circle
-		// Additional icons for MTB IL
-		cave : natural=cave_entrance OR tomb=hypogeum
-		tower : (man_made=tower AND tower:type=observation)
-		monument : (historic=memorial OR historic=monument) AND NOT religion				
-		tree : natural=tree
-		antenna : (man_made=tower AND tower:type=communication) OR man_made=communications_tower
 		toilet : amenity=toilets
-		
-// watersources in blue
-		drinkingwater: amenity=drinking_water or drinking_water=yes
-		spring : natural=spring
-		well : man_made=water_well
-		cistern : man_made=cistern
-		waterhole : natural=waterhole
-		watertower : man_made=water_tower
-		waterfall : waterway=waterfall
+		watersource : natural=spring OR man_made=water_well OR amenity=drinking_water OR man_made=cistern OR natural=waterhole OR waterway=waterfall
 		
 	//______________________________________________________________________________________________________________
 
 	lines
 		
-		aerialway : aerialway and not aerialway=station
+		aerialway : aerialway AND NOT aerialway=station
 		aeroway : aeroway
 		railway : @isOneOf(railway,rail,light_rail,tram,subway,funicular)
 		power line : @isOneOf(power, line, minor_line)
-		stream : waterway=stream or waterway=river or waterway=canal or waterway=drain or waterway=ditch or waterway=riverbank 
+		stream : waterway=stream OR waterway=river OR waterway=canal OR waterway=drain OR waterway=ditch OR waterway=riverbank 
 		coastline : natural=coastline
-		cliff : natural=cliff
+		cliff : natural=cliff OR landuse=quarry
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
 		bridge : bridge AND NOT bridge=no
-		line barrier : @isOneOf(barrier,wall,fence,hedge,yes)
+		wall : barrier=wall
+		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		cutline : man_made=cutline
 		
 		// contours
-		contour major : contour[@isMulti(elevation, 100) and not elevation=0 ]
-		contour medium : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
-		contour minor : contour[@isMulti(elevation, 10) and not (@isMulti(elevation, 100) or @isMulti(elevation, 20))]
+		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
+		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) AND NOT (@isMulti(elevation, 100) OR @isMulti(elevation, 20))]
 		
 		// roads
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
@@ -239,49 +227,43 @@ features
 		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		track : highway=track and not (tracktype=grade1 OR tracktype=grade2)
-		gravel : highway=track and (tracktype=grade1 OR tracktype=grade2)
-						
-		//  paths
-		MTBpath unknown: highway=path AND (not bicycle=no) AND (NOT mtb:scale)
-		MTBpath easy : ((highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=0) OR (highway=cycleway AND NOT mtb:scale)
-		MTBpath medium : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND mtb:scale=1
-		MTBpath hard : (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND (mtb:scale=2 OR mtb:scale=3)
-		MTBpath hardest: (highway=cycleway OR (highway=path AND (bicycle=designated OR bicycle=yes))) AND (mtb:scale=4 OR mtb:scale=5)
-		footpath : (highway=footway AND not (bicycle=yes OR bicycle=designated)) OR ((highway=path OR highway=bridleway OR highway=steps) AND bicycle=no)
-		
+		track : highway=track
+		path : highway=path OR highway=cycleway OR highway=footway OR highway=bridleway
 		//  background for cycle networks in MTB IL
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
+
 		
 //______________________________________________________________________________________________________________
 			
 	areas
- 		sports : leisure=stadium or leisure=common or leisure=track
+ 		sports : leisure=stadium OR leisure=common OR leisure=track
 		residential : landuse=residential
-		industrial : landuse=industrial or @isOneOf(power,substation,sub_station,plant)
-		commercial : landuse=commercial or landuse=retail
+		industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant)
+		commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area glacier : natural=glacier
 		area water : natural=water OR landuse=reservoir OR landuse=basin
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
-		quarry : landuse=quarry
+
 		farmyard : landuse=farmyard
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
 		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden)
 		area sand : natural=beach OR natural=sand
-		area scree : natural=scree
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
+		pal A : relation[boundary=administrative AND name="Area A"]
+		pal B : relation[boundary=administrative AND name="Area B"]
+		quarry : landuse=quarry
 
 //______________________________________________________________________________________________________________
 
 properties
 	curved : false
-	font-family : Clear Sans
+	font-family : Tahoma
 	text-offset-vertical : -12%
 	text-halo-color : #fff
 	text-halo-width : 18%
@@ -322,7 +304,7 @@ rules
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
-				icon-width: 17
+				icon-width: 22
 
 		draw : icon
 		//--
@@ -358,10 +340,16 @@ rules
 			define
 				min-zoom : 15
 				font-size : 15:8;16:14
+		elsefor : place=suburb
+			define
+				font-size : 13:10;14:15
+				min-zoom : 13
+				text-color : white black 70%
+				painting-cycle : 999
 		else
 			stop
 		define
-			font-weight : bold
+			font-weight : normal
 		// Hebrew preference for points & areas
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -371,27 +359,126 @@ rules
 				text : @any([[name:he]], [[name:en]], name)
 		draw : text
 
-	target : viewpoint
+	target : POI
 		define
-			icon-image : Icons/mtbmap/viewpoint.png
 			icon-width : 17
 			align-vertical : center
-			min-zoom : 14
+
+		for : natural=peak
+			define
+				min-zoom : 13
+				icon-image : Icons/mtbmap/peak.png
+		for : tourism=viewpoint
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/viewpoint.png
+		for : tourism=attraction
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/star.png
+		for : historic=ruins
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/ruins.png
 		for : man_made=tower
 			define
+				min-zoom : 14
 				icon-image : Icons/mtbmap/tower.png
-		draw : icon
-
-		for : not natural=peak
+		for : (man_made=tower AND tower:type=communication)
 			define
-				font-weight : bold
-				font-size : 14:9;15:10
-				font-stretch : 1
-				text-offset-vertical : 60%
-				min-zoom : 15
-				text-align-vertical : near
+				min-zoom : 14
+				icon-image : Icons/mtbmap/antenna.png
+		for : natural=cave_entrance
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/cave.png
+		for : man_made=water_tower	
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/water_tower.png
+		for : natural=tree
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/tree.png
+		for : historic=archaeological_site
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/jar.png
+		for : (historic=memorial OR historic=monument)
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/monument.png
+			for : (religion=muslim or religion=jewish)
+				define
+					icon-image : Icons/mtbmap/holy_place.png
+
+		draw : icon
+	
+		define
+			font-weight : normal
+			font-size : 15:10;16:12
+			font-stretch : 1
+			text-offset-vertical : -10
+			min-zoom : 15
+			text-align-vertical : far
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		for : NOT (natural=tree)
 			draw : text
 
+
+		define
+			font-style : italic
+			font-size : 15:10;16:12
+			min-zoom : 15
+			text : @if(ele,"("ele")")
+			text-align-vertical : near
+			text-offset-vertical : 10
+			text-align-horizontal : center
+			text-line-spacing : 0.7
+			text-color : black
+			text-max-width : 15
+			
+		draw : text
+
+	target: worship *
+		if : * church
+			define
+				icon-image : Icons/mtbmap/church.png
+		elseif : * mosque
+			define
+				icon-image : Icons/mtbmap/mosque.png
+		elseif : * synagogue
+			define
+				icon-image : Icons/mtbmap/synagogue.png
+		elseif : * other
+			define
+				icon-image : Icons/mtbmap/holy_place.png
+		define
+			icon-width : 13:17
+		for : tourism=attraction
+			define
+				min-zoom : 13
+		else
+			define
+				min-zoom : 15
+		draw : icon
+		
 	target : parking
 		define
 			icon-image : Icons/mtbmap/parking.png
@@ -410,7 +497,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			text-color : black
 			font-size : 14:9;15:10
 			font-stretch : 1
@@ -436,14 +523,6 @@ rules
 					text-direction : rtl
 		draw : text
 		
-	target: tower
-		define
-			icon-image : Icons/mtbmap/tower.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-
 
 	target: food
 		define
@@ -453,7 +532,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			text-color : black
 			font-size : 10
 			font-stretch : 1
@@ -496,7 +575,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			text-color : black
 			font-size : 10
 			font-stretch : 1
@@ -521,6 +600,50 @@ rules
 				define
 					text-direction : rtl
 		draw : text
+		
+	target: convenience
+		define
+			icon-image : Icons/mtbmap/shopping.png
+			icon-width : 15:17
+			align-vertical : center
+			min-zoom : 15
+		draw : icon
+
+
+	target: museum
+		define
+			icon-image : Icons/mtbmap/museum.png
+			icon-width : 17
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+		define
+			font-weight : normal
+			text-color : black
+			font-size : 10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 15
+			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
+	
 
 	target: bikeshop
 		define
@@ -530,7 +653,7 @@ rules
 			min-zoom : 13
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			text-color : black
 			font-size : 13:9;15:10
 			font-stretch : 1
@@ -564,84 +687,14 @@ rules
 			min-zoom : 13
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
 		draw : text	
-		
-
-	target: attraction
-		define
-			icon-image : Icons/mtbmap/star.png
-			icon-width : 14:17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		draw : text
-				
-	target : peak *
-		if : * bare
-			define
-				icon-image : Icons/mtbmap/peak.png
-				icon-width : 17
-				align-vertical : center
-				min-zoom : 12
-			draw : icon
-		
-			define
-				font-weight : bold
-				font-size : 14:10;15:12
-				min-zoom : 14
-				text : name
-				text-line-spacing : 0.7
-				text-color : black
-				text-max-width : 15
-				text-offset-vertical : -120%
-			draw : text
-		
-			define
-				font-style : italic
-				font-size : 14:8;15:10
-				min-zoom : 14
-				text : @if(ele,"("ele")")
-				text-align-vertical : near
-				text-align-horizontal : center
-				text-line-spacing : 0.7
-				text-color : black
-				text-max-width : 15
-				text-offset-vertical : 8
-			draw : text
-		elseif: * occupied
-			define
-				font-style : italic
-				font-size : 14:8;15:10
-				min-zoom : 14
-				text : @if(ele,"("ele")")
-				text-align-vertical : near
-				text-align-horizontal : center
-				text-line-spacing : 0.7
-				text-color : black
-				text-max-width : 15
-				text-offset-vertical : -175%
-			draw : text
-		
-	target: drinkingwater
-		define
-			icon-image : Icons/mtbmap/tap.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
+	
 		
 	target: toilet
 		define
@@ -664,47 +717,6 @@ rules
 				shape-size:15:1.5;16:2
 		draw : shape
 
-	target: picnic
-		define
-			icon-image : Icons/mtbmap/picnic.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-	
-	target: cave
-		define
-			icon-image : Icons/mtbmap/cave.png
-			icon-width : 12
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-		define
-			font-weight : bold
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
 
 	target: information
 		define
@@ -712,11 +724,7 @@ rules
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 15
-		for : information=guidepost
-			define
-				align-vertical : center
-				icon-image : Icons/mtbmap/sign.png
-		for : information=map
+		for : (information=guidepost OR information=board OR information=map)
 			define
 				icon-image : Icons/mtbmap/sign.png
 		draw : icon
@@ -729,7 +737,7 @@ rules
 			align-vertical : center
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			font-size : 12
 			font-stretch : 1
 			text-offset-vertical : 60%
@@ -754,216 +762,72 @@ rules
 					text-direction : rtl
 		draw : text		
 		
-	target: spring
+	target: watersource
 		define
 			min-zoom : 14
-			icon-image : Icons/mtbmap/spring.png
-			icon-width : 9
 			align-vertical : center
-		draw : icon
-		define
-			font-weight : bold
-			text-color : #0000dd
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
+		for : natural=spring
 			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
+				icon-image : Icons/mtbmap/spring.png
+				icon-width : 9
+		for : man_made=water_well	
 			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target : cistern
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/cistern.png
-			icon-width : 12
-		draw : icon
-		define
-			font-weight : bold
-			text-color : #0000dd
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 14
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target : waterhole
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/water_hole.png
-			icon-width : 12
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			text-color : #0000dd
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-	
-	target : well
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/well.png
-			icon-width : 9
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			text-color : #0000dd
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
+				icon-image : Icons/mtbmap/well.png
+				icon-width : 9
 
+		for : amenity=drinking_water	
+			define
+				icon-image : Icons/mtbmap/tap.png
+				icon-width : 17
+		for : man_made=cistern	
+			define
+				icon-image : Icons/mtbmap/cistern.png
+				icon-width : 9				
+		for : natural=waterhole	
+			define
+				icon-image : Icons/mtbmap/water_hole.png
+				icon-width : 9
+		for : waterway=waterfall	
+			define
+				icon-image : Icons/mtbmap/waterfall.png
+				icon-width : 17
+		draw : icon
+		
+		define
+			font-weight : normal
+			text-color : #0000dd
+			font-size : 10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			min-zoom : 15
+			text-align-vertical : near
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
+		
+		
 	target : picnic
 		define
 			min-zoom : 14
-			icon-image : Icons/mtbmap/table.png
-			icon-width : 17
+			icon-image : Icons/mtbmap/picnic.png
+			icon-width : 14
 		draw : icon
 		
-	target : antenna
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/antenna.png
-			icon-width : 17
-		draw : icon
-		
-	target : waterfall
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/waterfall.png
-			icon-width : 17
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 13:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 14
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target : ruins
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/ruins.png
-			icon-width : 17
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 13:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 14
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
 		
 	target : camping
 		define
@@ -972,7 +836,7 @@ rules
 			icon-width : 17
 		draw : icon
 		define
-			font-weight : bold
+			font-weight : normal
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
@@ -997,147 +861,6 @@ rules
 					text-direction : rtl
 		draw : text
 		
-				
-	target : archaeological
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/jar.png
-			icon-width : 17
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target : monument
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/monument.png
-			icon-width : 17
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target : museum
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/museum.png
-			icon-width : 17
-		draw : icon
-		define
-			font-weight : bold
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
-	target: holy grave
-		define
-			icon-image : Icons/mtbmap/holy_place.png
-			icon-width : 17
-			min-zoom : 15
-		draw : icon
-	
-	target: worship *
-		if : * church
-			define
-				icon-image : Icons/mtbmap/church.png
-		elseif : * mosque
-			define
-				icon-image : Icons/mtbmap/mosque.png
-		elseif : * synagogue
-			define
-				icon-image : Icons/mtbmap/synagogue.png
-		elseif : * other
-			define
-				icon-image : Icons/mtbmap/holy_place.png
-		define
-			icon-width : 17
-		for : tourism=attraction
-			define
-				min-zoom : 13
-		else
-			define
-				min-zoom : 15
-		draw : icon
-		
-		
-	target : tree
-		define
-			min-zoom : 15
-			icon-image : Icons/mtbmap/tree.png
-			icon-width : 17
-		draw : icon
-				
-	target : watertower
-		define
-			min-zoom : 14
-			icon-image : Icons/mtbmap/water_tower.png
-			icon-width : 17
-		draw : icon
 		
 	target : gas
 		define
@@ -1150,7 +873,7 @@ rules
 		define
 			min-zoom : 11
 			shape : square
-			shape-size : 5
+			shape-size : 11:2;12:3;13:4;14:5
 		draw : shape
 
 
@@ -1207,23 +930,29 @@ rules
 	target : cliff
 		define
 			curved : false
-			min-zoom : 13
-			line-width : 10:0.5;15:1
-			line-offset : 10:0.25;15:0.5
+			min-zoom : 12
+			line-width : 12:0.5;15:1
+			line-offset : 12:0.25;15:0.5
 			line-offset-sides : left
-			line-color : brown
+			line-color : #841
 			line-opacity : 0.6
-		draw : line
+		
+		
 		define
 			line-width : 0
 			shape : custom
-			shape-def : f:brown,0.6;-10,0;-5,-30;0,-100;5,-30,10,0;Z
-			shape-size : 13:15;15:30
+			shape-size : 12:7;13:10;14:15;15:25
 			shape-spacing : -0.7
 			shape-orientation: flow
-
+			shape-def : f:#841,0.7;-10,0;-5,-30;0,-100;5,-30,10,0;Z
+		for : landuse = quarry
+			define
+				shape-def : f:#999,0.7;-10,0;-5,-30;0,-100;5,-30,10,0;Z
+				line-color : #999
+			draw : shape
+			draw : line
 		draw : shape
-
+		draw : line
 
 	target : power line
 		define
@@ -1241,7 +970,7 @@ rules
 		for : railway=light_rail
 			define
 				min-zoom : 10
-		for : railway=tram or railway=subway
+		for : railway=tram OR railway=subway
 			define
 				min-zoom : 12
 		for : tunnel AND NOT tunnel=no
@@ -1286,7 +1015,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * trunk
 			define
@@ -1296,7 +1025,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
@@ -1306,7 +1035,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
@@ -1316,7 +1045,7 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
@@ -1325,26 +1054,26 @@ rules
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 		elseif : * residential
 			define
-				line-color : #bbb
+				line-color : white
 				border-style : solid
-				border-color : #bbb
-				border-width : 1%
+				border-color : black
+				border-width : 10%
 				border-opacity : 1
 				min-zoom : 13
 		elseif : * unclassified
 			define
-				min-zoom : 14
+				min-zoom : 13
 				line-color : white
 				border-style : solid
 				border-color : black
 				border-width : 30%
-				border-opacity : 0.5
+				border-opacity : 0.7
 		
 		define
-			line-width : 10:0.5;13:2;14:2;16:3
+			line-width : 10:0.5;13:2;14:3;15:4
 		draw : line
 // shields
 		define
@@ -1363,7 +1092,7 @@ rules
 			elsefor : length > 4
 				define
 					min-zoom : 10
-			elsefor : length > 2
+			elsefor : length > 3
 				define
 					min-zoom : 11
 			else
@@ -1435,7 +1164,7 @@ rules
 					stop
 		define
 			font-family : Tahoma
-			font-weight : bold
+			font-weight : normal
 			text-align-horizontal : center
 			text-align-vertical : center
 			text : ref
@@ -1450,16 +1179,36 @@ rules
 		draw : shield
 // Street names
 	target : road street *
-		define
-			min-zoom : 15
-			font-weight : bold
-			font-family : Verdana
-			text-max-width : 7
-			text-halo-width : 66%
-			text-halo-opacity : 0.66
-			text-align-horizontal : center
-			text-align-vertical : center
-			font-stretch : 0.9
+	
+		if : * tertiary
+			define
+				map.rendering.lflp.max-allowed-corner-angle : 15
+				min-zoom : 14
+				font-size : 14:10;15:11;16:12
+				font-weight : normal
+				text-offset-vertical : -8
+
+		elseif : * unclassified
+			define
+				min-zoom : 14
+				map.rendering.lflp.max-allowed-corner-angle : 15
+				font-size : 14:10;15:11;16:12
+				font-weight : normal
+				text-offset-vertical : -8
+					
+		elseif : * residential
+			define
+				min-zoom : 15
+				font-weight : normal
+				text-max-width : 7
+				text-halo-width : 66%
+				text-halo-opacity : 0.66
+				text-align-horizontal : center
+				text-align-vertical : center
+				font-stretch : 0.9
+				font-size : 9
+					
+			
 		// Hebrew preference for lines
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -1490,17 +1239,18 @@ rules
 					min-zoom : 11
 					max-zoom : 12
 					line-color : #FFE66B black 10%
-					line-color : brown yellow 20%
+
 			elseif : * residential
 				define
 					min-zoom : 13
-					line-color : black
+					line-color : white
 					max-zoom : 14
 			elseif : * unclassified
 				define
 					min-zoom : 12
-					line-color : black
+					line-color : white
 					max-zoom : 14
+					
 			
 		elseif : * secondary
 			define
@@ -1517,34 +1267,54 @@ rules
 		draw : line
 	
 	target : track
+		
 		define
-			min-zoom : 13
 			line-color : white
-			line-width : 13:1;15:2
-			border-style : dot
+			line-style : solid
+			line-width : 12:1;14:2
 			border-color : black
-			border-width : 50%
+			border-width : 70%
 			border-opacity : 1
-		draw : line
+			min-zoom : 12
 		
-	target : gravel
-		define
-			min-zoom : 13
-			line-color : white
-			line-width : 13:1;15:2
-			border-style : solid
-			border-color : black
-			border-width : 30%
-			border-opacity : 0.5
-							
+		for : (tracktype=grade1 OR tracktype=grade2)
+			define
+				border-style : solid
+
+		for : (tracktype=grade4 OR tracktype=grade5 OR NOT tracktype)
+			define
+				border-style : dot
+		
+		for : (tracktype=grade3)
+		// left-solid right-dash
+			define
+				border-style : none
+			draw : line	
+			
+			define
+				line-color : black
+				line-width : 12:0; 13:0.5; 15:1
+				line-offset : 12:0;13:1;15:1.75
+				line-offset-sides : right
+				line-style : dashlong
+			draw : line
+			define
+				line-color : black
+				line-width : 12:0; 13:0.5; 14:1
+				line-offset : 12:0;13:1;15:1.75
+				line-offset-sides : left
+				line-style : solid
+			draw : line
 		draw : line
+
 		
 		define
-			min-zoom : 15
-			font-size : 15:11;16:12
+			map.rendering.lflp.max-allowed-corner-angle : 15
+			min-zoom : 14
+			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			
+						
 			// Handle right-to-left text
 		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
 			define
@@ -1556,33 +1326,96 @@ rules
 		draw : text
 		
 		
-	target : MTBpath *
-		if : * unknown
-			define
-				line-color : #777
-		elseif : * easy
-			define
-				line-color : #080
-		elseif : * medium
-			define
-				line-color : #5050ff
-		elseif : * hard
-			define
-				line-color : #ff0000
-		elseif : * hardest
-			define
-				line-color : #000000
-			
+	target : path
+		
 		define
 			min-zoom : 10
-			line-style : solid
+			line-color : #999
+			line-style : dash
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
 			curved : true
+		
+		for : highway=footway
+			define
+				line-style : dot
+		
+		for : highway=cycleway
+			define
+				line-style : solid
+				
+		for : highway=path
+			define
+				line-style : dash
+			
+			for : bicycle=no
+				define
+					line-style : dot
+			
+			for : (bicycle=yes OR bicycle=designated)
+				define
+					line-style : solid
+					line-color : #c0c
+	
+			
+		for : mtb:scale=0
+			define
+				line-color : #080
+		
+		for : mtb:scale=1
+			define
+				line-color : #55f
+		
+		for : (mtb:scale=2 OR mtb:scale=3)
+			define
+				line-color : #f00
+		
+		for : (mtb:scale=4 OR mtb:scale=5)
+			define
+				line-color : #000
+		
+		for : (mtb:scale=6)
+			define
+				line-color : #000
+				line-style : dot
+		
 		draw : line
+		
+		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
+			define
+				min-zoom : 15
+				shape : custom
+				shape-def : l:0,0,-1,-1,1,0,-1,1;z
+				shape-size : 15:15;16:20
+				shape-aspect : 1
+				shape-spacing : 4
+				shape-orientation : flow
+				shape-mode : center
+				fill-color : #c0c
+				line-style : solid
+				line-color : white
+				line-width : 0.5
+			for : mtb:scale=0
+				define
+					fill-color : #080
+			for : mtb:scale=1
+				define
+					fill-color : #55f
+		
+			for : (mtb:scale=2 OR mtb:scale=3)
+				define
+					fill-color : #f00		
+			for : (mtb:scale=4 OR mtb:scale=5)
+				define
+					fill-color : #000
+	
+			for : oneway=-1
+				define
+					angle : 180
+			draw : shape
 				
 		define
-			map.rendering.lflp.max-allowed-corner-angle : 20
+			map.rendering.lflp.max-allowed-corner-angle : 25
 			min-zoom : 14
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
@@ -1607,33 +1440,20 @@ rules
 					text-direction : rtl
 		draw : text
 		
-		for : oneway=yes OR oneway=true
-			define
-				min-zoom : 15
-				shape : custom
-				shape-def : 60,0,20,-40,20,-15,-60,-15,-60,15,20,15,20,40;Z
-				shape-size : 15
-				shape-aspect : 0.75
-				shape-spacing : 12
-				fill-color : black
-				line-style : solid
-				line-color : white
-				line-width : 0.5
-				
-			for : oneway=-1
-				define
-					angle : 180
-			draw : shape
+
+
 // Background for cycle networks in MTB IL
 	target : network cycle *
 		define
 			min-zoom : 10
 			// Draw only the background
-			// Adapt the class:bicycle:mtb size and style
-			line-width : 10:1;15:5
+			// Adapt the class:bicycle:mtb size AND style
+			line-width : 9:1;15:4
 			line-opacity : 0
 			line-style : solid
 			border-style : solid
+			curved : true
+
 		if : * local
 			define
 				border-color : yellow 
@@ -1650,51 +1470,18 @@ rules
 		define
 			border-opacity : 0.3
 			border-width : 70%
-		draw : line
-		
-	target : footpath
 	
-		define
-			min-zoom : 10
-			line-style : dot
-			line-color : black
-			line-opacity : 1
-			line-width : 10:0.25;15:2.0
 		draw : line
 		
-		define
-			map.rendering.lflp.max-allowed-corner-angle : 20
-			min-zoom : 14
-			font-size : 14:10;15:11;16:12
-			font-weight : bold
-			text-offset-vertical : -8
-			
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
+	
 	
 	
 	target : bridge
-		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) or highway=track
+		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) OR highway=track
 			define
 				min-zoom : 13
 				line-color : #f1eee8
-				line-width : 12:2;13:4;14:6
+				line-width : 12:3;13:5;14:8
 				line-opacity : 1
 				line-style : solid
 				border-style : solid
@@ -1708,8 +1495,9 @@ rules
 	target : stream
 		define
 			min-zoom : 10
-			line-color : #b5d9fb black 10%
-			line-width : 10:1; 13:2; 14:4
+			line-color : #88aaff 
+			border-color : #88aaff
+			line-width : 10:1.5; 13:3; 14:5
 			painting-cycle : 500
 			curved : true
 		for : intermittent=yes
@@ -1719,9 +1507,7 @@ rules
 			define
 				min-zoom : 10
 				line-width : 10:1; 13:2; 14:5
-				line-color : #B8DBF7
 				border-style : solid
-				border-color : #b5d9fb black 10%
 				border-width : 10%
 				border-opacity : 1
 				painting-cycle : 502
@@ -1729,13 +1515,11 @@ rules
 			define
 				min-zoom : 13
 				line-width : 13:1; 14:2
-				line-color : #b5d9fb black 10%
 				border-style : none
-		for : waterway=drain or waterway=ditch
+		for : waterway=drain OR waterway=ditch
 			define
 				min-zoom : 13
 				line-width : 13:0.5;14:1
-				line-color : #b5d9fb black 10%
 				border-style : none
 		for : tunnel AND NOT tunnel=no
 			define
@@ -1744,14 +1528,13 @@ rules
 			define
 				min-zoom : 13
 				line-width : 13:1; 14:2
-				line-color : #b5d9fb black 10%
 				border-style : none
 		draw : line
 		define
 			min-zoom : 15
 			font-size : 15:10
 			font-style : italic
-			font-weight : bold
+			font-weight : normal
 
 			text-color : #2D79B7
 			map.rendering.lflp.min-buffer-space : 5
@@ -1763,33 +1546,31 @@ rules
 				text-direction : rtl
 		draw : text
 
-	target : line barrier
+	target : fence
+		define
+			min-zoom : 13
+			line-color : #222
+			line-width : 1.5
+			shape-spacing : 15:2
+			shape : custom
+			shape-def : 4,7;-4,-7;m:4,-7;-4,7
+			shape-spacing : 3
+			shape-size : 7
+		draw : shape
+		draw : line
+	
+	target : wall
 		define
 			min-zoom : 15
 			line-color : #666
-			fill-color : #666
-			line-width : 1
+			fill-color : #fff
+			line-width : 0.3
 			shape : custom
-			shape-def : pw:1; m:0,0; l:10,10
-			shape-size : 15:5
-			shape-spacing : 15:2
-		for : barrier=fence
-			define
-				min-zoom : 14
-				line-color : black
-				line-width : 1.5
-			draw : line
-			define
-				shape : custom
-				shape-def : 4,7;-4,-7;m:4,-7;-4,7
-				shape-spacing : 3
-				shape-size : 5
-			draw : shape
-		for : barrier=wall
-			define
-				shape-def : pw:0;m:0,-10;a:10,10,0,10;a:10,10,0,-10;z
-				shape-size : 15:5
-		draw : line
+			shape-aspect : 0.5
+			shape-spacing : 0.3
+			shape-def : 0,-5,-5,-5,-5,5,5,5,5,-5;z
+			shape-size : 8
+
 		draw : shape
 
 	target : aeroway
@@ -1797,7 +1578,7 @@ rules
 			define
 				curved : false
 				min-zoom : 11
-				line-width : 11:3;12:4;13:8;14:13;15:15
+				line-width : 11:2;12:3;13:6;14:10;15:12
 				line-color : #aaa
 		elsefor : aeroway=taxiway
 			define
@@ -1811,10 +1592,10 @@ rules
 		
 	target: contour*
 		define
-			line-color : brown
+			line-color : #841
 			line-opacity : 0.75
 			curved : false
-			painting-cycle : 401
+			painting-cycle : 403
 		if : *major
 			define
 				map.rendering.contour.label : true
@@ -1867,53 +1648,57 @@ rules
 			fill-hatch-opacity : 0.025
 			painting-cycle : 495
 		draw : fill
+	
+	target : nature reserve label
+		for : inner_boundary OR inner_leisure
+			stop
 		define
-			painting-cycle : 990
-			font-weight : bold
+			font-size : 12
 			text-color : green
-			font-size : 14
-			font-stretch : 1
-			text-offset-vertical : 60%
-			font-style: italic
-			min-zoom : 13
-			text-align-vertical : near
+			font-weight : normal
+			painting-cycle : 990
+		for : width > 10
+			define
+				min-zoom : 11
+		elsefor : width > 5
+			define
+				min-zoom : 12
+		elsefor : width > 2
+			define
+				min-zoom : 13
+		elsefor : width > 1
+			define
+				min-zoom : 14
+		else
+			define
+				min-zoom : 15
+		// Hebrew preference for points & areas
 		for : @isMatch(name, "[א-ת]")
 			define
 				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
 		else
 			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+				text : @any([[name:he]], [[name:en]], name)
 		draw : text
 		
 			
 	target : building
 		define
-			min-zoom : 13
-			fill-color : #aaa
+			min-zoom : 14
+			fill-color : #ccc
 			line-color : #999
 			line-style : solid
-			line-width : 13:0.25;14:0.5;15:1
-			painting-cycle : 402
+			line-width : 14:0.5;15:1
+			painting-cycle : 404
 		draw : fill
 	target : building point
 		define
-			min-zoom : 13
+			min-zoom : 14
 			fill-color : #999
 			line-style : none
 			shape : square
 			shape-size : 13:1;16:5
-			painting-cycle : 402
+			painting-cycle : 404
 		draw : shape
 
 	target : sports
@@ -1959,6 +1744,7 @@ rules
 			// Soft fill for MTB IL
 			fill-hatch-opacity : 0
 			fill-opacity : 100%
+			painting-cycle : 410
 			// --
 		draw : fill
 		// Avoid military names in MTB IL
@@ -1969,7 +1755,7 @@ rules
 			min-zoom : 15
 			font-size : 14:9;15:11
 			font-style : italic
-			font-weight : bold
+			font-weight : normal
 			text-color : #A32929
 		draw : text
 
@@ -1985,25 +1771,32 @@ rules
 		draw : fill
 		define
 			icon-image : Icons/mtbmap/bulldozer.png
-			icon-width : 13:17
-			min-zoom : 13
+			icon-width : 17
+			min-zoom : 15
 		draw : icon
 
 	target : quarry
+		
 		define
 			fill-color : #ccc
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
-			painting-cycle : 480
+			painting-cycle : 401
+			fill-opacity : 1
 		draw : fill
+		
 		define
 			icon-image : Icons/mtbmap/quarry.png
 			icon-width : 13:17
 			min-zoom : 13
+			shape-orientation : fixed
+			shape-mode : center
+			painting-cycle : 801
 		draw : icon
+		
 		define
-			font-weight : bold
+			font-weight : normal
 			font-size : 15:10
 			font-stretch : 1
 			text-offset-vertical : 60%
@@ -2022,14 +1815,35 @@ rules
 			line-color : blue
 			line-width : 1:0.1;13:0.5
 			line-opacity : 0.5
-			painting-cycle : 401
+		draw : fill
+		
+	target : Pal *
+		define
+			line-style : solid
+			line-width : 1
+			line-color : orange
+			min-zoom : 9
+			fill-opacity : 50%
+			fill-hatch-opacity : 0
+			painting-cycle : 410
+		draw : line
+		if : * A
+			define
+				fill-color : orange white 5%
+				fill-hatch : diagonalcross
+		elseif : * B
+			define
+				fill-color : orange white 10%
+				fill-hatch : nwse
+		else
+			stop
 		draw : fill
 
 
 	target : area *
 		define
 			font-style : italic
-			font-weight : bold
+			font-weight : normal
 			text-color : #ccc
 			text-avoid-overlaps : true
 			text-orientation: fixed
@@ -2105,7 +1919,8 @@ rules
 
 	target : area wetland
 		define
-			line-style : none
+			line-style : dash
+			line-color : #53B4EC
 			line-width : 1
 			min-zoom : 8
 			fill-color : #53B4ff
@@ -2124,14 +1939,7 @@ rules
 			fill-color : #CFE5C5
 		draw : fill
 
-	target : area scree
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			fill-texture : Textures/scree.png
-		draw : fill
-		
+
 	target : area grass
 		define
 			line-style : none
@@ -2139,7 +1947,7 @@ rules
 			min-zoom : 8
 			fill-color : #DEFED2
 		
-		for : natural=scrub OR natural=meadow OR natural=heath OR natural=fell or natural=moor
+		for : natural=scrub OR landuse=meadow OR natural=heath OR natural=fell OR natural=moor
 			define
 				fill-texture : Textures/scrub.png
 		
@@ -2193,33 +2001,29 @@ rules
 	target : residential
 		define
 			line-style : solid
-			line-width : 0.5
+			line-width : 30%
 			fill-color : #eee
 			line-color : #999
-			painting-cycle : 490
+			min-zoom : 9
+			painting-cycle : 401
 		draw : fill
-		define
-			min-zoom : 17
-		draw : text
+
 	target : industrial
 		define
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
 			fill-color : #ddd
+			painting-cycle : 402
 		draw : fill
-		define
-			min-zoom : 17
-		draw : text
+
 	target : commercial
 		define
 			line-style : none
 			line-width : 1
 			fill-color : #ddd
+			painting-cycle : 402
 		draw : fill
-		define
-			min-zoom : 17
-		draw : text
 
 	target : breakwater
 		define
@@ -2275,7 +2079,7 @@ rules
 		for : legend=text
 			define
 				font-size : 9
-				font-weight : bold
+				font-weight : normal
 				text-color : #666
 				text-direction : rtl
 		draw : text
