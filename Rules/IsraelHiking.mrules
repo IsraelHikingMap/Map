@@ -162,7 +162,8 @@ properties
 	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
-	map-background-opacity : 1
+	map-background-opacity : 100%
+	line-opacity : 100%
 
 rules
 	target : place
