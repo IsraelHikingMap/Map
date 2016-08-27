@@ -1,4 +1,4 @@
-REM @ECHO OFF
+@ECHO OFF
 REM Usage:
 REM FindUpdatedTiles [Tiles sub/directory ...]
 REM
