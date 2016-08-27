@@ -9,4 +9,5 @@
 /*.zip.*
 * - Copy*
 .merged.*
-*.hidden
+*.hidden*
+!/Site/*/*legend*

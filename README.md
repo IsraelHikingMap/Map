@@ -13,18 +13,27 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ##Ready-to-use maps
 
-###[OruxMaps](http://www.oruxmaps.com/index_en.html): 
+###[OruxMaps for Android](http://www.oruxmaps.com/index_en.html): 
   * The map is available for Online use as part of OruxMaps built-in maps.
     * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
   * For offline use:
-    * Create an `Israel Hiking` folder under the `oruxmaps/mapfiles` folder on your Android device.
-    * Download both `Israel Hiking.otrk2.xml` and `OruxMapsImages.db` files from one of the following locations:
-      * [Google Drive](https://googledrive.com/host/0B-qrsEBJWXhQUGVBM3lHZTF2eXc/Israel Hiking/) (mirror, usually faster).
-      * [IsraelHiking.osm.org.il](http://IsraelHiking.osm.org.il/Oruxmaps/mapfiles/Israel Hiking/) (origin).
-    * Place both files in the "Israel Hiking" folder on your device.
-    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrow)"_
-
-To update the offline maps, just re-download the two files.
+    * <a id="oruxmaps-offline-android"></a>From your Android device, with OruxMaps 6.5.4 or later
+      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
+      * Click on the link of the requested map. 
+      * The download may take several minutes. 
+      * After the installation please refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrows)"_
+      * Note: The free space required for the instalation is twice the size of the downloaded map.
+    * <a id="oruxmaps-offline-pc"></a>From a PC connected to your Android device with a USB cable
+      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
+      * Click on the link to the requested map. 
+      * Connect the Android device to your PC.
+      * On your Android device select "File transfers" instead of "USB for charging", if needed.
+      * On your PC
+        * Open the downloaded zip file and copy the directory it contains to a temporary locaton, such as your Desktop.
+	* Move the above directory onto the ```Oruxmaps\mapfiles``` directory of the connected Android device.
+    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrows)"_
+    * You can now enjoy the map with no need for a network connection.
+    * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
 ###[OpenMaps for iOS](http://izeize.com/openmaps/)
 This is a guess since we don't have an iOS device
@@ -119,3 +128,5 @@ This is an optional stage in case you want to make the locally generated tiles a
 
 -------------------------
 Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 9-July-16
+
+<!-- vim: set autoindent shiftwidth=2: -->
