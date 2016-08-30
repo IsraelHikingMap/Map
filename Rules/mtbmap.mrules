@@ -240,8 +240,8 @@ features
 	areas
  		sports : leisure=stadium OR leisure=common OR leisure=track
 		residential : landuse=residential
-		industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant)
-		commercial : landuse=commercial OR landuse=retail
+		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
+		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area glacier : natural=glacier
 		area water : natural=water OR landuse=reservoir OR landuse=basin
@@ -269,11 +269,14 @@ properties
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
+	text : [[name:he]]
 	map-background-color : #fff9e6
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
+
+
 	 
 //______________________________________________________________________________________________________________
 	
@@ -336,20 +339,17 @@ rules
 			define
 				min-zoom : 14.5
 				font-size : 14.5:10;16:16
-		elsefor : place=farm OR landuse=farmyard OR landuse=farmland
-			define
-				min-zoom : 15
-				font-size : 15:8;16:14
-		elsefor : place=suburb
+
+		elsefor : (place=suburb OR place=quarter OR place=neighbourhood or place=borough)
 			define
 				font-size : 13:10;14:15
 				min-zoom : 13
-				text-color : white black 70%
-				painting-cycle : 999
+				text-color : white black 90%
 		else
 			stop
 		define
-			font-weight : normal
+			font-weight : bold
+			font-family : tahoma
 		// Hebrew preference for points & areas
 		for : @isMatch(name, "[א-ת]")
 			define
@@ -392,6 +392,7 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/cave.png
+				icon-width : 13
 		for : man_made=water_tower	
 			define
 				min-zoom : 14
@@ -404,6 +405,7 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/jar.png
+				icon-width : 13
 		for : (historic=memorial OR historic=monument)
 			define
 				min-zoom : 14
@@ -786,7 +788,7 @@ rules
 		for : natural=waterhole	
 			define
 				icon-image : Icons/mtbmap/water_hole.png
-				icon-width : 9
+				icon-width : 12
 		for : waterway=waterfall	
 			define
 				icon-image : Icons/mtbmap/waterfall.png
@@ -873,7 +875,9 @@ rules
 		define
 			min-zoom : 11
 			shape : square
-			shape-size : 11:2;12:3;13:4;14:5
+			fill-color : #333
+			line-width : 1
+			shape-size : 11:3;12:4;13:5;14:6
 		draw : shape
 
 
@@ -937,7 +941,6 @@ rules
 			line-color : #841
 			line-opacity : 0.6
 		
-		
 		define
 			line-width : 0
 			shape : custom
@@ -949,8 +952,7 @@ rules
 			define
 				shape-def : f:#999,0.7;-10,0;-5,-30;0,-100;5,-30,10,0;Z
 				line-color : #999
-			draw : shape
-			draw : line
+
 		draw : shape
 		draw : line
 
@@ -1184,9 +1186,9 @@ rules
 			define
 				map.rendering.lflp.max-allowed-corner-angle : 15
 				min-zoom : 14
-				font-size : 14:10;15:11;16:12
+				font-size : 14:9;15:10;16:11
 				font-weight : normal
-				text-offset-vertical : -8
+				
 
 		elseif : * unclassified
 			define
@@ -1271,9 +1273,10 @@ rules
 		define
 			line-color : white
 			line-style : solid
-			line-width : 12:1;14:2
+			line-width : 12:0;13:1;14:2
+			line-opacity : 12:0;13:1
 			border-color : black
-			border-width : 70%
+			border-width : 12:25%;13:70%
 			border-opacity : 1
 			min-zoom : 12
 		
@@ -1330,7 +1333,7 @@ rules
 		
 		define
 			min-zoom : 10
-			line-color : #999
+			line-color : #888
 			line-style : dash
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
@@ -1355,32 +1358,32 @@ rules
 			for : (bicycle=yes OR bicycle=designated)
 				define
 					line-style : solid
-					line-color : #c0c
-	
+					line-color : #b0d
+					fill-color : #b0d
 			
 		for : mtb:scale=0
 			define
-				line-color : #080
+				line-color : #090
+				fill-color : #090
 		
 		for : mtb:scale=1
 			define
-				line-color : #55f
-		
+				line-color : #33f
+				fill-color : #33f
 		for : (mtb:scale=2 OR mtb:scale=3)
 			define
-				line-color : #f00
-		
+				line-color : #e00
+				fill-color : #e00
 		for : (mtb:scale=4 OR mtb:scale=5)
 			define
 				line-color : #000
-		
+				fill-color : #000
 		for : (mtb:scale=6)
 			define
 				line-color : #000
 				line-style : dot
-		
+				fill-color : #000
 		draw : line
-		
 		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
 			define
 				min-zoom : 15
@@ -1391,36 +1394,24 @@ rules
 				shape-spacing : 4
 				shape-orientation : flow
 				shape-mode : center
-				fill-color : #c0c
 				line-style : solid
 				line-color : white
 				line-width : 0.5
-			for : mtb:scale=0
-				define
-					fill-color : #080
-			for : mtb:scale=1
-				define
-					fill-color : #55f
-		
-			for : (mtb:scale=2 OR mtb:scale=3)
-				define
-					fill-color : #f00		
-			for : (mtb:scale=4 OR mtb:scale=5)
-				define
-					fill-color : #000
-	
 			for : oneway=-1
 				define
 					angle : 180
-			draw : shape
-				
+		else
+			stop
+		draw : shape
+		
 		define
-			map.rendering.lflp.max-allowed-corner-angle : 25
+			map.rendering.lflp.max-allowed-corner-angle : 20
 			min-zoom : 14
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			
+			text-orientation : flow
+			text-letter-spacing : 0.1
 		for : @isMatch(name, "[א-ת]")
 			define
 				text : name
@@ -1506,11 +1497,19 @@ rules
 		for : waterway=river
 			define
 				min-zoom : 10
-				line-width : 10:1; 13:2; 14:5
-				border-style : solid
+				line-width : 10:2; 13:3; 14:6
+				line-opacity : 1
 				border-width : 10%
 				border-opacity : 1
+				border-color : #8af
 				painting-cycle : 502
+			for : intermittent=yes
+				define
+					line-width : 13:1; 14:2
+					line-style : dash
+					line-offset : 10:2; 13:3; 14:6
+					border-style : none
+
 		for : waterway=stream
 			define
 				min-zoom : 13
@@ -1549,8 +1548,8 @@ rules
 	target : fence
 		define
 			min-zoom : 13
-			line-color : #222
-			line-width : 1.5
+			line-color : #444
+			line-width : 2
 			shape-spacing : 15:2
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
@@ -1562,14 +1561,14 @@ rules
 	target : wall
 		define
 			min-zoom : 15
-			line-color : #666
-			fill-color : #fff
+			line-color : #444
 			line-width : 0.3
+			fill-opacity : 0
 			shape : custom
 			shape-aspect : 0.5
 			shape-spacing : 0.3
 			shape-def : 0,-5,-5,-5,-5,5,5,5,5,-5;z
-			shape-size : 8
+			shape-size : 15:5;16:7
 
 		draw : shape
 
@@ -1636,9 +1635,9 @@ rules
 
 	target : nature reserve
 		define
-			min-zoom : 9
+			min-zoom : 12
 			line-color : green
-			line-width : 9:3;13:5
+			line-width : 12:3;13:5
 			line-style : dashdot
 			line-opacity : 0.5
 			fill-color : green
@@ -1657,10 +1656,7 @@ rules
 			text-color : green
 			font-weight : normal
 			painting-cycle : 990
-		for : width > 10
-			define
-				min-zoom : 11
-		elsefor : width > 5
+		for : width > 5
 			define
 				min-zoom : 12
 		elsefor : width > 2
@@ -1684,11 +1680,11 @@ rules
 			
 	target : building
 		define
-			min-zoom : 14
+			min-zoom : 15
 			fill-color : #ccc
 			line-color : #999
 			line-style : solid
-			line-width : 14:0.5;15:1
+			line-width : 1
 			painting-cycle : 404
 		draw : fill
 	target : building point
@@ -1822,7 +1818,7 @@ rules
 			line-style : solid
 			line-width : 1
 			line-color : orange
-			min-zoom : 9
+			min-zoom : 12
 			fill-opacity : 50%
 			fill-hatch-opacity : 0
 			painting-cycle : 410
@@ -1842,8 +1838,8 @@ rules
 
 	target : area *
 		define
-			font-style : italic
-			font-weight : normal
+			font-style : normal
+			font-weight : bold
 			text-color : #ccc
 			text-avoid-overlaps : true
 			text-orientation: fixed
@@ -1854,6 +1850,12 @@ rules
 		for : water=river
 			define
 				text : none
+		if : area commercial
+			define
+				text-color : black
+		if : area industrial
+			define
+				text-color : black
 		if : area water
 			define
 				text-color : #2D79B7
@@ -1885,35 +1887,35 @@ rules
 		for : size > 10
 			define
 				min-zoom : 8
-				font-size : 8:8;15:24
+				font-size : 8:8;14:24
 		elsefor : size > 5
 			define
 				min-zoom : 9
-				font-size : 8:6;15:20
+				font-size : 8:6;14:20
 		elsefor : size > 2
 			define
 				min-zoom : 10
-				font-size : 8:4;15:18
+				font-size : 8:4;14:18
 		elsefor : size > 1
 			define
 				min-zoom : 10
-				font-size : 8:3;15:16
+				font-size : 8:3;14:16
 		elsefor : size > 0.5
 			define
 				min-zoom : 12
-				font-size : 8:2;15:14
+				font-size : 8:2;14:15
 		elsefor : size > 0.2
 			define
 				min-zoom : 13
-				font-size : 8:1;15:12
+				font-size : 8:1;14:14
 		elsefor : size > 0.1
 			define
 				min-zoom : 14
-				font-size : 8:1;15:10
+				font-size : 8:1;14:12
 		else
 			define
 				min-zoom : 15
-				font-size : 8:1;15:9
+				font-size : 8:1;14:10
 		draw : text
 
 
@@ -2008,7 +2010,7 @@ rules
 			painting-cycle : 401
 		draw : fill
 
-	target : industrial
+	target : area industrial
 		define
 			line-style : solid
 			line-width : 0.5
@@ -2017,7 +2019,7 @@ rules
 			painting-cycle : 402
 		draw : fill
 
-	target : commercial
+	target : area commercial
 		define
 			line-style : none
 			line-width : 1
