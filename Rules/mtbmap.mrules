@@ -168,11 +168,11 @@ features
 		convenience : shop=convenience OR shop=supermarket
 		food : amenity=restaurant OR amenity=fast_food
 		lodging : tourism=guest_house OR tourism=hotel
-		medical : amenity=hospital OR amenity=clinic
+		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
 		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-		worship other : amenity=place_of_worship AND NOT (religion=christian OR religion=Christian OR religion=muslim OR religion=Muslim OR religion=jewish OR religion=Jewish)
+		worship other : amenity=place_of_worship AND (religion=bahai OR religion=Bahai OR religion=druze OR religion=Druze)
 		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
-		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)
+		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)AND (tourist=attraction or historic)
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
@@ -180,7 +180,7 @@ features
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
-		museum : tourism=museum
+	
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
@@ -269,8 +269,8 @@ properties
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
-	text : [[name:he]]
-	map-background-color : #fff9e6
+	//text : [[name:he]]
+	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
@@ -325,12 +325,12 @@ rules
 				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
-				font-size : 8:12;10:16;14:20
+				font-size : 8:12;10:16;14:20;15:22;16:24
 				
 		elsefor : place=town
 			define
 				min-zoom : 11
-				font-size : 10:12;16:20
+				font-size : 10:12;11:13;12:14;13:15;14:15;15:18;16:20
 		elsefor : place=village
 			define
 				min-zoom : 12
@@ -342,9 +342,9 @@ rules
 
 		elsefor : (place=suburb OR place=quarter OR place=neighbourhood or place=borough)
 			define
-				font-size : 13:10;14:15
-				min-zoom : 13
-				text-color : white black 90%
+				font-size : 15:14;16:15
+				min-zoom : 15
+				text-color : white black 70%
 		else
 			stop
 		define
@@ -612,47 +612,13 @@ rules
 		draw : icon
 
 
-	target: museum
-		define
-			icon-image : Icons/mtbmap/museum.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-		define
-			font-weight : normal
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 60%
-			min-zoom : 15
-			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-	
-
 	target: bikeshop
 		define
-			icon-image : Icons/mtbmap/bike-repair.png
+			icon-image : Icons/mtbmap/bike-red.png
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 13
+			painting-cycle : 810
 		draw : icon
 		define
 			font-weight : normal
@@ -662,6 +628,8 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
+			painting-cycle : 810
+	
 		for : @isMatch(name, "[א-ת]")
 			define
 				text : name
@@ -687,6 +655,7 @@ rules
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 13
+			painting-cycle : 810
 		draw : icon
 		define
 			font-weight : normal
@@ -695,6 +664,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
+			painting-cycle : 810
 		draw : text	
 	
 		
@@ -1332,8 +1302,35 @@ rules
 	target : path
 		
 		define
+			map.rendering.lflp.max-allowed-corner-angle : 30
+			font-size : 14:10;15:11;16:12
+			text-offset-vertical : -8
+			min-zoom : 14
+			font-weight : bold
+			text-letter-spacing : 0.15
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		
+		draw : text
+		
+		define
 			min-zoom : 10
-			line-color : #888
+			line-color : #555
 			line-style : dash
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
@@ -1346,6 +1343,8 @@ rules
 		for : highway=cycleway
 			define
 				line-style : solid
+				line-color : #b0d
+				fill-color : #b0d
 				
 		for : highway=path
 			define
@@ -1355,7 +1354,13 @@ rules
 				define
 					line-style : dot
 			
-			for : (bicycle=yes OR bicycle=designated)
+			for : bicycle=yes
+				define
+					line-style : dash
+					line-color : #b0d
+					fill-color : #b0d
+			
+			for : bicycle=designated
 				define
 					line-style : solid
 					line-color : #b0d
@@ -1403,34 +1408,7 @@ rules
 		else
 			stop
 		draw : shape
-		
-		define
-			map.rendering.lflp.max-allowed-corner-angle : 20
-			min-zoom : 14
-			font-size : 14:10;15:11;16:12
-			font-weight : bold
-			text-offset-vertical : -8
-			text-orientation : flow
-			text-letter-spacing : 0.1
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		draw : text
-		
+	
 
 
 // Background for cycle networks in MTB IL
@@ -1530,8 +1508,8 @@ rules
 				border-style : none
 		draw : line
 		define
-			min-zoom : 15
-			font-size : 15:10
+			min-zoom : 14
+			font-size : 14:10
 			font-style : italic
 			font-weight : normal
 
@@ -1981,7 +1959,7 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 8
-			fill-color : #FFFFE9
+			fill-color : yellow white 85%
 		draw : fill
 
 	target : farmyard
@@ -1997,7 +1975,7 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 8
-			fill-color : #ede8c1
+			fill-color : #fec
 		draw : fill		
 
 	target : residential
@@ -2080,8 +2058,8 @@ rules
 				text-direction : rtl
 		for : legend=text
 			define
-				font-size : 9
-				font-weight : normal
+				font-size : 10
+				font-weight : bold
 				text-color : #666
 				text-direction : rtl
 		draw : text
