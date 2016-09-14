@@ -77,6 +77,7 @@ features
 		water well : man_made=water_well
 		water cistern : man_made=cistern
 		water waterhole : natural=waterhole
+		drinking : amenity=drinking_water
 		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
@@ -243,6 +244,13 @@ rules
 			min-zoom : 12
 			fill-color : blue
 		draw : shape
+
+	target : drinking
+		define
+			min-zoom : 13
+			icon-image : Icons/SJJB/food_drinkingtap.glow.000000.32.png
+			icon-width : 14:16;15:24
+		draw : icon
 
 	target : picnic
 		define
