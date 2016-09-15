@@ -157,10 +157,7 @@
 
 features
 	
-	place : node[place OR landuse=farmyard]
 	legend : legend
-	building : area[building]
-	building point: node[building AND NOT building=entrance]
 		
 	points, areas
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
@@ -169,26 +166,27 @@ features
 		food : amenity=restaurant OR amenity=fast_food
 		lodging : tourism=guest_house OR tourism=hotel
 		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
-		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-		worship other : amenity=place_of_worship AND (religion=bahai OR religion=Bahai OR religion=druze OR religion=Druze)
-		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
-		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)AND (tourist=attraction or historic)
+		worship church : amenity=place_of_worship AND religion=christian
+		worship other : amenity=place_of_worship AND @isOneOf(religion, bahai, druze, budhist)
+		worship mosque : amenity=place_of_worship AND religion=muslim
+		worship synagogue : amenity=place_of_worship AND religion=jewish AND (tourism or historic)
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
-		attraction : tourism=attraction
+		attraction : tourism=attraction and not amenity=place_of_worship
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
 	
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
-		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
 	//______________________________________________________________________________________________________________
 			
 	points
-		POI : natural=peak OR tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=water_tower OR man_made=communications_tower OR natural=cave_entrance OR natural=tree OR  historic=memorial OR historic=monument OR tourism=attraction
+		place : place OR landuse=farmyard
+		building point: building AND NOT building=entrance
+		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower) OR tourism=viewpoint OR (tourism=attraction and not amenity=place_of_worship)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
@@ -205,7 +203,7 @@ features
 		aeroway : aeroway
 		railway : @isOneOf(railway,rail,light_rail,tram,subway,funicular)
 		power line : @isOneOf(power, line, minor_line)
-		stream : waterway=stream OR waterway=river OR waterway=canal OR waterway=drain OR waterway=ditch OR waterway=riverbank 
+		stream : @isOneOf(waterway, stream, river, canal, drain, ditch, riverbank)
 		coastline : natural=coastline
 		cliff : natural=cliff OR landuse=quarry
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
@@ -238,6 +236,7 @@ features
 //______________________________________________________________________________________________________________
 			
 	areas
+		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
 		residential : landuse=residential
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
@@ -275,6 +274,7 @@ properties
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
+	line-opacity : 100%
 
 
 	 
@@ -1330,7 +1330,7 @@ rules
 		
 		define
 			min-zoom : 10
-			line-color : #555
+			line-color : #973
 			line-style : dash
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
@@ -1339,6 +1339,7 @@ rules
 		for : highway=footway
 			define
 				line-style : dot
+				line-color : #973
 		
 		for : highway=cycleway
 			define
@@ -1626,7 +1627,7 @@ rules
 			painting-cycle : 495
 		draw : fill
 	
-	target : nature reserve label
+		// nature reserve label
 		for : inner_boundary OR inner_leisure
 			stop
 		define
@@ -2065,7 +2066,7 @@ rules
 		draw : text
 		for : legend=paper
 			define
-				fill-color : #eee
+				fill-color : #fff
 		draw : fill
 		for : legend=box
 			define
