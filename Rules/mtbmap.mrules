@@ -170,13 +170,13 @@ features
 		lodging : tourism=guest_house OR tourism=hotel
 		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
 		worship church : amenity=place_of_worship AND (religion=christian OR religion=Christian)
-		worship other : amenity=place_of_worship AND (religion=bahai OR religion=Bahai OR religion=druze OR religion=Druze)
+		worship other : amenity=place_of_worship AND (religion=bahai OR religion=Bahai OR religion=druze OR religion=Druze OR religion=budhist OR religion=Budhist)
 		worship mosque : amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
-		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish)AND (tourist=attraction or historic)
+		worship synagogue : amenity=place_of_worship AND (religion=jewish OR religion=Jewish) AND (tourism or historic)
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
-		attraction : tourism=attraction
+		attraction : tourism=attraction and not amenity=place_of_worship
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
@@ -188,7 +188,7 @@ features
 	//______________________________________________________________________________________________________________
 			
 	points
-		POI : natural=peak OR tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=water_tower OR man_made=communications_tower OR natural=cave_entrance OR natural=tree OR  historic=memorial OR historic=monument OR tourism=attraction
+		POI : natural=peak OR tourism=viewpoint OR historic=ruins OR historic=archaeological_site OR man_made=tower OR man_made=water_tower OR man_made=communications_tower OR natural=cave_entrance OR natural=tree OR  historic=memorial OR historic=monument OR (tourism=attraction and not amenity=place_of_worship)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
@@ -1330,7 +1330,7 @@ rules
 		
 		define
 			min-zoom : 10
-			line-color : #555
+			line-color : #973
 			line-style : dash
 			line-opacity : 1
 			line-width : 10:0.25;15:2.0
@@ -1339,6 +1339,7 @@ rules
 		for : highway=footway
 			define
 				line-style : dot
+				line-color : #973
 		
 		for : highway=cycleway
 			define
