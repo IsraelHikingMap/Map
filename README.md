@@ -8,7 +8,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * [OruxMaps](#oruxmaps)
   * [OpenMaps for iOS](#openmaps-for-ios)
   * [Marble](#marble)
-  * [Tile Mirroring](#Tile-Mirroring)
+  * [Tile Mirroring](#tile-mirroring)
 * [Prepare a map for offline use](#prepare-a-map-for-offline-use)
 * [Building the map](#building-the-map)
 
