@@ -8,6 +8,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
   * [OruxMaps](#oruxmaps)
   * [OpenMaps for iOS](#openmaps-for-ios)
   * [Marble](#marble)
+  * [Tile Mirroring](#Tile-Mirroring)
 * [Prepare a map for offline use](#prepare-a-map-for-offline-use)
 * [Building the map](#building-the-map)
 
@@ -57,6 +58,22 @@ Setup instructions:
   * Copy the [routes folder](https://github.com/shtrb/marble/tree/master/earth/routes) to maps folder
   * Select _"osm.org.il"_ in the available maps
 
+###Tile Mirroring
+Sites and application owners are encouraged to create a mirror of latest tiles on their servers.
+
+We have found that wget is a simple and effective tool to create such a mirror mechanism. For example:
+```bash
+cd public_html/IsraelHiking
+wget --recursive --timestamping --accept=png --no-parent --no-host-directories --no-verbose --limit-rate=200k http://israelhiking.osm.org.il/Tiles/ http://israelhiking.osm.org.il/OverlayTiles/ http://israelhiking.osm.org.il/mtbTiles/ > temp/wget_tiles.log 2>&1 
+```
+
+wget comes pre-installed with most Unix/Linux distributions.
+A free MS-windows version of wget is available for download [online](https://eternallybored.org/misc/wget/).
+
+A daily task for refreshing the mirror tiles can be created with
+[Windows' Task Scheduler](https://technet.microsoft.com/en-us/library/cc748993(v=ws.11).aspx)
+and with Unix/Linux
+[cron](https://help.ubuntu.com/community/CronHowto) utility. 
 
 ##Prepare a map for offline use
 
@@ -127,6 +144,6 @@ This is an optional stage in case you want to make the locally generated tiles a
 6. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 9-July-16
+Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 6-Oct-16
 
 <!-- vim: set autoindent shiftwidth=2: -->
