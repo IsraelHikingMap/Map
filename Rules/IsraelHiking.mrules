@@ -1201,7 +1201,7 @@ rules
 			min-zoom : 13
 			line-color : #78C1C1
 			line-width : 10:1;15:3
-		for : waterway = wadi OR intermittent = yes
+		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
 			define
 				line-style : dash
 		for : tunnel AND NOT tunnel=no
@@ -1604,7 +1604,7 @@ rules
 			fill-color : #78C1C1 white 10%
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 530
-		for : intermittent = yes
+		for : intermittent = yes OR (seasonal AND NOT seasonal = no)
 			define
 				min-zoom : 13
 				line-style : dashlong
