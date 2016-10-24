@@ -647,10 +647,15 @@ rules
 		// default min-zoom is set for safety
 		define
 			min-zoom : 22
+			max-zoom : 21
+			line-style : solid
 		for : length < 1
 			stop
 		for : junction = roundabout
 			stop
+		for : name name:he name:en
+			define
+				max-zoom : 15
 		if : * motorway
 			for : length > 16
 				define
