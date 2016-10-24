@@ -749,8 +749,8 @@ rules
 			shield-padding-bottom : 6
 			shield-resize-mode : free
 		draw : shield
-// Street names
-	target : road street *
+// Road names
+	target : road *
 		define
 			min-zoom : 14.5
 			font-weight : bold
