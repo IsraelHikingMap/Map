@@ -154,6 +154,7 @@
 // TODO:
 // -----
 
+import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
 	
@@ -161,6 +162,7 @@ features
 		
 	points, areas
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
+		bikepark : landuse=recreation_ground and sport=mtb
 		cafe : amenity=cafe
 		convenience : shop=convenience OR shop=supermarket
 		food : amenity=restaurant OR amenity=fast_food
@@ -173,7 +175,7 @@ features
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
-		attraction : tourism=attraction and not amenity=place_of_worship
+		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
@@ -246,8 +248,7 @@ features
 		area water : natural=water OR landuse=reservoir OR landuse=basin
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
-
-		farmyard : landuse=farmyard
+		archaeological: historic=archaeological_site
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
 		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden)
@@ -448,7 +449,7 @@ rules
 			font-style : italic
 			font-size : 15:10;16:12
 			min-zoom : 15
-			text : @if(ele,"("ele")")
+			text-func : roundEle(e)
 			text-align-vertical : near
 			text-offset-vertical : 10
 			text-align-horizontal : center
@@ -649,6 +650,43 @@ rules
 					text-direction : rtl
 		draw : text
 		
+	target: bikepark
+		define
+			icon-image : Icons/mtbmap/MTBiker.png
+			icon-width : 25
+			align-vertical : center
+			min-zoom : 8
+			painting-cycle : 810
+		draw : icon
+		define
+			font-weight : bold
+			text-color : green black 10%
+			font-size : 10:12;15:14
+			font-stretch : 1
+			text-offset-vertical : 80%
+			min-zoom : 10
+			text-align-vertical : near
+			painting-cycle : 810
+	
+		for : @isMatch(name, "[א-ת]")
+			define
+				text : name
+				text-direction : rtl
+		elsefor : name:he
+			define
+				text : [[name:he]]
+				text-direction : rtl
+		elsefor : name:en
+			define
+				text : [[name:en]]
+		else
+			define
+				text : name
+			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
+				define
+					text-direction : rtl
+		draw : text
+		
 	target: medical
 		define
 			icon-image : Icons/mtbmap/first_aid.png
@@ -790,7 +828,8 @@ rules
 			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
 				define
 					text-direction : rtl
-		draw : text
+		for : not (amenity=drinking_water)	
+			draw : text
 		
 		
 	target : picnic
@@ -1423,29 +1462,27 @@ rules
 			line-style : solid
 			border-style : solid
 			curved : true
+			border-opacity : 1
+			border-width : 70%
 
 		if : * local
 			define
-				border-color : yellow 
+				border-color : yellow  white 60%
+				painting-cycle : 597
+
 		elseif : * regional
 			define
-				border-color : red 
+				border-color : red white 60%
+				painting-cycle : 598
+
 		elseif : * national
 			define
-				border-color : blue
-		define
-			border-opacity : 0.3
-			border-width : 40%
-		draw : line
-		define
-			border-opacity : 0.3
-			border-width : 70%
-	
+				border-color : blue white 60%
+				painting-cycle : 599
+		
 		draw : line
 		
-	
-	
-	
+		
 	target : bridge
 		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) OR highway=track
 			define
@@ -1486,7 +1523,7 @@ rules
 				define
 					line-width : 13:1; 14:2
 					line-style : dash
-					line-offset : 10:2; 13:3; 14:6
+					line-offset : 10:1; 11:1.5; 12:2; 13:2.5; 14:3; 15:4; 16:5
 					border-style : none
 
 		for : waterway=stream
@@ -1513,7 +1550,6 @@ rules
 			font-size : 14:10
 			font-style : italic
 			font-weight : normal
-
 			text-color : #2D79B7
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
@@ -1778,6 +1814,26 @@ rules
 			text-align-vertical : near
 			min-zoom : 15
 		draw : text
+	
+	target : archaeological
+				
+		define
+			icon-image : Icons/mtbmap/jar.png
+			icon-width : 13:17
+			min-zoom : 13
+			shape-orientation : fixed
+			shape-mode : center
+			painting-cycle : 801
+		draw : icon
+		
+		define
+			font-weight : normal
+			font-size : 15:10
+			font-stretch : 1
+			text-offset-vertical : 60%
+			text-align-vertical : near
+			min-zoom : 15
+		draw : text
 		
 	target : area water
 		
@@ -1935,6 +1991,7 @@ rules
 		for : landuse=orchard OR landuse=vineyard
 			define
 				fill-texture : Textures/orchard.png
+				painting-cycle : 402
 				
 		draw : fill
 
@@ -1963,13 +2020,6 @@ rules
 			fill-color : yellow white 85%
 		draw : fill
 
-	target : farmyard
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 8
-			fill-color : #dcd7b3
-		draw : fill
 
 	target : area farmland
 		define
@@ -1977,6 +2027,7 @@ rules
 			line-width : 1
 			min-zoom : 8
 			fill-color : #fec
+			painting-cycle : 401
 		draw : fill		
 
 	target : residential
@@ -1986,7 +2037,7 @@ rules
 			fill-color : #eee
 			line-color : #999
 			min-zoom : 9
-			painting-cycle : 401
+			painting-cycle : 402
 		draw : fill
 
 	target : area industrial
@@ -1995,7 +2046,7 @@ rules
 			line-width : 0.5
 			line-color : #999
 			fill-color : #ddd
-			painting-cycle : 402
+			painting-cycle : 403
 		draw : fill
 
 	target : area commercial
@@ -2003,7 +2054,7 @@ rules
 			line-style : none
 			line-width : 1
 			fill-color : #ddd
-			painting-cycle : 402
+			painting-cycle : 403
 		draw : fill
 
 	target : breakwater
