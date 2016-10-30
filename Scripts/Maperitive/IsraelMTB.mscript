@@ -1,6 +1,6 @@
-﻿// =======================================================
-// === This script creates a OSM Hiking Map for Israel ===
-// =======================================================
+﻿// ====================================================
+// === This script creates a OSM MTB Map for Israel ===
+// ====================================================
 
 // Allow the use of relative file names       
 use-script-dir
