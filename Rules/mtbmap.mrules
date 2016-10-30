@@ -158,10 +158,6 @@ import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
 	
-<<<<<<< HEAD
-	place : node[place]
-=======
->>>>>>> refs/remotes/origin/master
 	legend : legend
 		
 	points, areas
