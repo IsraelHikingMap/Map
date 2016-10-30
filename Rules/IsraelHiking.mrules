@@ -92,10 +92,10 @@ features
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
 
 	lines
-		aerialway : aerialway and not aerialway=station
-		aeroway : aeroway
+		aerialway : aerialway AND NOT aerialway=station
+		aeroway : aeroway AND NOT aeroway=helipad
 		contour major : contour[@isMulti(elevation, 100)]
-		contour labels : contour[@isMulti(elevation, 20) and not @isMulti(elevation, 100)]
+		contour labels : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
 		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
@@ -157,6 +157,7 @@ features
 		residential : landuse=residential
 		Area A : relation[boundary=administrative AND name="Area A"]
 		Area B : relation[boundary=administrative AND name="Area B"]
+		helipad : aeroway=helipad
 
 properties
 	// curved : true
@@ -646,10 +647,15 @@ rules
 		// default min-zoom is set for safety
 		define
 			min-zoom : 22
+			max-zoom : 21
+			line-style : solid
 		for : length < 1
 			stop
 		for : junction = roundabout
 			stop
+		for : name name:he name:en
+			define
+				max-zoom : 15
 		if : * motorway
 			for : length > 16
 				define
@@ -748,8 +754,8 @@ rules
 			shield-padding-bottom : 6
 			shield-resize-mode : free
 		draw : shield
-// Street names
-	target : road street *
+// Road names
+	target : road *
 		define
 			min-zoom : 14.5
 			font-weight : bold
@@ -1200,7 +1206,7 @@ rules
 			min-zoom : 13
 			line-color : #78C1C1
 			line-width : 10:1;15:3
-		for : waterway = wadi OR intermittent = yes
+		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
 			define
 				line-style : dash
 		for : tunnel AND NOT tunnel=no
@@ -1276,21 +1282,29 @@ rules
 		draw : shape
 
 	target : aeroway
+		define
+			curved : false
+			line-color : #666
 		for : aeroway=runway
 			define
-				curved : false
 				min-zoom : 11
 				line-width : 11:3;12:4;13:8;14:16;15:32
-				line-color : #666
 		elsefor : aeroway=taxiway
 			define
 				min-zoom : 13
-				curved : false
 				line-width : 11:1;12:1;13:3;14:6;15:12
-				line-color : #666
 		else
 			stop
 		draw : line
+
+	target : helipad
+		define
+			curved : false
+			min-zoom : 15
+			fill-color : #666
+			line-color : black white 25%
+			line-width : 1
+		draw : fill
 
 	target : cliff
 		define
@@ -1595,7 +1609,7 @@ rules
 			fill-color : #78C1C1 white 10%
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 530
-		for : intermittent = yes
+		for : intermittent = yes OR (seasonal AND NOT seasonal = no)
 			define
 				min-zoom : 13
 				line-style : dashlong

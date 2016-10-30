@@ -2,6 +2,8 @@ use-script-dir
 change-dir ..
 change-dir ..
 clear-map
+set-setting name=map.decoration.scale value=False
+set-setting name=map.decoration.attribution value=False
 use-ruleset location="Rules\mtbmap.mrules"
 load-source file="Legends\legend_mtb.osm"
 zoom-bounds

@@ -1,3 +1,4 @@
+@ECHO OFF
 REM Create an atlas with MOBAC and copy to Google Drive and/or Dropbox (if installed)
 REM
 REM File name MUST be of the form "Create <Full Atlas Name>.bat", such as "Create Israel Hiking.bat"
@@ -49,23 +50,28 @@ IF EXIST "%ATLASDIR%\" (
 @ECHO OFF
 IF NOT ERRORLEVEL 1 (
     @REM Copy the new map
-    FOR  %%D in ( %HOMEDRIVE%%HOMEPATH% D:%HOMEPATH% ) do (
-        FOR %%P in ( "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" "%%~D\Documents\GitHub\IsraelHiking\Map\Site\Oruxmaps\mapfiles" ) do (
+    PUSHD "%ATLASDIR%"
+    @REM Atlas internal name is unknown
+    FOR /D %%A IN ( * ) DO (
+	SET ATLASSUBDIR=%%A
+    )
+    @REM Create a zip fille of the map
+    @ECHO Creatting %ATLASNAME: =%.zip
+    "7z.exe" a -tzip -mx9 "%ATLASNAME: =%.zip" *
+    FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% D:%HOMEPATH% ) DO (
+        FOR %%P IN ( "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" "%%~D\Documents\GitHub\IsraelHiking\Map\Site\Oruxmaps\mapfiles" ) DO (
             IF EXIST "%%~P\%ATLASNAME%\" (
                 @ECHO Updating %%~P\%ATLASNAME%
-                XCOPY /D /Y /S "%ATLASDIR%\%ATLASNAME%" "%%~P\%ATLASNAME%"
-		IF EXIST "%%~dpP\%ATLASNAME: =%.zip" (
-		    @REM Create a new zip file for the atlas
-		    @ECHO Updating %%~dpP%ATLASNAME: =%.zip
-		    PUSHD "%ATLASDIR%"
-		    "7z.exe" a -tzip -mx9 "%ATLASNAME: =%.zip" *
-		    ECHO MOVE /Y "%ATLASNAME: =%.zip" %%~dpP
-		    MOVE /Y "%ATLASNAME: =%.zip" "%%~dpP"
-		    POPD
-		)
+		XCOPY /D /Y /S %ATLASSUBDIR% "%%~P\%ATLASNAME%"
             )
+	    IF EXIST "%%~dpP"\%ATLASNAME: =%.zip (
+		@ECHO Updating %%~dpP%ATLASNAME: =%.zip
+		@ECHO COPY /Y "%ATLASNAME: =%.zip" %%~dpP
+		COPY /Y "%ATLASNAME: =%.zip" "%%~dpP"
+	    )
         )
     )
+    POPD
 )
 
 @ECHO %DATE% %TIME%: Completed Creating Atlas: %ATLASNAME%
