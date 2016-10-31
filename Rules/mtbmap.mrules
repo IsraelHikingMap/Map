@@ -122,7 +122,6 @@
 // ___________________Painting Cycle________________________
 
 //
-//	map legend : 1000
 //	highlights : 950
 //	web maps : 900
 //		stream text : 800
@@ -158,8 +157,6 @@ import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
 	
-	legend : legend
-		
 	points, areas
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		bikepark : landuse=recreation_ground and sport=mtb
@@ -2076,55 +2073,3 @@ rules
 			line-offset-miter-limit : 5
 			painting-cycle : 150
 		draw : line
-
-
-// --
-		
-		
-
-//---- Style for creating legend ----
-// Custom tags in custom osm-file used to create legend
-// Render at zoom 15
-
-	target : legend
-		define
-
-			text : [[text:he]]
-			text-direction : rtl
-			text-align-horizontal : far
-			text-max-width : 30
-			text-halo-width : 0
-			text-line-spacing : 0.5
-			text-avoid-overlaps : false
-		for : legend=title
-			define
-				font-size : 18
-				font-weight : bold
-				text-direction : rtl
-				text-color : blue
-				
-		for : legend=heading
-			define
-				font-size : 12
-				font-weight : bold
-				text-direction : rtl
-		for : legend=text
-			define
-				font-size : 10
-				font-weight : bold
-				text-color : #666
-				text-direction : rtl
-		draw : text
-		for : legend=paper
-			define
-				fill-color : #fff
-		draw : fill
-		for : legend=box
-			define
-				fill-color : #fff
-				line-width : 1
-				line-color : #fff
-				line-style : solid
-		draw : fill
-		
-		

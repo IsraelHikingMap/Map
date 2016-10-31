@@ -21,12 +21,6 @@ run-python "Scripts\Maperipy\IsraelHikingInstallOnce.py"
 set-dem-source ASTER
 // ==================================================================
 
-// =================================
-// === Create the legend picture ===
-// =================================
-run-script file="Scripts\Maperitive\IsraelHikingLegend.mscript"
-// =================================
-
 // =============================================================================
 // === Set bounds to match                                                   ===
 // === http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf ===
