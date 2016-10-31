@@ -1,19 +1,9 @@
-// Maperitive rendering ruleset for hiking trails. The map style resembles
+// Maperitive rendering ruleset for hiking maps. The map style resembles
 // that of paper hiking maps produced by Israel Trails Committee (ITC)
 //
 // http://maperitive.net
 
 features
-//	points, areas
-//		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
-
-//	points
-//		camp site : tourism=camp_site
-//		view : tourism=viewpoint
-//		cave : natural=cave_entrance
-//		tree : node[natural=tree]
-//		guidepost : information=guidepost
-//		gate : node[barrier]
 
 	lines
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
@@ -37,8 +27,8 @@ features
 		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road minor : @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road street residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		track major : highway=track AND @isOneOf(tracktype, grade1, grade2)
 		track minor : highway=track AND (tracktype=grade3 OR NOT tracktype)
 		track grade4 : highway=track AND tracktype=grade4
@@ -47,116 +37,20 @@ features
 		track minor colour2 : highway=track AND (tracktype=grade3 OR NOT tracktype) AND @isMatch(colour, ";")
 		track grade4 colour2 : highway=track AND tracktype=grade4 AND @isMatch(colour, ";")
 		track grade5 colour2 : highway=track AND tracktype=grade5 AND @isMatch(colour, ";")
-		// nature reserve boundary outer : way[@isOneOf(outer_boundary, boundary, leisure)]
-		// nature reserve boundary inner : way[@isOneOf(inner_boundary, boundary, leisure)]
 
 	areas
 		military : landuse=military OR military=danger_area
 
 properties
 	// curved : true
-	text-halo-width : 30%
+	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
+	// Create a transparent map
 	map-background-opacity : 0
+	line-opacity : 100%
 
 rules
-	target : camp site
-		define
-			min-zoom : 13
-			icon-image : Icons/SJJB/accommodation_camping.glow.32.png
-			icon-width : 14:16;15:24
-		draw : icon
-
-	target : view
-		define
-			min-zoom : 13
-			icon-image : Icons/SJJB/tourist_view_point.glow.32.png
-			icon-width : 14:16;15:24
-		draw : icon
-
-	target : tree
-		define
-			min-zoom : 13
-			icon-image : Icons/SJJB/landuse_deciduous.green.glow.24.png
-			icon-width : 14:16;15:24
-		draw : icon
-
-	target : cave
-		define
-			min-zoom : 13
-			icon-image : Icons/SJJB/poi_cave.glow.32.png
-			icon-width : 14:16;15:24
-		draw : icon
-
-	target : guidepost
-		define
-			min-zoom : 13
-			icon-image : Icons/SJJB/tourist_guidepost.glow.32.png
-			icon-width : 14:16;15:24
-		draw : icon
-
-	target : gate
-		define
-			min-zoom : 15
-			icon-width : 16
-		for : barrier=gate
-			for : access=no OR motor_vehicle=no
-				define
-					icon-image : Icons/SJJB/barrier_gate.n.32.png
-			else
-				define
-					icon-image : Icons/SJJB/barrier_gate.glow.32.png
-		elsefor : barrier=kissing_gate OR barrier=stile
-			define
-				icon-image : Icons/SJJB/barrier_kissing_gate.glow.32.png
-		elsefor : barrier=lift_gate
-			define
-				icon-image : Icons/SJJB/barrier_lift_gate.glow.32.png
-		elsefor : barrier=block OR barrier=debris
-			define
-				icon-image : Icons/SJJB/barrier_blocks.n.32.png
-		elsefor : barrier=cattle_grid
-			define
-				icon-image : Icons/SJJB/barrier_cattle_grid.glow.32.png
-				icon-width: 24
-		for : legend
-			define
-				min-zoom : 13
-				icon-width : 18
-		draw : icon
-
-	target : nature reserve label
-		for : inner_boundary OR inner_leisure
-			stop
-		define
-			font-size : 12
-			text-color : green
-			font-weight : normal
-		for : width > 10
-			define
-				min-zoom : 11
-		elsefor : width > 5
-			define
-				min-zoom : 12
-		elsefor : width > 2
-			define
-				min-zoom : 13
-		elsefor : width > 1
-			define
-				min-zoom : 14
-		else
-			define
-				min-zoom : 15
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
-		draw : text
-
 
 ////////////////////////// lines ////////////////////////////////
 
@@ -191,9 +85,9 @@ rules
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
-				min-zoom : 11
+				min-zoom : 12
 				line-color : #FFE66B
-		elseif : * minor
+		elseif : * residential
 			for : colour
 				define
 					line-color : white
@@ -202,7 +96,6 @@ rules
 				define
 					min-zoom : 14
 					line-color : white
-
 		// Colors for Hiking Trail on roads
 		for : colour = red
 			define
@@ -226,27 +119,70 @@ rules
 			define
 				border-color : black
 				border-opacity : 0.8
+			// Non-coloured ways are not shown!!!
 			stop
 
 		define
 			line-width : 10:0.5;13:2;14:2;16:3
 			border-style : solid
 			border-width : 80%
-
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				border-style : dot
 				line-style : dot
-
-		for : bridge=yes
+		for : bridge AND NOT bridge=no
 			define
 				border-width : 150%
+		draw : line
 
+	target : road *
+	// Narrow 1px lines at low zoom levels
+		define
+			line-width : 1
+		if : * street *
+			if : * tertiary
+				define
+					min-zoom : 11
+					max-zoom : 12
+					line-color : #FFE66B black 10%
+					line-color : brown yellow 20%
+			elseif : * residential
+				define
+					min-zoom : 13
+					line-color : black
+					max-zoom : 14
+			for : colour
+				define
+					min-zoom : 9
+					line-width : 1.6
+				for : colour = red
+					define
+						line-color : red
+				elsefor : colour = blue
+					define
+						line-color : blue
+				elsefor : colour = black
+					define
+						line-color : black
+				elsefor : colour = green
+					define
+						line-color : green
+				elsefor : colour = purple
+					define
+						line-color : purple
+				elsefor : colour = orange
+					define
+						line-color : orange
+			else
+				stop
+		else
+			// Non-coloured ways are not shown!!!
+			stop
 		draw : line
 
 	target : track*
 		define
-			line-width : 13:2;16:3
+			line-width : 13:1.5;14:2
 			line-offset : 12:0;13:1.5;16:2.5
 			line-offset-sides : both
 			// min-zoom for coloured trails
@@ -254,6 +190,7 @@ rules
 		if : *major*
 			define
 				line-style : solid
+				line-width : 13:1.6;14:2
 		elseif : *minor*
 			define
 				line-style : dash
@@ -334,40 +271,26 @@ rules
 				define
 					line-color : orange
 			else
-				define
-					// min-zoom for non-coloured trails
-					min-zoom : 14
-					line-color : black white 40%
-					line-width : 13:1.2;16:2.5
+				// Non-coloured ways are not shown!!!
 				stop
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				border-width : 80%
 				border-style : dot
-		for : bridge=yes
-			define
-				border-width : 150%
 		draw : line
-
-	target : track *
-		for :  @isOneOf(colour, red, blue, black, green, purple, orange)
-			stop
-		else
-			// Show non-coloured tracks as long single dashes in zoom 13
+		for : bridge AND NOT bridge=no
 			define
-				min-zoom : 13
-				max-zoom : 14
-				line-color : black white 40%
-				line-width : 1.5
-				line-style : dashlong
-				border-style : none
-			stop
+				line-width : 13:1.5;14:2
+				line-offset : 12:0;13:4;16:5.0
+				line-style : solid
+				line-color : black
+				line-offset-sides : both
 		draw : line
 
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
 		define
-			line-width : 13:2;16:3
+			line-width : 13:1.5;14:2
 			line-style : dash
 			// min-zoom for coloured trails
 			min-zoom : 9
@@ -402,7 +325,7 @@ rules
 				min-zoom : 14
 				line-color : black white 40%
 				fill-color : black white 40%
-				line-width : 13:1.5;16:2.5
+			// Non-coloured ways are not shown!!!
 			stop
 		if : cycle*
 			define
@@ -412,6 +335,7 @@ rules
 			// foot paths
 			define
 				line-style : dot
+				line-width : 13:1.8;14:2
 		elseif : steps*
 			define
 				shape : custom
@@ -421,13 +345,18 @@ rules
 				shape-aspect : 3
 				line-style : none
 			draw : shape
-		for : tunnel
+		for : tunnel AND NOT tunnel=no
 			define
 				border-width : 80%
 				border-style : dot
-		for : bridge=yes
+		draw : line
+		for : bridge AND NOT bridge=no
 			define
-				border-width : 150%
+				line-width : 13:1.5;14:2
+				line-offset : 3
+				line-style : solid
+				line-color : black
+				line-offset-sides : both
 		draw : line
 
 	target : hiking regional*
@@ -438,7 +367,6 @@ rules
 			line-width : 7:1;10:1.5;11:2;15:3
 			line-offset : 7:1;10:1.5;11:2;13:4;15:6
 			line-offset-sides : left
-
 		if : * jerusalem trail
 			define
 				line-color : blue
@@ -536,97 +464,6 @@ rules
 			line-color : orange black 30%
 		draw : line
 
-	target : nature reserve boundary*
-		define
-			min-zoom : 9
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 9:1.5;13:2.5
-			line-style : dashdotdot
-		draw : line
-
-	// Annotate the inner side of natural reserve boundaries.
-	// Use the "clockwise" tag created by the Maperipy script
-	// AddWayLengthTags.py
-	target : nature reserve boundary outer
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 2
-			line-style : dot
-			line-offset : 3
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : right
-		elsefor : clockwise = no
-			define
-				line-offset-sides : left
-		else
-			stop
-		draw : line
-
-	target : nature reserve boundary outer
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 1.5
-			line-style : dot
-			line-offset : 6
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : right
-		elsefor : clockwise = no
-			define
-				line-offset-sides : left
-		else
-			stop
-		draw : line
-
-	// Annotate the inner side of natural reserve boundaries.
-	// Use the "clockwise" tag created by the Maperipy script
-	// AddWayLengthTags.py
-	target : nature reserve boundary inner
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 2
-			line-style : dot
-			line-offset : 3
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : left
-		elsefor : clockwise = no
-			define
-				line-offset-sides : right
-		else
-			stop
-		draw : line
-
-	target : nature reserve boundary inner
-		define
-			min-zoom : 13
-			line-color : #8DC56C black 20%
-			line-opacity : 0.9
-			line-width : 1.5
-			line-style : dot
-			line-offset : 6
-			line-offset-miter-limit : 2
-		for : clockwise = yes
-			define
-				line-offset-sides : left
-		elsefor : clockwise = no
-			define
-				line-offset-sides : right
-		else
-			stop
-		draw : line
-
 /////////////////////////////// areas ////////////////////////////
 
 	target : military
@@ -635,53 +472,10 @@ rules
 			fill-hatch : swne
 			fill-hatch-color : white
 			fill-hatch-opacity : 0
-			fill-opacity : 60%
-			line-style : none
-		for : legend
-			define
-				painting-cycle : 590
-		draw : fill
-
-	target : boundary*
-		// Avoid maritime borders
-		for : maritime=yes
-			stop
-		define
-			line-color : #9E1A99
-			line-opacity : 0.75
-		draw : line
-
-	target : quarry
-		define
-			line-style : solid
-			line-color : black white 40%
-			line-width : 1
+			fill-opacity : 80%
 			min-zoom : 9
-			fill-texture : Icons/Rendering-landuse-quarry-mapnik.png
-		for : legend
-			define
-				painting-cycle : 590
+			line-width : 0.5
+			line-color : red
 		draw : fill
-		draw : line
-
-	target : Area *
-		define
-			line-style : solid
-			line-width : 1
-			line-color : orange
-			min-zoom : 9
-			fill-opacity : 50%
-		draw : line
-		if : * A
-			define
-				fill-color : orange white 40%
-		elseif : * B
-			define
-				fill-color : orange white 70%
-		else
-			stop
-		draw : fill
-
-
 
 // vim: set autoindent noexpandtab:
