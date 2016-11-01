@@ -11,3 +11,4 @@
 .merged.*
 *.hidden*
 !/Site/*/*legend*
+!/Cache/*.contours

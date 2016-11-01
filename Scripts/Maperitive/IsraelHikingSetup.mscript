@@ -1,50 +1,32 @@
 ﻿clear-map
 
-// ===================================================
-// === Allow the use of relative file names        ===
-// === Change directory to Israel Hiking Directory ===
-// ===================================================
+// Allow the use of relative file names       
+// Change directory to Israel Hiking Directory
 use-script-dir
 change-directory ..
 change-directory ..
-// ===================================================
 
-// ===============================================================================
-// === Copy missing DEM and icon files, if any, to the Maperitive Installation ===
-// ===============================================================================
+// Remove bathimetry information from SRTM HGT files
+run-python "Scripts\Maperipy\SRTM_bathimetry.py"
+
+// Copy missing DEM and icon files, if any, to the Maperitive Installation
 run-python "Scripts\Maperipy\IsraelHikingInstallOnce.py"
-// ===============================================================================
 
-// ==================================================================
-// === Use ASTER as the DEM source for contoures and hill shading ===
-// ==================================================================
+// Use ASTER as the DEM source for contoures and hill shading
 set-dem-source ASTER
-// ==================================================================
 
-// =============================================================================
-// === Set bounds to match                                                   ===
-// === http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf ===
-// =============================================================================
+// Set bounds to match                                                  
+// http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
 set-geo-bounds 34.07929,29.37711,35.91531,33.35091
-// =============================================================================
 
-// ==================================================
-// === Create and save the relief-igor background ===
-// ==================================================
+// Create and save the relief-igor background
 generate-relief-igor
 // Avoid 'Object is currently in use elsewhere' exception
-pause 2
-save-source Cache\relief_Hiking_Igor.png
-// ==================================================
+pause 20
+save-source "Cache\relief_Hiking_Igor.png"
 
-// ====================================
-// === Create and save the contours ===
-// ====================================
+// Create and save the contours
 run-python "Scripts\Maperipy\GenASTERContours.py"
-// ====================================
 
-// =======================================
-// === Create and save grid lines file ===
-// =======================================
-run-python file="Scripts\Maperipy\CreateITMGridOsm.py"
-// =======================================
+// Create and save grid lines file
+run-python "Scripts\Maperipy\CreateITMGridOsm.py"

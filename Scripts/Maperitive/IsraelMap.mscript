@@ -37,16 +37,11 @@ load-source Cache\Forests.osm
 load-source Cache\ITMGrid.osm
 
 // Load the ASTER contours files created using "CreateASTERContours.py"
-load-source Cache\ASTER-34-29.contours
-load-source Cache\ASTER-34-30.contours
-load-source Cache\ASTER-34-31.contours
-load-source Cache\ASTER-34-32.contours
-load-source Cache\ASTER-34-33.contours
-load-source Cache\ASTER-35-29.contours
-load-source Cache\ASTER-35-30.contours
-load-source Cache\ASTER-35-31.contours
-load-source Cache\ASTER-35-32.contours
-load-source Cache\ASTER-35-33.contours
+load-source Cache\ASTER-N29.contours
+load-source Cache\ASTER-N30.contours
+load-source Cache\ASTER-N31.contours
+load-source Cache\ASTER-N32.contours
+load-source Cache\ASTER-N33.contours
 
 // Load the relief file created using "IsraelHikingSetup.mscript"
 load-image file=Cache\relief_Hiking_Igor.png background=false

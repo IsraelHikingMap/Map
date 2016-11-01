@@ -94,7 +94,7 @@ features
 		aerialway : aerialway AND NOT aerialway=station
 		aeroway : aeroway AND NOT aeroway=helipad
 		contour major : contour[@isMulti(elevation, 100)]
-		contour labels : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
+		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
 		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]

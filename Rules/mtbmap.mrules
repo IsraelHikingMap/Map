@@ -212,9 +212,9 @@ features
 		cutline : man_made=cutline
 		
 		// contours
-		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
+		contour major : contour[@isMulti(elevation, 100)]
 		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
-		contour minor : contour[@isMulti(elevation, 10) AND NOT (@isMulti(elevation, 100) OR @isMulti(elevation, 20))]
+		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		
 		// roads
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
