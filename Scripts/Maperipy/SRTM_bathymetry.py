@@ -1,4 +1,4 @@
-# SRTM_bathimetry.py: Remove bathimetry information from SRTM HGT files
+# SRTM_bathymetry.py: Remove bathymetry information from SRTM HGT files
 # Overides underwater and shoreline elevations to the higher 10-meter value
 
 import os
