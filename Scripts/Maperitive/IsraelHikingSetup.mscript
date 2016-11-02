@@ -6,8 +6,8 @@ use-script-dir
 change-directory ..
 change-directory ..
 
-// Remove bathimetry information from SRTM HGT files
-run-python "Scripts\Maperipy\SRTM_bathimetry.py"
+// Remove bathymetry information from SRTM HGT files
+run-python "Scripts\Maperipy\SRTM_bathymetry.py"
 
 // Copy missing DEM and icon files, if any, to the Maperitive Installation
 run-python "Scripts\Maperipy\IsraelHikingInstallOnce.py"
