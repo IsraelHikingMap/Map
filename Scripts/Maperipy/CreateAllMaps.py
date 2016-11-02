@@ -39,8 +39,8 @@ add_to_PATH("Mobile Atlas Creator")
 phases = [
     'OverlayTiles',
     'IsraelHiking15',
-    'IsraelHiking16',
     'IsraelMTB15',
+    'IsraelHiking16',
     'IsraelMTB16',
     'LastModified']
 remainingPhases = []
@@ -105,57 +105,57 @@ if phase in remainingPhases:
 else:
     App.log(phase+' phase skipped.')
 
-if [val for val in ['IsraelHiking15', 'IsraelHiking16', 'IsraelMTB15', 'IsraelMTB16']
+if [val for val in ['IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16']
         if val in remainingPhases]:
     App.run_command("run-script file="+os.path.join("Scripts", "Maperitive", "IsraelMap.mscript"))
 
-    if [val for val in ['IsraelHiking15', 'IsraelHiking16']
-            if val in remainingPhases]:
+    phase = 'IsraelHiking15'
+    if phase in remainingPhases:
         App.log('Updating the Israel Hiking Map')
         App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
         App.run_command("apply-ruleset")
+        App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
+        gen_cmd.GenToDirectory(7, 15, os.path.join(IsraelHikingDir, 'Site', 'Tiles'))
+        MOBAC("Create Israel Hiking.bat", "Oruxmap Israel Hiking map")
+        mark_done(phase)
+    else:
+        App.log(phase+' phase skipped.')
 
-        phase = 'IsraelHiking15'
-        if phase in remainingPhases:
-            App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
-            gen_cmd.GenToDirectory(7, 15, os.path.join(IsraelHikingDir, 'Site', 'Tiles'))
-            MOBAC("Create Israel Hiking.bat", "Oruxmap Israel Hiking map")
-            mark_done(phase)
-        else:
-            App.log(phase+' phase skipped.')
-
-        phase = 'IsraelHiking16'
-        if phase in remainingPhases:
-            App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
-            gen_cmd.GenToDirectory(16, 16, os.path.join(IsraelHikingDir, 'Site', 'Tiles'))
-            MOBAC("Create Israel Hiking 16.bat", "Oruxmap Israel Hiking detailed map")
-            mark_done(phase)
-        else:
-            App.log(phase+' phase skipped.')
-
-    if [val for val in ['IsraelMTB15', 'IsraelMTB16']
-            if val in remainingPhases]:
+    phase = 'IsraelMTB15'
+    if phase in remainingPhases:
         App.log('Updating the Israel MTB Map')
         App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
         App.run_command("apply-ruleset")
+        App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
+        gen_cmd.GenToDirectory(7, 15, os.path.join(IsraelHikingDir, 'Site', 'mtbTiles'))
+        MOBAC("Create Israel MTB.bat", "Oruxmaps Israel MTB map")
+        mark_done(phase)
+    else:
+        App.log(phase+' phase skipped.')
 
-        phase = 'IsraelMTB15'
-        if phase in remainingPhases:
-            App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
-            gen_cmd.GenToDirectory(7, 15, os.path.join(IsraelHikingDir, 'Site', 'mtbTiles'))
-            MOBAC("Create Israel MTB.bat", "Oruxmaps Israel MTB map")
-            mark_done(phase)
-        else:
-            App.log(phase+' phase skipped.')
+    phase = 'IsraelHiking16'
+    if phase in remainingPhases:
+        App.log('Updating the Israel Hiking Map')
+        App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
+        App.run_command("apply-ruleset")
+        App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
+        gen_cmd.GenToDirectory(16, 16, os.path.join(IsraelHikingDir, 'Site', 'Tiles'))
+        MOBAC("Create Israel Hiking 16.bat", "Oruxmap Israel Hiking detailed map")
+        mark_done(phase)
+    else:
+        App.log(phase+' phase skipped.')
 
-        phase = 'IsraelMTB16'
-        if phase in remainingPhases:
-            App.log('=== creating Israel MTB zoom level 16 ===')  
-            gen_cmd.GenToDirectory(16, 16, os.path.join(IsraelHikingDir, 'Site', 'mtbTiles'))
-            MOBAC("Create Israel MTB 16.bat", "Oruxmaps Israel MTB detailed map")
-            mark_done(phase)
-        else:
-            App.log(phase+' phase skipped.')
+    phase = 'IsraelMTB16'
+    if phase in remainingPhases:
+        App.log('Updating the Israel MTB Map')
+        App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
+        App.run_command("apply-ruleset")
+        App.log('=== creating Israel MTB zoom level 16 ===')  
+        gen_cmd.GenToDirectory(16, 16, os.path.join(IsraelHikingDir, 'Site', 'mtbTiles'))
+        MOBAC("Create Israel MTB 16.bat", "Oruxmaps Israel MTB detailed map")
+        mark_done(phase)
+    else:
+        App.log(phase+' phase skipped.')
 
 phase = 'LastModified'
 if phase in remainingPhases:
@@ -168,6 +168,7 @@ if phase in remainingPhases:
                  + LastModified.strftime("%d-%m-%Y")
                  + "'; }")
     jsFile.close()
+    mark_done(phase)
 
 App.run_command("exit")
 
