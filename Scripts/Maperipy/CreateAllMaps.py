@@ -1,6 +1,6 @@
 import os, os.path, datetime, string, errno
 from maperipy import *
-import GenIsraelHikingTiles
+from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
 MaperitiveDir = os.path.dirname(os.path.dirname(os.path.normpath(os.__file__)))
@@ -62,7 +62,7 @@ def MOBAC(map_script, map_description):
 # Keep batch windows open up to 24 hours
 os.environ["NOPAUSE"] = "TIMEOUT /T 86400"
 
-gen_cmd =  GenIsraelHikingTiles.IsraelHikingTileGenCommand(BoundingBox(Srid.Wgs84LonLat, 34.00842, 29.32535, 35.92745, 33.398339999), 7, 16)
+gen_cmd =  IsraelHikingTileGenCommand()
 
 # Create a new map if all phased were done
 phases_done = 0
