@@ -40,7 +40,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
     * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
 ###[Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)
-This is the only app for iOS that we know is supported, please consult [this](https://lookaside.fbsbx.com/file/IHM%20iOS%20%D7%9E%D7%93%D7%A8%D7%99%D7%9A.pdf?token=AWz22cGyEKuBWcWqwUseWGkR8drTCmwzGGR09ycG9wOWDHGcRlHsYOZtSPlWu3gEjPpWz08Mntt0iYBWUG2v5KsGKpyhlTIh7eDbHZHj3D4sT0-f6W051ueEhgcza1IOrBySTEVO9XazLm1ySPpPe609) pdf file in order to use it.
+This is the only app for iOS that we know is supported, please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf) in order to use it.
 
 ### [Marble](https://marble.kde.org/install.php)
 Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
