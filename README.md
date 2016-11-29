@@ -6,7 +6,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 ## Contents
 * [Ready-to-use maps](#ready-to-use-maps)
   * [OruxMaps for Android](#oruxmaps-for-android)
-  * [OpenMaps for iOS](#openmaps-for-ios)
+  * [Galileo for iOS](#galileo-for-ios)
   * [Marble](#marble)
 * [Tile Access](#tile-access)
   * [Tile URLs](#tile-urls)
@@ -39,17 +39,8 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
     * You can now enjoy the map with no need for a network connection.
     * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
-### [OpenMaps for iOS](http://izeize.com/openmaps/)
-This is a guess since we don't have an iOS device
-  * Select "Settings" from the menu.
-  * Select "Type" under "Map".
-  * Select "Edit".
-  * Scroll down.
-  * Select "Add new type".
-  * Define a name for it (i.e., Israel Hiking).
-  * Enter one of the [Tile URLs](#tile-urls), replacing `{z}/{x}/{y}.png` with `/<x>/<y>.png`.
-  For example, [`http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png`](http://IsraelHiking.osm.org.il/Tiles/<zoom>/<x>/<y>.png).
-  * Select "Save".
+###[Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)
+This is the only app for iOS that we know is supported, please consult [this](https://lookaside.fbsbx.com/file/IHM%20iOS%20%D7%9E%D7%93%D7%A8%D7%99%D7%9A.pdf?token=AWz22cGyEKuBWcWqwUseWGkR8drTCmwzGGR09ycG9wOWDHGcRlHsYOZtSPlWu3gEjPpWz08Mntt0iYBWUG2v5KsGKpyhlTIh7eDbHZHj3D4sT0-f6W051ueEhgcza1IOrBySTEVO9XazLm1ySPpPe609) pdf file in order to use it.
 
 ### [Marble](https://marble.kde.org/install.php)
 Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
@@ -186,6 +177,6 @@ This is an optional stage in case you want to make the locally generated tiles a
 6. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 6-Oct-16
+Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 29-Nov-16
 
 <!-- vim: set autoindent shiftwidth=2: -->
