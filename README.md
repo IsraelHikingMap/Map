@@ -39,7 +39,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
     * You can now enjoy the map with no need for a network connection.
     * To update an offline map, repeat the same steps above. The new map will replace the old one.
 
-###[Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)
+### [Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)
 This is the only app for iOS that we know is supported, please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf) in order to use it.
 
 ### [Marble](https://marble.kde.org/install.php)
