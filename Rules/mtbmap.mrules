@@ -300,8 +300,7 @@ rules
 			define
 				icon-image : Icons/mtbmap/gate_open.png
 		elsefor : barrier=block OR barrier=debris
-			define
-				icon-image : none
+			stop
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
