@@ -1,0 +1,32 @@
+﻿// ==========================================================
+// === Load additional map layers and settings for Israel ===
+// ==========================================================
+
+// Use empty map rules to speed-up source loading
+use-ruleset location="Rules\empty.mrules"
+
+// Ensure rendering settings
+set-setting name=map.coastline.mode value=loose
+set-setting name=map.decoration.grid value=False
+
+// Add way lengths to the OSM data sources and
+// create Forest labels data in "Forests.osm" 
+run-python file="Scripts\Maperipy\AddWayLengthTags.py"
+
+// Load the Forest labels data created using "AddWayLengthTags.py"
+load-source Cache\Forests.osm
+
+// Load the Grid lines created using "Israel Hiking Setup.mscript"
+load-source Cache\ITMGrid.osm
+
+// Load the ASTER contours files created using "CreateASTERContours.py"
+load-source Cache\ASTER-N29.contours
+load-source Cache\ASTER-N30.contours
+load-source Cache\ASTER-N31.contours
+load-source Cache\ASTER-N32.contours
+load-source Cache\ASTER-N33.contours
+
+// Load the relief file created using "IsraelHikingSetup.mscript"
+load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false
+load-image file=Cache\relief_Hiking_Igor.png background=false

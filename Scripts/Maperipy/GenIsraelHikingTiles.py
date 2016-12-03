@@ -1,21 +1,23 @@
-"""Restrict the tile generation to the israel-and-palestine.poly from GEOfabric
-http://download.geofabrik.de/asia/israel-and-palestine.poly with a reduced sea area
+"""Tile generation setup for IsraelHiking.osm.org.il maps
+
+- Zoom levels 7 to 16
+- Tile generation restriction within a polygon using
+  http://download.geofabrik.de/asia/israel-and-palestine.poly
+  with a reduced sea area.
+- Allow generation reduction based on an OSM change file
 
 Author: Zeev Stadler
 License: public domain
 """
 
-# import os
+import time
 from maperipy import *
-# from maperipy.webmaps import Tile
-# from maperipy.tilegen import TileGenCommand
-from PolygonTileGenCommand import PolygonTileGenCommand
+from OsmChangeTileGenCommand import OsmChangeTileGenCommand
 
-class IsraelHikingTileGenCommand(PolygonTileGenCommand):
+class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
   def __new__(cls, *args):
-    # DEBUG print "IsraelHikingTileGenCommand.__new__()" 
     israel_and_palestine = Polygon((  # Modifications from Geofabrik's poly file:
-	(3.465362E+01, 3.208569E+01), # Closer to the Haifa Coast. Replaces (3.464563E+01, 3.292073E+01)
+	(3.465362E+01, 3.208569E+01), # Closer to the Tel-Aviv Coast. Replaces (3.464563E+01, 3.292073E+01)
 	(3.498374E+01, 3.313352E+01),
 	(3.515662E+01, 3.309994E+01),
 	(3.531781E+01, 3.311463E+01),
@@ -54,20 +56,32 @@ class IsraelHikingTileGenCommand(PolygonTileGenCommand):
 	(3.452423E+01, 3.040912E+01),
 	(3.448879E+01, 3.064515E+01),
 	(3.415870E+01, 3.135333E+01), # Closer to the Gaza Coast.  Replaces (3.407929E+01, 3.152265E+01),
-	(3.465362E+01, 3.208569E+01)  # Closer to the Haifa Coast. Replaces (3.464563E+01, 3.292073E+01)
+	(3.465362E+01, 3.208569E+01)  # Closer to the Tel-Aviv Coast. Replaces (3.464563E+01, 3.292073E+01)
       ))
-    cmd = PolygonTileGenCommand.__new__(cls, israel_and_palestine)
+    cmd = OsmChangeTileGenCommand.__new__(cls, israel_and_palestine, 7, 16)
     return cmd
 
   def __init__(self):
-    PolygonTileGenCommand.__init__(self)
-    # DEBUG print "IsraelHikingTileGenCommand.__init__()" 
+    OsmChangeTileGenCommand.__init__(self)
     self.subpixel_precision = 2
     self.use_fingerprint = True
-    self.clean_tiles = True  # Remove all skipped tiles
 
-    ## DEBUG ##
-    # self.visualize = True
-    # self.verbose = True
+  def rel_members_bbox(self, relation):
+    return not (
+        relation.has_tag("type") and relation.get_tag("type") == "multipolygon"
+        or
+        relation.has_tag("boundary") 
+        and relation.get_tag("boundary") in ("national_park", "protected_area"))
 
-# vim: sw=2
+  def execute(self):
+      timer = time.time()
+      OsmChangeTileGenCommand.execute(self)
+      timer = time.time() - timer
+      self.print_timer("   Tile generation time:", timer)
+
+  def osmChangeRead(self, *args):
+      timer = time.time()
+      OsmChangeTileGenCommand.osmChangeRead(self, *args)
+      timer = time.time() - timer
+      self.print_timer("   Osm Change analysis time:", timer)
+# vim: set shiftwidth=2 expandtab textwidth=0:
