@@ -155,7 +155,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         self.guard = None
 
     def execute(self):
-        if self.changed is None or not self.changed[min(self.changed)]:
+        if self.changed is not None and not self.changed[min(self.changed)]:
             return
         PolygonTileGenCommand.execute(self)
 

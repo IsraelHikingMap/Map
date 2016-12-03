@@ -4,6 +4,7 @@ from datetime import *
 import string
 import errno
 from maperipy import *
+from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 
 start_time = datetime.now()
@@ -76,7 +77,6 @@ phases_done = 0
 for phase in phases:
     if not os.path.exists(done_file(phase)):
         remainingPhases.append(phase)
-App.log('Remaining phases: '+', '.join(remainingPhases))
 
 if remainingPhases == []:
     for phase in phases:
@@ -128,6 +128,7 @@ if os.path.exists(latest):
             gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
     else:
         App.log('=== Continueing execution of the previous tile generation ===')  
+        App.log('Remaining phases: '+', '.join(remainingPhases))
         App.run_command("pause 15000")
 
     if remainingPhases:
@@ -139,7 +140,7 @@ if os.path.exists(latest):
         if not changed:
             remainingPhases = ["LastModified"]
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-else
+else:
     # Create base map if latest does not exist
     App.log("=== Downloading the latest.osm.pbf ===")
     App.log("=== No Incremental Tile Generation ===")
@@ -147,8 +148,10 @@ else
     App.run_program('wget.exe', 1200,
                     ["--timestamping",
                      "--no-directories", "--no-verbose",
-                     '--output-document="'+latest+'"',
+                     '--directory-prefix="'+os.path.join(IsraelHikingDir, 'Cache')+'"',
                      latest_url])
+    gen_cmd.timestamp = datetime.fromtimestamp(os.path.getmtime(latest))
+    OsmData.load_pbf_file(latest)
     remainingPhases = phases
 
 if remainingPhases:
@@ -239,9 +242,10 @@ if remainingPhases:
             pass
 
     # Don't loose the original latest pbf if something goes wrong
-    os.rename(latest, latest+".old")
-    os.rename(updated, latest)
-    os.remove(latest+".old")
+    if os.path.exists(updated):
+        os.rename(latest, latest+".old")
+        os.rename(updated, latest)
+        os.remove(latest+".old")
     Map.clear()
 
 duration = datetime.now()-start_time
