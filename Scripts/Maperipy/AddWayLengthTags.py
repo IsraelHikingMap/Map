@@ -130,7 +130,7 @@ try:
                         for osmTag in ("boundary", "leisure"):
                             if (osmRelation.has_tag(osmTag)):
                                 if ((osmMember.role == "" or osmMember.role == "outer")
-                                        and not osmWay.has_tag(osmTag):
+                                        and not osmWay.has_tag(osmTag)):
                                     osmWay.set_tag(osmTag, osmRelation.get_tag(osmTag))
                                     osmWay.set_tag("outer_boundary", osmTag)
                                 elif (osmMember.role == "inner"):
