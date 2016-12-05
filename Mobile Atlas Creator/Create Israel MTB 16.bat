@@ -17,6 +17,13 @@ REM
 %~d0
 CD "%~dp0"
 
+REM Set the AtlasName
+REM
+
+SET ATLASNAME=%~n0
+SET ATLASNAME=%ATLASNAME:~7%
+TITLE Creating Atlas: %ATLASNAME%
+
 REM Wait for tilestore unlock
 REM
 REM http://stackoverflow.com/questions/10518151/how-to-check-in-command-line-if-a-given-file-or-directory-is-locked-used-by-any/10520609#10520609
@@ -28,13 +35,6 @@ REM
 REM Add 7-Zip directories to path
 SETLOCAL
 PATH %PATH%;%~d0\Program Files\7-Zip;%~d0\Program Files\7-ZipPortable\App\7-Zip
-
-REM Set the AtlasName
-REM
-
-SET ATLASNAME=%~n0
-SET ATLASNAME=%ATLASNAME:~7%
-TITLE Creating Atlas: %ATLASNAME%
 
 SET ATLASDIR=%~d0\Users\%USERNAME%\Documents\Maps\OruxMaps\%ATLASNAME%
 IF EXIST "%ATLASDIR%\" (
