@@ -2,6 +2,7 @@
 # Perform one-time installation tasks:
 # 1. Copy DEM files to Maperitive installation
 # 2. Copy additional icons to the Maperitive installation
+# 3. Set map decoration defaults
 #
 
 import os.path
@@ -24,3 +25,7 @@ App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikin
 
 App.log("Copy missing Textures, if any, to the Maperitive Installation")
 App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Textures")+'"', '"'+os.path.join(MaperitiveDir, "Textures")+'"'])
+
+App.run_command("set-setting name=map.decoration.grid value=False")
+App.run_command("set-setting name=map.decoration.scale value=False")
+App.run_command("set-setting name=map.decoration.attribution value=False")
