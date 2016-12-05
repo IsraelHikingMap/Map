@@ -163,4 +163,4 @@ if          os.path.exists(zip_file) \
 
 App.run_command("exit")
 
-# vim: shiftwidth=4 expandtab
+# vim: shiftwidth=4 expandtab ai

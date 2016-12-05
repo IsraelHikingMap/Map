@@ -260,17 +260,15 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         (left, top) = self.deg2num(bbox.max_y, bbox.min_x, max(self.changed))
         (right, bottom) = self.deg2num(bbox.min_y, bbox.max_x, max(self.changed))
         if self.visualize:
-          # Create a symbol for the Polygon
-          self.polygon = PolygonSymbol(
-                  "{0}/{1}/{2} ({3}x{4} tiles)".format(
-                      max(self.changed), left, top, right-left, bottom-top),
-                  Srid.Wgs84LonLat)
-          self.polygon.style.pen_width = 2
-          self.polygon.style.pen_color = Color("red")
-          self.polygon.style.pen_opacity = 0.5
-          self.polygon.style.fill_opacity = 0
-          # Add the plygon to the layer
-          self.layer.add_symbol(self.polygon.add(self.gen_polygon))
+            # Create a symbol for the Polygon
+            self.polygon = PolygonSymbol("{0}/{1}/{2} ({3}x{4} tiles)".format(
+                max(self.changed), left, top, right-left, bottom-top), Srid.Wgs84LonLat)
+            self.polygon.style.pen_width = 2
+            self.polygon.style.pen_color = Color("red")
+            self.polygon.style.pen_opacity = 0.5
+            self.polygon.style.fill_opacity = 0
+            # Add the plygon to the layer
+            self.layer.add_symbol(self.polygon.add(self.gen_polygon))
         for x in range (left, right+1):
             for y in range(bottom, top+1):
                 self.new_tile_upwards((x, y), max(self.changed))
