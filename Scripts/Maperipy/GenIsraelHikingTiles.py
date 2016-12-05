@@ -65,6 +65,7 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     OsmChangeTileGenCommand.__init__(self)
     self.subpixel_precision = 2
     self.use_fingerprint = True
+    self.min_tile_file_size = 385  # No transparent tiles
 
   def rel_members_bbox(self, relation):
     return not (
