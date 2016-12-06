@@ -366,6 +366,7 @@ rules
 			min-zoom : 13
 			icon-image : Icons/SJJB/tourist_guidepost.glow.32.png
 			icon-width : 14:16;15:24
+			align-vertical : far
 		draw : icon
 
 	target : watertower
