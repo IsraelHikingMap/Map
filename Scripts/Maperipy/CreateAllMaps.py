@@ -86,8 +86,7 @@ phases = [
     'IsraelHiking15',
     'IsraelMTB15',
     'IsraelHiking16',
-    'IsraelMTB16',
-    'LastModified']
+    'IsraelMTB16']
 remainingPhases = []
 
 def done_file(phase):
@@ -119,7 +118,7 @@ for phase in phases:
 if remainingPhases == []:
     for phase in phases:
         os.remove(done_file(phase))
-
+"""
 # TODO openstreetmap.fr's israel minutely updates
 # The OSM data used by the latest tile generation
 latest = os.path.join(ProjectDir, 'Cache', 'israel-latest.osm.pbf')
@@ -132,6 +131,7 @@ updated = os.path.join(ProjectDir, 'Cache', 'israel-updated.osm.pbf')
 # Source of the OSM diff files
 base_url = "download.openstreetmap.fr/replication/asia/israel"
 change_resolution = "--minute"
+"""
 
 # Geofaprik's israel-and-palestine daily updates
 # The OSM data used by the latest tile generation
@@ -176,7 +176,7 @@ if os.path.exists(latest):
         gen_cmd.osmChangeRead(osm_change, latest, updated)
         (changed, guard) = gen_cmd.statistics()
         if not changed:
-            remainingPhases = ["LastModified"]
+            remainingPhases = []
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 else:
     # Create base map if latest does not exist
@@ -270,16 +270,6 @@ if remainingPhases:
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
-
-    phase = 'LastModified'
-    if phase in remainingPhases:
-        # Create LastModified.js file and add it to done file
-        last_modified = gen_cmd.timestamp.strftime("%d-%m-%Y")
-        App.log("=== Create Last Update info: "+last_modified+" ===")
-        mkdir_p(os.path.join(site_dir, 'Tiles'))   # For initial creation of LastModified.js
-        with open(os.path.join(site_dir, 'Tiles', 'LastModified.js'), 'w') as jsFile:
-            jsFile.write("function getLastModifiedDate(){return '"+last_modified+"';}")
-        mark_done(phase)
 
     for phase in phases:
         try:

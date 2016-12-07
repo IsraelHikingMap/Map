@@ -41,7 +41,8 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
     """
 
     def generation_filter(self, zoom, x, y, width, height):
-        # Filter rendering of the map in a super-tile
+        """Filter rendering of the map in a super-tile"""
+        self._progress_update(zoom, width*height)
         generate = False
         # Leverage the guard to check every 3rd row and column inside the super-tile
         # Note: This is for safety. We did not see width or height values larger than 3.
@@ -71,21 +72,13 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
 
     def osmChangeRead(self, change_file, base_map, new_map):
         """Analyze which tiles require an update by using a change file with base and new maps.
-        Allows multiple calls with consecutive change files.
 
-        Impacts on the map:
-        - If given a base OSM Layer, it is removed from the map.
-        - If given a base pbf file, it is not added to the map.
-        - If given a new pbf file, it is added to the map.
+        The base pbf file is added to the map as an invisible layer and removed after the analysis
+        The new pbf file is added to the map.
 
-        Inputs:
-        - File name of the change file
-        - Base map: either a name of a pbf file or an OSM Layer
-          Used for locating tiles with deleted and changed objects.
-        - New map: either a name of a pbf file or an OSM Layer
-          Used for locating tiles with new and changed objects.
-
-        Return value: OsmLayer of the new map
+        Inputs: File names of the change file, base map, and new map
+        The base map is used for locating tiles with deleted and changed objects.
+        The new map is used for locating tiles with new and changed objects.
         """
 
         App.collect_garbage()
@@ -103,26 +96,16 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                     "%Y-%m-%dT%H:%M:%SZ")
             if not element.HasChildNodes:
                 return
-        if isinstance(base_map, OsmLayer):
-            if self.verbose:
-                print "     Base OSM map taken from map layer..."
-            baseOsm = base_map.osm
-            base_map.visible = False
-        else:
-            if self.verbose:
-                print "     Reading base OSM map from", base_map, "..."
-            baseOsm = OsmData.load_pbf_file(base_map)
+        if self.verbose:
+            print "     Reading base OSM map from", base_map, "..."
+        App.run_command('load-source file="{}"'.format(base_map))  # DEBUG
+        base_index = len(Map.layers)
+        Map.layers[base_index-1].visible = False
+        baseOsm = Map.layers[base_index-1].osm
         App.collect_garbage()
-        if isinstance(new_map, OsmLayer):
-            if self.verbose:
-                print "     New OSM map taken from map layer..."
-            newOsm = new_map.osm
-            result = new_map
-        else:
-            if self.verbose:
-                print "     Loading new OSM map from", new_map, "..."
-            newOsm = Map.add_osm_source(new_map).osm
-            result = Map.layers[len(Map.layers)-1]
+        App.run_command('load-source file="{}"'.format(new_map))  # DEBUG
+        new_index = len(Map.layers)
+        newOsm = Map.layers[new_index-1].osm
         if self.verbose:
             print "     Analyzing change file ..."
             sum = {key : 0 for key in ("node", "way", "relation")}
@@ -148,6 +131,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if self.verbose:
             print "     Analyzed {} nodes, {} ways, and {} relations.".format(
                     sum["node"], sum["way"], sum["relation"])
+        App.run_command('remove-source index="{}"'.format(base_index))
 
     def __init__(self, *args):
         PolygonTileGenCommand.__init__(self)
@@ -158,17 +142,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if self.changed is not None and not self.changed[min(self.changed)]:
             return
         PolygonTileGenCommand.execute(self)
-
-    def deg2num(self, lat, lon, zoom):
-        # Adapted from
-        # http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Lon..2Flat._to_tile_numbers_2
-        lat_deg = float(lat)
-        lon_deg = float(lon)
-        lat_rad = math.radians(lat_deg)
-        n = 2.0 ** zoom
-        tile_x = int((lon_deg + 180.0) / 360.0 * n)
-        tile_y = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
-        return (tile_x, tile_y)
 
     def updated(self, zoom, x, y):
         try:

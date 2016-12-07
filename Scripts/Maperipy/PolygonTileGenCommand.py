@@ -58,6 +58,17 @@ class PolygonTileGenCommand(TileGenCommand):
         lat_deg = math.degrees(lat_rad)
         return Point(lon_deg, lat_deg)
 
+    def deg2num(self, lat, lon, zoom):
+        # Adapted from
+        # http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Lon..2Flat._to_tile_numbers_2
+        lat_deg = float(lat)
+        lon_deg = float(lon)
+        lat_rad = math.radians(lat_deg)
+        n = 2.0 ** zoom
+        tile_x = int((lon_deg + 180.0) / 360.0 * n)
+        tile_y = int((1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n)
+        return (tile_x, tile_y)
+
     def linear_ring_overlapps_polygon(self, geometry):
         result = False
         # Start with the geometry nodes, as it is usually a rectangle
@@ -124,7 +135,8 @@ class PolygonTileGenCommand(TileGenCommand):
             os.remove(filename)
 
     def generation_filter (self, zoom, x, y, width, height):
-        # Avoid generating tile batches outside the polygon
+        """Avoid generating tile batches outside the polygon"""
+        self._progress_update(zoom, width*height)
         generate = self.tiles_overlapps_polygon(zoom, x, y, width, height)
         if self.verbose:
             print "     PolygonTileGenCommand - Generating {}x{} super-tile: {}/{}/{}: {}".format(
@@ -148,6 +160,30 @@ class PolygonTileGenCommand(TileGenCommand):
             cmd = TileGenCommand.__new__(cls, *args)
             cmd.generation_polygon = None
         return cmd
+
+    def execute(self):
+        self._progress_zoom = None
+        try:
+            TileGenCommand.execute(self)
+        except BaseException as e:
+            print "Exception during TileGenCommand.execute():", e
+            if str(e) <> "ValueError: An item with the same key has already been added.":
+                raise
+
+    def _progress_update(self, zoom, size):
+        if self._progress_zoom <> zoom:
+            self._progress_zoom = zoom
+            (left, bottom) = self.deg2num(self.rendering_bounds.min_y, self.rendering_bounds.min_x, zoom)
+            (right, top) = self.deg2num(self.rendering_bounds.max_y, self.rendering_bounds.max_x, zoom)
+            self._progress_target = (right-left+1)*(bottom-top+1)
+            self._progress_count = 0
+            self._progress_last_report = 0
+            self._progress_report_step = max(1000, self._progress_target/10.0)
+        if self._progress_count - self._progress_last_report > self._progress_report_step:
+            print "     Scanned {}% of zoom {}".format(
+                self._progress_count*100//self._progress_target, zoom)
+            self._progress_last_report = self._progress_count
+        self._progress_count += size
 
     def __init__(self):
         # Derived classes can overide the save_filter and generation_filter methods
