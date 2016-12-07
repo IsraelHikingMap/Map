@@ -1,3 +1,15 @@
+"""Create all Israel Hiking and Biking maps
+
+This is the main script used to build the maps.
+
+The map creation is done in phases. The first phase creates the trails overlay map.
+Each of the following phases updates the tiles required for an offline map 
+and launches the appropriate MOBAC task.
+
+Progress is tracked by creating "phase done" files. 
+An incomplete map creation will be resumes at the first incomplete phase.
+"""
+
 import os
 import os.path
 from datetime import *
@@ -7,6 +19,8 @@ from maperipy import *
 from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 
+# TODO Separate OSM update and its server definitions from the Israel Hiking code
+
 start_time = datetime.now()
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
@@ -14,31 +28,55 @@ MaperitiveDir = os.path.dirname(os.path.dirname(os.path.normpath(os.__file__)))
 # App.log('MaperitiveDir: '+MaperitiveDir)
 ProgramFiles = os.path.normpath(os.path.dirname(MaperitiveDir))
 # App.log('ProgramFiles: '+ProgramFiles)
-IsraelHikingDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
+ProjectDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
 # App.log('App.script_dir: '+App.script_dir)
-# App.log('IsraelHikingDir: '+IsraelHikingDir)
-App.run_command('change-dir dir="'+IsraelHikingDir +'"')
-os.chdir(IsraelHikingDir)
+# App.log('ProjectDir: '+ProjectDir)
+App.run_command('change-dir dir="'+ProjectDir +'"')
+os.chdir(ProjectDir)
 
 def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc: # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else: raise
-
-def add_to_PATH(app_dir):
-    full_app_dir=os.path.join(ProgramFiles, app_dir)
-    for path_dir in (string.split(os.environ["PATH"], os.pathsep)):
-        if os.path.basename(path_dir) == app_dir:
-            # Application already found in PATH
-            return
-    if not os.path.isdir(full_app_dir):
-        # Application not a sibling of Maperitive
-        App.log("Warning: "+app_dir+" location not found. Could not add it to PATH.")
+    if os.path.isdir(path):
         return
-    os.environ["PATH"] = string.join([os.environ["PATH"],full_app_dir], os.pathsep)
+    os.makedirs(path)
+
+def silent_remove(filename):
+    # https://www.python.org/dev/peps/pep-3151/#lack-of-fine-grained-exceptions
+    try:
+        os.remove(filename)
+    except OSError as e:
+        if e.errno != errno.ENOENT:
+            raise
+
+def silent_rename(filename, new_filename):
+    silent_remove(new_filename)
+    try:
+        os.rename(filename, new_filename)
+    except OSError as e:
+        if e.errno != errno.ENOENT:
+            raise
+
+def safe_rename(filename, new_filename):
+    silent_remove(new_filename+".old")
+    silent_rename(new_filename, new_filename+".old")
+    try:
+        os.rename(filename, new_filename)
+        silent_remove(new_filename+".old")
+    except OSError as e:
+        if e.errno != errno.ENOENT:
+            raise
+
+def add_to_PATH(app_name):
+    for path_dir in string.split(os.environ["PATH"], os.pathsep):
+        for ext in string.split(os.pathsep+os.environ["PATHEXT"], os.pathsep):
+            if os.path.exists(os.path.join(path_dir, app_name+ext)):
+                # Application already found in PATH
+                return
+    full_app_name=os.path.join(ProgramFiles, app_name)
+    if not os.path.isdir(full_app_name):
+        # Application not a sibling of Maperitive
+        App.log("Warning: "+app_name+" location not found. Could not add it to PATH.")
+        return
+    os.environ["PATH"] = string.join([os.environ["PATH"],full_app_name], os.pathsep)
 
 add_to_PATH("wget")
 add_to_PATH("Mobile Atlas Creator")
@@ -53,7 +91,7 @@ phases = [
 remainingPhases = []
 
 def done_file(phase):
-    return os.path.join(IsraelHikingDir, 'output', phase+'.done')
+    return os.path.join(ProjectDir, 'Cache', phase+'.done')
 
 def mark_done(phase):
     open(done_file(phase), 'a').close()
@@ -84,33 +122,34 @@ if remainingPhases == []:
 
 # TODO openstreetmap.fr's israel minutely updates
 # The OSM data used by the latest tile generation
-latest = os.path.join(IsraelHikingDir, 'Cache', 'israel-latest.osm.pbf')
+latest = os.path.join(ProjectDir, 'Cache', 'israel-latest.osm.pbf')
 # URL for downloading the above
 latest_url = "http://download.openstreetmap.fr/extracts/asia/israel-latest.osm.pbf"
 # The changes since then
-osm_change = os.path.join(IsraelHikingDir, 'Cache', 'israel-update.osc')
+osm_change = os.path.join(ProjectDir, 'Cache', 'israel-update.osc')
 # The updated OSM data for this tile generation
-updated = os.path.join(IsraelHikingDir, 'Cache', 'israel-updated.osm.pbf')
+updated = os.path.join(ProjectDir, 'Cache', 'israel-updated.osm.pbf')
 # Source of the OSM diff files
 base_url = "download.openstreetmap.fr/replication/asia/israel"
 change_resolution = "--minute"
 
 # Geofaprik's israel-and-palestine daily updates
 # The OSM data used by the latest tile generation
-latest = os.path.join(IsraelHikingDir, 'Cache', 'israel-and-palestine-latest.osm.pbf')
+latest = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-latest.osm.pbf')
 # URL for downloading the above
 latest_url = "http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf"
 # The changes since then
-osm_change = os.path.join(IsraelHikingDir, 'Cache', 'israel-and-palestine-update.osc')
+osm_change = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-update.osc')
 # The updated OSM data for this tile generation
-updated = os.path.join(IsraelHikingDir, 'Cache', 'israel-and-palestine-updated.osm.pbf')
+updated = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-updated.osm.pbf')
 # Source of the OSM diff files
 base_url = "download.geofabrik.de/asia/israel-and-palestine-updates"
 change_resolution = "--sporadic"
 
 # Output directory for the tiles of all maps
-site_dir = os.path.join(IsraelHikingDir, 'Site')
+site_dir = os.path.join(ProjectDir, 'Site')
 
+App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
 if os.path.exists(latest):
     if remainingPhases == phases or remainingPhases == []:
         App.log("=== Downloading map changes ===")
@@ -133,7 +172,6 @@ if os.path.exists(latest):
 
     if remainingPhases:
         # Osm Change analysis
-        App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
         App.log("=== Analyzing map changes ===")
         gen_cmd.osmChangeRead(osm_change, latest, updated)
         (changed, guard) = gen_cmd.statistics()
@@ -142,17 +180,25 @@ if os.path.exists(latest):
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 else:
     # Create base map if latest does not exist
-    App.log("=== Downloading the latest.osm.pbf ===")
-    App.log("=== No Incremental Tile Generation ===")
-    # wget for Windows: http://gnuwin32.sourceforge.net/packages/wget.htm
-    App.run_program('wget.exe', 1200,
-                    ["--timestamping",
-                     "--no-directories", "--no-verbose",
-                     '--directory-prefix="'+os.path.join(IsraelHikingDir, 'Cache')+'"',
-                     latest_url])
-    gen_cmd.timestamp = datetime.fromtimestamp(os.path.getmtime(latest))
-    OsmData.load_pbf_file(latest)
-    remainingPhases = phases
+    App.log("=== Non-Incremental Tile Generation ===")
+    if os.path.exists(updated) and remainingPhases:
+        App.log('=== Continueing execution of the previous tile generation ===')  
+        App.log('Remaining phases: '+', '.join(remainingPhases))
+        App.run_command("pause 15000")
+    else:
+        App.log("=== Downloading the latest map data ===")
+        # wget for Windows: http://gnuwin32.sourceforge.net/packages/wget.htm
+        App.run_program('wget.exe', 1200,
+                        ["--timestamping",
+                         "--no-directories", "--no-verbose",
+                         '--directory-prefix="'+os.path.join(ProjectDir, 'Cache')+'"',
+                         latest_url])
+        safe_rename(latest, updated)
+        remainingPhases = phases
+    App.log("=== Loading the map ===")
+    Map.add_osm_source(updated)
+    gen_cmd.timestamp = datetime.fromtimestamp(os.path.getmtime(updated))
+    gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 if remainingPhases:
     # Tile generation
@@ -164,7 +210,7 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         gen_cmd.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        MOBAC("All IsraelHikingOverlay Maps.bat", "All Israel Hiking Overlay Maps")
+        MOBAC("All IsraelHikingOverlay Maps.bat", "Oruxmaps Israel Hiking Overlay Map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -181,7 +227,7 @@ if remainingPhases:
         App.collect_garbage()
         App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
         gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
-        MOBAC("Create Israel Hiking.bat", "Oruxmap Israel Hiking map")
+        MOBAC("Create Israel Hiking.bat", "Oruxmaps Israel Hiking map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -207,7 +253,7 @@ if remainingPhases:
         App.collect_garbage()
         App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
         gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
-        MOBAC("Create Israel Hiking 16.bat", "Oruxmap Israel Hiking detailed map")
+        MOBAC("Create Israel Hiking 16.bat", "Oruxmaps Israel Hiking detailed map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -242,16 +288,11 @@ if remainingPhases:
             pass
 
     # Don't loose the original latest pbf if something goes wrong
-    if os.path.exists(updated):
-        os.rename(latest, latest+".old")
-        os.rename(updated, latest)
-        os.remove(latest+".old")
+    safe_rename(updated, latest)
     Map.clear()
 
 duration = datetime.now()-start_time
 gen_cmd.print_timer("Total time:", duration.total_seconds())
-
-App.run_command("exit")
 
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
