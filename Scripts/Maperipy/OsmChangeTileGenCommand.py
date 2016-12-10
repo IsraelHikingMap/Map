@@ -91,9 +91,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         osmChange = XmlDocument()
         osmChange.Load(osmChangeReader(change_file))
         for element in osmChange.SelectNodes("./osmChange"):
-            self.timestamp = datetime.strptime(
-                    element.Attributes.GetNamedItem("timestamp").Value,
-                    "%Y-%m-%dT%H:%M:%SZ")
             if not element.HasChildNodes:
                 return
         if self.verbose:
