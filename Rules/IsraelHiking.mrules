@@ -52,6 +52,8 @@
 // farmland/farmyard
 // waterfalls
 
+import-script:..\Scripts\Maperipy\names.py
+
 features
 	points, areas
 		church worship: amenity=place_of_worship AND (religion=christian OR religion=Christian)
@@ -192,13 +194,7 @@ rules
 			stop
 		define
 			font-weight : bold
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 	target : peak
@@ -415,7 +411,6 @@ rules
 			min-zoom : 15
 			font-size : 10
 			text-offset-vertical : 120%
-			text : name
 		for : natural=peak OR tourism=viewpoint
 			define
 				font-family : Cambria
@@ -427,34 +422,25 @@ rules
 				text-max-width : 15
 				text-halo-width : 30%
 				text-halo-opacity : 0.75
+				text-align-horizontal : far
+				text-align-vertical : center
 			for : ele
 				// If ele is set
 				define
-					text-align-horizontal : far
-					text-align-vertical : center
 					text-offset-vertical : 20%
 					text-offset-horizontal : -70%
 					text : ele
 				draw : text
-			for : name
-				// If name is defined
-				define
-					text-align-vertical : far
-					text-align-horizontal : center
-					text-offset-vertical : -70%
-					text-offset-horizontal : 0
+			// For the name
+			define
+				text-offset-vertical : -70%
+				text-offset-horizontal : 0
 		elsefor : @isOneOf(natural, spring, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern)
 			define
 				text-color : blue
 				min-zoom : 13
-
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+		define
+			text-func : NodeName(e)
 		draw : text
 
 	target : nature reserve label
@@ -479,13 +465,8 @@ rules
 		else
 			define
 				min-zoom : 15
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+		define
+			text-func : NodeName(e)
 		draw : text
 
 
@@ -744,24 +725,7 @@ rules
 			text-align-horizontal : center
 			text-align-vertical : center
 			font-stretch : 0.9
-		// Hebrew preference for lines
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -932,24 +896,7 @@ rules
 			text-max-width : 10
 			text-offset-vertical : 50%
 			text-align-vertical : far
-		// Hebrew preference for lines
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : WayName(e)
 		draw : text
 
 	target : track *
@@ -1037,24 +984,7 @@ rules
 		draw : line
 		define
 			font-size : 13:8;16:14
-		// Hebrew preference for lines
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : WayName(e)
 		draw : text
 
 	target : hiking regional*
@@ -1182,24 +1112,7 @@ rules
 			text-color : #78C1C1 black 10%
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
-		// Hebrew preference for lines
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : WayName(e)
 		for : NOT tunnel AND (NOT layer OR layer=0)
 			draw : text
 		draw : line
@@ -1532,13 +1445,7 @@ rules
 			font-style : italic
 			font-weight : bold
 			text-color : #78C1C1 black 10%
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 	target : Area *
@@ -1587,13 +1494,7 @@ rules
 		define
 			painting-cycle : 590
 			font-size : 12
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 	target : forest
 		define
@@ -1616,14 +1517,7 @@ rules
 			min-zoom : 13
 			font-size : 12
 			text-color : black
-			text : name
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 	target : quarry
@@ -1639,14 +1533,7 @@ rules
 			min-zoom : 13
 			font-size : 12
 			text-color : black
-			text : name
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 	target : farmland
@@ -1686,13 +1573,7 @@ rules
 		draw : line
 		define
 			min-zoom : 17
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 // vim: set autoindent noexpandtab:
