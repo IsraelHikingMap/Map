@@ -3,8 +3,8 @@
 This is the main script used to build the maps.
 
 The map creation is done in phases. The first phase creates the trails overlay map.
-Each of the following phases updates the tiles required for an offline map 
-and launches the appropriate MOBAC task.
+Each of the following phases updates the tiles for the Hiking and MTB maps where
+zoom 16 tiles are created after both maps are updated upto zoom 15.
 
 Progress is tracked by creating "phase done" files. 
 An incomplete map creation will be resumes at the first incomplete phase.
@@ -79,7 +79,6 @@ def add_to_PATH(app_name):
     os.environ["PATH"] = string.join([os.environ["PATH"],full_app_name], os.pathsep)
 
 add_to_PATH("wget")
-add_to_PATH("Mobile Atlas Creator")
 
 phases = [
     'OverlayTiles',
@@ -96,13 +95,6 @@ def mark_done(phase):
     open(done_file(phase), 'a').close()
     App.log(phase+' phase is done.')
     gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-
-def MOBAC(map_script, map_description):
-    program_line = os.path.join(ProgramFiles, "Mobile Atlas Creator", map_script)
-    if os.path.exists(program_line):
-        App.log("=== Launch creation of "+map_description+" ===")
-        App.log('App.start_program("'+program_line+'", [])')
-        App.start_program(program_line, [])
 
 # Keep batch windows open up to 24 hours
 os.environ["NOPAUSE"] = "TIMEOUT /T 86400"
@@ -210,7 +202,6 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         gen_cmd.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        MOBAC("All IsraelHikingOverlay Maps.bat", "Oruxmaps Israel Hiking Overlay Map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -227,7 +218,6 @@ if remainingPhases:
         App.collect_garbage()
         App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
         gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
-        MOBAC("Create Israel Hiking.bat", "Oruxmaps Israel Hiking map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -240,7 +230,6 @@ if remainingPhases:
         App.collect_garbage()
         App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
         gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'mtbTiles'))
-        MOBAC("Create Israel MTB.bat", "Oruxmaps Israel MTB map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -253,7 +242,6 @@ if remainingPhases:
         App.collect_garbage()
         App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
         gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
-        MOBAC("Create Israel Hiking 16.bat", "Oruxmaps Israel Hiking detailed map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -266,7 +254,6 @@ if remainingPhases:
         App.collect_garbage()
         App.log('=== creating Israel MTB zoom level 16 ===')  
         gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'mtbTiles'))
-        MOBAC("Create Israel MTB 16.bat", "Oruxmaps Israel MTB detailed map")
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
