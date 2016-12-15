@@ -154,6 +154,7 @@
 // TODO:
 // -----
 
+import-script:..\Scripts\Maperipy\names.py
 import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
@@ -270,7 +271,6 @@ properties
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
-	//text : [[name:he]]
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
@@ -352,13 +352,7 @@ rules
 		define
 			font-weight : bold
 			font-family : tahoma
-		// Hebrew preference for points & areas
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-		else
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 		draw : text
 
 	target : POI
@@ -421,23 +415,7 @@ rules
 			text-offset-vertical : -10
 			min-zoom : 15
 			text-align-vertical : far
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		for : NOT (natural=tree)
 			draw : text
 
@@ -504,23 +482,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 		
 
@@ -539,23 +501,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 
 	target: convenience
@@ -582,23 +528,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 15
 			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 		
 	target: convenience
@@ -627,24 +557,7 @@ rules
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
-	
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 		
 	target: bikepark
@@ -664,24 +577,7 @@ rules
 			min-zoom : 10
 			text-align-vertical : near
 			painting-cycle : 810
-	
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 		
 	target: medical
@@ -700,6 +596,7 @@ rules
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
+			text-func : NodeName(e)
 		draw : text	
 	
 		
@@ -750,23 +647,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 12
 			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text		
 		
 	target: watersource
@@ -808,23 +689,7 @@ rules
 			text-offset-vertical : -10
 			min-zoom : 15
 			text-align-vertical : far
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 		draw : text
 				
@@ -850,23 +715,7 @@ rules
 			text-offset-vertical : 60%
 			min-zoom : 14
 			text-align-vertical : near
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+			text-func : NodeName(e)
 		draw : text
 		
 		
@@ -1215,26 +1064,8 @@ rules
 				text-align-vertical : center
 				font-stretch : 0.9
 				font-size : 9
-					
-			
-		// Hebrew preference for lines
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
+		define
+			text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -1323,15 +1154,7 @@ rules
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-						
-			// Handle right-to-left text
-		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
-			define
-				text-direction : rtl
-		for : @isMatch(name, "[А-Я]")
-			define
-				text : @any([[name:en]], name)
-											
+			text-func : WayName(e)
 		draw : text
 		
 		
@@ -1344,24 +1167,7 @@ rules
 			min-zoom : 14
 			font-weight : bold
 			text-letter-spacing : 0.15
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-			for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-				define
-					text-direction : rtl
-		
+			text-func : WayName(e)
 		draw : text
 		
 		define
@@ -1553,10 +1359,7 @@ rules
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			painting-cycle : 800
-		// Handle right-to-left text
-		for : @isMatch(name, "[א-ת؀-ݭﬠ-ﻼ]")
-			define
-				text-direction : rtl
+			text-func : WayName(e)
 		draw : text
 
 	target : fence
@@ -1677,6 +1480,7 @@ rules
 		//	text-color : green
 		//	font-weight : normal
 		//	painting-cycle : 990
+		//      text-func : NodeName(e)
 		//for : width > 5
 		//	define
 		//		min-zoom : 12
@@ -1689,13 +1493,6 @@ rules
 		//else
 		//	define
 		//		min-zoom : 15
-		// Hebrew preference for points & areas
-		//for : @isMatch(name, "[א-ת]")
-		//	define
-		//		text : name
-		//else
-		//	define
-		//		text : @any([[name:he]], [[name:en]], name)
 		//draw : text
 		
 			
@@ -1819,6 +1616,7 @@ rules
 			text-offset-vertical : 60%
 			text-align-vertical : near
 			min-zoom : 15
+			text-func : NodeName(e)
 		draw : text
 	
 	target : archaeological
@@ -1839,6 +1637,7 @@ rules
 			font-size : 15:10;16:12
 			font-stretch : 1
 			text-offset-vertical : -18
+			text-func : NodeName(e)
 		draw : text
 		
 	target : area water
@@ -1884,9 +1683,7 @@ rules
 			text-color : #ccc
 			text-avoid-overlaps : true
 			text-orientation: fixed
-		for : @isMatch(name, "[А-Я]")
-			define
-				text : @any([[name:he]], [[name:en]], name)
+			text-func : NodeName(e)
 
 		for : water=river
 			define
@@ -2088,24 +1885,7 @@ rules
 			max-zoom : 16
 			font-size : 12:15; 13:20; 14:25
 			text-letter-spacing : 0.35
-			
-		for : @isMatch(name, "[א-ת]")
-			define
-				text : name
-				text-direction : rtl
-		elsefor : name:he
-			define
-				text : [[name:he]]
-				text-direction : rtl
-		elsefor : name:en
-			define
-				text : [[name:en]]
-		else
-			define
-				text : name
-		for : @isMatch(name, "[א-ת؀-ۿݐ-ݿ]")
-			define
-				text-direction : rtl
+			text-func : WayName(e)
 		draw : text
 	
 
