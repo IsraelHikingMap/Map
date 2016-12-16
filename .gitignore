@@ -10,5 +10,6 @@
 * - Copy*
 .merged.*
 *.hidden*
-!/Site/*/*legend*
 !/Cache/*.contours
+/English
+/Hebrew

@@ -78,18 +78,37 @@ def add_to_PATH(app_name):
         return
     os.environ["PATH"] = string.join([os.environ["PATH"],full_app_name], os.pathsep)
 
+def cache_file(filename):
+    if filename:
+        return os.path.join(ProjectDir, 'Cache', language, filename)
+    return os.path.join(ProjectDir, 'Cache', language)
+
 add_to_PATH("wget")
 
-phases = [
-    'OverlayTiles',
-    'IsraelHiking15',
-    'IsraelMTB15',
-    'IsraelHiking16',
-    'IsraelMTB16']
+language = "Hebrew"
+if DataStore.has_data("Language"):
+    language = DataStore.get_data("Language")
+# Output directory for the tiles of all maps
+site_dir = os.path.join(ProjectDir, language)
+if language == "Hebrew":
+    phases = [
+        'OverlayTiles',
+        'IsraelHiking15',
+        'IsraelMTB15',
+        'IsraelHiking16',
+        'IsraelMTB16']
+elif language == "English":
+    phases = [
+        'IsraelHiking15',
+        'IsraelMTB15',
+        'IsraelHiking16',
+        'IsraelMTB16']
+mkdir_p(site_dir)
+mkdir_p(cache_file(''))
 remainingPhases = []
 
 def done_file(phase):
-    return os.path.join(ProjectDir, 'Cache', phase+'.done')
+    return cache_file(phase+'.done')
 
 def mark_done(phase):
     open(done_file(phase), 'a').close()
@@ -110,16 +129,17 @@ for phase in phases:
 if remainingPhases == []:
     for phase in phases:
         os.remove(done_file(phase))
+
 """
 # TODO openstreetmap.fr's israel minutely updates
 # The OSM data used by the latest tile generation
-latest = os.path.join(ProjectDir, 'Cache', 'israel-latest.osm.pbf')
+latest = cache_file('israel-latest.osm.pbf')
 # URL for downloading the above
 latest_url = "http://download.openstreetmap.fr/extracts/asia/israel-latest.osm.pbf"
 # The changes since then
-osm_change = os.path.join(ProjectDir, 'Cache', 'israel-update.osc')
+osm_change = cache_file('israel-update.osc')
 # The updated OSM data for this tile generation
-updated = os.path.join(ProjectDir, 'Cache', 'israel-updated.osm.pbf')
+updated = cache_file('israel-updated.osm.pbf')
 # Source of the OSM diff files
 base_url = "download.openstreetmap.fr/replication/asia/israel"
 change_resolution = "--minute"
@@ -127,19 +147,16 @@ change_resolution = "--minute"
 
 # Geofaprik's israel-and-palestine daily updates
 # The OSM data used by the latest tile generation
-latest = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-latest.osm.pbf')
+latest = cache_file('israel-and-palestine-latest.osm.pbf')
 # URL for downloading the above
 latest_url = "http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf"
 # The changes since then
-osm_change = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-update.osc')
+osm_change = cache_file('israel-and-palestine-update.osc')
 # The updated OSM data for this tile generation
-updated = os.path.join(ProjectDir, 'Cache', 'israel-and-palestine-updated.osm.pbf')
+updated = cache_file('israel-and-palestine-updated.osm.pbf')
 # Source of the OSM diff files
 base_url = "download.geofabrik.de/asia/israel-and-palestine-updates"
 change_resolution = "--sporadic"
-
-# Output directory for the tiles of all maps
-site_dir = os.path.join(ProjectDir, 'Site')
 
 App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
 if os.path.exists(latest):
@@ -183,7 +200,7 @@ else:
         App.run_program('wget.exe', 1200,
                         ["--timestamping",
                          "--no-directories", "--no-verbose",
-                         '--directory-prefix="'+os.path.join(ProjectDir, 'Cache')+'"',
+                         '--directory-prefix="'+cache_file('')+'"',
                          latest_url])
         safe_rename(latest, updated)
         remainingPhases = phases
