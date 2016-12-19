@@ -190,6 +190,7 @@ if os.path.exists(latest):
 else:
     # Create base map if latest does not exist
     App.log("=== Non-Incremental Tile Generation ===")
+    gen_cmd.clean_tiles = True
     if os.path.exists(updated) and remainingPhases:
         App.log('=== Continueing execution of the previous tile generation ===')  
         App.log('Remaining phases: '+', '.join(remainingPhases))
@@ -218,6 +219,7 @@ if remainingPhases:
         App.run_command("use-ruleset location="+os.path.join("Rules", "IsraelHikingOverlay.mrules"))
         App.run_command("apply-ruleset")
         App.collect_garbage()
+        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
         gen_cmd.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
         mark_done(phase)
     else:
@@ -234,6 +236,7 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
+        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
         gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
@@ -246,6 +249,7 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
+        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
         gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'mtbTiles'))
         mark_done(phase)
     else:
@@ -258,6 +262,7 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
+        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
         gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
@@ -270,6 +275,7 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating Israel MTB zoom level 16 ===')  
+        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
         gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'mtbTiles'))
         mark_done(phase)
     else:

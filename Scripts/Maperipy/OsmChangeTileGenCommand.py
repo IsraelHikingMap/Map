@@ -42,27 +42,22 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
 
     def generation_filter(self, zoom, x, y, width, height):
         """Filter rendering of the map in a super-tile"""
+        if self.changed is None:
+            # Change analysis is not used
+            return PolygonTileGenCommand.generation_filter(self, zoom, x, y, width, height)
         self._progress_update(zoom, width*height)
-        generate = False
-        # Leverage the guard to check every 3rd row and column inside the super-tile
-        # Note: This is for safety. We did not see width or height values larger than 3.
-        for tile_x in range(x, x+width, 3) + [x+width-1]:
-            for tile_y in range(y, y+width, 3) + [y+width-1]:
-                if self.updated(zoom, tile_x, tile_y):
-                    generate = True
-                    # Exit nested loops
-                    break
-            else:
-                continue
-            break
+        generate = self.updated(zoom, x, y, width, height)
         if self.verbose:
             print "     OsmChangeTileGenCommand - Generating {}x{} super-tile: {}/{}/{}: {}".format(
                     width, height, zoom, x, y, generate)
         return generate
 
     def save_filter(self, tile):
-        # Filter the saving to disk of individual tiles in the super tile
-        save = self.updated(tile.zoom, tile.tile_x, tile.tile_y)
+        """Filter the saving to disk of individual tiles in the super tile"""
+        if self.changed is None:
+            # Change analysis is not used
+            return PolygonTileGenCommand.save_filter(self, tile)
+        save = self.updated(tile.zoom, tile.tile_x, tile.tile_y, 1, 1)
         if self.verbose:
             reason = "Changed" if tile in self.changed[zoom] else "Guard band" if save else "Skipped"
             save[reason] += 1
@@ -137,21 +132,25 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
 
     def execute(self):
         if self.changed is not None and not self.changed[min(self.changed)]:
+            # Change analysis was done, but nothing was changed
             return
         PolygonTileGenCommand.execute(self)
 
-    def updated(self, zoom, x, y):
+    def updated(self, zoom, x, y, width, height):
         try:
-            return (x, y) in self.guard[zoom]
+            # Leverage the guard to check every 3rd row and column inside the super-tile
+            # Note: This is for safety. We did not see width or height values larger than 3.
+            for tile_x in range(x, x+width, 3) + [x+width-1]:
+                for tile_y in range(y, y+width, 3) + [y+width-1]:
+                    if (tile_x, tile_y) in self.guard[zoom]:
+                        return True
+            return False
         # Handle rare scenarios through exceptions
         except TypeError:
-            if self.changed is None:
-                # Analysis was not done
-                return True
-            elif self.guard is None:
+            if self.guard is None:
                 # Guard is not updated
                 self.update_guard()
-                return self.updated(zoom, x, y)
+                return self.updated(zoom, x, y, width, height)
             else:
                 raise
         except KeyError:
