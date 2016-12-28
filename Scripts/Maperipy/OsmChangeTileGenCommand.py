@@ -239,7 +239,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             # Add the plygon to the layer
             self.layer.add_symbol(self.polygon.add(self.gen_polygon))
         for x in range (left, right+1):
-            for y in range(bottom, top+1):
+            for y in range(top, bottom+1):
                 self.new_tile_upwards((x, y), max(self.changed))
 
     def rel_members_bbox(self, relation):
