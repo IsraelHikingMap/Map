@@ -42,6 +42,8 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
 
     def generation_filter(self, zoom, x, y, width, height):
         """Filter rendering of the map in a super-tile"""
+        # DEBUG EXAMPLE
+        # self.verbose = ((zoom == 13) and (x <= 4899) and (4899 <= (x+width-1)) and (y <= 3327) and (3327 <= (y+height-1)))
         if self.changed is None:
             # Change analysis is not used
             return PolygonTileGenCommand.generation_filter(self, zoom, x, y, width, height)
@@ -54,15 +56,17 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
 
     def save_filter(self, tile):
         """Filter the saving to disk of individual tiles in the super tile"""
+        # DEBUG EXAMPLE
+        # self.verbose = ((tile.zoom == 13) and (tile.tile_x == 4899) and (tile.tile_y == 3327))
         if self.changed is None:
             # Change analysis is not used
             return PolygonTileGenCommand.save_filter(self, tile)
         save = self.updated(tile.zoom, tile.tile_x, tile.tile_y, 1, 1)
         if self.verbose:
-            reason = "Changed" if tile in self.changed[zoom] else "Guard band" if save else "Skipped"
-            save[reason] += 1
-            print "     OsmChangeTileGenCommand - Saving tile: {}/{}/{}: {}".format(
-                    tile.zoom, tile.tile_x, tile.tile_y, reason)
+            reason = "Changed" if (tile.tile_x, tile.tile_y) in self.changed[tile.zoom] else ("Guard band" if save else "Skipped")
+            # TODO # self.reason[reason] += 1
+            App.log("     OsmChangeTileGenCommand - Saving tile: {}/{}/{}: {}".format(
+                    tile.zoom, tile.tile_x, tile.tile_y, reason))
         return save
 
     def osmChangeRead(self, change_file, base_map, new_map):
@@ -90,24 +94,28 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 return
         if self.verbose:
             print "     Reading base OSM map from", base_map, "..."
-        App.run_command('load-source file="{}"'.format(base_map))  # DEBUG
+        App.run_command('load-source file="{}"'.format(base_map))
         base_index = len(Map.layers)
         Map.layers[base_index-1].visible = False
         baseOsm = Map.layers[base_index-1].osm
         App.collect_garbage()
-        App.run_command('load-source file="{}"'.format(new_map))  # DEBUG
+        if self.verbose:
+            App.log("     Reading new OSM map from {} ...".format(new_map))
+        App.run_command('load-source file="{}"'.format(new_map))
         new_index = len(Map.layers)
+        App.collect_garbage()
         newOsm = Map.layers[new_index-1].osm
         if self.verbose:
             print "     Analyzing change file ..."
-            sum = {key : 0 for key in ("node", "way", "relation")}
+        sum = {key : 0 for key in ("node", "way", "relation")}
         for element in osmChange.SelectNodes("./osmChange/*/*"):
             action = element.ParentNode.Name  # "delete", "modify", or "create"`
             element_type = element.Name  # "node", "way", or "relation"
             element_id = long(element.Attributes.GetNamedItem("id").Value)
+            # DEBUG EXAMPLE
+            # self.verbose = ((element_type == "relation") and (element_id == 3791784))
+            sum[element_type] += 1
             if self.verbose:
-                sum[element_type] += 1
-            if False and self.verbose:
                 print "     {} {} id={}:".format(action, element_type, element_id)
             try:
                 if action in ("delete", "modify"):
@@ -120,6 +128,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 # An element does bot exist in the map,
                 # no need to redraw its position
                 pass
+        App.collect_garbage()
         if self.verbose:
             print "     Analyzed {} nodes, {} ways, and {} relations.".format(
                     sum["node"], sum["way"], sum["relation"])
@@ -134,14 +143,22 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if self.changed is not None and not self.changed[min(self.changed)]:
             # Change analysis was done, but nothing was changed
             return
+        self.update_guard()
         PolygonTileGenCommand.execute(self)
 
     def updated(self, zoom, x, y, width, height):
+        if self.verbose:
+            App.log("updated({}, {}, {}, {}, {})".format(zoom, x, y, width, height))
         try:
             # Leverage the guard to check every 3rd row and column inside the super-tile
             # Note: This is for safety. We did not see width or height values larger than 3.
             for tile_x in range(x, x+width, 3) + [x+width-1]:
                 for tile_y in range(y, y+width, 3) + [y+width-1]:
+                    if self.verbose:
+                        App.log("({}, {}) {} in self.guard[{}]".format(
+                            tile_x, tile_y,
+                            "" if (tile_x, tile_y) in self.guard[zoom] else "not ",
+                            zoom))
                     if (tile_x, tile_y) in self.guard[zoom]:
                         return True
             return False
@@ -170,17 +187,25 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             else:
                 raise
 
-    def new_tile_upwards(self, tile, zoom):
-        if zoom > max(self.changed) or self.new_tile(tile, zoom):
-            self.new_tile_upwards(tuple(coord//2 for coord in tile), zoom-1)
+    def new_tile_upwards(self, x, y, zoom):
+        if self.verbose:
+            App.log("     New tile upwards {}, {}, zoom {}".format(x, y, zoom))
+        if zoom > max(self.changed) or self.new_tile(x, y, zoom):
+            self.new_tile_upwards(x//2, y//2, zoom-1)
 
-    def new_tile(self, tile, zoom):
+    def new_tile(self, x, y, zoom):
+        tile = (x, y)
         if zoom not in self.changed or tile in self.changed[zoom]:
+            if self.verbose:
+                if zoom not in self.changed:
+                    App.log("     No new tile {}/{}/{}, zoom not in self.changed".format(zoom, x, y))
+                if tile in self.changed[zoom]:
+                    App.log("     No new tile {}/{}/{}, already there".format(zoom, x, y))
             return False
         else:
             self.changed[zoom][tile] = True
-            if False and self.verbose:
-                print "     New tile {t[0]}, {t[1]} in zoom {z}".format(t=tile, z=zoom)
+            if self.verbose:
+                App.log("     New tile {}/{}/{}".format(zoom, x, y))
             return True
 
     def update_guard(self):
@@ -226,26 +251,47 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if not self.linear_ring_overlapps_polygon(bbox.polygon.exterior):
             # Ignore changes outside the generation polygon
             return
-        (left, top) = self.deg2num(bbox.max_y, bbox.min_x, max(self.changed))
-        (right, bottom) = self.deg2num(bbox.min_y, bbox.max_x, max(self.changed))
+        zoom = max(self.changed)
+        (left, top) = self.deg2num(bbox.max_y, bbox.min_x, zoom)
+        (right, bottom) = self.deg2num(bbox.min_y, bbox.max_x, zoom)
         if self.visualize:
+            if not self.layer:
+                # Create a custom map layer...
+                self.layer = Map.add_custom_layer()
+                self.layer.visible = True
             # Create a symbol for the Polygon
-            self.polygon = PolygonSymbol("{0}/{1}/{2} ({3}x{4} tiles)".format(
-                max(self.changed), left, top, right-left, bottom-top), Srid.Wgs84LonLat)
-            self.polygon.style.pen_width = 2
-            self.polygon.style.pen_color = Color("red")
-            self.polygon.style.pen_opacity = 0.5
-            self.polygon.style.fill_opacity = 0
-            # Add the plygon to the layer
-            self.layer.add_symbol(self.polygon.add(self.gen_polygon))
+            bbox_title = "{0}/{1}/{2} ({3}x{4} tiles)".format(
+                zoom, left, top, right-left+1, bottom-top+1)
+            if self.verbose:
+                App.log("mark_bbox: {}".format(bbox_title))
+            tile_symbol = PolygonSymbol(bbox_title, Srid.Wgs84LonLat)
+            tile_symbol.style.pen_width = 2
+            tile_symbol.style.pen_color = Color("blue")
+            tile_symbol.style.pen_opacity = 0.5
+            tile_symbol.style.fill_opacity = 0
+            # Add the plygon of the tiles to the visualization layer
+            self.layer.add_symbol(tile_symbol.add(Polygon(LinearRing([
+                self.num2deg(left, top, zoom),  # NW of NW tile
+                self.num2deg(right+1, top, zoom),  # NE of NE tile
+                self.num2deg(right+1, bottom+1, zoom),  # SE of SE tile
+                self.num2deg(left, bottom+1, zoom),  # SW of SW tile
+                self.num2deg(left, top, zoom)  # NW of NW tile
+                ]))))
+        if self.verbose:
+            App.log("     mark_bbox for x in range ({}, {}):".format(left, right+1))
+            App.log("     mark_bbox     for y in range ({}, {}):".format(top, bottom+1))
         for x in range (left, right+1):
             for y in range(top, bottom+1):
-                self.new_tile_upwards((x, y), max(self.changed))
+                self.new_tile_upwards(x, y, zoom)
+                if self.verbose:
+                    App.log("     mark_bbox        new_tile_upwards(({}, {}), {})".format(x, y, zoom))
 
     def rel_members_bbox(self, relation):
         return not (relation.has_tag("type") and relation.get_tag("type") == "multipolygon")
 
     def bboxes(self, osm_data, element_type, element_id):
+        if self.verbose:
+            App.log("     finding bboxes of {} {}".format(element_type, element_id))
         if element_type == "node":
             yield osm_data.node(element_id).location.bounding_box
         elif element_type == "way":

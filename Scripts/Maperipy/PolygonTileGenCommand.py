@@ -26,11 +26,12 @@ class PolygonTileGenCommand(TileGenCommand):
         if self.clean_tiles and self.tile_removal_script:
             self.list_file.close()
             self.list_file = open(self.tile_removal_script, 'w')
-        if self.visualize and self.generation_polygon is not None:
+        if self.visualize and self.generation_polygon:
             # Show the Polygon on the map
-            # Create a custom map layer...
-            self.layer = Map.add_custom_layer()
-            self.layer.visible = True
+            if not self.layer:
+                # Create a custom map layer...
+                self.layer = Map.add_custom_layer()
+                self.layer.visible = True
             # Create a symbol for the Polygon
             self.polygon = PolygonSymbol("GenerationPolygon", Srid.Wgs84LonLat)
             self.polygon.style.pen_width = 8
@@ -101,6 +102,10 @@ class PolygonTileGenCommand(TileGenCommand):
                     x, y, x+width-1, y+height-1, result)
         if result:
             if self.visualize and zoom < 13:
+                if not self.layer:
+                    # Create a custom map layer...
+                    self.layer = Map.add_custom_layer()
+                    self.layer.visible = True
                 # Create a polygon for the tile
                 tile_polygon = Polygon(tile_geometry)
                 # Create a symbol for the tile
@@ -190,6 +195,7 @@ class PolygonTileGenCommand(TileGenCommand):
         self.tile_save_filter = self.save_filter
         self.tile_generation_filter = self.generation_filter
         self.visualize = False  # Show polygon, generated and saved areas on the map?
+        self.layer = None
         self.verbose = False  # Show tile generation progress?
         self.clean_tiles = False  # Remove all skipped tiles?
         self.tile_removal_script = 'Output\\rm_tiles.sh'  # Optional: tile removal script name
