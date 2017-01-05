@@ -163,7 +163,7 @@ if os.path.exists(latest):
     if remainingPhases == phases or remainingPhases == []:
         App.log("=== Downloading map changes ===")
         exit_code = App.run_program("osmup.exe", 7200, [
-            latest, osm_change, "--base-url="+base_url, change_resolution])
+            latest, osm_change, "--base-url="+base_url, change_resolution, "--keep-tempfiles"])
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
         if exit_code == 21:
             # osmupdate: Your OSM file is already up-to-date
