@@ -2,6 +2,6 @@
 <localTileFiles>
    <name>Israel MTB</name>
    <sourceType>DIR_ZOOM_X_Y</sourceType>
-   <sourceFolder>\Users\Steed\Documents\GitHub\IsraelHikingMap\Map\Site\mtbTiles</sourceFolder>
+   <sourceFolder>\Users\Steed\Documents\GitHub\IsraelHikingMap\Map\Hebrew\mtbTiles</sourceFolder>
    <backgroundColor>#00000000</backgroundColor>
 </localTileFiles>

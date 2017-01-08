@@ -20,20 +20,35 @@ CD "%~dp0"
 REM Set the AtlasName
 REM
 
+SETLOCAL
 SET ATLASNAME=%~n0
 SET ATLASNAME=%ATLASNAME:~7%
+
+IF NOT EXIST "logs\." (
+    MKDIR logs
+)
+
+@REM Redirect outrout to log file
+
+CALL :MAIN > logs\"%ATLASNAME%.log
+
+EXIT /B
+
+@REM ===================
+:MAIN
+@REM ===================
+
 TITLE Creating Atlas: %ATLASNAME%
 
 REM Wait for tilestore unlock
-REM
-REM http://stackoverflow.com/questions/10518151/how-to-check-in-command-line-if-a-given-file-or-directory-is-locked-used-by-any/10520609#10520609
-REM
+@REM
+@REM http://stackoverflow.com/questions/10518151/how-to-check-in-command-line-if-a-given-file-or-directory-is-locked-used-by-any/10520609#10520609
+@REM
 
 :CheckLock
 2>NUL (2>>"tilestore\lock" (CALL )) || ( (ECHO Another MOBAC is running... ) && TIMEOUT /T 300 /NOBREAK  && GOTO CheckLock)
 
-REM Add 7-Zip directories to path
-SETLOCAL
+@REM Add 7-Zip directories to path
 PATH %PATH%;%~d0\Program Files\7-Zip;%~d0\Program Files\7-ZipPortable\App\7-Zip
 
 SET ATLASDIR=%~d0\Users\%USERNAME%\Documents\Maps\OruxMaps\%ATLASNAME%
@@ -59,7 +74,7 @@ IF NOT ERRORLEVEL 1 (
     @ECHO Creatting %ATLASNAME: =%.zip
     "7z.exe" a -tzip -mx9 "%ATLASNAME: =%.zip" *
     FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% D:%HOMEPATH% ) DO (
-        FOR %%P IN ( "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" "%%~D\Documents\GitHub\IsraelHiking\Map\Site\Oruxmaps\mapfiles" ) DO (
+        FOR %%P IN ( "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" "%%~D\Documents\GitHub\IsraelHiking\Map\Hebrew\Oruxmaps\mapfiles" ) DO (
             IF EXIST "%%~P\%ATLASNAME%\" (
                 @ECHO Updating %%~P\%ATLASNAME%
 		XCOPY /D /Y /S %ATLASSUBDIR% "%%~P\%ATLASNAME%"
@@ -77,15 +92,5 @@ IF NOT ERRORLEVEL 1 (
 @ECHO %DATE% %TIME%: Completed Creating Atlas: %ATLASNAME%
 
 ENDLOCAL
-
-@REM Set NOPAUSE to a command to execute instead of PAUSE
-@REM For example, SET NOPAUSE=REM
-IF DEFINED NOPAUSE (
-    @REM To ensure non-empty parenthesis
-    %NOPAUSE%
-) ELSE (
-    PAUSE
-)
-@ECHO ON
 
 @REM	vim: autoindent shiftwidth=4
