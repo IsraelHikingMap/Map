@@ -103,7 +103,7 @@ elif language == "English":
         'IsraelMTB15',
         'IsraelHiking16',
         'IsraelMTB16']
-mkdir_p(site_dir)
+mkdir_p(os.path.join(site_dir, "Oruxmaps"))
 mkdir_p(cache_file(''))
 remainingPhases = []
 

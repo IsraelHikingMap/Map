@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <localTileFiles>
-   <name>Israel Hiking</name>
+   <name>Israel Hiking English</name>
    <sourceType>DIR_ZOOM_X_Y</sourceType>
-   <sourceFolder>C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map\Hebrew\Tiles</sourceFolder>
+   <sourceFolder>C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map\English\Tiles</sourceFolder>
    <backgroundColor>#00000000</backgroundColor>
 </localTileFiles>
