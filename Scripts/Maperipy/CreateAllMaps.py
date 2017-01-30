@@ -165,15 +165,18 @@ if os.path.exists(latest):
         exit_code = App.run_program("osmup.exe", 7200, [
             latest, osm_change, "--base-url="+base_url, change_resolution, "--keep-tempfiles"])
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-        if exit_code == 21:
-            # osmupdate: Your OSM file is already up-to-date
-            App.log("=== No changes found, map update completed ===")
-            remainingPhases = []
-        else:
+        if exit_code == 0:
             App.log("=== Creating updated map data ===")
             App.run_program("osmconvert.exe", 300, [latest, osm_change, "-o="+updated])
             remainingPhases = phases
             gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+        else:
+            if exit_code == 21:
+                # osmupdate: Your OSM file is already up-to-date
+                App.log("=== No changes found, map update completed ===")
+            else
+                App.log("=== Error while updating map date, aborting! ===")
+            remainingPhases = []
     else:
         App.log('=== Continueing execution of the previous tile generation ===')  
         App.log('Remaining phases: '+', '.join(remainingPhases))
