@@ -1012,12 +1012,12 @@ rules
 			for : @isMulti(ref, 2)
 				// Even-numbered North-South highways
 				for : direction < 90 AND direction >= -90
-					// Hide Northbound labels
+					// Hide northbound labels
 					stop
 			else
 				// Odd-numbered East-West highways
-				for : direction > 0
-					// Hide Eastbound labels
+				for : direction < 0
+					// Hide westbound labels
 					stop
 		define
 			font-family : Tahoma
