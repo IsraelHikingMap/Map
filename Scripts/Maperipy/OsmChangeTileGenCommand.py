@@ -240,9 +240,9 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             cur_guard = len(self.guard[zoom])
             sum_changed += cur_changed
             sum_guard += cur_guard
-            print "     zoom {:2} has {:5} changed tiles, {:5} update tiles".format(
+            print "     zoom {:2} has {:6} changed tiles, {:6} update tiles".format(
                     zoom, cur_changed, cur_guard)
-        print "     Total of    {:5} changed tiles, {:5} update tiles".format(
+        print "     Total of    {:6} changed tiles, {:6} update tiles".format(
                 sum_changed, sum_guard)
         return (sum_changed, sum_guard)
 
