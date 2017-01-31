@@ -174,7 +174,7 @@ if os.path.exists(latest):
             if exit_code == 21:
                 # osmupdate: Your OSM file is already up-to-date
                 App.log("=== No changes found, map update completed ===")
-            else
+            else:
                 App.log("=== Error while updating map date, aborting! ===")
             remainingPhases = []
     else:
