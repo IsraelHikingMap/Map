@@ -64,12 +64,13 @@ features
 		parking : amenity=parking
 		power tower : @isOneOf(power, tower, station, sub_station)
 		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
-		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR @isOneOf(leisure, picnic, picnic_table) OR @isOneOf(amenity, parking) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station
+		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station
 		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		ruins : historic=ruins
 		archaeological : historic=archaeological_site
+		picnic : leisure=picnic_table OR tourism=picnic_site
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -79,7 +80,6 @@ features
 		water cistern : man_made=cistern
 		water waterhole : natural=waterhole
 		drinking : amenity=drinking_water
-		picnic : @isOneOf(leisure, picnic, picnic_table) OR tourism=picnic_site
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
 		memorial : historic=memorial
