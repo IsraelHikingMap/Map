@@ -33,7 +33,11 @@ def getLength4(startx, starty, endx, endy):
     return length
 def setLengthAndDirection(way) :
     if way.nodes[0]!=way.nodes[way.nodes_count-1]:
+        if not osmLayer.has_node(way.nodes[0]):
+            return
         node1 = osmLayer.node(way.nodes[0])
+        if not osmLayer.has_node(way.nodes[way.nodes_count-1]):
+            return
         node2 = osmLayer.node(way.nodes[way.nodes_count-1])
         length = getLength(node1, node2)
         osmLayer.way(way.id).set_tag("length", str(length))
@@ -47,8 +51,12 @@ def setClockwise(osmWay) :
         if osmWay.nodes[0] == osmWay.nodes[osmWay.nodes_count-1]:
             # Will not tag unclosed members
             length2 = 0.0
+            if not osmLayer.has_node(osmWay.nodes[0]):
+                return
             node0 = osmLayer.node(osmWay.nodes[0])
             for i in list(range(1, osmWay.nodes_count)):
+                if not osmLayer.has_node(osmWay.nodes[i]):
+                    return
                 node1 = osmLayer.node(osmWay.nodes[i])
                 length2 += node0.location.x*node1.location.y - node1.location.x*node0.location.y
                 node0 = node1
@@ -119,6 +127,8 @@ for layer in Map.layers:
                 or x.has_tag("leisure", "nature_reserve"))):
             for osmMember in osmRelation.members:
                 if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
+                    if not osmLayer.has_way(osmMember.ref_id):
+                        break
                     osmWay = osmLayer.way(osmMember.ref_id)
                     #########################################
                     # For some unknown reason, setClockwise() cannot be called before the loop below
@@ -146,6 +156,8 @@ for layer in Map.layers:
             for osmMember in osmRelation.members:
                 if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
                     if (osmMember.role == "" or osmMember.role == "outer"):
+                        if not osmLayer.has_way(osmMember.ref_id):
+                            break
                         osmWay = osmLayer.way(osmMember.ref_id)
                         for osmTag in ("name", "name:he", "name:en", "landuse", "natural", "is_in"):
                             if (osmRelation.has_tag(osmTag) and not osmWay.has_tag(osmTag)):
