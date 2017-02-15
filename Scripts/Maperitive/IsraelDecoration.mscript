@@ -2,6 +2,12 @@
 // === Load additional map layers and settings for Israel ===
 // ==========================================================
 
+// Allow the use of relative file names       
+use-script-dir
+// Change directory to Israel Hiking Directory
+change-directory ..
+change-directory ..
+
 // Use empty map rules to speed-up source loading
 use-ruleset location="Rules\empty.mrules"
 

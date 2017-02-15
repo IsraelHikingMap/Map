@@ -6,6 +6,6 @@ import clr
 clr.AddReferenceToFileAndPath(
 	os.path.join(
 	    os.path.dirname(os.path.dirname(
-		    os.path.normpath(os.__file__))),
+		os.path.normpath(os.__file__))),
 	    'IronPython.SQLite.dll'))
 from _sqlite3 import *

@@ -11,6 +11,6 @@ change-directory ..
 // Load Israel map sources
 run-script "Scripts\Maperitive\IsraelMap.mscript"
 
-// Load the Israel Hiking Map rules
+// Load the Israel MTB rules
 use-ruleset location="Rules\mtbmap.mrules"
 apply-ruleset

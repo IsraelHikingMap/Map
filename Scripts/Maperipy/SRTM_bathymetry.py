@@ -12,12 +12,12 @@ from maperipy import Map
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
 MaperitiveDir = os.path.dirname(os.path.dirname(
-        os.path.normpath(os.__file__)))
+    os.path.normpath(os.__file__)))
 # App.log('MaperitiveDir: '+MaperitiveDir)
 ProgramFiles = os.path.normpath(os.path.dirname(MaperitiveDir))
 # App.log('ProgramFiles: '+ProgramFiles)
 IsraelHikingDir = os.path.dirname(os.path.dirname(
-            os.path.normpath(App.script_dir)))
+    os.path.normpath(App.script_dir)))
 # App.log('App.script_dir: '+App.script_dir)
 # App.log('IsraelHikingDir: '+IsraelHikingDir)
 
@@ -47,8 +47,8 @@ for baseLat in range (MinLat, MaxLat, 1):
         # Determine number of 2-byte cells in the 1-degree square
         numCells = os.path.getsize(fileName)//2
         if numCells <> 3601*3601 and numCells <> 1201*1201:
-            App.log("Unknown edge length: {}. File {} skipped," \
-                    .format(edgeLen, fileName))
+            App.log("Unknown edge length: {}. File {} skipped,".format(
+                edgeLen, fileName))
             continue
         # Number of cells on each edge of the square
         edgeLen = int(math.sqrt(numCells))

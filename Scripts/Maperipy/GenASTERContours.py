@@ -38,10 +38,8 @@ for Lat in range (MinLat, MaxLat, 1) :
 #  for Lon in range (MinLon, MaxLon, 1) :
     App.run_command('clear-map')
     App.run_command('generate-contours interval=10 bounds={},{},{},{}'
-                    .format(MinLon,
-                            max(Lat, Map.geo_bounds.min_y),
-                            MaxLon,
-                            min(Lat+1, Map.geo_bounds.max_y)))
+                    .format(MinLon, max(Lat, Map.geo_bounds.min_y),
+                            MaxLon, min(Lat+1, Map.geo_bounds.max_y)))
     App.run_command('save-source ' 
                     + os.path.join('Cache', '{}-N{}.contours'.format(HGTDir, Lat)))
 

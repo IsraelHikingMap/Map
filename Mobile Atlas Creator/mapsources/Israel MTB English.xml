@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <localTileFiles>
-   <name>Israel MTB</name>
+   <name>Israel MTB English</name>
    <sourceType>DIR_ZOOM_X_Y</sourceType>
-   <sourceFolder>C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map\Hebrew\mtbTiles</sourceFolder>
+   <sourceFolder>C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map\English\mtbTiles</sourceFolder>
    <backgroundColor>#00000000</backgroundColor>
 </localTileFiles>
