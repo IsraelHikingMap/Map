@@ -128,7 +128,7 @@ for layer in Map.layers:
             for osmMember in osmRelation.members:
                 if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
                     if not osmLayer.has_way(osmMember.ref_id):
-                        break
+                        continue
                     osmWay = osmLayer.way(osmMember.ref_id)
                     #########################################
                     # For some unknown reason, setClockwise() cannot be called before the loop below
@@ -157,7 +157,7 @@ for layer in Map.layers:
                 if osmMember.ref_type==OsmReferenceType.WAY and osmLayer.has_way(osmMember.ref_id):
                     if (osmMember.role == "" or osmMember.role == "outer"):
                         if not osmLayer.has_way(osmMember.ref_id):
-                            break
+                            continue
                         osmWay = osmLayer.way(osmMember.ref_id)
                         for osmTag in ("name", "name:he", "name:en", "landuse", "natural", "is_in"):
                             if (osmRelation.has_tag(osmTag) and not osmWay.has_tag(osmTag)):
@@ -168,7 +168,11 @@ for layer in Map.layers:
                 (x.has_tag("landuse") or x.has_tag("natural"))
                 and (x.has_tag("name") or x.has_tag("name:he") or x.has_tag("name:en")))):
             if (osmWay.has_tag("landuse", "forest") or osmWay.has_tag("natural", "wood")):
-                wayBBox= osmLayer.get_way_geometry(osmWay.id).bounding_box
+                try:
+                    wayBBox= osmLayer.get_way_geometry(osmWay.id).bounding_box
+                except KeyError:
+                    # Way has incomplete geometry
+                    continue
                 # Label placement is done according to the shape's width
                 width = getLength4(
                     wayBBox.min_x, (wayBBox.min_y+wayBBox.max_y)/2,
