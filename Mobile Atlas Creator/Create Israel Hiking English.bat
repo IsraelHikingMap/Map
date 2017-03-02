@@ -24,7 +24,7 @@ SETLOCAL
 SET ATLASNAME=%~n0
 SET ATLASNAME=%ATLASNAME:~7%
 
-IF NOT EXIST "logs\." (
+IF NOT EXIST "logs\*" (
     MKDIR logs
 )
 
