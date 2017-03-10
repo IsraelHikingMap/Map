@@ -1,4 +1,3 @@
-@ECHO OFF
 @REM WaitInQueue - Wait in queue for mutual exclusion
 SETLOCAL
 
@@ -46,7 +45,7 @@ IF NOT DEFINED PID (
 )
 
 IF NOT "%JOB%"=="" (
-  DIR /B "%QDIR%"|FINDSTR /R "^[0-9]*\-%JOB: =\ %$" >NUL
+  DIR /B "%QDIR%"|FINDSTR /R /C:"^[0-9]*\-%JOB%$" >NUL
   IF NOT ERRORLEVEL 1 (
     ECHO "%JOB%" job already in queue 1>&2
     EXIT /B 2

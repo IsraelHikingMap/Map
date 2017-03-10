@@ -1,4 +1,3 @@
-@ECHO OFF
 
 REM Implement a queue of Maperitive and MOBAC jobs for
 REM Israel Hiking and Biking - IsraelHuking.osm.org.il
@@ -32,14 +31,13 @@ IF "%~x1"==".py" (
 ) ELSE IF "%~x1"==".mscript" (
   Maperitive -exitafter %ISRAELHIKING%\Scripts\Maperitive\%*
 ) ELSE (
-  PUSHD %~dp$PATH:1
+  IF NOT "%~dp$PATH:1"=="" CD "%~dp$PATH:1"
   IF "%~x1"==".bat" (
     CALL %*
   ) ELSE (
     %*
   )
-  POPD
 )
 
-@REM EXIT
+EXIT
 @REM vim:sw=2:ai:ic:expandtab
