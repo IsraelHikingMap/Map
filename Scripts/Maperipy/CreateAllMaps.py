@@ -18,6 +18,7 @@ import errno
 from maperipy import *
 from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
+from OsmChangeSource import *
 
 # TODO Separate OSM update and its server definitions from the Israel Hiking code
 
@@ -105,7 +106,6 @@ elif language == "English":
         'IsraelMTB16']
 mkdir_p(os.path.join(site_dir, "Oruxmaps"))
 mkdir_p(cache_file(''))
-remainingPhases = []
 
 def done_file(phase):
     return cache_file(phase+'.done')
@@ -119,98 +119,92 @@ def mark_done(phase):
 os.environ["NOPAUSE"] = "TIMEOUT /T 86400"
 
 gen_cmd =  IsraelHikingTileGenCommand()
+if language == "Hebrew":
+    osm_source = osmChangeSourceMerge(
+            cache_file('israel-and-palestine-latest.osm.pbf'),
+            cache_file('israel-and-palestine-update.osc'),
+            cache_file('israel-and-palestine-updated.osm.pbf'),
+            "asia/israel-and-palestine")
+    osm_source.addSource(openstreetmap_fr(
+            cache_file('palestine-latest.osm.pbf'),
+            cache_file('palestine-update.osc'),
+            cache_file('palestine-updated.osm.pbf'),
+            cache_file('openstreetmap_fr'),
+            "asia/palestine"))
+    osm_source.addSource(openstreetmap_fr(
+            cache_file('israel-latest.osm.pbf'),
+            cache_file('israel-update.osc'),
+            cache_file('israel-updated.osm.pbf'),
+            cache_file('openstreetmap_fr'),
+            "asia/israel"))
+    #######
+    # TODO: the merge/israel_and_palestine source below does not provide
+    # a good base extract yet. Comment it out and use the above
+    # overwritten source for Non-incremental Tile Generation!
+    #######
+    # Minute updates from openstreetmap.fr
+    osm_source = openstreetmap_fr(
+            cache_file('israel-and-palestine-latest.osm.pbf'),
+            cache_file('israel-and-palestine-update.osc'),
+            cache_file('israel-and-palestine-updated.osm.pbf'),
+            os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
+            "merge/israel_and_palestine")
+else:
+    # Daily updated from geofabric
+    osm_source = geofabric(
+            cache_file('israel-and-palestine-latest.osm.pbf'),
+            cache_file('israel-and-palestine-update.osc'),
+            cache_file('israel-and-palestine-updated.osm.pbf'),
+            os.path.join(ProjectDir, 'Cache', 'geofabrik'),
+            "asia/israel-and-palestine")
 
 # Create a new map if all phased were done
-phases_done = 0
+remainingPhases = []
 for phase in phases:
     if not os.path.exists(done_file(phase)):
         remainingPhases.append(phase)
 
 if remainingPhases == []:
+    osm_source.advance()
     for phase in phases:
         os.remove(done_file(phase))
-
-"""
-# TODO openstreetmap.fr's israel minutely updates
-# The OSM data used by the latest tile generation
-latest = cache_file('israel-latest.osm.pbf')
-# URL for downloading the above
-latest_url = "http://download.openstreetmap.fr/extracts/asia/israel-latest.osm.pbf"
-# The changes since then
-osm_change = cache_file('israel-update.osc')
-# The updated OSM data for this tile generation
-updated = cache_file('israel-updated.osm.pbf')
-# Source of the OSM diff files
-base_url = "download.openstreetmap.fr/replication/asia/israel"
-change_resolution = "--minute"
-"""
-
-# Geofaprik's israel-and-palestine daily updates
-# The OSM data used by the latest tile generation
-latest = cache_file('israel-and-palestine-latest.osm.pbf')
-# URL for downloading the above
-latest_url = "http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf"
-# The changes since then
-osm_change = cache_file('israel-and-palestine-update.osc')
-# The updated OSM data for this tile generation
-updated = cache_file('israel-and-palestine-updated.osm.pbf')
-# Source of the OSM diff files
-base_url = "download.geofabrik.de/asia/israel-and-palestine-updates"
-change_resolution = "--sporadic"
+    remainingPhases = phases
 
 App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
-if os.path.exists(latest):
-    if remainingPhases == phases or remainingPhases == []:
-        App.log("=== Downloading map changes ===")
-        exit_code = App.run_program("osmup.exe", 7200, [
-            latest, osm_change, "--base-url="+base_url, change_resolution, "--keep-tempfiles"])
-        gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-        if exit_code == 0:
-            App.log("=== Creating updated map data ===")
-            App.run_program("osmconvert.exe", 300, [latest, osm_change, "-o="+updated])
-            remainingPhases = phases
-            gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-        else:
-            if exit_code == 21:
-                # osmupdate: Your OSM file is already up-to-date
-                App.log("=== No changes found, map update completed ===")
-            else:
-                App.log("=== Error while updating map date, aborting! ===")
-            remainingPhases = []
-    else:
-        App.log('=== Continueing execution of the previous tile generation ===')  
-        App.log('Remaining phases: '+', '.join(remainingPhases))
-        App.run_command("pause 15000")
 
-    if remainingPhases:
+# Continue an incomplete run
+if osm_source.status() in ["non-incremental", "incremental", "changes"]:
+    App.log('=== Continueing execution of the previous tile generation ===')  
+    App.log('Remaining phases: '+', '.join(remainingPhases))
+    App.run_command("pause 15000")
+else:
+    exit_code = osm_source.downloadUpdate()
+    if exit_code == 21:
+        remainingPhases = []
+    elif exit_code == 0:
+        pass
+    else:
+        raise RuntimeError
+    gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+
+# Incremental tile generation?
+if os.path.exists(osm_source.changes):
+    if "timestamp max" not in osm_source.statistics(osm_source.changes):
+        App.log("=== No map changes ===")
+        remainingPhases = []
+    else:
         # Osm Change analysis
         App.log("=== Analyzing map changes ===")
-        gen_cmd.osmChangeRead(osm_change, latest, updated)
+        App.collect_garbage()
+        gen_cmd.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
         (changed, guard) = gen_cmd.statistics()
         if not changed:
             remainingPhases = []
         gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-else:
-    # Create base map if latest does not exist
-    App.log("=== Non-Incremental Tile Generation ===")
-    gen_cmd.clean_tiles = True
-    if os.path.exists(updated) and remainingPhases:
-        App.log('=== Continueing execution of the previous tile generation ===')  
-        App.log('Remaining phases: '+', '.join(remainingPhases))
-        App.run_command("pause 15000")
-    else:
-        App.log("=== Downloading the latest map data ===")
-        # wget for Windows: http://gnuwin32.sourceforge.net/packages/wget.htm
-        App.run_program('wget.exe', 1200,
-                        ["--timestamping",
-                         "--no-directories", "--no-verbose",
-                         '--directory-prefix="'+cache_file('')+'"',
-                         latest_url])
-        safe_rename(latest, updated)
-        remainingPhases = phases
+elif remainingPhases:
     App.log("=== Loading the map ===")
-    Map.add_osm_source(updated)
-    gen_cmd.timestamp = datetime.fromtimestamp(os.path.getmtime(updated))
+    Map.add_osm_source(osm_source.updated)
+    gen_cmd.clean_tiles = True
     gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 if remainingPhases:
@@ -284,20 +278,16 @@ if remainingPhases:
     else:
         App.log(phase+' phase skipped.')
 
-    for phase in phases:
-        try:
-            os.remove(done_file(phase))
-        except:
-            pass
-
-    # Don't loose the original latest pbf if something goes wrong
-    safe_rename(updated, latest)
-    Map.clear()
-
-duration = datetime.now()-start_time
-gen_cmd.print_timer("Total time:", duration.total_seconds())
 
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
+
+if osm_source.status() != "base":
+    # No update was available
+    osm_source.advance()
+for phase in phases:
+    silent_remove(done_file(phase))
+
+gen_cmd.print_timer("Total time:", (datetime.now()-start_time).total_seconds())
 
 # vim: shiftwidth=4 expandtab

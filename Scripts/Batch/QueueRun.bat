@@ -25,11 +25,10 @@ SET ISRAELHIKING=%CD%
 CALL .\Scripts\Batch\WaitInQueue "%ISRAELHIKING%\Cache\Queue" "%~n1"
 IF ERRORLEVEL 1 EXIT
 
-
 IF "%~x1"==".py" (
-  Maperitive -exitafter %ISRAELHIKING%\Scripts\Maperipy\%*
+  Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
 ) ELSE IF "%~x1"==".mscript" (
-  Maperitive -exitafter %ISRAELHIKING%\Scripts\Maperitive\%*
+  Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
 ) ELSE (
   IF NOT "%~dp$PATH:1"=="" CD "%~dp$PATH:1"
   IF "%~x1"==".bat" (
@@ -39,5 +38,7 @@ IF "%~x1"==".py" (
   )
 )
 
+DEL %QUEUEFILE%
+TIMEOUT 5
 EXIT
 @REM vim:sw=2:ai:ic:expandtab

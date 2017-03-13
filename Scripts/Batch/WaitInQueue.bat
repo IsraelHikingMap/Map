@@ -22,6 +22,9 @@ IF NOT "%QDIR%"=="" (
 @ECHO.
 @echo Only one entry per JobName, if provided, is allowed.
 @ECHO If JobName is already in the queue, exit with ERRORLEVEL 2
+@ECHO.
+@ECHO When the mutual exclusion is no longer needed, the caller may
+@ECHO DEL %%QUEUEFILE%%
 
 EXIT /B 1
 
@@ -61,7 +64,11 @@ IF ERRORLEVEL 1 (
 
 :CheckQueue
 CALL :QueueHead
-IF "%HEADPID%-%HEADJOB%"=="%PID%" EXIT /B 0
+IF "%HEADPID%-%HEADJOB%"=="%PID%" (
+  ENDLOCAL
+  SET QUEUEFILE="%QDIR%\%PID%"
+  EXIT /B 0
+)
 
 @REM Wait in queue
 TIMEOUT /T 360 >NUL
