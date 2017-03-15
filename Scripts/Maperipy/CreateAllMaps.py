@@ -194,7 +194,9 @@ if os.path.exists(osm_source.changes):
         remainingPhases = []
     else:
         # Osm Change analysis
-        App.log("=== Analyzing map changes ===")
+        App.log("=== Analyzing map changes from {} to {} ===".format(
+            osm_source.timestamp(osm_source.base).isoformat(), 
+            osm_source.timestamp(osm_source.updated).isoformat()))
         App.collect_garbage()
         gen_cmd.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
         (changed, guard) = gen_cmd.statistics()
