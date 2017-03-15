@@ -149,18 +149,14 @@
 //	coastline islands : 200
 //		coastline : 150
 //	map background : 100
-
-
-// TODO:
 // -----
+
 
 import-script:..\Scripts\Maperipy\names.py
 import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
 	
-	legend : legend
-		
 	points, areas
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		bikepark : landuse=recreation_ground and sport=mtb
@@ -180,6 +176,7 @@ features
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
+		attraction : tourism=attraction
 	
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
@@ -240,6 +237,7 @@ features
 //______________________________________________________________________________________________________________
 			
 	areas
+		archaeological : historic=archaeological_site
 		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
 		residential : landuse=residential
@@ -247,13 +245,12 @@ features
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area glacier : natural=glacier
-		area water : natural=water OR landuse=reservoir OR landuse=basin
+		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
-		archaeological: historic=archaeological_site
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden)
+		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
 		area sand : natural=beach OR natural=sand
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
@@ -265,19 +262,19 @@ features
 
 properties
 	curved : false
-	font-family : Tahoma
+	font-family : Arial
 	text-offset-vertical : -12%
 	text-halo-color : #fff
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
+	text-direction : rtl
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-
 
 	 
 //______________________________________________________________________________________________________________
@@ -291,7 +288,7 @@ rules
 			min-zoom : 15
 			icon-width : 17
 		for : barrier=gate
-			for : access=no OR bicycle=no
+			for : access=no OR bicycle=no OR access=private
 				define
 					icon-image : Icons/mtbmap/gate_closed.png
 			else
@@ -351,7 +348,6 @@ rules
 			stop
 		define
 			font-weight : bold
-			font-family : tahoma
 			text-func : NodeName(e)
 		draw : text
 
@@ -425,6 +421,7 @@ rules
 			font-size : 15:10;16:12
 			min-zoom : 15
 			text-func : roundEle(e)
+			text-func : roundEle(e)
 			text-align-vertical : near
 			text-offset-vertical : 10
 			text-align-horizontal : center
@@ -437,10 +434,23 @@ rules
 	target: worship *
 		if : * church
 			define
+
+				font-weight : normal
+				font-size : 15:10;16:12
+				font-stretch : 1
+				text-offset-vertical : -10
+				min-zoom : 15
+				text-align-vertical : far
+				text-func : NodeName(e)
+			draw : text
+
+			define
 				icon-image : Icons/mtbmap/church.png
+				
 		elseif : * mosque
 			define
 				icon-image : Icons/mtbmap/mosque.png
+
 		elseif : * synagogue
 			define
 				icon-image : Icons/mtbmap/synagogue.png
@@ -456,6 +466,8 @@ rules
 			define
 				min-zoom : 15
 		draw : icon
+		
+		
 		
 	target : parking
 		define
@@ -499,7 +511,7 @@ rules
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 16
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
@@ -526,7 +538,7 @@ rules
 			font-size : 10
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 15
+			min-zoom : 16
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
@@ -691,7 +703,7 @@ rules
 			text-align-vertical : far
 			text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
-		draw : text
+			draw : text
 				
 		
 	target : picnic
@@ -873,6 +885,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
+				line-width : 10:1;13:4;14:5;15:6
 				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * trunk
 			define
@@ -883,6 +896,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
+				line-width : 10:0.5;13:2;14:3;15:4
 				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
@@ -893,6 +907,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
+				line-width : 10:0.5;13:2;14:3;15:4
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
@@ -903,6 +918,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
+				line-width : 10:0.5;13:2;14:3;15:4
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
@@ -912,6 +928,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
+				line-width : 10:0.5;13:2;14:3;15:4
 		elseif : * residential
 			define
 				line-color : white
@@ -920,6 +937,7 @@ rules
 				border-width : 10%
 				border-opacity : 1
 				min-zoom : 13
+				line-width : 10:0.5;13:2;14:3;15:4
 		elseif : * unclassified
 			define
 				min-zoom : 13
@@ -928,9 +946,8 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-		
-		define
-			line-width : 10:0.5;13:2;14:3;15:4
+				line-width : 10:0.5;13:2;14:3;15:4
+			
 		draw : line
 // shields
 		define
@@ -1020,7 +1037,6 @@ rules
 					// Hide westbound labels
 					stop
 		define
-			font-family : Tahoma
 			font-weight : normal
 			text-align-horizontal : center
 			text-align-vertical : center
@@ -1231,6 +1247,8 @@ rules
 				line-color : #000
 				line-style : dot
 				fill-color : #000
+		define
+			painting-cycle : 601
 		draw : line
 		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
 			define
@@ -1349,7 +1367,9 @@ rules
 				min-zoom : 13
 				line-width : 13:1; 14:2
 				border-style : none
+
 		draw : line
+
 		define
 			min-zoom : 14
 			font-size : 14:10
@@ -1371,7 +1391,8 @@ rules
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
 			shape-spacing : 3
-			shape-size : 7
+			shape-size : 6
+			painting-cycle : 601
 		draw : shape
 		draw : line
 	
@@ -1639,6 +1660,27 @@ rules
 			text-offset-vertical : -18
 			text-func : NodeName(e)
 		draw : text
+	
+	target : attraction
+				
+		define
+			icon-image : Icons/mtbmap/star.png
+			icon-width : 17
+			min-zoom : 14
+			shape-orientation : fixed
+			shape-mode : center
+			painting-cycle : 801
+		draw : icon
+		
+		define
+			font-weight : normal
+			font-stretch : 1
+			min-zoom : 15
+			font-size : 15:10;16:12
+			font-stretch : 1
+			text-offset-vertical : -18
+			text-func : NodeName(e)
+		draw : text
 		
 	target : area water
 		
@@ -1651,7 +1693,8 @@ rules
 			line-color : blue
 			line-width : 1:0.1;13:0.5
 			line-opacity : 0.5
-		draw : fill
+		for : NOT intermittent=yes
+			draw : fill
 		
 	target : Pal *
 		define
@@ -1685,9 +1728,6 @@ rules
 			text-orientation: fixed
 			text-func : NodeName(e)
 
-		for : water=river
-			define
-				text : none
 		if : area commercial
 			define
 				text-color : black
@@ -1809,6 +1849,25 @@ rules
 				line-color : #050
 				min-zoom : 8
 				fill-color : #DEFED2
+				painting-cycle : 403
+			draw : fill
+		
+		for : (leisure=playground)
+
+			define
+				icon-image : Icons/mtbmap/playground.png
+				icon-width : 15:17
+				align-vertical : center
+				min-zoom : 15
+			draw : icon
+			
+			define
+				line-style : solid
+				line-width : 1
+				line-color : #050
+				min-zoom : 8
+				fill-color : #DEFED2
+				painting-cycle : 403
 			draw : fill
 
 	target : area sand
@@ -1882,8 +1941,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : gray
 			min-zoom : 12
-			max-zoom : 16
-			font-size : 12:15; 13:20; 14:25
+			font-size : 12:15; 13:20; 14:25; 15:30; 16:35
 			text-letter-spacing : 0.35
 			text-func : WayName(e)
 		draw : text
@@ -1894,49 +1952,5 @@ rules
 		
 		
 
-//---- Style for creating legend ----
-// Custom tags in custom osm-file used to create legend
-// Render at zoom 15
 
-	target : legend
-		define
-
-			text : [[text:he]]
-			text-direction : rtl
-			text-align-horizontal : far
-			text-max-width : 30
-			text-halo-width : 0
-			text-line-spacing : 0.5
-			text-avoid-overlaps : false
-		for : legend=title
-			define
-				font-size : 18
-				font-weight : bold
-				text-direction : rtl
-				text-color : blue
-				
-		for : legend=heading
-			define
-				font-size : 12
-				font-weight : bold
-				text-direction : rtl
-		for : legend=text
-			define
-				font-size : 10
-				font-weight : bold
-				text-color : #666
-				text-direction : rtl
-		draw : text
-		for : legend=paper
-			define
-				fill-color : #fff
-		draw : fill
-		for : legend=box
-			define
-				fill-color : #fff
-				line-width : 1
-				line-color : #fff
-				line-style : solid
-		draw : fill
-		
 		
