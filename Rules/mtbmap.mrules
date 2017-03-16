@@ -268,7 +268,6 @@ properties
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
-	text-direction : rtl
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
