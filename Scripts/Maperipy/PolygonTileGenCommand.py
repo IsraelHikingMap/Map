@@ -201,12 +201,33 @@ class PolygonTileGenCommand(TileGenCommand):
         self.tile_removal_script = 'Output\\rm_tiles.sh'  # Optional: tile removal script name
         self.list_file = open(os.devnull, 'w')
 
-    def print_timer(self, prefix, timer):
-        if timer > 3600:
-            print "{} {:.0f}:{:02.0f}:{:04.1f} hours".format(prefix, timer//3600, (timer//60)%60, timer%60)
-        elif timer > 60:
-            print "{} {:.0f}:{:04.1f} minutes".format(prefix, timer//60, timer%60)
+def pretty_timer(prefix, timer):
+    days = timer // 3600*24
+    if timer > 86400:
+        if timer%86400 > 0:
+            return pretty_timer("{} {:.0f} days".format(
+                    prefix, timer//86400), timer%86400)
         else:
-            print "{} {:.1f} seconds".format(prefix, timer)
+            return "{} {:.0f} days".format(
+                    prefix, timer//8640)
+    elif timer > 3600:
+        if timer%60 > 0:
+            return "{} {:.0f}:{:02.0f}:{:02.0f} hours".format(
+                    prefix, timer//3600, (timer//60)%60, timer%60)
+        elif timer%3600 > 0:
+            return "{} {:.0f}:{:02.0f} hours".format(
+                    prefix, timer//3600, (timer//60)%60)
+        else:
+            return "{} {:.0f} hours".format(
+                    prefix, timer//3600)
+    elif timer > 60:
+        if timer%60 > 0:
+            return "{} {:.0f}:{:02.0f} minutes".format(
+                    prefix, timer//60, timer%60)
+        else:
+            return "{} {:.0f} minutes".format(
+                    prefix, timer//60)
+    else:
+        return "{} {:.1f} seconds".format(prefix, timer)
 
 # vim: set shiftwidth=4 expandtab textwidth=0:

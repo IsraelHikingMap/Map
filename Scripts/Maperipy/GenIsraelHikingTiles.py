@@ -13,6 +13,7 @@ License: public domain
 import time
 from maperipy import *
 from OsmChangeTileGenCommand import OsmChangeTileGenCommand
+from PolygonTileGenCommand import pretty_timer
 
 class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     def __new__(cls, *args):
@@ -78,11 +79,11 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         timer = time.time()
         OsmChangeTileGenCommand.execute(self)
         timer = time.time() - timer
-        self.print_timer("   Tile generation time:", timer)
+        print pretty_timer("   Tile generation time:", timer)
 
     def osmChangeRead(self, *args):
         timer = time.time()
         OsmChangeTileGenCommand.osmChangeRead(self, *args)
         timer = time.time() - timer
-        self.print_timer("   Osm Change analysis time:", timer)
+        print pretty_timer("   Osm Change analysis time:", timer)
 # vim: set shiftwidth=4 expandtab textwidth=0:

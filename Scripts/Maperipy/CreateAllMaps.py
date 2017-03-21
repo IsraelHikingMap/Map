@@ -19,6 +19,7 @@ from maperipy import *
 from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 from OsmChangeSource import *
+from PolygonTileGenCommand import pretty_timer
 
 # TODO Separate OSM update and its server definitions from the Israel Hiking code
 
@@ -113,10 +114,7 @@ def done_file(phase):
 def mark_done(phase):
     open(done_file(phase), 'a').close()
     App.log(phase+' phase is done.')
-    gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-
-# Keep batch windows open up to 24 hours
-os.environ["NOPAUSE"] = "TIMEOUT /T 86400"
+    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 gen_cmd =  IsraelHikingTileGenCommand()
 if language == "Hebrew":
@@ -149,6 +147,7 @@ if language == "Hebrew":
             cache_file('israel-and-palestine-updated.osm.pbf'),
             os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
             "merge/israel_and_palestine")
+    # DEBUG # osm_source.osmupdate_params = ["--keep-tempfiles", "--verbose", "--trust-tempfiles"]
 else:
     # Daily updated from geofabric
     osm_source = geofabric(
@@ -185,7 +184,7 @@ else:
         pass
     else:
         raise RuntimeError
-    gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 # Incremental tile generation?
 if os.path.exists(osm_source.changes):
@@ -194,20 +193,27 @@ if os.path.exists(osm_source.changes):
         remainingPhases = []
     else:
         # Osm Change analysis
-        App.log("=== Analyzing map changes from {} to {} ===".format(
-            osm_source.timestamp(osm_source.base).isoformat(), 
-            osm_source.timestamp(osm_source.updated).isoformat()))
+        base_time = osm_source.timestamp(osm_source.base)
+        updated_time = osm_source.timestamp(osm_source.updated)
+        change_span = pretty_timer("from {}Z to {}Z -".format(
+            base_time.isoformat(),
+            updated_time.isoformat()),
+            (updated_time-base_time).total_seconds())
+        App.log("=== Analyzing map changes {} ===".format(change_span))
         App.collect_garbage()
         gen_cmd.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
         (changed, guard) = gen_cmd.statistics()
-        if not changed:
+        if changed:
+            with open(cache_file("Change Analysis.log"), 'a') as journal:
+                journal.write("Changes {}\n".format(change_span))
+        else:
             remainingPhases = []
-        gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+        print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 elif remainingPhases:
     App.log("=== Loading the map ===")
     Map.add_osm_source(osm_source.updated)
     gen_cmd.clean_tiles = True
-    gen_cmd.print_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 if remainingPhases:
     # Tile generation
@@ -290,6 +296,6 @@ if osm_source.status() != "base":
 for phase in phases:
     silent_remove(done_file(phase))
 
-gen_cmd.print_timer("Total time:", (datetime.now()-start_time).total_seconds())
+print pretty_timer("Total time:", (datetime.now()-start_time).total_seconds())
 
 # vim: shiftwidth=4 expandtab
