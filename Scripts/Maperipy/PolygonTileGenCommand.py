@@ -209,7 +209,7 @@ def pretty_timer(prefix, timer):
                     prefix, timer//86400), timer%86400)
         else:
             return "{} {:.0f} days".format(
-                    prefix, timer//8640)
+                    prefix, timer//86400)
     elif timer > 3600:
         if timer%60 > 0:
             return "{} {:.0f}:{:02.0f}:{:02.0f} hours".format(
