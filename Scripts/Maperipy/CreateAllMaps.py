@@ -118,6 +118,16 @@ def mark_done(phase):
 
 gen_cmd =  IsraelHikingTileGenCommand()
 if language == "Hebrew":
+    '''
+    # Daily updated from geofabric
+    osm_source = geofabric(
+            cache_file('israel-and-palestine-latest.osm.pbf'),
+            cache_file('israel-and-palestine-update.osc'),
+            cache_file('israel-and-palestine-updated.osm.pbf'),
+            os.path.join(ProjectDir, 'Cache', 'geofabrik'),
+            "asia/israel-and-palestine")
+    # TODO: the merge/israel_and_palestine source below provides corrupt
+    # diff files. It is commented out until the issue is fixed
     osm_source = osmChangeSourceMerge(
             cache_file('israel-and-palestine-latest.osm.pbf'),
             cache_file('israel-and-palestine-update.osc'),
@@ -136,9 +146,9 @@ if language == "Hebrew":
             cache_file('openstreetmap_fr'),
             "asia/israel"))
     #######
-    # TODO: the merge/israel_and_palestine source below does not provide
-    # a good base extract yet. Comment it out and use the above
-    # overwritten source for Non-incremental Tile Generation!
+    # TODO: the merge/israel_and_palestine source below currently
+    # has data reliability issues and should not be used!
+    # It is kept here for reference only!
     #######
     # Minute updates from openstreetmap.fr
     osm_source = openstreetmap_fr(
@@ -147,6 +157,20 @@ if language == "Hebrew":
             cache_file('israel-and-palestine-updated.osm.pbf'),
             os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
             "merge/israel_and_palestine")
+    '''
+    #######
+    # TODO: the asia/israel_and_palestine source below does not provide
+    # base extract yet.
+    # For non-incremental Tile Generation, manually extract the data
+    # from the asia-latest.pbf file.
+    #######
+    # Minute updates from openstreetmap.fr
+    osm_source = openstreetmap_fr(
+            cache_file('israel-and-palestine-latest.osm.pbf'),
+            cache_file('israel-and-palestine-update.osc'),
+            cache_file('israel-and-palestine-updated.osm.pbf'),
+            os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
+            "asia/israel_and_palestine")
     # DEBUG # osm_source.osmupdate_params = ["--keep-tempfiles", "--verbose", "--trust-tempfiles"]
 else:
     # Daily updated from geofabric
