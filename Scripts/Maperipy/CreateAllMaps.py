@@ -234,7 +234,12 @@ if os.path.exists(osm_source.changes):
             remainingPhases = []
         print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 elif remainingPhases:
-    App.log("=== Loading the map ===")
+    # 
+    updated_time = "map dated {}Z".format(
+            osm_source.timestamp(osm_source.updated).isoformat())
+    App.log("=== Loading the {} ===".format(updated_time))
+    with open(cache_file("Change Analysis.log"), 'a') as journal:
+        journal.write("Base {}\n".format(updated_time))
     Map.add_osm_source(osm_source.updated)
     gen_cmd.clean_tiles = True
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
@@ -320,6 +325,9 @@ if osm_source.status() != "base":
 for phase in phases:
     silent_remove(done_file(phase))
 
-print pretty_timer("Total time:", (datetime.now()-start_time).total_seconds())
+time_message = pretty_timer("time:", (datetime.now()-start_time).total_seconds())
+print "Total", time_message
+with open(cache_file("Change Analysis.log"), 'a') as journal:
+    journal.write("Execution {}\n".format(time_message))
 
 # vim: shiftwidth=4 expandtab

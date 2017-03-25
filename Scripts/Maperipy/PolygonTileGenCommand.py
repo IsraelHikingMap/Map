@@ -205,11 +205,12 @@ def pretty_timer(prefix, timer):
     days = timer // 3600*24
     if timer > 86400:
         if timer%86400 > 0:
-            return pretty_timer("{} {:.0f} days".format(
-                    prefix, timer//86400), timer%86400)
+            return pretty_timer("{} {:.0f} {}".format(
+                    prefix, timer//86400, "days" if days > 1 else "day"),
+                    timer%86400)
         else:
-            return "{} {:.0f} days".format(
-                    prefix, timer//86400)
+            return "{} {:.0f} {}".format(
+                    prefix, timer//86400, "days" if days > 1 else "day")
     elif timer > 3600:
         if timer%60 > 0:
             return "{} {:.0f}:{:02.0f}:{:02.0f} hours".format(
