@@ -315,6 +315,10 @@ if remainingPhases:
     else:
         App.log(phase+' phase skipped.')
 
+    with open(cache_file("Change Analysis.log"), 'a') as journal:
+        journal.write("{}\n".format(pretty_timer(
+            "Execution time:",
+            (datetime.now()-start_time).total_seconds())))
 
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
@@ -325,9 +329,6 @@ if osm_source.status() != "base":
 for phase in phases:
     silent_remove(done_file(phase))
 
-time_message = pretty_timer("time:", (datetime.now()-start_time).total_seconds())
-print "Total", time_message
-with open(cache_file("Change Analysis.log"), 'a') as journal:
-    journal.write("Execution {}\n".format(time_message))
+print pretty_timer("Total time:", (datetime.now()-start_time).total_seconds())
 
 # vim: shiftwidth=4 expandtab
