@@ -268,7 +268,6 @@ properties
 	text-halo-width : 18%
 	text-halo-opacity : 0.9
 	text-line-spacing : 0.7
-	text-direction : rtl
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
@@ -301,8 +300,7 @@ rules
 			define
 				icon-image : Icons/mtbmap/gate_open.png
 		elsefor : barrier=block OR barrier=debris
-			define
-				icon-image : none
+			stop
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
@@ -420,7 +418,6 @@ rules
 			font-style : italic
 			font-size : 15:10;16:12
 			min-zoom : 15
-			text-func : roundEle(e)
 			text-func : roundEle(e)
 			text-align-vertical : near
 			text-offset-vertical : 10

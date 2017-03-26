@@ -1,4 +1,3 @@
-@ECHO OFF
 @REM WaitInQueue - Wait in queue for mutual exclusion
 SETLOCAL
 
@@ -23,6 +22,9 @@ IF NOT "%QDIR%"=="" (
 @ECHO.
 @echo Only one entry per JobName, if provided, is allowed.
 @ECHO If JobName is already in the queue, exit with ERRORLEVEL 2
+@ECHO.
+@ECHO When the mutual exclusion is no longer needed, the caller may
+@ECHO DEL %%QUEUEFILE%%
 
 EXIT /B 1
 
@@ -46,7 +48,7 @@ IF NOT DEFINED PID (
 )
 
 IF NOT "%JOB%"=="" (
-  DIR /B "%QDIR%"|FINDSTR /R "^[0-9]*\-%JOB: =\ %$" >NUL
+  DIR /B "%QDIR%"|FINDSTR /R /C:"^[0-9]*\-%JOB%$" >NUL
   IF NOT ERRORLEVEL 1 (
     ECHO "%JOB%" job already in queue 1>&2
     EXIT /B 2
@@ -62,7 +64,11 @@ IF ERRORLEVEL 1 (
 
 :CheckQueue
 CALL :QueueHead
-IF "%HEADPID%-%HEADJOB%"=="%PID%" EXIT /B 0
+IF "%HEADPID%-%HEADJOB%"=="%PID%" (
+  ENDLOCAL
+  SET QUEUEFILE="%QDIR%\%PID%"
+  EXIT /B 0
+)
 
 @REM Wait in queue
 TIMEOUT /T 360 >NUL
