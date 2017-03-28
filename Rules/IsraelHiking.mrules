@@ -249,7 +249,7 @@ rules
 	target : drinking
 		define
 			min-zoom : 13
-			icon-image : Icons/SJJB/food_drinkingtap.glow.000000.32.png
+			icon-image : Icons/mtbmap/tap.png
 			icon-width : 14:16;15:24
 		draw : icon
 
