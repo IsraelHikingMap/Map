@@ -105,9 +105,12 @@ for layer in Map.layers:
     if layer.layer_type == "OsmLayer":
         osmLayer = layer.osm
 
-        # Add length and direction to highways
-        for osmWay in osmLayer.find_ways(lambda x : x.has_tag("highway")):
-            setLengthAndDirection(osmWay)
+        # Add length and direction to highways, ridges, and valleys
+        for osmWay in osmLayer.find_ways(lambda x : (
+            x.has_tag("highway")
+            or x.has_tag("natural", "ridge")
+            or x.has_tag("natural", "valley"))):
+                setLengthAndDirection(osmWay)
 
         # Set clockwise and width for national parks and nature reserves 
         # 1. for ways

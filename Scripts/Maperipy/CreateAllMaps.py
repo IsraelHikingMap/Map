@@ -15,6 +15,7 @@ import os.path
 from datetime import *
 import string
 import errno
+from time import sleep
 from maperipy import *
 from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
@@ -224,6 +225,7 @@ if os.path.exists(osm_source.changes):
             updated_time.isoformat()),
             (updated_time-base_time).total_seconds())
         App.log("=== Analyzing map changes {} ===".format(change_span))
+        sleep(10)  # Try to avoid CommandExecutionException
         App.collect_garbage()
         gen_cmd.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
         (changed, guard) = gen_cmd.statistics()
