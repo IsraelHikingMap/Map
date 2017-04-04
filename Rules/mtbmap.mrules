@@ -1939,7 +1939,7 @@ rules
 			define
 				font-size : 12:5; 13:7; 14:10; 15:15; 16:17
 	
-			text-func : WayName(e)
+				text-func : WayName(e)
 		draw : text
 	
 
