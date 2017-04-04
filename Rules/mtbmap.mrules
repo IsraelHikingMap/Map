@@ -209,9 +209,10 @@ features
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
 		bridge : bridge AND NOT bridge=no
 		wall : barrier=wall
-		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
-		cutline : man_made=cutline
-		ridge : natural=ridge
+		fence : way[barrier=fence]
+		Separation-barrier : relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
+		cutline : man_made=cutline 
+		land-feature : natural=ridge OR natural=valley
 		
 		// contours
 		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
@@ -572,9 +573,9 @@ rules
 	target: bikepark
 		define
 			icon-image : Icons/mtbmap/MTBiker.png
-			icon-width : 8:18;10:20;12:25
+			icon-width : 9:16;10:18;12:23
 			align-vertical : center
-			min-zoom : 8
+			min-zoom : 9
 			painting-cycle : 810
 		draw : icon
 		define
@@ -904,7 +905,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 10:0.5;13:2;14:3;15:4
+				line-width : 9:0.5;13:2;14:3;15:4
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
@@ -920,12 +921,12 @@ rules
 		elseif : * tertiary
 			define
 				min-zoom : 12
-				line-color : yellow white 75%
+				line-color : white
 				border-style : solid
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 10:0.5;13:2;14:3;15:4
+				line-width : 12:0.75;13:3;14:4;15:5
 		elseif : * residential
 			define
 				line-color : white
@@ -934,7 +935,7 @@ rules
 				border-width : 10%
 				border-opacity : 1
 				min-zoom : 13
-				line-width : 10:0.5;13:2;14:3;15:4
+				line-width : 13:2;14:3;15:4
 		elseif : * unclassified
 			define
 				min-zoom : 13
@@ -956,67 +957,67 @@ rules
 		if : * motorway
 			for : length > 16
 				define
-					min-zoom : 8
+					min-zoom : 7
 			elsefor : length > 6
 				define
-					min-zoom : 9
+					min-zoom : 8
 			elsefor : length > 4
 				define
-					min-zoom : 10
+					min-zoom : 9
 			elsefor : length > 3
 				define
-					min-zoom : 11
+					min-zoom : 10
 			else
 				define
-					min-zoom : 12
+					min-zoom : 11
 		elseif : * trunk
 			for : length > 32
 				define
-					min-zoom : 7
+					min-zoom : 8
 			elsefor : length > 16
 				define
-					min-zoom : 8
+					min-zoom : 9
 			elsefor : length > 8
 				define
-					min-zoom : 9
+					min-zoom : 10
 			elsefor : length > 6
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 4
 				define
-					min-zoom : 11
+					min-zoom : 12
 			else
 				define
-					min-zoom : 12
+					min-zoom : 13
 		elseif : * primary
 			for : length > 16
 				define
-					min-zoom : 9
+					min-zoom : 10
 			elsefor : length > 8
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 6
 				define
-					min-zoom : 11
+					min-zoom : 12
 			elsefor : length > 4
 				define
-					min-zoom : 12
+					min-zoom : 13
 			elsefor : length > 2
 				define
-					min-zoom : 13
+					min-zoom : 14
 			else
 				define
-					min-zoom : 14
+					min-zoom : 15
 		elseif : * secondary
 			for : length > 8
 				define
-					min-zoom : 11
+					min-zoom : 10
 			elsefor : length > 4
 				define
-					min-zoom : 12
+					min-zoom : 11
 			elsefor : length > 2
 				define
-					min-zoom : 13
+					min-zoom : 12
 			else
 				define
 					min-zoom : 15
@@ -1090,7 +1091,7 @@ rules
 				define
 					min-zoom : 11
 					max-zoom : 12
-					line-color : #FFE66B black 10%
+					line-color : white
 
 			elseif : * residential
 				define
@@ -1102,18 +1103,7 @@ rules
 					min-zoom : 12
 					line-color : white
 					max-zoom : 14
-					
-			
-		elseif : * secondary
-			define
-				min-zoom : 9
-				max-zoom : 10
-				line-color : brown yellow 20%
-		elseif : * primary
-			define
-				min-zoom : 8
-				max-zoom : 9
-				line-color : green
+
 		else
 			stop
 		draw : line
@@ -1123,7 +1113,7 @@ rules
 		define
 			line-color : white
 			line-style : solid
-			line-width : 12:0;13:1;14:2
+			line-width : 12:0;13:1;14:1.5;15:2
 			line-opacity : 12:0;13:1
 			border-color : black
 			border-width : 12:25%;13:70%
@@ -1193,14 +1183,15 @@ rules
 		
 		for : highway=footway
 			define
+				min-zoom : 14
 				line-style : dot
 				line-color : #973
 		
 		for : highway=cycleway
 			define
 				line-style : solid
-				line-color : #b0d
-				fill-color : #b0d
+				line-color : #090
+				fill-color : #090
 				
 		for : highway=path
 			define
@@ -1247,6 +1238,7 @@ rules
 		define
 			painting-cycle : 601
 		draw : line
+		
 		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
 			define
 				min-zoom : 15
@@ -1315,6 +1307,7 @@ rules
 				border-color : #000
 				border-width : 1
 				border-opacity : 0.8
+				painting-cycle : 602
 		else
 			stop
 		draw : line
@@ -1392,6 +1385,25 @@ rules
 			painting-cycle : 601
 		draw : shape
 		draw : line
+		
+	target : Separation-barrier
+		define
+			min-zoom : 11
+			line-color : #444
+			line-width : 11:1 ; 12:1.5; 13:2
+			shape-spacing : 15:2
+			shape : custom
+			shape-def : 4,7;-4,-7;m:4,-7;-4,7
+			shape-spacing : 3
+			shape-size : 11:5 ; 12:6; 13:8
+			painting-cycle : 601
+		draw : shape
+		define
+			line-width : 11:2 ; 12:2.5; 13:3
+		draw : line
+		
+		
+		
 	
 	target : wall
 		define
@@ -1577,6 +1589,7 @@ rules
 			fill-hatch-opacity : 0
 			fill-opacity : 100%
 			painting-cycle : 410
+			min-zoom : 10
 			// --
 		draw : fill
 		// Avoid military names in MTB IL
@@ -1616,6 +1629,7 @@ rules
 			line-color : #999
 			painting-cycle : 401
 			fill-opacity : 1
+			min-zoom : 10
 		draw : fill
 		
 		define
@@ -1720,14 +1734,17 @@ rules
 		define
 			font-style : normal
 			font-weight : bold
-			text-color : #ccc
+			text-color : black
 			text-avoid-overlaps : true
 			text-orientation: fixed
+			min-zoom : 15
+			font-size : 10
 			text-func : NodeName(e)
 
 		if : area commercial
 			define
 				text-color : black
+				min-zoom : 14
 		if : area industrial
 			define
 				text-color : black
@@ -1737,56 +1754,21 @@ rules
 				text-color : #2D79B7
 
 		if : area wood
-			for : landuse=forest
-				stop
+			stop
 		if : area wetland
 			define
 				text-color : #3290CB
 		if : area grass
 			// Icon only in MTB IL
-			for : (landuse=cemetery OR amenity=grave_yard)
+			for : (landuse=cemetery OR amenity=grave_yard OR amenity = playground)
 				stop
 			// --
 			define
-				text-color : #5BA931
+				text-color : black
 		if : area sand
 			define
 				text-color : #A9932F
-		if : area island
-			define
-				text-color : #5F594D
-		for : size > 10
-			define
-				min-zoom : 8
-				font-size : 8:8;14:24
-		elsefor : size > 5
-			define
-				min-zoom : 9
-				font-size : 8:6;14:20
-		elsefor : size > 2
-			define
-				min-zoom : 10
-				font-size : 8:4;14:18
-		elsefor : size > 1
-			define
-				min-zoom : 10
-				font-size : 8:3;14:16
-		elsefor : size > 0.5
-			define
-				min-zoom : 12
-				font-size : 8:2;14:15
-		elsefor : size > 0.2
-			define
-				min-zoom : 13
-				font-size : 8:1;14:14
-		elsefor : size > 0.1
-			define
-				min-zoom : 14
-				font-size : 8:1;14:12
-		else
-			define
-				min-zoom : 15
-				font-size : 8:1;14:10
+
 		draw : text
 
 
@@ -1819,6 +1801,7 @@ rules
 			line-width : 1
 			min-zoom : 12
 			fill-color : #DEFED2
+			painting-cycle : 404
 		
 		for : natural=scrub OR landuse=meadow OR natural=heath OR natural=fell OR natural=moor
 			define
@@ -1846,7 +1829,7 @@ rules
 				line-color : #050
 				min-zoom : 8
 				fill-color : #DEFED2
-				painting-cycle : 403
+				painting-cycle : 404
 			draw : fill
 		
 		for : (leisure=playground)
@@ -1860,19 +1843,19 @@ rules
 			
 			define
 				line-style : solid
-				line-width : 1
-				line-color : #050
-				min-zoom : 8
+				line-width : 0.5
+				line-color : #0b0
+				min-zoom : 14
 				fill-color : #DEFED2
-				painting-cycle : 403
+				painting-cycle : 404
 			draw : fill
 
 	target : area sand
 		define
 			line-style : none
 			line-width : 1
-			min-zoom : 8
-			fill-color : yellow white 85%
+			min-zoom : 10
+			fill-color : #FcF8E0
 		draw : fill
 
 
@@ -1881,7 +1864,8 @@ rules
 			line-style : none
 			line-width : 1
 			min-zoom : 12
-			fill-color : #fec
+			//fill-color : brown white 85%
+			fill-color :#f4e5d3
 			painting-cycle : 401
 		draw : fill		
 
@@ -1902,6 +1886,7 @@ rules
 			line-color : #999
 			fill-color : #ddd
 			painting-cycle : 403
+			min-zoom : 9
 		draw : fill
 
 	target : area commercial
@@ -1932,14 +1917,28 @@ rules
 			painting-cycle : 150
 		draw : line
 		
-	target : ridge
+	target : land-feature
 		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : gray
 			min-zoom : 12
-			font-size : 12:15; 13:20; 14:25; 15:30; 16:35
 			text-letter-spacing : 0.35
+		for : length > 10
+			define
+				font-size : 12:20; 13:25; 14:30; 15:35; 16:50
+		else
+		for : length > 5
+			define
+				font-size : 12:15; 13:20; 14:25; 15:30; 16:40
+		else
+		for : length > 2
+			define
+				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
+		else
+			define
+				font-size : 12:5; 13:7; 14:10; 15:15; 16:17
+	
 			text-func : WayName(e)
 		draw : text
 	
