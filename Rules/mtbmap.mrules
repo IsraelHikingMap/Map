@@ -1924,6 +1924,7 @@ rules
 			text-color : gray
 			min-zoom : 12
 			text-letter-spacing : 0.35
+			text-func : WayName(e)
 		for : length > 10
 			define
 				font-size : 12:20; 13:25; 14:30; 15:35; 16:50
@@ -1938,8 +1939,6 @@ rules
 		else
 			define
 				font-size : 12:5; 13:7; 14:10; 15:15; 16:17
-	
-				text-func : WayName(e)
 		draw : text
 	
 
