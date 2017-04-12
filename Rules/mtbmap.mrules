@@ -172,12 +172,9 @@ features
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
-		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 		airport : aeroway=aerodrome
 		gas : amenity=fuel
 		camping : tourism=camp_site
-		attraction : tourism=attraction
-	
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
@@ -186,14 +183,14 @@ features
 	points
 		place : place OR landuse=farmyard
 		building point: building AND NOT building=entrance
-		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower) OR tourism=viewpoint OR (tourism=attraction and not amenity=place_of_worship)
+		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower) OR @isOneOf(tourism, attraction, viewpoint)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
 		information : tourism=information
 		turningcircle : highway=turning_circle
 		toilet : amenity=toilets
-		watersource : natural=spring OR man_made=water_well OR amenity=drinking_water OR man_made=cistern OR natural=waterhole OR waterway=waterfall
+		watersource : @isOneOf(natural, spring, waterhole) OR @isOneOf(man_made, water_well, cistern) OR amenity=drinking_water OR waterway=waterfall
 		
 	//______________________________________________________________________________________________________________
 
@@ -233,7 +230,6 @@ features
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
-
 		
 //______________________________________________________________________________________________________________
 			
@@ -258,6 +254,7 @@ features
 		pal A : relation[boundary=administrative AND name="Area A"]
 		pal B : relation[boundary=administrative AND name="Area B"]
 		quarry : landuse=quarry
+		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 
 //______________________________________________________________________________________________________________
 
@@ -275,7 +272,6 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-
 	 
 //______________________________________________________________________________________________________________
 	
@@ -312,6 +308,9 @@ rules
 		
 
 	target : place
+		define
+			text-max-width : 3
+			text-align-horizontal : center
 		for : place=city
 			define
 				icon-image : Icons/mtbmap/dot.png
@@ -335,8 +334,8 @@ rules
 				font-size : 11:10;16:20
 		elsefor : place=hamlet
 			define
-				min-zoom : 12
-				font-size : 12:10;16:16
+				min-zoom : 13
+				font-size : 13:10;16:16
 
 		elsefor : (place=suburb OR place=quarter OR place=neighbourhood or place=borough)
 			define
@@ -354,52 +353,55 @@ rules
 		define
 			icon-width : 17
 			align-vertical : center
-
-		for : natural=peak
-			define
-				min-zoom : 13
-				icon-image : Icons/mtbmap/peak.png
+							
 		for : tourism=viewpoint
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/viewpoint.png
-		for : tourism=attraction
-			define
-				min-zoom : 14
-				icon-image : Icons/mtbmap/star.png
-		for : historic=ruins
+		
+		elsefor : historic=ruins
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/3stones.png
 				icon-width : 15
-		for : man_made=tower
-			define
-				min-zoom : 14
-				icon-image : Icons/mtbmap/tower.png
-		for : (man_made=tower AND tower:type=communication)
+		elsefor : (man_made=tower AND tower:type=communication)
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/antenna.png
-		for : natural=cave_entrance
+		elsefor : man_made=tower
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/tower.png
+		
+		elsefor : natural=cave_entrance
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/cave.png
 				icon-width : 13
-		for : man_made=water_tower	
+		elsefor : man_made=water_tower	
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/water_tower.png
-		for : natural=tree
+		elsefor : natural=tree
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/tree.png
-		for : (historic=memorial OR historic=monument)
+		elsefor : (historic=memorial OR historic=monument)
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/monument.png
 			for : (religion=muslim or religion=jewish)
 				define
 					icon-image : Icons/mtbmap/holy_place.png
+		elsefor : tourism=attraction
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/star.png
+		elsefor : natural=peak
+			define
+				min-zoom : 12
+				icon-image : Icons/mtbmap/dot.png
+				icon-width : 12:6;15:8
 
 		draw : icon
 	
@@ -416,7 +418,7 @@ rules
 
 
 		define
-			font-style : italic
+			font-style : normal
 			font-size : 15:10;16:12
 			min-zoom : 15
 			text-func : roundEle(e)
@@ -645,19 +647,33 @@ rules
 
 	target: airport
 		define
-			min-zoom : 10
-			icon-image : Icons/mtbmap/plane.png
+			
 			icon-width : 17
 			align-vertical : center
+		for : iata
+			define
+				min-zoom : 10
+				icon-image : Icons/mtbmap/plane.png
+		else
+			define
+				min-zoom : 14
+				icon-image : Icons/mtbmap/airfield.png
+			
 		draw : icon
 		define
 			font-weight : normal
 			font-size : 12
 			font-stretch : 1
 			text-offset-vertical : 60%
-			min-zoom : 12
 			text-align-vertical : near
 			text-func : NodeName(e)
+		for : iata
+			define
+				min-zoom : 12
+		else
+			define
+				min-zoom : 15
+				
 		draw : text		
 		
 	target: watersource
@@ -1212,6 +1228,12 @@ rules
 					line-style : solid
 					line-color : #b0d
 					fill-color : #b0d
+					
+			for : (bicycle=designated AND foot=designated)
+				define
+					line-style : solid
+					line-color : #090
+					fill-color : #090
 			
 		for : mtb:scale=0
 			define
@@ -1376,7 +1398,7 @@ rules
 		define
 			min-zoom : 13
 			line-color : #444
-			line-width : 2
+			line-width : 13:1
 			shape-spacing : 15:2
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
@@ -1384,6 +1406,8 @@ rules
 			shape-size : 6
 			painting-cycle : 601
 		draw : shape
+		define
+			line-width : 13:1 ; 15:2
 		draw : line
 		
 	target : Separation-barrier
@@ -1444,31 +1468,36 @@ rules
 			painting-cycle : 403
 		if : *major
 			define
-				map.rendering.contour.label : true
+				map.rendering.contour.label : false
 				min-zoom : 10
 				line-width : 10:0.5;15:1
 				font-size : 9
 				font-style : italic
 				font-weight : normal
-
+			draw : contour
+			define
+				map.rendering.contour.label : true
+				min-zoom : 13
 				text-color : #320
 				text-opacity : 0.8
 				text-halo-width : 50%
 				text-halo-opacity : 0.75
-				text-halo-color : #fff9e6
+				text-halo-color : #fff9e6	
+			draw : contour
 				
 		elseif : *medium
 			define
 				min-zoom : 12
 				line-opacity : 0.5
 				line-width : 10:0.33;15:1
+			draw : contour
 		else
 			define
 				min-zoom : 14
 				line-opacity : 0.4
 				line-width : 10:0.33;15:1
-		draw : contour
-
+			draw : contour
+		
 	target : cutline
 		define
 			min-zoom : 11
@@ -1668,9 +1697,11 @@ rules
 			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -18
+			text-offset-vertical : -10
+			text-align-vertical : far
 			text-func : NodeName(e)
 		draw : text
+		
 	
 	target : attraction
 				
@@ -1689,7 +1720,8 @@ rules
 			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -18
+			text-offset-vertical : -10
+			text-align-vertical : far
 			text-func : NodeName(e)
 		draw : text
 		
@@ -1759,12 +1791,8 @@ rules
 			define
 				text-color : #3290CB
 		if : area grass
-			// Icon only in MTB IL
-			for : (landuse=cemetery OR amenity=grave_yard OR amenity = playground)
-				stop
-			// --
-			define
-				text-color : black
+			stop
+
 		if : area sand
 			define
 				text-color : #A9932F
@@ -1821,12 +1849,13 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
+				painting-cycle : 405
 			draw : icon
 			
 			define
 				line-style : solid
 				line-width : 1
-				line-color : #050
+				line-color : #555
 				min-zoom : 8
 				fill-color : #DEFED2
 				painting-cycle : 404
@@ -1839,6 +1868,7 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
+				painting-cycle : 405
 			draw : icon
 			
 			define
@@ -1921,24 +1951,25 @@ rules
 		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 45
-			text-color : gray
-			min-zoom : 12
-			text-letter-spacing : 0.35
+			text-color : #444
+			text-letter-spacing : 1.5
 			text-func : WayName(e)
 		for : length > 10
 			define
-				font-size : 12:20; 13:25; 14:30; 15:35; 16:50
-		else
-		for : length > 5
+				min-zoom : 10
+				font-size : 10:15; 12:20; 13:25; 14:30; 15:35; 16:50
+		elsefor : length > 5
 			define
-				font-size : 12:15; 13:20; 14:25; 15:30; 16:40
-		else
-		for : length > 2
+				min-zoom : 11
+				font-size : 11:10; 12:15; 13:20; 14:25; 15:30; 16:40
+		elsefor : length > 2
 			define
+				min-zoom : 12
 				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
 		else
 			define
-				font-size : 12:5; 13:7; 14:10; 15:15; 16:17
+				min-zoom : 13
+				font-size : 13:7; 14:10; 15:15; 16:17
 		draw : text
 	
 
