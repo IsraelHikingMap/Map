@@ -110,6 +110,7 @@ features
 		hiking regional purple : relation[network = rwn "osmc:symbol"="purple:white:purple_stripe"].way[NOT colour=purple]
 		hiking regional orange : relation[network = rwn "osmc:symbol"="orange:white:orange_stripe"].way[NOT colour=orange]
 		hiking national : relation[network = nwn]
+		land-feature : natural=ridge OR natural=valley
 
 		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
 		path : highway=path AND NOT bicycle=designated
@@ -165,6 +166,7 @@ properties
 	text-halo-opacity : 0.75
 	map-background-color : white
 	map-background-opacity : 100%
+	map-sea-color : #00BFFF
 	line-opacity : 100%
 
 rules
@@ -181,11 +183,11 @@ rules
 				font-size : 12
 		elsefor : place=town
 			define
-				min-zoom : 11
+				min-zoom : 12
 				font-size : 10:12;16:20
 		elsefor : place=village
 			define
-				min-zoom : 12
+				min-zoom : 13
 				font-size : 13:10;16:20
 		elsefor : place=hamlet
 			define
@@ -201,7 +203,12 @@ rules
 			font-weight : bold
 			text-func : NodeName(e)
 			text-max-width : 15
+			text-offset-vertical : 11:-75%;12:0
 		draw : text
+		define
+			max-zoom : 12
+			shape-size : 2
+		draw : shape
 
 	target : peak
 		define
@@ -248,7 +255,7 @@ rules
 
 	target : drinking
 		define
-			min-zoom : 13
+			min-zoom : 14
 			icon-image : Icons/mtbmap/tap.png
 			icon-width : 14:16;15:24
 		draw : icon
@@ -475,6 +482,27 @@ rules
 			text-func : NodeName(e)
 		draw : text
 
+	target : land-feature
+		define
+			map.rendering.lflp.max-allowed-corner-angle : 45
+			text-color : black
+			min-zoom : 12
+			text-letter-spacing : 2
+			text-func : WayName(e)
+		for : length > 10
+			define
+				font-size : 12:20; 13:25; 14:30; 15:35; 16:50
+		elsefor : length > 5
+			define
+				font-size : 12:15; 13:20; 14:25; 15:30; 16:40
+		elsefor : length > 2
+			define
+				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
+		else
+			define
+				font-size : 12:5; 13:7; 14:10; 15:15; 16:17
+		draw : text
+
 
 ////////////////////////// lines ////////////////////////////////
 
@@ -505,24 +533,8 @@ rules
 				// border-style : dot
 				line-style : dash
 		draw : line
-		define
-			min-zoom : 6
-			max-zoom : 13
-			line-style : dashlong
-			line-color : white black 30%
-			line-width : 6:1;8:1;12:1.5
-		for : tunnel AND NOT tunnel=no
-			stop
-		draw : line
-		define
-			min-zoom : 13
-			line-color : gray
-			line-width : 2
-		draw : line
-	target : railway rail
 		for : bridge AND NOT bridge=no
 			define
-				min-zoom : 13
 				line-style : solid
 				line-color : black
 				line-offset : 2
@@ -531,15 +543,21 @@ rules
 			draw : line
 
 	target : road *
+		define
+			// Original // line-width : 14:2;16:3
+			border-style : solid
+			border-width : 80%
 		if : * motorway
 			define
 				min-zoom : 6
+				line-width : 7:0.5;9:1;16:3
 				line-color : blue
 				text-color : blue
 				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * trunk
 			define
 				min-zoom : 7
+				line-width : 7:0.5;9:1;16:3
 				line-color : red
 				text-color : red
 				// X values:	-31, -26, -24, 0, 24, 26, 31
@@ -549,29 +567,31 @@ rules
 				// shape-def : p:white;pw:1.5;f:red;m:-26,-21;a:5,5,-31,-16;l:-31,16;a:5,5,-26,21;l:26,21;a:5,5,31,16;l:31,-16;a:5,5,26,-21;l:-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
-				min-zoom : 9
+				min-zoom : 10
+				line-width : 10:0.5;12:1;16:3
 				line-color : green
 				text-color : green
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
-				min-zoom : 10
+				min-zoom : 12
+				line-width : 12:1;13:1.5;16:3
 				line-color : #8B4513
 				text-color : #8B4513
 				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
-				min-zoom : 12
+				min-zoom : 13
+				line-width : 13:1;16:3
 				line-color : #FFE66B
 		elseif : * residential
+			define
+				min-zoom : 15
+				line-width : 15:2;16:3
+				line-color : white
 			for : colour
 				define
-					line-color : white
 					min-zoom : 13
-			else
-				define
-					min-zoom : 14
-					line-color : white
 		// Colors for Hiking Trail on roads
 		for : colour = red
 			define
@@ -590,15 +610,11 @@ rules
 				border-color : purple
 		elsefor : colour = orange
 			define
-				border-color : orange
+				border-color : orange black 5%
 		else
 			define
 				border-color : black
 				border-opacity : 0.8
-		define
-			line-width : 10:0.5;13:2;14:2;16:3
-			border-style : solid
-			border-width : 80%
 		for : tunnel AND NOT tunnel=no
 			define
 				border-style : dot
@@ -607,6 +623,16 @@ rules
 			define
 				border-width : 150%
 		draw : line
+		// 1px line for residential
+		if : * residential
+			for : NOT colour AND NOT tunnel
+				define
+					min-zoom : 14
+					max-zoom : 15
+					line-width : 0.5
+					line-color : black
+					line-opacity : 10%
+				draw : line
 // Major Road Shields
 // The length in Km is computed by a Python routine
 		// default min-zoom is set for safety
@@ -660,10 +686,7 @@ rules
 				define
 					min-zoom : 12
 		elseif : * primary
-			for : length > 16
-				define
-					min-zoom : 9
-			elsefor : length > 8
+			for : length > 8
 				define
 					min-zoom : 10
 			elsefor : length > 6
@@ -734,77 +757,22 @@ rules
 			text-func : WayName(e)
 		draw : text
 
-	target : road *
-	// Narrow 1px lines at low zoom levels
-		define
-			line-width : 1
-		if : * street *
-			if : * tertiary
-				define
-					min-zoom : 11
-					max-zoom : 12
-					line-color : #FFE66B black 10%
-					line-color : brown yellow 20%
-			elseif : * residential
-				define
-					min-zoom : 13
-					line-color : black
-					max-zoom : 14
-			for : colour
-				define
-					min-zoom : 9
-					line-width : 1.6
-				for : colour = red
-					define
-						line-color : red
-				elsefor : colour = blue
-					define
-						line-color : blue
-				elsefor : colour = black
-					define
-						line-color : black
-				elsefor : colour = green
-					define
-						line-color : green
-				elsefor : colour = purple
-					define
-						line-color : purple
-				elsefor : colour = orange
-					define
-						line-color : orange
-			else
-				stop
-		elseif : * secondary
-			define
-				min-zoom : 9
-				max-zoom : 10
-				line-color : brown yellow 20%
-		elseif : * primary
-			define
-				min-zoom : 8
-				max-zoom : 9
-				line-color : green
-		else
-			stop
-		draw : line
-
 	target : track*
 		define
 			line-width : 13:1.5;14:2
 			line-offset : 12:0;13:1.5;16:2.5
 			// min-zoom for coloured trails
-			min-zoom : 9
-		if : *major*
+			min-zoom : 11
+		if : * major*
 			define
 				line-style : solid
-				line-width : 13:1.6;14:2
-		elseif : *minor*
+		elseif : * minor*
 			define
 				line-style : dash
-		elseif : *grade4*
+		elseif : * grade4*
 			define
 				line-style : dashdot
-		elseif : *grade5*
+		elseif : * grade5*
 			define
 				line-style : dashdotdot
 // Right colour
@@ -855,7 +823,7 @@ rules
 					line-color : purple
 			elsefor : @isMatch(colour, ";orange$") OR colour = "orange"
 				define
-					line-color : orange
+					line-color : orange black 5%
 			else
 				define
 					// min-zoom for non-coloured trails
@@ -884,9 +852,7 @@ rules
 		draw : text
 
 	target : track *
-		for :  colour
-			stop
-		else
+		for :  NOT colour
 			// Show non-coloured tracks as thin lines in zoom 13
 			define
 				min-zoom : 13
@@ -895,7 +861,7 @@ rules
 				line-width : 1
 				line-style : solid
 				border-style : none
-		draw : line
+			draw : line
 
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
@@ -903,7 +869,7 @@ rules
 			line-width : 13:1.5;14:2
 			line-style : dash
 			// min-zoom for coloured trails
-			min-zoom : 9
+			min-zoom : 13
 		// Also set fill-color for steps
 		for : colour = red
 			define
@@ -927,8 +893,8 @@ rules
 				fill-color : purple
 		elsefor : colour = orange
 			define
-				line-color : orange
-				fill-color : orange
+				line-color : orange black 5%
+				fill-color : orange black 5%
 		else
 			define
 				// min-zoom for non-coloured trails
@@ -987,7 +953,7 @@ rules
 				line-color : blue
 		elseif : * jesus trail
 			define
-				line-color : orange
+				line-color : orange black 5%
 		elseif : * kinneret perimeter cycle route
 			define
 				line-color : yellow
@@ -996,7 +962,7 @@ rules
 			define
 				// line-color : purple white 20%
 				// sampled from https://www.facebook.com/shvil.kinneret/photos/a.432607486313.232937.241694931313/10151081212611314/?type=3&theater
-				line-color : #7b5ca0
+				line-color : #7B5CA0
 		elseif : * northern galilee trail
 			define
 				line-color : purple
@@ -1008,13 +974,13 @@ rules
 				line-color : green
 		elseif : * ramat menashe
 			define
-				line-color : orange
+				line-color : orange black 5%
 		elseif : * purple
 			define
 				line-color : purple
 		elseif : * orange
 			define
-				line-color : orange
+				line-color : orange black 5%
 		else
 			stop
 		draw : line
@@ -1041,7 +1007,7 @@ rules
 			define
 				// line-color : blue
 				// sampled from https://www.facebook.com/shvil.kinneret/photos/a.432607486313.232937.241694931313/10151081212611314/?type=3&theater
-				line-color : #1765ad
+				line-color : #1765AD
 		elseif : * haifa wadis
 			define
 				line-color : red
@@ -1052,7 +1018,7 @@ rules
 	target : hiking national
 		// View for high zoom levels
 		define
-			min-zoom : 9
+			min-zoom : 13
 			// create a border around a transparent track
 			line-opacity : 0%
 			// track definitions - reused
@@ -1060,7 +1026,7 @@ rules
 			line-offset : 12:0;13:1.5;16:2.5
 			line-offset-sides : both
 			// Border
-			border-opacity : 80%
+			border-opacity : 55%
 			border-width : 100%
 			border-style : solid
 			border-color : orange
@@ -1070,10 +1036,10 @@ rules
 		// View for low zoom levels
 		define
 			min-zoom : 6
-			max-zoom : 9
+			max-zoom : 13
 			line-width : 2
 			// line-opacity : 80%
-			line-color : orange black 30%
+			line-color : orange
 		draw : line
 
 	target : stream
@@ -1196,7 +1162,7 @@ rules
 
 	target: contour*
 		define
-			line-color : #7f3300
+			line-color : #7F3300
 			line-opacity : 0.8
 			curved : true
 			// Contour lines below water areas and above all other area fills
@@ -1240,18 +1206,24 @@ rules
 		draw : text
 
 	target : grid
-		define
-			line-width : 11:0.5;12:2
-		for : @isMulti(name, 20)
+		for : @isMulti(name, 10)
 			define
-				min-zoom : 8
-		elsefor : @isMulti(name, 10)
-			define
-				min-zoom : 9
+				line-width : 11:0.5;12:2
 		else
 			define
-				min-zoom : 12
 				line-width : 0.5
+		for : @isMulti(name, 20)
+			define
+				min-zoom : 9
+		elsefor : @isMulti(name, 10)
+			define
+				min-zoom : 11
+		elsefor : @isMulti(name, 5)
+			define
+				min-zoom : 12
+		else
+			define
+				min-zoom : 14
 		define
 			line-color : black
 			curved : true
@@ -1354,12 +1326,13 @@ rules
 			stop
 		define
 			line-color : #9E1A99
+			line-width : 6:1;9:3;16:4
 			line-opacity : 0.75
 		if : boundary country
 			for : @isMatch(name, "1949 .*$")
 				// 1949 armistice line - "The Green Line"
 				define
-					line-color : green
+					line-color : #2BB32B
 			elsefor : note = "UN Resolution 497, UNDOF"
 				// Israel-Syria Agreement on Disengagement Line A "Alpha"
 				define
@@ -1377,12 +1350,10 @@ rules
 					shape : custom
 					shape-def : 0,3;0,-3;m:3,0;-3,0
 					shape-spacing : 0.5
-					shape-size : 6
+					shape-size : 9:4;12:6
 				draw : shape
 				define
-					line-style : none
-			define
-				line-width : 6:1;9:3;10:6
+					line-width : 9:1;12:3
 		draw : line
 
 /////////////////////////////// areas ////////////////////////////
@@ -1401,7 +1372,7 @@ rules
 			fill-hatch-color : white
 			fill-hatch-opacity : 0
 			fill-opacity : 80%
-			min-zoom : 9
+			min-zoom : 12
 			line-width : 0.5
 			line-color : red
 		draw : fill
@@ -1409,8 +1380,8 @@ rules
 	target : water
 		define
 			line-width : 2
-			line-color : #78C1C1 blue 10%
-			fill-color : #78C1C1 white 10%
+			line-color : #00BFFF blue 10%
+			fill-color : #00BFFF
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 530
 		for : intermittent = yes OR (seasonal AND NOT seasonal = no)
@@ -1438,7 +1409,7 @@ rules
 			line-width : 1
 			line-color : orange
 			min-zoom : 9
-			fill-opacity : 75%
+			fill-opacity : 9:10%;11:75%
 			fill-hatch-opacity : 0
 		draw : line
 		if : * A
@@ -1509,7 +1480,7 @@ rules
 			line-style : solid
 			line-color : black white 40%
 			line-width : 1
-			min-zoom : 9
+			min-zoom : 12
 			fill-texture : Textures/Rendering-landuse-quarry-mapnik-light.png
 		draw : fill
 		draw : line
