@@ -125,29 +125,30 @@
 //	map legend : 1000
 //	highlights : 950
 //	web maps : 900
-//		stream text : 800
+//	stream text : 800
 //	text labels : 800
 //	icons, shapes AND shields : 700
 //	line AND contour symbols : 600
-//		area water (fill) : 503
-//		river : 502
-//		stream : 500
+//	area water (fill) : 503
+//	river : 502
+//	stream : 500
 //	bitmap (foreground) : 500
-//		turningcircle : 490
-//		cutline : 440
-//		Pal Areas A & B 410
-//		Military 410
-//		building point : 404
-//		building : 404
-//		contour : 403
+//	turningcircle : 490
+//	area wetland : 450
+//	cutline : 440
+//	Pal Areas A & B 410
+//	Military 410
+//	contour : 403
+//	building point : 404
+//	building : 404
+// 	grass 402
+//	area water (line) : 401
+// 	area residential : 401
+//	area quarry : 401
 //	fill symbols : 400
-//		area quarry : 401
-//		area wetland : 450
-//		area water (line) : 401
-// 		area residential : 401
 //	bitmap (background) : 300
 //	coastline islands : 200
-//		coastline : 150
+//	coastline : 150
 //	map background : 100
 // -----
 
@@ -272,6 +273,7 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
+	text-direction : rtl
 	 
 //______________________________________________________________________________________________________________
 	
@@ -309,8 +311,13 @@ rules
 
 	target : place
 		define
-			text-max-width : 3
+		
+			text-max-width : 4
 			text-align-horizontal : center
+		for : @isMatch(name, ".*'$") OR @isMatch(name, ".*-*$") OR @isMatch(name:he, ".*'$") OR @isMatch(name:he, ".*-*$")
+			define
+				text-max-width : 30
+						
 		for : place=city
 			define
 				icon-image : Icons/mtbmap/dot.png
@@ -346,7 +353,7 @@ rules
 			stop
 		define
 			font-weight : bold
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target : POI
@@ -412,16 +419,18 @@ rules
 			text-offset-vertical : -10
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
+		for : natural=peak
+			define
+				min-zoom : 14
 		for : NOT (natural=tree)
 			draw : text
-
 
 		define
 			font-style : normal
 			font-size : 15:10;16:12
 			min-zoom : 15
-			text-func : roundEle(e)
+			//text-func : roundEle(e)
 			text-align-vertical : near
 			text-offset-vertical : 10
 			text-align-horizontal : center
@@ -441,7 +450,7 @@ rules
 				text-offset-vertical : -10
 				min-zoom : 15
 				text-align-vertical : far
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
 			draw : text
 
 			define
@@ -491,10 +500,10 @@ rules
 			text-color : black
 			font-size : 14:9;15:10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 15
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 
@@ -510,10 +519,10 @@ rules
 			text-color : black
 			font-size : 10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 16
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: convenience
@@ -537,10 +546,10 @@ rules
 			text-color : black
 			font-size : 10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 16
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: convenience
@@ -565,11 +574,11 @@ rules
 			text-color : black
 			font-size : 13:9;15:10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: bikepark
@@ -589,7 +598,7 @@ rules
 			min-zoom : 10
 			text-align-vertical : near
 			painting-cycle : 810
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: medical
@@ -604,11 +613,11 @@ rules
 			font-weight : normal
 			font-size : 10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text	
 	
 		
@@ -664,9 +673,9 @@ rules
 			font-weight : normal
 			font-size : 12
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : iata
 			define
 				min-zoom : 12
@@ -715,7 +724,7 @@ rules
 			text-offset-vertical : -10
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 			draw : text
 				
@@ -738,10 +747,10 @@ rules
 			font-weight : normal
 			font-size : 10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			min-zoom : 14
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 		
@@ -1095,7 +1104,7 @@ rules
 				font-stretch : 0.9
 				font-size : 9
 		define
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -1173,7 +1182,7 @@ rules
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 		
@@ -1186,7 +1195,7 @@ rules
 			min-zoom : 14
 			font-weight : bold
 			text-letter-spacing : 0.15
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 		define
@@ -1383,15 +1392,15 @@ rules
 		draw : line
 
 		define
-			min-zoom : 14
-			font-size : 14:10
+			min-zoom : 13
+			font-size : 13:12
 			font-style : italic
 			font-weight : normal
-			text-color : #2D79B7
+			text-color : blue
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			painting-cycle : 800
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : fence
@@ -1516,17 +1525,17 @@ rules
 			line-width : 12:2;13:4
 			line-style : dashdot
 			line-opacity : 0.5
-			fill-color : green
-			fill-opacity : 0.4
+			fill-opacity : 0.2
 			fill-hatch : nwse
-			fill-hatch-color : green
-			fill-hatch-opacity : 0.1
+			fill-hatch-opacity : 0
 			painting-cycle : 495
 			icon-image : Icons/mtbmap/rtg.png
-			icon-width : 8:16;10:18;12:20;14:25
+			icon-width : 12:20;14:25
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 810
+			
+			
 		draw : icon
 	
 		draw : fill
@@ -1539,7 +1548,7 @@ rules
 		//	text-color : green
 		//	font-weight : normal
 		//	painting-cycle : 990
-		//      text-func : NodeName(e)
+		//      //text-func : NodeName(e)
 		//for : width > 5
 		//	define
 		//		min-zoom : 12
@@ -1605,22 +1614,15 @@ rules
 
 	target : military
 		define
-			fill-color : #FF9999
-			fill-opacity: 0.0
+			fill-color : #ee0000
 			fill-hatch : swne
-			fill-hatch-color : #FF9999
-			fill-hatch-opacity : 0.8
-			line-style : solid
-			line-width : 0.5
-			line-color : #FF9999
-			line-opacity : 0.6
-			// Soft fill for MTB IL
 			fill-hatch-opacity : 0
-			fill-opacity : 100%
+			fill-opacity : 0.5
+			line-opacity : 0
 			painting-cycle : 410
 			min-zoom : 10
-			// --
 		draw : fill
+		
 		// Avoid military names in MTB IL
 		if : military
 			stop
@@ -1674,10 +1676,10 @@ rules
 			font-weight : normal
 			font-size : 15:10
 			font-stretch : 1
-			text-offset-vertical : 60%
+			text-offset-vertical : 10
 			text-align-vertical : near
 			min-zoom : 15
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 	
 	target : archaeological
@@ -1699,7 +1701,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -10
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	
@@ -1722,7 +1724,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -10
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target : area water
@@ -1771,16 +1773,16 @@ rules
 			text-orientation: fixed
 			min-zoom : 15
 			font-size : 10
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 
 		if : area commercial
 			define
 				text-color : black
-				min-zoom : 14
+				min-zoom : 15
 		if : area industrial
 			define
 				text-color : black
-				min-zoom : 13
+				min-zoom : 14
 		if : area water
 			define
 				text-color : #2D79B7
@@ -1829,7 +1831,7 @@ rules
 			line-width : 1
 			min-zoom : 12
 			fill-color : #DEFED2
-			painting-cycle : 404
+			painting-cycle : 402
 		
 		for : natural=scrub OR landuse=meadow OR natural=heath OR natural=fell OR natural=moor
 			define
@@ -1953,7 +1955,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
 			text-letter-spacing : 1.5
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		for : length > 10
 			define
 				min-zoom : 10
