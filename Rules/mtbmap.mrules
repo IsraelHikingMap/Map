@@ -121,35 +121,41 @@
 
 // ___________________Painting Cycle________________________
 
-//
-//	map legend : 1000
-//	highlights : 950
-//	web maps : 900
-//	stream text : 800
-//	text labels : 800
-//	icons, shapes AND shields : 700
-//	line AND contour symbols : 600
-//	area water (fill) : 503
-//	river : 502
-//	stream : 500
-//	bitmap (foreground) : 500
-//	turningcircle : 490
-//	area wetland : 450
-//	cutline : 440
-//	Pal Areas A & B 410
-//	Military 410
-//	contour : 403
-//	building point : 404
-//	building : 404
-// 	grass 402
-//	area water (line) : 401
-// 	area residential : 401
-//	area quarry : 401
-//	fill symbols : 400
-//	bitmap (background) : 300
-//	coastline islands : 200
-//	coastline : 150
-//	map background : 100
+//coastline 150
+//farmland 401
+//scrub 401
+//wood 401
+//quarry 402
+//residential 402
+//grass 403
+//industrial 403
+//commercial 403
+//playground 403
+//contour 404
+//cemetery icon 405
+//building 406
+//military 410
+//Pal 410
+//cutline 440
+//wetland 450
+//stream 500
+//river 502
+//water 503
+//cycle network local 597
+//cycle network regional 598
+//cycle network national 599
+//ways 600
+//path 601
+//fence 601
+//bridge 602
+//medical 799
+//bikeshop  799
+//stream name 800
+//archaeological 801
+//attraction 801
+//drinking_water 802
+//nature reserve 810
+//bikepark 810
 // -----
 
 
@@ -248,8 +254,8 @@ features
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area grass : @isOneOf(landuse,grass,meadow,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
-		area sand : natural=beach OR natural=sand
+		area grass : @isOneOf(landuse,grass,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(leisure,golf_course,pitch,park,garden)
+		area scrub : landuse=grass OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) 
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
 		pal A : relation[boundary=administrative AND name="Area A"]
@@ -273,6 +279,9 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
+//	text-direction : rtl
+//	text : @any([[name:he]], name)
+
 
 	 
 //______________________________________________________________________________________________________________
@@ -292,31 +301,25 @@ rules
 			else
 				define
 					icon-image : Icons/mtbmap/gate_open.png
-		elsefor : barrier=kissing_gate OR barrier=stile
+		elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
 			define
 				icon-image : Icons/mtbmap/gate_open.png
-		elsefor : barrier=lift_gate
-			define
-				icon-image : Icons/mtbmap/gate_open.png
-		elsefor : barrier=block OR barrier=debris
-			stop
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
 				icon-width: 22
-
+		
 		draw : icon
-		//--
 		
 
 	target : place
 		define
 		
-			text-max-width : 4
+			text-max-width : 3
 			text-align-horizontal : center
-		for : @isMatch(name, ".*'$") OR @isMatch(name, ".*-*$") OR @isMatch(name:he, ".*'$") OR @isMatch(name:he, ".*-*$")
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
-				text-max-width : 30
+				text-max-width : 15
 						
 		for : place=city
 			define
@@ -344,7 +347,8 @@ rules
 				min-zoom : 13
 				font-size : 13:10;16:16
 
-		elsefor : (place=suburb OR place=quarter OR place=neighbourhood or place=borough)
+		elsefor : @isOneOf(place,suburb,quarter,neighbourhood,borough)
+		
 			define
 				font-size : 15:14;16:15
 				min-zoom : 15
@@ -425,20 +429,7 @@ rules
 				min-zoom : 14
 		for : NOT (natural=tree)
 			draw : text
-
-		define
-			font-style : normal
-			font-size : 15:10;16:12
-			min-zoom : 15
-			text-func : roundEle(e)
-			text-align-vertical : near
-			text-offset-vertical : 10
-			text-align-horizontal : center
-			text-line-spacing : 0.7
-			text-color : black
-			text-max-width : 15
-			
-		draw : text
+		
 
 	target: worship *
 		if : * church
@@ -551,14 +542,6 @@ rules
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
-		
-	target: convenience
-		define
-			icon-image : Icons/mtbmap/shopping.png
-			icon-width : 15:17
-			align-vertical : center
-			min-zoom : 15
-		draw : icon
 
 
 	target: bikeshop
@@ -702,6 +685,7 @@ rules
 			define
 				icon-image : Icons/mtbmap/tap.png
 				icon-width : 17
+				painting-cycle : 802
 		for : man_made=cistern	
 			define
 				icon-image : Icons/mtbmap/cistern.png
@@ -975,74 +959,73 @@ rules
 // shields
 		define
 			min-zoom : 22
+			max-zoom : 21
+			line-style : solid
 		for : length < 1
 			stop
 		for : junction = roundabout
 			stop
+		for : name name:he name:en
+			define
+				max-zoom : 15
 		if : * motorway
 			for : length > 16
 				define
-					min-zoom : 7
+					min-zoom : 8
 			elsefor : length > 6
 				define
-					min-zoom : 8
+					min-zoom : 9
 			elsefor : length > 4
 				define
-					min-zoom : 9
-			elsefor : length > 3
-				define
 					min-zoom : 10
-			else
+			elsefor : length > 2
 				define
 					min-zoom : 11
+			else
+				define
+					min-zoom : 12
 		elseif : * trunk
 			for : length > 32
 				define
 					min-zoom : 8
-			elsefor : length > 16
+			elsefor : length > 8
 				define
 					min-zoom : 9
-			elsefor : length > 8
-				define
-					min-zoom : 10
 			elsefor : length > 6
 				define
-					min-zoom : 11
+					min-zoom : 10
 			elsefor : length > 4
 				define
-					min-zoom : 12
+					min-zoom : 11
 			else
 				define
-					min-zoom : 13
+					min-zoom : 12
 		elseif : * primary
-			for : length > 16
-				define
-					min-zoom : 10
-			elsefor : length > 8
-				define
-					min-zoom : 11
-			elsefor : length > 6
-				define
-					min-zoom : 12
-			elsefor : length > 4
-				define
-					min-zoom : 13
-			elsefor : length > 2
-				define
-					min-zoom : 14
-			else
-				define
-					min-zoom : 15
-		elseif : * secondary
 			for : length > 8
 				define
 					min-zoom : 10
-			elsefor : length > 4
+			elsefor : length > 6
 				define
 					min-zoom : 11
-			elsefor : length > 2
+			elsefor : length > 4
 				define
 					min-zoom : 12
+			elsefor : length > 2
+				define
+					min-zoom : 13
+			else
+				define
+					min-zoom : 14
+		elseif : * secondary
+			for : length > 8
+				define
+					min-zoom : 11
+			elsefor : length > 4
+				define
+					min-zoom : 12
+			elsefor : length > 2
+				define
+					min-zoom : 13
 			else
 				define
 					min-zoom : 15
@@ -1060,7 +1043,8 @@ rules
 					// Hide westbound labels
 					stop
 		define
-			font-weight : normal
+			font-family : Tahoma
+			font-weight : bold
 			text-align-horizontal : center
 			text-align-vertical : center
 			text : ref
@@ -1474,7 +1458,7 @@ rules
 			line-color : #841
 			line-opacity : 0.75
 			curved : false
-			painting-cycle : 403
+			painting-cycle : 404
 		if : *major
 			define
 				map.rendering.contour.label : false
@@ -1525,45 +1509,18 @@ rules
 			line-width : 12:2;13:4
 			line-style : dashdot
 			line-opacity : 0.5
-			fill-opacity : 0.2
+			fill-opacity : 0.25
 			fill-hatch : nwse
 			fill-hatch-opacity : 0
-			painting-cycle : 495
 			icon-image : Icons/mtbmap/rtg.png
 			icon-width : 12:20;14:25
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 810
 			
-			
 		draw : icon
-	
 		draw : fill
 	
-		// nature reserve label
-		for : inner_boundary OR inner_leisure
-			stop
-		//define
-		//	font-size : 12
-		//	text-color : green
-		//	font-weight : normal
-		//	painting-cycle : 990
-		//      text-func : NodeName(e)
-		//for : width > 5
-		//	define
-		//		min-zoom : 12
-		//elsefor : width > 2
-		//	define
-		//		min-zoom : 13
-		//elsefor : width > 1
-		//	define
-		//		min-zoom : 14
-		//else
-		//	define
-		//		min-zoom : 15
-		//draw : text
-		
-			
 	target : building
 		define
 			min-zoom : 15
@@ -1571,7 +1528,7 @@ rules
 			line-color : #999
 			line-style : solid
 			line-width : 1
-			painting-cycle : 404
+			painting-cycle : 406
 		draw : fill
 	target : building point
 		define
@@ -1580,7 +1537,7 @@ rules
 			line-style : none
 			shape : square
 			shape-size : 13:1;16:5
-			painting-cycle : 404
+			painting-cycle : 406
 		draw : shape
 
 	target : sports
@@ -1654,11 +1611,11 @@ rules
 	target : quarry
 		
 		define
-			fill-color : #ccc
+			fill-color : #ddd
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
-			painting-cycle : 401
+			painting-cycle : 402
 			fill-opacity : 1
 			min-zoom : 10
 		draw : fill
@@ -1669,7 +1626,7 @@ rules
 			min-zoom : 13
 			shape-orientation : fixed
 			shape-mode : center
-			painting-cycle : 801
+			painting-cycle : 40
 		draw : icon
 		
 		define
@@ -1738,8 +1695,14 @@ rules
 			line-color : blue
 			line-width : 1:0.1;13:0.5
 			line-opacity : 0.5
-		for : NOT intermittent=yes
-			draw : fill
+		for : intermittent
+			define
+				fill-color : white
+				fill-hatch : swne
+				fill-hatch-color : #B8DBF7
+				fill-hatch-opacity : 1
+				
+		draw : fill
 		
 	target : Pal *
 		define
@@ -1772,7 +1735,7 @@ rules
 			text-avoid-overlaps : true
 			text-orientation: fixed
 			min-zoom : 15
-			font-size : 10
+			font-size : 14:10; 15:11; 16:12
 			text-func : NodeName(e)
 
 		if : area commercial
@@ -1822,6 +1785,7 @@ rules
 			line-width : 1
 			min-zoom : 8
 			fill-color : #CFE5C5
+			painting-cycle : 401
 		draw : fill
 
 
@@ -1831,11 +1795,8 @@ rules
 			line-width : 1
 			min-zoom : 12
 			fill-color : #DEFED2
-			painting-cycle : 402
+			painting-cycle : 403
 		
-		for : natural=scrub OR landuse=meadow OR natural=heath OR natural=fell OR natural=moor
-			define
-				fill-texture : Textures/scrub.png
 		
 		for : landuse=orchard OR landuse=vineyard
 			define
@@ -1870,17 +1831,31 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
-				painting-cycle : 405
-			draw : icon
-			
-			define
 				line-style : solid
 				line-width : 0.5
 				line-color : #0b0
-				min-zoom : 14
 				fill-color : #DEFED2
-				painting-cycle : 404
+				painting-cycle : 403
+			draw : icon
+			define
+				min-zoom : 14
 			draw : fill
+			
+			
+				
+				
+			
+			
+	target : area scrub
+		define
+			line-style : none
+			line-width : 1
+			min-zoom : 12
+			fill-texture : Textures/scrub.png
+			painting-cycle : 401
+		draw : fill
+
+		
 
 	target : area sand
 		define
@@ -1963,7 +1938,7 @@ rules
 		elsefor : length > 5
 			define
 				min-zoom : 11
-				font-size : 11:10; 12:15; 13:20; 14:25; 15:30; 16:40
+				font-size : 11:10; 12:13; 13:18; 14:22; 15:30; 16:40
 		elsefor : length > 2
 			define
 				min-zoom : 12
