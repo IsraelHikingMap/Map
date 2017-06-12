@@ -134,7 +134,7 @@ features
 		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		track : highway=track
-		path : highway=path OR highway=cycleway OR highway=footway OR highway=bridleway
+		path : @isOneOf(highway, path, cycleway, footway, bridleway, steps)
 		//  background for cycle networks in MTB IL
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
@@ -1101,7 +1101,7 @@ rules
 		define
 			min-zoom : 12
 			line-color : #973
-			line-style : dash
+			line-style : none
 			line-opacity : 1
 			line-width : 12:0.25;13:1;15:2.5
 			curved : true
@@ -1186,6 +1186,18 @@ rules
 			for : oneway=-1
 				define
 					angle : 180
+
+		
+		for : highway = steps
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1;16:1.5
+				shape-aspect : 3
+				line-style : none
+				fill-color : red
+				min-zoom : 13
 		else
 			stop
 		draw : shape
