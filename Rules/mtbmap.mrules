@@ -1350,9 +1350,7 @@ rules
 			line-width : 11:2 ; 12:2.5; 13:3
 		draw : line
 		
-		
-		
-	
+			
 	target : wall
 		define
 			min-zoom : 15
