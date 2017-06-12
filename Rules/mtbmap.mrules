@@ -354,7 +354,7 @@ rules
 				font-weight : normal
 				font-size : 15:10;16:12
 				font-stretch : 1
-				text-offset-vertical : -10
+				text-offset-vertical : -8
 				min-zoom : 15
 				text-align-vertical : far
 				//text-func : NodeName(e)
@@ -621,7 +621,7 @@ rules
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
 			//text-func : NodeName(e)
@@ -1604,7 +1604,7 @@ rules
 			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			text-align-vertical : far
 			//text-func : NodeName(e)
 		draw : text
@@ -1627,7 +1627,7 @@ rules
 			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			text-align-vertical : far
 			//text-func : NodeName(e)
 		draw : text
