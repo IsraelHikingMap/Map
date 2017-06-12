@@ -157,7 +157,7 @@ features
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
 		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
-		area grassland : landuse=grass OR natural=grassland
+		area grassland : @isOneOf(landuse, grass, meadow) OR natural=grassland
 		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
 		area orchard : landuse=orchard OR landuse=vineyard
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
@@ -1686,15 +1686,16 @@ rules
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			painting-cycle : 400
-			//text-func : NodeName(e)
+			text : ""
+			
 				
 		if : * industrial
 			define
 				fill-color : #eee
 				min-zoom : 12
 				painting-cycle : 402
-
-		
+				//text-func : NodeName(e)
+	
 		if : * water
 			define
 				curved : true
@@ -1705,6 +1706,7 @@ rules
 				line-color : blue
 				line-width : 7:0.1;13:0.5
 				line-opacity : 0.5
+				//text-func : NodeName(e)
 			for : intermittent
 				define
 					fill-color : white
@@ -1720,8 +1722,7 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 				min-zoom : 9
-				text : ""
-
+				
 		if : * grassland
 			define
 				line-style : none
@@ -1749,13 +1750,13 @@ rules
 		if : * lawn
 			define
 				line-style : none
-				line-width : 1
 				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 403
 		
 		if : * orchard
 			define
+				line-style : none
 				fill-texture : Textures/orchard.png
 				painting-cycle : 402
 				min-zoom : 12
@@ -1763,7 +1764,6 @@ rules
 		if : * scrub
 			define
 				line-style : none
-				line-width : 1
 				min-zoom : 10
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
@@ -1772,9 +1772,10 @@ rules
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 10
-				fill-color : #ffd
+				min-zoom : 8
+				fill-color : #fff5df
 				painting-cycle : 401
+				//text-func : NodeName(e)
 		
 		if : * farmland
 			define
@@ -1792,6 +1793,7 @@ rules
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
+				//text-func : NodeName(e)
 							
 		if : * residential
 			define
@@ -1801,6 +1803,7 @@ rules
 				line-color : #999
 				min-zoom : 9
 				painting-cycle : 402
+				text : ""
 				
 		draw : text
 		draw : fill
@@ -1837,28 +1840,7 @@ rules
 			define
 				min-zoom : 14
 			draw : fill
-			
-			
-			
-	target : area scrub
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			fill-texture : Textures/scrub.png
-			painting-cycle : 401
-		draw : fill
-
-		
-
-	target : area sand
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 10
-			fill-color : #FcF8E0
-		draw : fill
-
+	
 	target : breakwater
 		define
 			line-style : solid
