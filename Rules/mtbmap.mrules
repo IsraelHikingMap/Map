@@ -92,7 +92,7 @@ features
 	points
 		place : place OR landuse=farmyard
 		building point: building AND NOT building=entrance
-		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower) OR @isOneOf(tourism, attraction, viewpoint)
+		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
@@ -122,8 +122,8 @@ features
 		
 		// contours
 		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
-		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
-		contour minor : contour[@isMulti(elevation, 10) AND NOT (@isMulti(elevation, 100) OR @isMulti(elevation, 20))]
+		contour medium : contour[@isMulti(elevation, 50) AND NOT @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 50)]
 		
 		// roads
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
@@ -215,6 +215,9 @@ rules
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
 				icon-width: 22
+		else
+			define
+				icon-image : Icons/mtbmap/gate_open.png
 		
 		draw : icon
 		
@@ -301,7 +304,7 @@ rules
 				min-zoom : 14
 				icon-image : Icons/mtbmap/cave.png
 				icon-width : 13
-		elsefor : man_made=water_tower	
+		elsefor : man_made=water_tower OR man_made=storage_tank
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/water_tower.png
@@ -329,6 +332,8 @@ rules
 		draw : icon
 	
 		define
+			text-max-width : 3
+			text-align-horizontal : center
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
@@ -336,11 +341,16 @@ rules
 			min-zoom : 15
 			text-align-vertical : far
 			//text-func : NodeName(e)
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
+			
 		for : natural=peak
 			define
 				min-zoom : 14
 		for : NOT (natural=tree)
 			draw : text
+		
 		define
 			text : ele
 			text-offset-vertical : 22
@@ -885,66 +895,66 @@ rules
 			define
 				max-zoom : 15
 		if : * motorway
-			for : length > 16
-				define
-					min-zoom : 8
-			elsefor : length > 6
+			for : length > 25
 				define
 					min-zoom : 9
-			elsefor : length > 4
+			elsefor : length > 8
 				define
 					min-zoom : 10
-			elsefor : length > 2
+			elsefor : length > 4
 				define
 					min-zoom : 11
-			else
+			elsefor : length > 2
 				define
 					min-zoom : 12
+			else
+				define
+					min-zoom : 13
 		elseif : * trunk
 			for : length > 32
 				define
-					min-zoom : 8
+					min-zoom : 9
 			elsefor : length > 8
 				define
-					min-zoom : 9
+					min-zoom : 10
 			elsefor : length > 6
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 4
 				define
-					min-zoom : 11
+					min-zoom : 12
 			else
 				define
-					min-zoom : 12
+					min-zoom : 13
 		elseif : * primary
 			for : length > 8
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 6
 				define
-					min-zoom : 11
+					min-zoom : 12
 			elsefor : length > 4
 				define
-					min-zoom : 12
-			elsefor : length > 2
-				define
 					min-zoom : 13
-			else
+			elsefor : length > 2
 				define
 					min-zoom : 14
-		elseif : * secondary
-			for : length > 8
-				define
-					min-zoom : 11
-			elsefor : length > 4
-				define
-					min-zoom : 12
-			elsefor : length > 2
-				define
-					min-zoom : 13
 			else
 				define
 					min-zoom : 15
+		elseif : * secondary
+			for : length > 8
+				define
+					min-zoom : 12
+			elsefor : length > 4
+				define
+					min-zoom : 13
+			elsefor : length > 2
+				define
+					min-zoom : 14
+			else
+				define
+					min-zoom : 16
 		for : oneway=yes
 			// Hide duplicate labels for dual-carriageways
 			// https://groups.google.com/forum/#!topic/maperitive/fT00HvHIEjg
@@ -1313,9 +1323,9 @@ rules
 
 	target : fence
 		define
-			min-zoom : 13
+			min-zoom : 14
 			line-color : #444
-			line-width : 13:1
+			line-width : 14:1
 			shape-spacing : 15:2
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
@@ -1387,7 +1397,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 10
-				line-width : 10:0.5;15:1
+				line-width : 10:0.5;15:1.25
 				font-size : 9
 				font-style : italic
 				font-weight : normal
@@ -1404,11 +1414,21 @@ rules
 				
 		elseif : *medium
 			define
+				map.rendering.contour.label : false
 				min-zoom : 12
 				line-opacity : 0.5
 				line-width : 10:0.33;15:1
 			draw : contour
-		else
+			define
+				map.rendering.contour.label : true
+				min-zoom : 13
+				text-color : #320
+				text-opacity : 0.8
+				text-halo-width : 50%
+				text-halo-opacity : 0.75
+				text-halo-color : #fff9e6	
+			draw : contour
+		elseif : *minor
 			define
 				min-zoom : 14
 				line-opacity : 0.4
@@ -1454,9 +1474,13 @@ rules
 			define
 				min-zoom : 12
 				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
-		else
+		elsefor : length > 1
 			define
 				min-zoom : 13
+				font-size : 13:10; 14:15; 15:20; 16:25
+		else
+			define
+				min-zoom : 14
 				font-size : 13:7; 14:10; 15:15; 16:17
 		draw : text
 	
@@ -1571,11 +1595,11 @@ rules
 	target : quarry
 		
 		define
-			fill-color : #ddd
+			fill-color : white
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
-			painting-cycle : 402
+			painting-cycle : 403
 			fill-opacity : 1
 			min-zoom : 10
 		draw : fill
@@ -1586,7 +1610,7 @@ rules
 			min-zoom : 13
 			shape-orientation : fixed
 			shape-mode : center
-			painting-cycle : 40
+			painting-cycle : 404
 		draw : icon
 		
 		define
@@ -1611,14 +1635,20 @@ rules
 		draw : icon
 		
 		define
+			text-max-width : 3
+			text-align-horizontal : center
 			font-weight : normal
-			font-stretch : 1
-			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
+			font-weight : normal
 			text-offset-vertical : -8
+			min-zoom : 15
 			text-align-vertical : far
 			//text-func : NodeName(e)
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
+			
 		draw : text
 		
 	
@@ -1657,10 +1687,11 @@ rules
 			line-opacity : 0.5
 		for : intermittent
 			define
-				fill-color : white
+				fill-color : #B8DBF7
 				fill-hatch : swne
-				fill-hatch-color : #B8DBF7
+				fill-hatch-color : white
 				fill-hatch-opacity : 1
+			
 				
 		draw : fill
 
@@ -1699,7 +1730,25 @@ rules
 			line-width : 0.5
 			painting-cycle : 400
 			text : ""
-			
+		
+		if : * commercial
+			define
+				line-style : none
+				line-width : 1
+				fill-color : #ddd
+				painting-cycle : 403
+				min-zoom : 13
+				//text-func : NodeName(e)
+							
+		if : * residential
+			define
+				line-style : solid
+				line-width : 30%
+				fill-color : #eee
+				line-color : #999
+				min-zoom : 9
+				painting-cycle : 402
+	
 				
 		if : * industrial
 			define
@@ -1797,25 +1846,6 @@ rules
 				fill-color :#f4e5d3
 				painting-cycle : 401
 
-	
-		if : * commercial
-			define
-				line-style : none
-				line-width : 1
-				fill-color : #ddd
-				painting-cycle : 403
-				min-zoom : 13
-				//text-func : NodeName(e)
-							
-		if : * residential
-			define
-				line-style : solid
-				line-width : 30%
-				fill-color : #eee
-				line-color : #999
-				min-zoom : 9
-				painting-cycle : 402
-				text : ""
 				
 		draw : text
 		draw : fill
