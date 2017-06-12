@@ -156,16 +156,13 @@ features
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-<<<<<<< HEAD
-		area lawn : @isOneOf(landuse,recreation_ground,cemetery) @isOneOf(leisure,golf_course,pitch,park,garden,playground)
+		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
 		area grassland : landuse=grass OR natural=grassland
 		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
 		area orchard : landuse=orchard OR landuse=vineyard
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
-=======
 		area grass : @isOneOf(landuse,grass,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(leisure,golf_course,pitch,park,garden)
 		area scrub : landuse=grass OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) 
->>>>>>> refs/remotes/origin/master
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
 		pal A : relation[boundary=administrative AND name="Area A"]
@@ -1456,11 +1453,7 @@ rules
 			line-width : 12:2;13:4
 			line-style : dashdot
 			line-opacity : 0.5
-<<<<<<< HEAD
 			fill-opacity : 0.35
-=======
-			fill-opacity : 0.25
->>>>>>> refs/remotes/origin/master
 			fill-hatch : nwse
 			fill-hatch-opacity : 0
 			icon-image : Icons/mtbmap/rtg.png
@@ -1634,10 +1627,7 @@ rules
 			text-align-vertical : far
 			text-func : NodeName(e)
 		draw : text
-		
-<<<<<<< HEAD
-	
-=======
+
 	target : area water
 		
 		define
@@ -1657,8 +1647,7 @@ rules
 				fill-hatch-opacity : 1
 				
 		draw : fill
->>>>>>> refs/remotes/origin/master
-		
+
 	target : Pal *
 		define
 			line-style : solid
@@ -1691,11 +1680,8 @@ rules
 			text-orientation: fixed
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
-<<<<<<< HEAD
 			line-width : 0.5
 			painting-cycle : 400
-=======
->>>>>>> refs/remotes/origin/master
 			text-func : NodeName(e)
 
 		if : * commercial
@@ -1766,7 +1752,7 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 		
-<<<<<<< HEAD
+
 		if : * lawn
 			define
 				line-style : none
@@ -1805,7 +1791,7 @@ rules
 				painting-cycle : 403
 				min-zoom : 9
 				min-zoom : 13
-=======
+
 	target : area wood
 		define
 			line-style : none
@@ -1823,9 +1809,8 @@ rules
 			min-zoom : 12
 			fill-color : #DEFED2
 			painting-cycle : 403
-		
->>>>>>> refs/remotes/origin/master
-		
+	
+	
 		if : * commercial
 			define
 				line-style : none
@@ -1872,11 +1857,11 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
-<<<<<<< HEAD
+
 				painting-cycle : 405
 			draw : icon
 			
-=======
+			define
 				line-style : solid
 				line-width : 0.5
 				line-color : #0b0
@@ -1910,12 +1895,6 @@ rules
 			min-zoom : 10
 			fill-color : #FcF8E0
 		draw : fill
->>>>>>> refs/remotes/origin/master
-
-
-
-	
-
 
 	target : breakwater
 		define
@@ -1925,12 +1904,7 @@ rules
 			fill-color : #f1eee8
 		draw : fill
 
-	
 
-		
-<<<<<<< HEAD
-
-=======
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
@@ -1953,8 +1927,7 @@ rules
 				min-zoom : 13
 				font-size : 13:7; 14:10; 15:15; 16:17
 		draw : text
-	
->>>>>>> refs/remotes/origin/master
+
 // --
 		
 		
