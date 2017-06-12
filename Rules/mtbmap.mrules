@@ -150,7 +150,6 @@ features
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
-		area glacier : natural=glacier
 		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
@@ -161,8 +160,6 @@ features
 		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
 		area orchard : landuse=orchard OR landuse=vineyard
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
-		area grass : @isOneOf(landuse,grass,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(leisure,golf_course,pitch,park,garden)
-		area scrub : landuse=grass OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) 
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
 		pal A : relation[boundary=administrative AND name="Area A"]
