@@ -1867,16 +1867,6 @@ rules
 				painting-cycle : 405
 			draw : icon
 			
-			define
-				line-style : solid
-				line-width : 0.5
-				line-color : #0b0
-				fill-color : #DEFED2
-				painting-cycle : 403
-			draw : icon
-			define
-				min-zoom : 14
-			draw : fill
 	
 	target : breakwater
 		define
