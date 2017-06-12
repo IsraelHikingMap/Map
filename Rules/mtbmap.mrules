@@ -1687,18 +1687,13 @@ rules
 			line-width : 0.5
 			painting-cycle : 400
 			//text-func : NodeName(e)
-
-		if : * commercial
-			define
-				fill-color : #ccc
-				painting-cycle : 402
-				min-zoom : 12
 				
 		if : * industrial
 			define
 				fill-color : #eee
 				min-zoom : 12
 				painting-cycle : 402
+
 		
 		if : * water
 			define
@@ -1725,6 +1720,7 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 				min-zoom : 9
+				text : ""
 
 		if : * grassland
 			define
@@ -1748,13 +1744,6 @@ rules
 				fill-hatch-opacity : 0.1
 				painting-cycle : 450
 				text-color : #3290CB
-		if : * wood
-			define
-				line-style : none
-				line-width : 1
-				min-zoom : 8
-				fill-color : #CFE5C5
-				painting-cycle : 401
 		
 
 		if : * lawn
@@ -1777,7 +1766,7 @@ rules
 				line-width : 1
 				min-zoom : 10
 				fill-texture : Textures/scrub.png
-				painting-cycle : 401
+				painting-cycle : 402
 				
 		if : * sand
 			define
@@ -1786,34 +1775,15 @@ rules
 				min-zoom : 10
 				fill-color : #ffd
 				painting-cycle : 401
-		if : * industrial
+		
+		if : * farmland
 			define
-				line-style : solid
-				line-width : 0.5
-				line-color : #999
-				fill-color : #ddd
-				painting-cycle : 403
-				min-zoom : 9
-				min-zoom : 13
+				line-style : none
+				line-width : 1
+				min-zoom : 12
+				fill-color :#f4e5d3
+				painting-cycle : 401
 
-	target : area wood
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 8
-			fill-color : #CFE5C5
-			painting-cycle : 401
-		draw : fill
-
-
-	target : area grass
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			fill-color : #DEFED2
-			painting-cycle : 403
-	
 	
 		if : * commercial
 			define
@@ -1822,15 +1792,7 @@ rules
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
-				
-		if : * farmland
-			define
-				line-style : none
-				line-width : 1
-				min-zoom : 12
-				fill-color :#f4e5d3
-				painting-cycle : 401
-		
+							
 		if : * residential
 			define
 				line-style : solid
@@ -1877,9 +1839,6 @@ rules
 			draw : fill
 			
 			
-				
-				
-			
 			
 	target : area scrub
 		define
@@ -1909,28 +1868,6 @@ rules
 		draw : fill
 
 
-		define
-			map.rendering.lflp.max-allowed-corner-angle : 45
-			text-color : #444
-			text-letter-spacing : 1.5
-			//text-func : WayName(e)
-		for : length > 10
-			define
-				min-zoom : 10
-				font-size : 10:15; 12:20; 13:25; 14:30; 15:35; 16:50
-		elsefor : length > 5
-			define
-				min-zoom : 11
-				font-size : 11:10; 12:13; 13:18; 14:22; 15:30; 16:40
-		elsefor : length > 2
-			define
-				min-zoom : 12
-				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
-		else
-			define
-				min-zoom : 13
-				font-size : 13:7; 14:10; 15:15; 16:17
-		draw : text
 
 // --
 		
