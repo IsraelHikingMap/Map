@@ -186,8 +186,8 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-//	text-direction : rtl
-//	text : @any([[name:he]], name)
+	text-direction : rtl
+	text : @any([[name:he]], name)
 
 
 	 
@@ -269,7 +269,7 @@ rules
 			stop
 		define
 			font-weight : bold
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target : POI
@@ -332,15 +332,19 @@ rules
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : natural=peak
 			define
 				min-zoom : 14
 		for : NOT (natural=tree)
 			draw : text
+		define
+			text : ele
+			text-offset-vertical : 22
+		draw : text
 		
 
 	target: worship *
@@ -353,7 +357,7 @@ rules
 				text-offset-vertical : -10
 				min-zoom : 15
 				text-align-vertical : far
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
 			draw : text
 
 			define
@@ -406,7 +410,7 @@ rules
 			text-offset-vertical : 10
 			min-zoom : 15
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 
@@ -425,7 +429,7 @@ rules
 			text-offset-vertical : 10
 			min-zoom : 16
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: convenience
@@ -452,7 +456,7 @@ rules
 			text-offset-vertical : 10
 			min-zoom : 16
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 
@@ -473,7 +477,7 @@ rules
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: bikepark
@@ -493,7 +497,7 @@ rules
 			min-zoom : 10
 			text-align-vertical : near
 			painting-cycle : 810
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: medical
@@ -512,7 +516,7 @@ rules
 			min-zoom : 15
 			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text	
 	
 		
@@ -570,7 +574,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : 10
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : iata
 			define
 				min-zoom : 12
@@ -620,7 +624,7 @@ rules
 			text-offset-vertical : -10
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 			draw : text
 				
@@ -646,7 +650,7 @@ rules
 			text-offset-vertical : 10
 			min-zoom : 14
 			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 		
@@ -1000,7 +1004,7 @@ rules
 				font-stretch : 0.9
 				font-size : 9
 		define
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -1078,7 +1082,7 @@ rules
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 		
@@ -1091,7 +1095,7 @@ rules
 			min-zoom : 14
 			font-weight : bold
 			text-letter-spacing : 0.15
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 		define
@@ -1292,7 +1296,7 @@ rules
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			painting-cycle : 800
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : fence
@@ -1425,7 +1429,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
 			text-letter-spacing : 1.5
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		for : length > 10
 			define
 				min-zoom : 10
@@ -1580,7 +1584,7 @@ rules
 			text-offset-vertical : 10
 			text-align-vertical : near
 			min-zoom : 15
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 	
 	target : archaeological
@@ -1602,7 +1606,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -10
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	
@@ -1625,7 +1629,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -10
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target : area water
@@ -1682,7 +1686,7 @@ rules
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			painting-cycle : 400
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 
 		if : * commercial
 			define
@@ -1909,7 +1913,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
 			text-letter-spacing : 1.5
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		for : length > 10
 			define
 				min-zoom : 10
