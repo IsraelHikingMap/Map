@@ -22,8 +22,6 @@ from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 from OsmChangeSource import *
 from PolygonTileGenCommand import pretty_timer
 
-# TODO Separate OSM update and its server definitions from the Israel Hiking code
-
 start_time = datetime.now()
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
@@ -247,6 +245,11 @@ elif remainingPhases:
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 if remainingPhases:
+    App.log("=== Executing Phases: {} ===".format(remainingPhases))
+    if language == "Hebrew":
+        App.log("=== Update the site's search and routing DBs ===")
+        # Update the site's search and routing DBs
+        App.start_program("UpdateDB.bat",[osm_source.updated])
     # Tile generation
     phase = 'OverlayTiles'
     if phase in remainingPhases:
