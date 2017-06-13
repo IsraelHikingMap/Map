@@ -19,105 +19,7 @@
 // --------
 // For Israel adaptations, see https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
-// v 4.0
-// Major revamp for adaptation to Israel. 
-// multiple icons added for natural features in Israel
-// MTB path colored by scale and scale aura removed
 
-// v 3.6
-// Aeroway - Fix rendering when area, made lighter (#888 to #bbb) AND added apron
-// Adding cape/peninsula
-// Added scree again
-// Added strait
-// If Russian/Cyrillic text on place, road AND areacover, try to render english OR norwegian
-// v 3.3
-// Added scree (temp removed)
-// v 3.2
-// Fixing missing trail_visibility=intermediate (was missing)
-// Version 3.0
-// 2015-05-26: Updated by Ola Endre Reitstøen
-// Building point added to z13, AND a bit smaller
-// Swimming moved to z16
-// Added turningcircle
-// Cutline render below wetland (440 vs 450)
-// Moved contours below hillshading
-// Moved water AND stream in front of hillshading
-// Added painting-cycle to water AND stream. Stream rendered below water.
-//--- New Maperitive version
-// Changed icon size of all icons. Same size.
-// Adjustments of trail_visibility
-//---
-// Added airport with icon AND name
-// Changed lines on water, min-zoom AND width depending on size
-// Changed minzoom for hamlet AND suburb
-// Added place=neighbourhood/neighborhood
-// Added railway=subway
-// Road text only for major rendered at z14
-// A bit smaller text one peak/hill
-// Changing rendering of railway
-// area * feature for most landuse AND natural to simplify rendering of text
-// Change size of ghost
-// Changing water-icon
-// Adding Bier Garten
-// Adding object-size script
-//---
-// track color a bit lighter when no mtb:scale tag
-// Added orchard AND moor
-// Render roadname at z14
-// Moving aeroway behind roads AND changed color
-// Places: textsize AND min-zoom
-// Aerialway changes
-// Changes to coastline line width
-//---
-// beach -> sand
-// Adding bikeshop
-// Adding border lines
-// Different transparancy for class:bicycle:mtb values
-// Tweaked some colors
-// Added mtb:scale:uphill rendering
-// Changed wetland style to hatched with blue color
-// Added man_made=cutline
-// Added name on wood, grass, beach, military... similar to wetland
-// Grey color on highway=road
-// Removed road with construction
-// Adding rendering for cycleway=lane
-// Change render priority on different mtb:scales. 0 last -> render on top
-// Fixed missing barrier-icons
-// All tunnels are renderd (tunnel=yes -> tunnel)
-// Changing Restricted AND no cycling areas
-// Added line barrier (fence, wall AND hedge)
-// Changed color for powerline to #666 (same as aerialway)
-// Added aerialway
-// Added natural=grassland to grass
-// Added attraction
-// Added power=substation/plant to industrial
-// Reduced opacity on nocycle in tunnels
-// added opacity for class:bicycle:mtb < 0 for minor path
-
-// area=yes on highway does NOT render
-// building=entrance does NOT render
-// Added general letterspacing
-// Parking area moved after building
-// Color changes (more muted)
-// forest changed to wood
-// Cliff adjusted
-// line-widths adjusted/simplified
-// class:bicycle:mtb > 0 rendered with glow
-// Added building point (node)
-// Removed a few unused rules
-// Added mtb:scale at zoom 11 (was 12)
-// 10m contours set to render at zoom 15 (was 14)
-// Tweaked colors
-// Different style on mtb:scale > 3
-// Different style on minor path using shapes to fake dotted line
-// moved rules, icons AND patterns to mtbmap-folder
-// moved bridge before stream
-// new font: Clear Sans (vertical offset set for new font!)
-// wider roads at zoom 16
-// mtb:scale only rendered for foot way AND track
-// footway rendered black if mtb:scale present
-// class:bicycle:mtb < 0 rendered with 0.4 opacity
-// added glacier
 
 // ___________________Painting Cycle________________________
 
@@ -170,7 +72,7 @@ features
 		cafe : amenity=cafe
 		convenience : shop=convenience OR shop=supermarket
 		food : amenity=restaurant OR amenity=fast_food
-		lodging : tourism=guest_house OR tourism=hotel
+		lodging : @isOneOf(tourism, guest_house, hotel, resort)
 		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
 		worship church : amenity=place_of_worship AND religion=christian
 		worship other : amenity=place_of_worship AND @isOneOf(religion, bahai, druze, budhist)
@@ -185,12 +87,12 @@ features
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
 		
-	//______________________________________________________________________________________________________________
+	//_______________________________________________________
 			
 	points
 		place : place OR landuse=farmyard
 		building point: building AND NOT building=entrance
-		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower) OR @isOneOf(tourism, attraction, viewpoint)
+		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
@@ -199,7 +101,7 @@ features
 		toilet : amenity=toilets
 		watersource : @isOneOf(natural, spring, waterhole) OR @isOneOf(man_made, water_well, cistern) OR amenity=drinking_water OR waterway=waterfall
 		
-	//______________________________________________________________________________________________________________
+	//________________________________________________
 
 	lines
 		
@@ -220,8 +122,8 @@ features
 		
 		// contours
 		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
-		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
-		contour minor : contour[@isMulti(elevation, 10) AND NOT (@isMulti(elevation, 100) OR @isMulti(elevation, 20))]
+		contour medium : contour[@isMulti(elevation, 50) AND NOT @isMulti(elevation, 100)]
+		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 50)]
 		
 		// roads
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
@@ -232,30 +134,32 @@ features
 		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		track : highway=track
-		path : highway=path OR highway=cycleway OR highway=footway OR highway=bridleway
+		path : @isOneOf(highway, path, cycleway, footway, bridleway, steps)
 		//  background for cycle networks in MTB IL
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
 		
-//______________________________________________________________________________________________________________
+//_______________________________________________________________________________
 			
 	areas
 		archaeological : historic=archaeological_site
 		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
-		residential : landuse=residential
+		area residential : landuse=residential
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
-		area glacier : natural=glacier
 		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area grass : @isOneOf(landuse,grass,recreation_ground,cemetery,orchard,vineyard) OR @isOneOf(leisure,golf_course,pitch,park,garden)
-		area scrub : landuse=grass OR @isOneOf(natural,grassland,heath,fell,tundra,scrub,moor) 
+		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
+		area grassland : @isOneOf(landuse, grass, meadow) OR natural=grassland
+		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
+		area orchard : landuse=orchard OR landuse=vineyard
+		area sand : @isOneOf(natural,sand,beach) OR surface=sand
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
 		pal A : relation[boundary=administrative AND name="Area A"]
@@ -279,8 +183,8 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-//	text-direction : rtl
-//	text : @any([[name:he]], name)
+	//text-direction : rtl
+	//text : @any([[name:he]], name)
 
 
 	 
@@ -308,6 +212,9 @@ rules
 			define
 				icon-image : Icons/mtbmap/cattle_grid.png
 				icon-width: 22
+		else
+			define
+				icon-image : Icons/mtbmap/gate_open.png
 		
 		draw : icon
 		
@@ -346,6 +253,11 @@ rules
 			define
 				min-zoom : 13
 				font-size : 13:10;16:16
+		
+		elsefor : place=farm
+			define
+				min-zoom : 15
+				font-size : 15:8;16:13
 
 		elsefor : @isOneOf(place,suburb,quarter,neighbourhood,borough)
 		
@@ -389,7 +301,7 @@ rules
 				min-zoom : 14
 				icon-image : Icons/mtbmap/cave.png
 				icon-width : 13
-		elsefor : man_made=water_tower	
+		elsefor : man_made=water_tower OR man_made=storage_tank
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/water_tower.png
@@ -412,23 +324,34 @@ rules
 			define
 				min-zoom : 12
 				icon-image : Icons/mtbmap/dot.png
-				icon-width : 12:6;15:8
+				icon-width : 12:5;13:6;14:7;15:8
 
 		draw : icon
 	
 		define
+			text-max-width : 3
+			text-align-horizontal : center
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
 			text-func : NodeName(e)
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
+			
 		for : natural=peak
 			define
 				min-zoom : 14
 		for : NOT (natural=tree)
 			draw : text
+		
+		define
+			text : ele
+			text-offset-vertical : 22
+		draw : text
 		
 
 	target: worship *
@@ -438,7 +361,7 @@ rules
 				font-weight : normal
 				font-size : 15:10;16:12
 				font-stretch : 1
-				text-offset-vertical : -10
+				text-offset-vertical : -8
 				min-zoom : 15
 				text-align-vertical : far
 				text-func : NodeName(e)
@@ -705,7 +628,7 @@ rules
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
 			text-func : NodeName(e)
@@ -969,66 +892,66 @@ rules
 			define
 				max-zoom : 15
 		if : * motorway
-			for : length > 16
-				define
-					min-zoom : 8
-			elsefor : length > 6
+			for : length > 25
 				define
 					min-zoom : 9
-			elsefor : length > 4
+			elsefor : length > 8
 				define
 					min-zoom : 10
-			elsefor : length > 2
+			elsefor : length > 4
 				define
 					min-zoom : 11
-			else
+			elsefor : length > 2
 				define
 					min-zoom : 12
+			else
+				define
+					min-zoom : 13
 		elseif : * trunk
 			for : length > 32
 				define
-					min-zoom : 8
+					min-zoom : 9
 			elsefor : length > 8
 				define
-					min-zoom : 9
+					min-zoom : 10
 			elsefor : length > 6
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 4
 				define
-					min-zoom : 11
+					min-zoom : 12
 			else
 				define
-					min-zoom : 12
+					min-zoom : 13
 		elseif : * primary
 			for : length > 8
 				define
-					min-zoom : 10
+					min-zoom : 11
 			elsefor : length > 6
 				define
-					min-zoom : 11
+					min-zoom : 12
 			elsefor : length > 4
 				define
-					min-zoom : 12
-			elsefor : length > 2
-				define
 					min-zoom : 13
-			else
+			elsefor : length > 2
 				define
 					min-zoom : 14
-		elseif : * secondary
-			for : length > 8
-				define
-					min-zoom : 11
-			elsefor : length > 4
-				define
-					min-zoom : 12
-			elsefor : length > 2
-				define
-					min-zoom : 13
 			else
 				define
 					min-zoom : 15
+		elseif : * secondary
+			for : length > 8
+				define
+					min-zoom : 12
+			elsefor : length > 4
+				define
+					min-zoom : 13
+			elsefor : length > 2
+				define
+					min-zoom : 14
+			else
+				define
+					min-zoom : 16
 		for : oneway=yes
 			// Hide duplicate labels for dual-carriageways
 			// https://groups.google.com/forum/#!topic/maperitive/fT00HvHIEjg
@@ -1185,7 +1108,7 @@ rules
 		define
 			min-zoom : 12
 			line-color : #973
-			line-style : dash
+			line-style : none
 			line-opacity : 1
 			line-width : 12:0.25;13:1;15:2.5
 			curved : true
@@ -1270,6 +1193,18 @@ rules
 			for : oneway=-1
 				define
 					angle : 180
+
+		
+		for : highway = steps
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1;16:1.5
+				shape-aspect : 3
+				line-style : none
+				fill-color : red
+				min-zoom : 13
 		else
 			stop
 		draw : shape
@@ -1354,16 +1289,12 @@ rules
 					line-offset : 10:1; 11:1.5; 12:2; 13:2.5; 14:3; 15:4; 16:5
 					border-style : none
 
-		for : waterway=stream
+		for : @isOneOf(waterway, stream, drain, ditch, canal)
 			define
 				min-zoom : 13
 				line-width : 13:1; 14:2
 				border-style : none
-		for : waterway=drain OR waterway=ditch
-			define
-				min-zoom : 13
-				line-width : 13:0.5;14:1
-				border-style : none
+
 		for : tunnel AND NOT tunnel=no
 			define
 				line-opacity : 0.25
@@ -1389,9 +1320,9 @@ rules
 
 	target : fence
 		define
-			min-zoom : 13
+			min-zoom : 14
 			line-color : #444
-			line-width : 13:1
+			line-width : 14:1
 			shape-spacing : 15:2
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
@@ -1419,9 +1350,7 @@ rules
 			line-width : 11:2 ; 12:2.5; 13:3
 		draw : line
 		
-		
-		
-	
+			
 	target : wall
 		define
 			min-zoom : 15
@@ -1463,7 +1392,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 10
-				line-width : 10:0.5;15:1
+				line-width : 10:0.5;15:1.25
 				font-size : 9
 				font-style : italic
 				font-weight : normal
@@ -1480,11 +1409,21 @@ rules
 				
 		elseif : *medium
 			define
+				map.rendering.contour.label : false
 				min-zoom : 12
 				line-opacity : 0.5
 				line-width : 10:0.33;15:1
 			draw : contour
-		else
+			define
+				map.rendering.contour.label : true
+				min-zoom : 13
+				text-color : #320
+				text-opacity : 0.8
+				text-halo-width : 50%
+				text-halo-opacity : 0.75
+				text-halo-color : #fff9e6	
+			draw : contour
+		elseif : *minor
 			define
 				min-zoom : 14
 				line-opacity : 0.4
@@ -1499,7 +1438,47 @@ rules
 			line-opacity : 0.5
 			painting-cycle : 440
 		draw : line
-
+		
+	target : coastline
+		define
+			curved : false
+			line-width : 6:0.25;15:2
+			line-color : #b5d9fb black 20%
+			line-offset : 6:0.125;15:1
+			line-offset-sides : right
+			line-offset-miter-limit : 5
+			painting-cycle : 150
+		draw : line
+		
+	target : land-feature
+		
+		define
+			map.rendering.lflp.max-allowed-corner-angle : 45
+			text-color : #444
+			text-letter-spacing : 1.5
+			text-func : WayName(e)
+		for : length > 10
+			define
+				min-zoom : 10
+				font-size : 10:15; 12:20; 13:25; 14:30; 15:35; 16:50
+		elsefor : length > 5
+			define
+				min-zoom : 11
+				font-size : 11:10; 12:13; 13:18; 14:22; 15:30; 16:40
+		elsefor : length > 2
+			define
+				min-zoom : 12
+				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
+		elsefor : length > 1
+			define
+				min-zoom : 13
+				font-size : 13:10; 14:15; 15:20; 16:25
+		else
+			define
+				min-zoom : 14
+				font-size : 13:7; 14:10; 15:15; 16:17
+		draw : text
+	
 // ___________________areas________________________
 
 	target : nature reserve
@@ -1509,7 +1488,7 @@ rules
 			line-width : 12:2;13:4
 			line-style : dashdot
 			line-opacity : 0.5
-			fill-opacity : 0.25
+			fill-opacity : 0.35
 			fill-hatch : nwse
 			fill-hatch-opacity : 0
 			icon-image : Icons/mtbmap/rtg.png
@@ -1611,11 +1590,11 @@ rules
 	target : quarry
 		
 		define
-			fill-color : #ddd
+			fill-color : white
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
-			painting-cycle : 402
+			painting-cycle : 403
 			fill-opacity : 1
 			min-zoom : 10
 		draw : fill
@@ -1626,7 +1605,7 @@ rules
 			min-zoom : 13
 			shape-orientation : fixed
 			shape-mode : center
-			painting-cycle : 40
+			painting-cycle : 404
 		draw : icon
 		
 		define
@@ -1651,14 +1630,20 @@ rules
 		draw : icon
 		
 		define
+			text-max-width : 3
+			text-align-horizontal : center
 			font-weight : normal
-			font-stretch : 1
-			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			font-weight : normal
+			text-offset-vertical : -8
+			min-zoom : 15
 			text-align-vertical : far
 			text-func : NodeName(e)
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
+			
 		draw : text
 		
 	
@@ -1679,11 +1664,11 @@ rules
 			min-zoom : 15
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -10
+			text-offset-vertical : -8
 			text-align-vertical : far
 			text-func : NodeName(e)
 		draw : text
-		
+
 	target : area water
 		
 		define
@@ -1697,13 +1682,14 @@ rules
 			line-opacity : 0.5
 		for : intermittent
 			define
-				fill-color : white
+				fill-color : #B8DBF7
 				fill-hatch : swne
-				fill-hatch-color : #B8DBF7
+				fill-hatch-color : white
 				fill-hatch-opacity : 1
+			
 				
 		draw : fill
-		
+
 	target : Pal *
 		define
 			line-style : solid
@@ -1736,75 +1722,130 @@ rules
 			text-orientation: fixed
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
-			text-func : NodeName(e)
+			line-width : 0.5
+			painting-cycle : 400
+			text : ""
+		
+		if : * commercial
+			define
+				line-style : none
+				line-width : 1
+				fill-color : #ddd
+				painting-cycle : 403
+				min-zoom : 13
+				text-func : NodeName(e)
+							
+		if : * residential
+			define
+				line-style : solid
+				line-width : 30%
+				fill-color : #eee
+				line-color : #999
+				min-zoom : 9
+				painting-cycle : 402
+	
+				
+		if : * industrial
+			define
+				fill-color : #eee
+				min-zoom : 12
+				painting-cycle : 402
+				text-func : NodeName(e)
+	
+		if : * water
+			define
+				curved : true
+				fill-color : #B8DBF7
+				painting-cycle : 503
+				min-zoom : 7
+				line-style : solid
+				line-color : blue
+				line-width : 7:0.1;13:0.5
+				line-opacity : 0.5
+				text-func : NodeName(e)
+			for : intermittent
+				define
+					fill-color : white
+					fill-hatch : swne
+					fill-hatch-color : #B8DBF7
+					fill-hatch-opacity : 1
+			draw : fill
+		if : * wood
+			define
+				line-style : none
+				line-width : 1
+				min-zoom : 8
+				fill-color : #CFE5C5
+				painting-cycle : 401
+				min-zoom : 9
+				
+		if : * grassland
+			define
+				line-style : none
+				line-width : 1
+				min-zoom : 12
+				fill-color : #DEFED2
+				painting-cycle : 401
+				min-zoom : 9
 
-		if : area commercial
+		if : * wetland
 			define
-				text-color : black
-				min-zoom : 15
-		if : area industrial
-			define
-				text-color : black
-				min-zoom : 14
-		if : area water
-			define
-				text-color : #2D79B7
-
-		if : area wood
-			stop
-		if : area wetland
-			define
+				line-style : dash
+				line-color : #53B4EC
+				line-width : 1
+				min-zoom : 8
+				fill-color : #53B4ff
+				fill-opacity : 1
+				fill-hatch : horizontal
+				fill-hatch-color : #53B4EC
+				fill-hatch-opacity : 0.1
+				painting-cycle : 450
 				text-color : #3290CB
-		if : area grass
-			stop
+		
 
-		if : area sand
+		if : * lawn
 			define
-				text-color : #A9932F
-
-		draw : text
-
-
-	target : area wetland
-		define
-			line-style : dash
-			line-color : #53B4EC
-			line-width : 1
-			min-zoom : 8
-			fill-color : #53B4ff
-			fill-opacity : 1
-			fill-hatch : horizontal
-			fill-hatch-color : #53B4EC
-			fill-hatch-opacity : 0.1
-			painting-cycle : 450
-		draw : fill
+				line-style : none
+				min-zoom : 12
+				fill-color : #DEFED2
+				painting-cycle : 403
 		
-	target : area wood
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 8
-			fill-color : #CFE5C5
-			painting-cycle : 401
-		draw : fill
-
-
-	target : area grass
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			fill-color : #DEFED2
-			painting-cycle : 403
-		
-		
-		for : landuse=orchard OR landuse=vineyard
+		if : * orchard
 			define
+				line-style : none
 				fill-texture : Textures/orchard.png
 				painting-cycle : 402
+				min-zoom : 12
 				
+		if : * scrub
+			define
+				line-style : none
+				min-zoom : 10
+				fill-texture : Textures/scrub.png
+				painting-cycle : 402
+				
+		if : * sand
+			define
+				line-style : none
+				line-width : 1
+				min-zoom : 8
+				fill-color : #fff5df
+				painting-cycle : 401
+				text-func : NodeName(e)
+		
+		if : * farmland
+			define
+				line-style : none
+				line-width : 1
+				min-zoom : 12
+				fill-color :#f4e5d3
+				painting-cycle : 401
+
+				
+		draw : text
 		draw : fill
 
+			
 		for : (landuse=cemetery OR amenity=grave_yard)
 
 			define
@@ -1815,15 +1856,6 @@ rules
 				painting-cycle : 405
 			draw : icon
 			
-			define
-				line-style : solid
-				line-width : 1
-				line-color : #555
-				min-zoom : 8
-				fill-color : #DEFED2
-				painting-cycle : 404
-			draw : fill
-		
 		for : (leisure=playground)
 
 			define
@@ -1831,79 +1863,11 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
-				line-style : solid
-				line-width : 0.5
-				line-color : #0b0
-				fill-color : #DEFED2
-				painting-cycle : 403
+
+				painting-cycle : 405
 			draw : icon
-			define
-				min-zoom : 14
-			draw : fill
 			
-			
-				
-				
-			
-			
-	target : area scrub
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			fill-texture : Textures/scrub.png
-			painting-cycle : 401
-		draw : fill
-
-		
-
-	target : area sand
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 10
-			fill-color : #FcF8E0
-		draw : fill
-
-
-	target : area farmland
-		define
-			line-style : none
-			line-width : 1
-			min-zoom : 12
-			//fill-color : brown white 85%
-			fill-color :#f4e5d3
-			painting-cycle : 401
-		draw : fill		
-
-	target : residential
-		define
-			line-style : solid
-			line-width : 30%
-			fill-color : #eee
-			line-color : #999
-			min-zoom : 9
-			painting-cycle : 402
-		draw : fill
-
-	target : area industrial
-		define
-			line-style : solid
-			line-width : 0.5
-			line-color : #999
-			fill-color : #ddd
-			painting-cycle : 403
-			min-zoom : 9
-		draw : fill
-
-	target : area commercial
-		define
-			line-style : none
-			line-width : 1
-			fill-color : #ddd
-			painting-cycle : 403
-		draw : fill
-
+	
 	target : breakwater
 		define
 			line-style : solid
@@ -1912,43 +1876,8 @@ rules
 			fill-color : #f1eee8
 		draw : fill
 
-	
-	target : coastline
-		define
-			curved : false
-			line-width : 6:0.25;15:2
-			line-color : #b5d9fb black 20%
-			line-offset : 6:0.125;15:1
-			line-offset-sides : right
-			line-offset-miter-limit : 5
-			painting-cycle : 150
-		draw : line
-		
-	target : land-feature
-		
-		define
-			map.rendering.lflp.max-allowed-corner-angle : 45
-			text-color : #444
-			text-letter-spacing : 1.5
-			text-func : WayName(e)
-		for : length > 10
-			define
-				min-zoom : 10
-				font-size : 10:15; 12:20; 13:25; 14:30; 15:35; 16:50
-		elsefor : length > 5
-			define
-				min-zoom : 11
-				font-size : 11:10; 12:13; 13:18; 14:22; 15:30; 16:40
-		elsefor : length > 2
-			define
-				min-zoom : 12
-				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
-		else
-			define
-				min-zoom : 13
-				font-size : 13:7; 14:10; 15:15; 16:17
-		draw : text
-	
+
+
 // --
 		
 		
