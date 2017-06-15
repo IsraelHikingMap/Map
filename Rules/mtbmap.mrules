@@ -61,7 +61,6 @@
 
 
 import-script:..\Scripts\Maperipy\names.py
-import-script:..\Scripts\Maperipy\RoundElevation.py
 
 features
 	
