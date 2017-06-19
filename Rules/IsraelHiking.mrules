@@ -442,7 +442,7 @@ rules
 				define
 					text-offset-vertical : 20%
 					text-offset-horizontal : -70%
-					text : ele
+					text : @elevation(ele)
 				draw : text
 			// For the name
 			define
