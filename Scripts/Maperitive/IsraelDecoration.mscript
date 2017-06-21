@@ -36,3 +36,4 @@ load-source Cache\ASTER-N33.contours
 load-image file=Cache\relief_Hiking_Igor.png background=false
 load-image file=Cache\relief_Hiking_Igor.png background=false
 load-image file=Cache\relief_Hiking_Igor.png background=false
+zoom-bounds
