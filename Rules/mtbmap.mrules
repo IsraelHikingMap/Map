@@ -222,6 +222,7 @@ rules
 		
 			text-max-width : 3
 			text-align-horizontal : center
+			painting-cycle: 800
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
@@ -232,17 +233,20 @@ rules
 				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
+				
 			draw : icon
 			define
 				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
 				font-size : 8:12;10:16;14:20;15:22;16:24
+				painting-cycle: 802
 				
 		elsefor : place=town
 			define
 				min-zoom : 10
 				font-size : 10:12;11:13;12:14;13:15;14:15;15:18;16:20
+				painting-cycle: 801
 		elsefor : place=village
 			define
 				min-zoom : 11
@@ -1752,7 +1756,7 @@ rules
 					fill-color : #B8DBF7
 					fill-hatch : swne
 					fill-hatch-color : white
-					fill-hatch-opacity : 1
+					fill-hatch-opacity : 0
 					painting-cycle : 403
 			draw : fill
 		if : * wood
