@@ -16,7 +16,7 @@ use-ruleset location="Rules\empty.mrules"
 
 // Load GeoFabric's Israel OSM map data snapshot downloaded from:       
 // http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
-load-source Cache\israel-and-palestine-latest.osm.pbf
+load-source Cache\Hebrew\israel-and-palestine-latest.osm.pbf
 // Set the bounds according to the OSM snapshot bounds
 geo-bounds-use-source index=1
 // Set the printing bounds to match the map bounds
