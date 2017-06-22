@@ -1402,6 +1402,15 @@ rules
 				fill-hatch-color : #78C1C1 white 10%
 				fill-hatch-opacity : 80%
 				fill-opacity : 0
+			for : waterway=riverbank
+				define
+					line-width : 1.5
+					fill-hatch-opacity : 0
+					fill-opacity : 50%
+					line-color : #78C1C1
+					fill-color : #78C1C1
+					// Contour lines above inntermittent riverbanks
+					painting-cycle : 510
 		draw : line
 		draw : fill
 		define
