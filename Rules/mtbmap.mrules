@@ -182,8 +182,8 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-	//text-direction : ltr
-	//text : @any([[name:en]], name)
+	//text-direction : rtl
+	//text : @any([[name:he]], name)
 
 	 
 //______________________________________________________________________________________________________________
@@ -1416,12 +1416,12 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 12
-				line-opacity : 0.5
-				line-width : 10:0.33;15:1
+				line-opacity : 0.4
+				line-width : 12:0.33;15:1
 			draw : contour
 			define
 				map.rendering.contour.label : true
-				min-zoom : 13
+				min-zoom : 14
 				text-color : #320
 				text-opacity : 0.8
 				text-halo-width : 50%
@@ -1430,9 +1430,10 @@ rules
 			draw : contour
 		elseif : *minor
 			define
+				map.rendering.contour.label : false
 				min-zoom : 14
 				line-opacity : 0.4
-				line-width : 10:0.33;15:1
+				line-width : 14:0.33;15:1
 			draw : contour
 		
 	target : cutline
@@ -1712,16 +1713,20 @@ rules
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			painting-cycle : 400
-			text : ""
+			
 		
 		if : * commercial
+			define
+				min-zoom : 14
+				text-func : NodeName(e)
+			draw : text
 			define
 				line-style : none
 				line-width : 1
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
-				text-func : NodeName(e)
+
 							
 		if : * residential
 			define
@@ -1735,17 +1740,21 @@ rules
 				
 		if : * industrial
 			define
+				text-func : NodeName(e)
+				min-zoom : 14
+			draw : text
+			
+			define
 				fill-color : #eee
 				min-zoom : 12
 				painting-cycle : 402
-				text-func : NodeName(e)
-	
+							
 		if : * water
 			define
 				curved : true
 				fill-color : #B8DBF7
 				painting-cycle : 503
-				min-zoom : 7
+				
 				line-style : solid
 				line-color : blue
 				line-width : 7:0.1;13:0.5
@@ -1758,7 +1767,13 @@ rules
 					fill-hatch-color : white
 					fill-hatch-opacity : 0
 					painting-cycle : 403
-			draw : fill
+			define
+				min-zoom : 15
+			draw : text
+			define
+				min-zoom : 7
+			
+		
 		if : * wood
 			define
 				line-style : none
@@ -1767,6 +1782,8 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 				min-zoom : 9
+
+
 				
 		if : * grassland
 			define
@@ -1776,6 +1793,7 @@ rules
 				fill-color : #DEFED2
 				painting-cycle : 401
 				min-zoom : 9
+
 
 		if : * wetland
 			define
@@ -1789,8 +1807,7 @@ rules
 				fill-hatch-color : #53B4EC
 				fill-hatch-opacity : 0.1
 				painting-cycle : 450
-				text-color : #3290CB
-		
+
 
 		if : * lawn
 			define
@@ -1798,6 +1815,7 @@ rules
 				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 403
+
 		
 		if : * orchard
 			define
@@ -1805,6 +1823,7 @@ rules
 				fill-texture : Textures/orchard.png
 				painting-cycle : 402
 				min-zoom : 12
+
 				
 		if : * scrub
 			define
@@ -1812,8 +1831,15 @@ rules
 				min-zoom : 10
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
+
 				
 		if : * sand
+			define
+				text-func : NodeName(e)
+				min-zoom : 13
+			for : not natural=beach
+				draw : text
+			
 			define
 				line-style : none
 				line-width : 1
@@ -1821,6 +1847,7 @@ rules
 				fill-color : #fff5df
 				painting-cycle : 401
 				text-func : NodeName(e)
+			
 		
 		if : * farmland
 			define
@@ -1829,10 +1856,6 @@ rules
 				min-zoom : 12
 				fill-color :#f4e5d3
 				painting-cycle : 401
-
-				
-		draw : text
-		draw : fill
 
 			
 		for : (landuse=cemetery OR amenity=grave_yard)
@@ -1855,6 +1878,8 @@ rules
 
 				painting-cycle : 405
 			draw : icon
+			
+		draw : fill
 			
 	
 	target : breakwater
