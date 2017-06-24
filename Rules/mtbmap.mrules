@@ -1713,12 +1713,12 @@ rules
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			painting-cycle : 400
+			text-func : NodeName(e)
 			
 		
 		if : * commercial
 			define
 				min-zoom : 14
-				text-func : NodeName(e)
 			draw : text
 			define
 				line-style : none
@@ -1740,7 +1740,6 @@ rules
 				
 		if : * industrial
 			define
-				text-func : NodeName(e)
 				min-zoom : 14
 			draw : text
 			
@@ -1759,7 +1758,6 @@ rules
 				line-color : blue
 				line-width : 7:0.1;13:0.5
 				line-opacity : 0.5
-				text-func : NodeName(e)
 			for : intermittent
 				define
 					fill-color : #B8DBF7
@@ -1772,8 +1770,7 @@ rules
 			draw : text
 			define
 				min-zoom : 7
-			
-		
+					
 		if : * wood
 			define
 				line-style : none
@@ -1782,7 +1779,6 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 				min-zoom : 9
-
 
 				
 		if : * grassland
@@ -1846,7 +1842,6 @@ rules
 				min-zoom : 8
 				fill-color : #fff5df
 				painting-cycle : 401
-				text-func : NodeName(e)
 			
 		
 		if : * farmland
@@ -1875,7 +1870,6 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
-
 				painting-cycle : 405
 			draw : icon
 			
