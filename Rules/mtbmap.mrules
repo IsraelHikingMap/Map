@@ -20,6 +20,7 @@
 // For Israel adaptations, see https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
 
+
 // ___________________Painting Cycle________________________
 
 //coastline 150
@@ -119,7 +120,7 @@ features
 		land-feature : natural=ridge OR natural=valley
 		
 		// contours
-		contour major : contour[@isMulti(elevation, 100) ]
+		contour major : contour[@isMulti(elevation, 100) AND NOT elevation=0 ]
 		contour medium : contour[@isMulti(elevation, 50) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 50)]
 		
@@ -181,10 +182,8 @@ properties
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-	user.use-metric : true
 	//text-direction : rtl
 	//text : @any([[name:he]], name)
-
 
 	 
 //______________________________________________________________________________________________________________
@@ -223,6 +222,7 @@ rules
 		
 			text-max-width : 3
 			text-align-horizontal : center
+			painting-cycle: 800
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
@@ -233,17 +233,20 @@ rules
 				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
+				
 			draw : icon
 			define
 				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
 				font-size : 8:12;10:16;14:20;15:22;16:24
+				painting-cycle: 802
 				
 		elsefor : place=town
 			define
 				min-zoom : 10
 				font-size : 10:12;11:13;12:14;13:15;14:15;15:18;16:20
+				painting-cycle: 801
 		elsefor : place=village
 			define
 				min-zoom : 11
@@ -259,6 +262,7 @@ rules
 				font-size : 15:8;16:13
 
 		elsefor : @isOneOf(place,suburb,quarter,neighbourhood,borough)
+		
 			define
 				font-size : 15:14;16:15
 				min-zoom : 15
@@ -332,10 +336,8 @@ rules
 			font-weight : normal
 			font-size : 15:10;16:12
 			font-stretch : 1
-			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
@@ -343,14 +345,17 @@ rules
 		for : natural=peak
 			define
 				min-zoom : 14
-		for : NOT (natural=tree)
+		for : ele
+			define
+				text : @elevation(ele)
+				text-offset-vertical : 22
 			draw : text
-		
-		define
-			text : @elevation(ele)
-			text-offset-vertical : 22
-		draw : text
-		
+
+		for : NOT (natural=tree)
+			define
+				text-func : NodeName(e)
+				text-offset-vertical : -8
+			draw : text
 
 	target: worship *
 		if : * church
@@ -362,7 +367,6 @@ rules
 				text-offset-vertical : -8
 				min-zoom : 15
 				text-align-vertical : far
-	
 				text-func : NodeName(e)
 			draw : text
 
@@ -857,7 +861,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 12:0.75;13:2;14:3;15:4
+				line-width : 12:0.75;13:3;14:4;15:5
 		elseif : * residential
 			define
 				line-color : white
@@ -1220,7 +1224,7 @@ rules
 			line-opacity : 0
 			line-style : solid
 			border-style : solid
-			curved : false
+			curved : true
 			border-opacity : 1
 			border-width : 50%
 
@@ -1288,7 +1292,9 @@ rules
 					line-offset : 10:1; 11:1.5; 12:2; 13:2.5; 14:3; 15:4; 16:5
 					border-style : none
 
+
 		for : @isOneOf(waterway, stream, drain, ditch, canal)
+
 			define
 				min-zoom : 13
 				line-width : 13:1; 14:2
@@ -1313,7 +1319,6 @@ rules
 			text-color : blue
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
-			text-offset-vertical : -7
 			painting-cycle : 800
 			text-func : WayName(e)
 		draw : text
@@ -1386,20 +1391,13 @@ rules
 		define
 			line-color : #841
 			line-opacity : 0.75
-			line-width : 10:0
 			curved : false
-			text-color : #320
-			text-opacity : 0.8
-			text-halo-width : 50%
-			text-halo-opacity : 0.75
-			text-halo-color : #fff9e6
 			painting-cycle : 404
-			min-zoom : 11
 		if : *major
 			define
 				map.rendering.contour.label : false
-				min-zoom : 11
-				line-width : 11:0.33;13:0.5;15:1.25
+				min-zoom : 12
+				line-width : 12:0.3;13:0.3;14:1;15:1.5
 				font-size : 9
 				font-style : italic
 				font-weight : normal
@@ -1407,26 +1405,35 @@ rules
 			define
 				map.rendering.contour.label : true
 				min-zoom : 13
-	
+				text-color : #320
+				text-opacity : 0.8
+				text-halo-width : 50%
+				text-halo-opacity : 0.75
+				text-halo-color : #fff9e6	
 			draw : contour
 				
 		elseif : *medium
 			define
 				map.rendering.contour.label : false
-				min-zoom : 12
-				line-opacity : 0.6
-				line-width : 12:0.33;15:0.75
+				min-zoom : 13
+				line-opacity : 0.4
+				line-width : 13:0.3;15:1
 			draw : contour
 			define
 				map.rendering.contour.label : true
-				min-zoom : 13	
+				min-zoom : 14
+				text-color : #320
+				text-opacity : 0.8
+				text-halo-width : 50%
+				text-halo-opacity : 0.75
+				text-halo-color : #fff9e6	
 			draw : contour
 		elseif : *minor
 			define
 				map.rendering.contour.label : false
 				min-zoom : 14
 				line-opacity : 0.4
-				line-width : 14:0.33;15:0.55
+				line-width : 14:0.33;15:0.75
 			draw : contour
 		
 	target : cutline
@@ -1454,33 +1461,28 @@ rules
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
-			text-letter-spacing : 1.2
+			text-letter-spacing : 1.5
 			text-func : WayName(e)
-			
-		for : length > 30
+		for : length > 10
 			define
-				max-zoom : 13
-				text-letter-spacing : 10:1;13:4
-				font-size : 11:20;12:30;13:40;14:55;15:60
-		elsefor : length > 10
-			define
-				max-zoom : 14
-				text-letter-spacing : 11:1;14:4
-				font-size : 11:15;12:20;13:30;14:40;15:60;16:80
+				min-zoom : 10
+				font-size : 10:15; 12:20; 13:25; 14:30; 15:35; 16:50
 		elsefor : length > 5
 			define
-				max-zoom : 15
-				text-letter-spacing : 12:1;15:4
-				font-size : 12:15;13:20;14:20;15:40;16:50
+				min-zoom : 11
+				font-size : 11:10; 12:13; 13:18; 14:22; 15:30; 16:40
 		elsefor : length > 2
 			define
-				max-zoom : 16
-				text-letter-spacing : 1
-				font-size : 12:10;13:15;14:20;15:25;16:30
+				min-zoom : 12
+				font-size : 12:10; 13:15; 14:20; 15:25; 16:30
+		elsefor : length > 1
+			define
+				min-zoom : 13
+				font-size : 13:10; 14:15; 15:20; 16:25
 		else
 			define
-				text-letter-spacing : 1
-				font-size : 13:7;14:10;15:15;16:17
+				min-zoom : 14
+				font-size : 13:7; 14:10; 15:15; 16:17
 		draw : text
 	
 // ___________________areas________________________
@@ -1488,13 +1490,13 @@ rules
 	target : nature reserve
 		define
 			min-zoom : 12
-			line-color : green 
+			line-color : green
 			line-width : 12:2;13:4
 			line-style : dashdot
 			line-opacity : 0.5
-			fill-opacity : 0.2
+			fill-opacity : 0.35
 			fill-hatch : nwse
-			fill-hatch-opacity : 0.02
+			fill-hatch-opacity : 0
 			icon-image : Icons/mtbmap/rtg.png
 			icon-width : 12:20;14:25
 			align-vertical : center
@@ -1647,6 +1649,7 @@ rules
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
+			
 		draw : text
 		
 	
@@ -1672,6 +1675,9 @@ rules
 			text-func : NodeName(e)
 		draw : text
 
+		
+				
+		draw : fill
 
 	target : Pal *
 		define
@@ -1701,24 +1707,26 @@ rules
 			font-style : normal
 			font-weight : bold
 			text-color : black
+			text-avoid-overlaps : true
 			text-orientation: fixed
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			painting-cycle : 400
 			text-func : NodeName(e)
+			
 		
 		if : * commercial
+			define
+				min-zoom : 14
+			draw : text
 			define
 				line-style : none
 				line-width : 1
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
-			draw : fill
-			define
-				min-zoom : 15
-			draw : text
+
 							
 		if : * residential
 			define
@@ -1728,38 +1736,41 @@ rules
 				line-color : #999
 				min-zoom : 9
 				painting-cycle : 402
-			draw: fill
+	
 				
 		if : * industrial
+			define
+				min-zoom : 14
+			draw : text
+			
 			define
 				fill-color : #eee
 				min-zoom : 12
 				painting-cycle : 402
-			draw : fill
-			define
-				min-zoom : 15
-			draw : text
+							
 		if : * water
 			define
 				curved : true
 				fill-color : #B8DBF7
 				painting-cycle : 503
-				min-zoom : 7
+				
 				line-style : solid
 				line-color : blue
 				line-width : 7:0.1;13:0.5
 				line-opacity : 0.5
 			for : intermittent
 				define
-					fill-color : white
+					fill-color : #B8DBF7
 					fill-hatch : swne
-					fill-hatch-color : #B8DBF7
-					fill-hatch-opacity : 1
-			draw : fill
+					fill-hatch-color : white
+					fill-hatch-opacity : 0
+					painting-cycle : 403
 			define
 				min-zoom : 15
 			draw : text
-			
+			define
+				min-zoom : 7
+					
 		if : * wood
 			define
 				line-style : none
@@ -1768,18 +1779,18 @@ rules
 				fill-color : #CFE5C5
 				painting-cycle : 401
 				min-zoom : 9
-			draw : fill
+
 				
 		if : * grassland
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 8
+				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 401
 				min-zoom : 9
-			draw : fill
-			
+
+
 		if : * wetland
 			define
 				line-style : dash
@@ -1792,49 +1803,45 @@ rules
 				fill-hatch-color : #53B4EC
 				fill-hatch-opacity : 0.1
 				painting-cycle : 450
-				text-color : #3290CB
-			draw : fill
-			define
-				min-zoom : 15
-			draw : text
-			
+
+
 		if : * lawn
 			define
 				line-style : none
 				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 403
-			draw : fill
-			
+
+		
 		if : * orchard
 			define
 				line-style : none
 				fill-texture : Textures/orchard.png
 				painting-cycle : 402
 				min-zoom : 12
-			draw : fill
-			
+
+				
 		if : * scrub
 			define
 				line-style : none
 				min-zoom : 10
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
-			draw : fill
-			
+
+				
 		if : * sand
+			define
+				text-func : NodeName(e)
+				min-zoom : 13
+			for : not natural=beach
+				draw : text
+			
 			define
 				line-style : none
 				line-width : 1
 				min-zoom : 8
 				fill-color : #fff5df
 				painting-cycle : 401
-			draw : fill
-			define
-				min-zoom : 13
-				font-size : 15
-				text-color : #777
-			draw : text
 			
 		
 		if : * farmland
@@ -1844,9 +1851,6 @@ rules
 				min-zoom : 12
 				fill-color :#f4e5d3
 				painting-cycle : 401
-			draw : fill
-				
-		
 
 			
 		for : (landuse=cemetery OR amenity=grave_yard)
@@ -1866,9 +1870,10 @@ rules
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
-
 				painting-cycle : 405
 			draw : icon
+			
+		draw : fill
 			
 	
 	target : breakwater
@@ -1880,6 +1885,9 @@ rules
 		draw : fill
 
 
+
+// --
+		
 		
 
 
