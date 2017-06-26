@@ -19,10 +19,7 @@
 // --------
 // For Israel adaptations, see https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
-
-
 // ___________________Painting Cycle________________________
-
 //coastline 150
 //farmland 401
 //scrub 401
@@ -1675,9 +1672,6 @@ rules
 			text-func : NodeName(e)
 		draw : text
 
-		
-				
-		draw : fill
 
 	target : Pal *
 		define
@@ -1750,10 +1744,9 @@ rules
 							
 		if : * water
 			define
-				curved : true
+				curved : false
 				fill-color : #B8DBF7
 				painting-cycle : 503
-				
 				line-style : solid
 				line-color : blue
 				line-width : 7:0.1;13:0.5
@@ -1840,7 +1833,7 @@ rules
 				line-style : none
 				line-width : 1
 				min-zoom : 8
-				fill-color : #fff5df
+				fill-color : #fefbe5
 				painting-cycle : 401
 			
 		
