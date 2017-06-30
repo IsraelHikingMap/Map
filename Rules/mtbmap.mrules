@@ -137,7 +137,7 @@ features
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
 		
-//_______________________________________________________________________________
+//___________________________________
 			
 	areas
 		archaeological : historic=archaeological_site
@@ -168,20 +168,26 @@ features
 
 properties
 	curved : false
-	font-family : Arial
-	text-offset-vertical : -12%
-	text-halo-color : #fff
-	text-halo-width : 18%
-	text-halo-opacity : 0.9
-	text-line-spacing : 0.7
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-	//text-direction : rtl
-	//text : @any([[name:he]], name)
+	font-weight : normal
+	font-size : 15:10;16:12
+	font-stretch : 1
+	text-offset-vertical : -8
+	min-zoom : 15
+	font-family : Arial
+	text-halo-color : #fff
+	text-halo-width : 18%
+	text-halo-opacity : 0.9
+	text-line-spacing : 0.7
+	text-color : black
+	text-align-vertical : far
+	text-direction : rtl
+	text : @any([[name:he]], name)
 
 rules
 
@@ -212,28 +218,17 @@ rules
 		draw : icon
 		
 	target : place
-		define
-		
-			text-max-width : 3
-			text-align-horizontal : center
-			painting-cycle: 800
-		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
-			define
-				text-max-width : 15
-						
 		for : place=city
 			define
 				icon-image : Icons/mtbmap/dot.png
 				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
-				
 			draw : icon
 			define
-				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
-				font-size : 8:12;10:16;14:20;15:22;16:24
+				font-size : 8:12;10:16;14:20
 				painting-cycle: 802
 				
 		elsefor : place=town
@@ -265,7 +260,15 @@ rules
 			stop
 		define
 			font-weight : bold
-			text-func : NodeName(e)
+			text-offset-vertical : 0
+			text-max-width : 3
+			text-align-horizontal : center
+			text-align-vertical : center
+			//text-func : NodeName(e)
+			painting-cycle: 800
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
 		draw : text
 
 	target : POI
@@ -277,7 +280,6 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/viewpoint.png
-		
 		elsefor : historic=ruins
 			define
 				min-zoom : 14
@@ -291,7 +293,6 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/tower.png
-		
 		elsefor : natural=cave_entrance
 			define
 				min-zoom : 14
@@ -321,7 +322,6 @@ rules
 				min-zoom : 12
 				icon-image : Icons/mtbmap/dot.png
 				icon-width : 12:5;13:6;14:7;15:8
-
 		draw : icon
 	
 		define
@@ -347,30 +347,21 @@ rules
 
 		for : NOT (natural=tree)
 			define
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
+				text : name
 				text-offset-vertical : -8
 			draw : text
 
 	target: worship *
 		if : * church
 			define
-
-				font-weight : normal
-				font-size : 15:10;16:12
-				font-stretch : 1
-				text-offset-vertical : -8
-				min-zoom : 15
-				text-align-vertical : far
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
 			draw : text
-
 			define
 				icon-image : Icons/mtbmap/church.png
-				
 		elseif : * mosque
 			define
 				icon-image : Icons/mtbmap/mosque.png
-
 		elseif : * synagogue
 			define
 				icon-image : Icons/mtbmap/synagogue.png
@@ -405,14 +396,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 14:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: food
@@ -423,14 +407,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 16
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: convenience
@@ -449,14 +426,7 @@ rules
 			min-zoom : 14
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 16
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: bikeshop
@@ -468,15 +438,8 @@ rules
 			painting-cycle : 799
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 13:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: bikepark
@@ -496,7 +459,7 @@ rules
 			min-zoom : 10
 			text-align-vertical : near
 			painting-cycle : 810
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: medical
@@ -508,14 +471,8 @@ rules
 			painting-cycle : 799
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text	
 		
 	target: toilet
@@ -566,12 +523,7 @@ rules
 			
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 12
-			font-stretch : 1
-			text-offset-vertical : 10
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : iata
 			define
 				min-zoom : 12
@@ -615,13 +567,9 @@ rules
 		
 		define
 			text-color : blue
-			font-weight : normal
-			font-size : 15:10;16:12
-			font-stretch : 1
+			text-max-width : 3
 			text-offset-vertical : -8
-			min-zoom : 15
-			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 			draw : text
 						
@@ -639,13 +587,8 @@ rules
 			icon-width : 17
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
 			min-zoom : 14
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 				
 	target : gas
@@ -990,10 +933,11 @@ rules
 				text-halo-opacity : 0.66
 				text-align-horizontal : center
 				text-align-vertical : center
+				text-offset-vertical : 0
 				font-stretch : 0.9
 				font-size : 9
 		define
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -1062,7 +1006,6 @@ rules
 				line-style : solid
 			draw : line
 		draw : line
-
 		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 15
@@ -1070,7 +1013,7 @@ rules
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 	target : path
@@ -1082,7 +1025,7 @@ rules
 			min-zoom : 14
 			font-weight : bold
 			text-letter-spacing : 0.15
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 		define
@@ -1291,7 +1234,7 @@ rules
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			painting-cycle : 800
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : fence
@@ -1429,7 +1372,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
 			text-letter-spacing : 1.5
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		for : length > 10
 			define
 				min-zoom : 10
@@ -1585,7 +1528,7 @@ rules
 			text-offset-vertical : 10
 			text-align-vertical : near
 			min-zoom : 15
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 	
 	target : archaeological
@@ -1608,7 +1551,7 @@ rules
 			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
@@ -1633,7 +1576,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -8
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target : Pal *
@@ -1668,7 +1611,7 @@ rules
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 			
 		if : * commercial
 			define
@@ -1790,7 +1733,7 @@ rules
 				
 		if : * sand
 			define
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
 				min-zoom : 13
 			for : not natural=beach
 				draw : text
