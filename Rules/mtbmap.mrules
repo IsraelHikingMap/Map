@@ -22,16 +22,19 @@
 // ___________________Painting Cycle________________________
 //coastline 150
 //farmland 401
-//scrub 401
-//wood 401
+//sand 401
+//grassland 401
+//scrub 402
+//wood 402
 //quarry 402
 //residential 402
-//grass 403
+//orchard 402
+//intermittent water 403
 //industrial 403
 //commercial 403
-//playground 403
+//lawn 403
 //contour 404
-//cemetery icon 405
+//cemetery and playground icon 405
 //building 406
 //military 410
 //Pal 410
@@ -55,8 +58,6 @@
 //drinking_water 802
 //nature reserve 810
 //bikepark 810
-// -----
-
 
 import-script:..\Scripts\Maperipy\names.py
 
@@ -163,7 +164,7 @@ features
 		quarry : landuse=quarry
 		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 
-//______________________________________________________________________________________________________________
+//___________
 
 properties
 	curved : false
@@ -182,9 +183,6 @@ properties
 	//text-direction : rtl
 	//text : @any([[name:he]], name)
 
-	 
-//______________________________________________________________________________________________________________
-	
 rules
 
 // ___________________points________________________
@@ -213,7 +211,6 @@ rules
 		
 		draw : icon
 		
-
 	target : place
 		define
 		
@@ -390,8 +387,6 @@ rules
 				min-zoom : 15
 		draw : icon
 		
-		
-		
 	target : parking
 		define
 			icon-image : Icons/mtbmap/parking.png
@@ -419,7 +414,6 @@ rules
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
-		
 
 	target: food
 		define
@@ -447,7 +441,6 @@ rules
 			min-zoom : 15
 		draw : icon
 
-
 	target: lodging
 		define
 			icon-image : Icons/mtbmap/hotel.png
@@ -465,7 +458,6 @@ rules
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
-
 
 	target: bikeshop
 		define
@@ -525,7 +517,6 @@ rules
 			painting-cycle : 799
 			text-func : NodeName(e)
 		draw : text	
-	
 		
 	target: toilet
 		define
@@ -547,7 +538,6 @@ rules
 				shape : circle
 				shape-size:15:1.5;16:2
 		draw : shape
-
 
 	target: information
 		define
@@ -634,15 +624,13 @@ rules
 			text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 			draw : text
-				
-		
+						
 	target : picnic
 		define
 			min-zoom : 14
 			icon-image : Icons/mtbmap/picnic.png
 			icon-width : 14
 		draw : icon
-		
 		
 	target : camping
 		define
@@ -659,8 +647,7 @@ rules
 			text-align-vertical : near
 			text-func : NodeName(e)
 		draw : text
-		
-		
+				
 	target : gas
 		define
 			min-zoom : 13
@@ -676,7 +663,6 @@ rules
 			line-width : 1
 			shape-size : 11:3;12:4;13:5;14:6
 		draw : shape
-
 
 // ___________________lines________________________
 
@@ -727,7 +713,6 @@ rules
 		draw : line
 		draw : shape
 
-
 	target : cliff
 		define
 			curved : false
@@ -761,7 +746,6 @@ rules
 			line-color : #888
 		draw : line
 
-
 	target : railway
 		for : railway=rail
 			define
@@ -788,7 +772,6 @@ rules
 				line-opacity : 0.6
 		draw : line
 
-
 	target : turningcircle
 		define
 			min-zoom : 14
@@ -803,7 +786,6 @@ rules
 			shape-size : 14:1.5;16:5.5
 			painting-cycle : 490
 		draw : shape
-
 	
 	target : road *
 		if : * motorway
@@ -1035,7 +1017,6 @@ rules
 					min-zoom : 12
 					line-color : white
 					max-zoom : 14
-
 		else
 			stop
 		draw : line
@@ -1091,7 +1072,6 @@ rules
 			text-offset-vertical : -8
 			text-func : WayName(e)
 		draw : text
-		
 		
 	target : path
 		
@@ -1184,7 +1164,7 @@ rules
 				shape-def : l:0,0,-1,-1,1,0,-1,1;z
 				shape-size : 15:15;16:20
 				shape-aspect : 1
-				shape-spacing : 10
+				shape-spacing : 7
 				shape-orientation : flow
 				shape-mode : linear
 				line-style : solid
@@ -1193,7 +1173,7 @@ rules
 			for : oneway=-1
 				define
 					angle : 180
-
+			draw : shape
 		
 		for : highway = steps
 			define
@@ -1205,11 +1185,7 @@ rules
 				line-style : none
 				fill-color : red
 				min-zoom : 13
-		else
-			stop
-		draw : shape
-	
-
+			draw : shape
 
 // Background for cycle networks in MTB IL
 	target : network cycle *
@@ -1243,7 +1219,6 @@ rules
 				painting-cycle : 599
 		
 		draw : line
-		
 		
 	target : bridge
 		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) OR highway=track
@@ -1288,7 +1263,6 @@ rules
 					line-style : dash
 					line-offset : 10:1; 11:1.5; 12:2; 13:2.5; 14:3; 15:4; 16:5
 					border-style : none
-
 
 		for : @isOneOf(waterway, stream, drain, ditch, canal)
 
@@ -1350,8 +1324,7 @@ rules
 		draw : shape
 		define
 			line-width : 11:2 ; 12:2.5; 13:3
-		draw : line
-		
+		draw : line	
 			
 	target : wall
 		define
@@ -1364,7 +1337,6 @@ rules
 			shape-spacing : 0.3
 			shape-def : 0,-5,-5,-5,-5,5,5,5,5,-5;z
 			shape-size : 15:5;16:7
-
 		draw : shape
 
 	target : aeroway
@@ -1394,7 +1366,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 12
-				line-width : 12:0.3;13:0.3;14:1;15:1.5
+				line-width : 12:0.3;13:0.3;14:1;15:1.2
 				font-size : 9
 				font-style : italic
 				font-weight : normal
@@ -1407,13 +1379,12 @@ rules
 				text-halo-width : 50%
 				text-halo-opacity : 0.75
 				text-halo-color : #fff9e6	
-			draw : contour
-				
+			draw : contour			
 		elseif : *medium
 			define
 				map.rendering.contour.label : false
 				min-zoom : 13
-				line-opacity : 0.4
+				line-opacity : 0.75
 				line-width : 13:0.3;15:1
 			draw : contour
 			define
@@ -1429,7 +1400,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 14
-				line-opacity : 0.4
+				line-opacity : 0.6
 				line-width : 14:0.33;15:0.75
 			draw : contour
 		
@@ -1454,7 +1425,6 @@ rules
 		draw : line
 		
 	target : land-feature
-		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
@@ -1550,7 +1520,6 @@ rules
 			fill-color : #fff
 		draw : fill	
 
-
 	target : military
 		define
 			fill-color : #ee0000
@@ -1574,7 +1543,6 @@ rules
 			text-color : #A32929
 		draw : text
 
-
 	target : construction
 		define
 			fill-color : #aaa
@@ -1591,7 +1559,6 @@ rules
 		draw : icon
 
 	target : quarry
-		
 		define
 			fill-color : white
 			line-style : solid
@@ -1622,7 +1589,6 @@ rules
 		draw : text
 	
 	target : archaeological
-				
 		define
 			icon-image : Icons/mtbmap/jar.png
 			icon-width : 17
@@ -1648,10 +1614,8 @@ rules
 				text-max-width : 15
 			
 		draw : text
-		
 	
 	target : attraction
-				
 		define
 			icon-image : Icons/mtbmap/star.png
 			icon-width : 17
@@ -1671,7 +1635,6 @@ rules
 			text-align-vertical : far
 			text-func : NodeName(e)
 		draw : text
-
 
 	target : Pal *
 		define
@@ -1695,7 +1658,6 @@ rules
 			stop
 		draw : fill
 
-
 	target : area *
 		define
 			font-style : normal
@@ -1706,10 +1668,8 @@ rules
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
-			painting-cycle : 400
 			text-func : NodeName(e)
 			
-		
 		if : * commercial
 			define
 				min-zoom : 14
@@ -1720,7 +1680,6 @@ rules
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
-
 							
 		if : * residential
 			define
@@ -1730,7 +1689,6 @@ rules
 				line-color : #999
 				min-zoom : 9
 				painting-cycle : 402
-	
 				
 		if : * industrial
 			define
@@ -1740,7 +1698,7 @@ rules
 			define
 				fill-color : #eee
 				min-zoom : 12
-				painting-cycle : 402
+				painting-cycle : 403
 							
 		if : * water
 			define
@@ -1770,9 +1728,8 @@ rules
 				line-width : 1
 				min-zoom : 8
 				fill-color : #CFE5C5
-				painting-cycle : 401
+				painting-cycle : 402
 				min-zoom : 9
-
 				
 		if : * grassland
 			define
@@ -1782,7 +1739,6 @@ rules
 				fill-color : #DEFED2
 				painting-cycle : 401
 				min-zoom : 9
-
 
 		if : * wetland
 			define
@@ -1797,22 +1753,33 @@ rules
 				fill-hatch-opacity : 0.1
 				painting-cycle : 450
 
-
 		if : * lawn
+			define
+				icon-width : 15:17
+				align-vertical : center
+				min-zoom : 15
+				painting-cycle : 405
+			
+			for : (landuse=cemetery OR amenity=grave_yard)
+				define
+					icon-image : Icons/mtbmap/cemetery.png
+				draw : icon
+			for : (leisure=playground)
+				define
+					icon-image : Icons/mtbmap/playground.png
+				draw : icon
 			define
 				line-style : none
 				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 403
-
-		
+					
 		if : * orchard
 			define
 				line-style : none
 				fill-texture : Textures/orchard.png
 				painting-cycle : 402
 				min-zoom : 12
-
 				
 		if : * scrub
 			define
@@ -1820,7 +1787,6 @@ rules
 				min-zoom : 10
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
-
 				
 		if : * sand
 			define
@@ -1833,9 +1799,8 @@ rules
 				line-style : none
 				line-width : 1
 				min-zoom : 8
-				fill-color : #fefbe5
+				fill-color : #fbf7e2
 				painting-cycle : 401
-			
 		
 		if : * farmland
 			define
@@ -1844,30 +1809,8 @@ rules
 				min-zoom : 12
 				fill-color :#f4e5d3
 				painting-cycle : 401
-
-			
-		for : (landuse=cemetery OR amenity=grave_yard)
-
-			define
-				icon-image : Icons/mtbmap/cemetery.png
-				icon-width : 15:17
-				align-vertical : center
-				min-zoom : 15
-				painting-cycle : 405
-			draw : icon
-			
-		for : (leisure=playground)
-
-			define
-				icon-image : Icons/mtbmap/playground.png
-				icon-width : 15:17
-				align-vertical : center
-				min-zoom : 15
-				painting-cycle : 405
-			draw : icon
-			
+		
 		draw : fill
-			
 	
 	target : breakwater
 		define
@@ -1876,12 +1819,3 @@ rules
 			line-color : #b5d9fb black 20%
 			fill-color : #f1eee8
 		draw : fill
-
-
-
-// --
-		
-		
-
-
-		
