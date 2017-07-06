@@ -129,7 +129,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                     for bbox in self.bboxes(newOsm, element_type, element_id):
                         self.mark_bbox(bbox)
             except KeyError:
-                # An element does bot exist in the map,
+                # An element does not exist in the map,
                 # no need to redraw its position
                 pass
         App.collect_garbage()
