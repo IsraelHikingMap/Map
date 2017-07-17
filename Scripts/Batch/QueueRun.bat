@@ -1,6 +1,5 @@
-
 REM Implement a queue of Maperitive and MOBAC jobs for
-REM Israel Hiking and Biking - IsraelHuking.osm.org.il
+REM Israel Hiking and Biking - IsraelHiking.osm.org.il
 REM
 REM Usage: [Start] QueueRun <script>
 REM
