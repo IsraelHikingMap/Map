@@ -161,11 +161,9 @@ features
 		helipad : aeroway=helipad
 
 properties
-	// curved : true
 	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
-	map-background-opacity : 100%
 	map-sea-color : #00BFFF
 	line-opacity : 100%
 

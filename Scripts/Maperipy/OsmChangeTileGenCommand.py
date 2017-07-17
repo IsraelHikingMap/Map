@@ -81,9 +81,10 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         The new map is used for locating tiles with new and changed objects.
         """
 
+        App.run_command('clear-map')
+        App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
         App.collect_garbage()
-        if self.changed == None:
-            self.changed = {x:{} for x in range(self.min_zoom, self.max_zoom+1)}
+        self.changed = {x:{} for x in range(self.min_zoom, self.max_zoom+1)}
         # Initialize the guard zone tiles
         self.guard = None
         if self.verbose:
@@ -237,7 +238,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                                 # Included in guard of lower zoom, if exists, and in the polygon 
                                 self.guard[zoom][(x_guard, y_guard)] = True
 
-    def statistics(self):
+    def statistics(self, verbose=True):
         self.update_guard()
         sum_changed = 0
         sum_guard = 0
@@ -246,10 +247,12 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             cur_guard = len(self.guard[zoom])
             sum_changed += cur_changed
             sum_guard += cur_guard
-            print "     zoom {:2} has {:6} changed tiles, {:6} update tiles".format(
-                    zoom, cur_changed, cur_guard)
-        print "     Total of    {:6} changed tiles, {:6} update tiles".format(
-                sum_changed, sum_guard)
+            if verbose:
+                print "     zoom {:2} has {:6} changed tiles, {:6} update tiles".format(
+                        zoom, cur_changed, cur_guard)
+        if verbose:
+            print "     Total of    {:6} changed tiles, {:6} update tiles".format(
+                    sum_changed, sum_guard)
         return (sum_changed, sum_guard)
 
     def mark_bbox(self, bbox):

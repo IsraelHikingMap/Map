@@ -115,7 +115,7 @@ def mark_done(phase):
     App.log(phase+' phase is done.')
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
-gen_cmd =  IsraelHikingTileGenCommand()
+base_map =  IsraelHikingTileGenCommand()
 if language == "Hebrew":
     '''
     # Daily updated from geofabric
@@ -180,6 +180,15 @@ else:
             os.path.join(ProjectDir, 'Cache', 'geofabrik'),
             "asia/israel-and-palestine")
 
+trails_overlay =  IsraelHikingTileGenCommand()
+osm_trails = osmChangeSourceFilter(
+        cache_file('israel-and-palestine-trails-latest.osm.pbf'),
+        cache_file('israel-and-palestine-trails-update.osc'),
+        cache_file('israel-and-palestine-trails-updated.osm.pbf'),
+        "hiking trails",
+        os.path.join('Filters', 'trails_filter.txt'),
+        osm_source)
+
 # Create a new map if all phased were done
 remainingPhases = []
 for phase in phases:
@@ -200,7 +209,7 @@ if osm_source.status() in ["non-incremental", "incremental", "changes"]:
     App.log('Remaining phases: '+', '.join(remainingPhases))
     App.run_command("pause 15000")
 else:
-    exit_code = osm_source.downloadUpdate()
+    exit_code = osm_trails.downloadUpdate()
     if exit_code == 21:
         remainingPhases = []
     elif exit_code == 0:
@@ -225,13 +234,14 @@ if os.path.exists(osm_source.changes):
         App.log("=== Analyzing map changes {} ===".format(change_span))
         sleep(10)  # Try to avoid CommandExecutionException
         App.collect_garbage()
-        gen_cmd.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
-        (changed, guard) = gen_cmd.statistics()
+        base_map.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
+        (changed, guard) = base_map.statistics()
         if changed:
             with open(cache_file("Change Analysis.log"), 'a') as journal:
                 journal.write("Changes {}\n".format(change_span))
         else:
             remainingPhases = []
+        App.collect_garbage()
         print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 elif remainingPhases:
     # 
@@ -241,7 +251,7 @@ elif remainingPhases:
     with open(cache_file("Change Analysis.log"), 'a') as journal:
         journal.write("Base {}\n".format(updated_time))
     Map.add_osm_source(osm_source.updated)
-    gen_cmd.clean_tiles = True
+    base_map.clean_tiles = True
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 if remainingPhases:
@@ -249,21 +259,12 @@ if remainingPhases:
     if language == "Hebrew":
         App.log("=== Update the site's search and routing DBs ===")
         # Update the site's search and routing DBs
-        App.start_program("UpdateDB.bat",[osm_source.updated])
-    # Tile generation
-    phase = 'OverlayTiles'
-    if phase in remainingPhases:
-        App.log("=== Create Trails Overlay tiles ===")
-        App.run_command("set-setting name=map.coastline.mode value=ignore")
-        App.run_command("use-ruleset location="+os.path.join("Rules", "IsraelHikingOverlay.mrules"))
-        App.run_command("apply-ruleset")
-        App.collect_garbage()
-        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        gen_cmd.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        mark_done(phase)
-    else:
-        App.log(phase+' phase skipped.')
+        try:
+            App.start_program("UpdateDB.bat",[osm_source.updated])
+        except:
+            pass
 
+    # Tile generation
     if [val for val in ['IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16']
             if val in remainingPhases]:
         App.run_command("run-script file="+os.path.join("Scripts", "Maperitive", "IsraelDecoration.mscript"))
@@ -275,8 +276,8 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
-        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
+        base_map.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+        base_map.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -288,8 +289,8 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
-        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        gen_cmd.GenToDirectory(7, 15, os.path.join(site_dir, 'mtbTiles'))
+        base_map.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+        base_map.GenToDirectory(7, 15, os.path.join(site_dir, 'mtbTiles'))
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -301,8 +302,8 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
-        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
+        base_map.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+        base_map.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -314,8 +315,25 @@ if remainingPhases:
         App.run_command("apply-ruleset")
         App.collect_garbage()
         App.log('=== creating Israel MTB zoom level 16 ===')  
-        gen_cmd.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        gen_cmd.GenToDirectory(16, 16, os.path.join(site_dir, 'mtbTiles'))
+        base_map.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+        base_map.GenToDirectory(16, 16, os.path.join(site_dir, 'mtbTiles'))
+        mark_done(phase)
+    else:
+        App.log(phase+' phase skipped.')
+
+    phase = 'OverlayTiles'
+    if phase in remainingPhases:
+        App.log("=== Create Trails Overlay tiles ===")
+        App.run_command("clear-map")
+        App.run_command("set-setting name=map.coastline.mode value=ignore")
+        App.run_command("set-setting name=map.rendering.map-background-opacity value=0%")
+        App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
+        trails_overlay.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+        trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
+        (changed, guard) = trails_overlay.statistics(False)
+        App.collect_garbage()
+        if changed:
+            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
         mark_done(phase)
     else:
         App.log(phase+' phase skipped.')
@@ -328,9 +346,9 @@ if remainingPhases:
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
 
-if osm_source.status() != "base":
+if osm_trails.status() != "base":
     # No update was available
-    osm_source.advance()
+    osm_trails.advance()
 for phase in phases:
     silent_remove(done_file(phase))
 
