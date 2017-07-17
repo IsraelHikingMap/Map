@@ -43,7 +43,7 @@ App.collect_garbage()
 
 # Unfortunately, could not find a way for Meperitive to accept Hebrew strings in this file
 placeNames = [
-        "Tel Aviv-Yafo"
+        "Tel Aviv-Yafo, Jerusalem"
         ];
 
 osmData = None
