@@ -1,0 +1,18 @@
+--keep=
+
+--keep-ways= 
+    colour=
+  OR
+    landuse=military
+  OR
+    military=danger_area
+
+--keep-relations=
+    network=nwn 
+  OR
+    network=rwn 
+  OR
+    network=rcn 
+  OR
+    landuse=military
+  OR
