@@ -43,7 +43,7 @@ App.collect_garbage()
 
 # Unfortunately, could not find a way for Meperitive to accept Hebrew strings in this file
 placeNames = [
-        "Tel Aviv-Yafo, Jerusalem"
+        "Tel Aviv-Yafo", "Jerusalem", "Ramat Gan", "Givatyim", "Holon", "Bat Yam", "Bnei Brak", "Petah Tikva", "Ramat HaSharon", "Herzliya", "Kfar Saba", "Raanana", "Rishon LeZion", "Nes Ziona", "Rehovot", "Beer Sheva", "Haifa", "Ashdod"
         ];
 
 osmData = None
@@ -60,7 +60,7 @@ for layer in Map.layers:
         for osmNode in osmData.find_nodes(lambda x : (
                 x.has_tag("amenity") or x.has_tag("barrier")
                 or x.has_tag("building") or x.has_tag("construction")
-                or x.has_tag("highway") or x.has_tag("historic")
+                or x.has_tag("highway") or x.has_tag("historic") or x.has_tag("tourism") or x.has_tag("natural") or x.has_tag("shop")
                 or x.has_tag("landuse"))) :
             elementBoundingBox = getBoundingBox(osmNode, osmData)
             for external in bboxes:
@@ -71,7 +71,7 @@ for layer in Map.layers:
         for osmWay in osmData.find_ways(lambda x : (
                 x.has_tag("amenity") or x.has_tag("barrier")
                 or x.has_tag("building") or x.has_tag("construction")
-                or x.has_tag("highway") or x.has_tag("historic")
+                or x.has_tag("highway") or x.has_tag("historic") or x.has_tag("shop")
                 or x.has_tag("landuse"))) :
             elementBoundingBox = getBoundingBox(osmWay, osmData)
             for external in bboxes:
