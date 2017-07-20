@@ -31,7 +31,28 @@ class osmChangeSource(object):
         self.osmupdate_params = []
         self.osmconvert_params = []
 
+
     def status(self):
+        """Map source status
+
+        State transition diagram:
+        
+                           == Map and Overlay Sources == 
+        uninitialized -+-> non-incremental --> base <--> incremental
+                       |
+                       |
+                       |   == Sources used by Merging == 
+                       `-> changes <--> idle
+        
+        State           Available files
+        -----           ---------------
+        uninitialized   <None>
+        non-incremental self.updated
+        base            self.base
+        incremental     self.base, self.updated, self.changes
+        changes         self.changes
+        idle            self.changes+".old"
+        """
         if os.path.exists(self.updated):
             if os.path.exists(self.changes):
                 return "incremental"
@@ -46,7 +67,30 @@ class osmChangeSource(object):
         else:
             return "uninitialized"
 
+    def downloadMap(self):
+        """Download the latest map from the server. If possible, use incremental map updates.
+        This is the primary method of the class.
+        """
+        # return codes:
+        # 0 - download successful
+        # 21 - osmupdate: Your OSM file is already up-to-date.
+        # otherwise - error
+        status = self.status()
+        if status == "uninitialized":
+            App.log("=== Non-incremental Tile Generation ===")
+            return self.downloadBase()
+        elif status == "base":
+            return self.downloadUpdate()
+        else:
+            App.log('Should not download an update for {} in status "{}".'.format(
+                self.region, status))
+            raise RuntimeError
+
     def downloadBase(self):
+        """Download the whole map.
+        
+        Used when no map data exists
+        """
         App.log("=== Downloading "+self.region+" latest map data ===")
         self.silent_remove(self.base)
         self.silent_remove(self.updated)
@@ -63,11 +107,16 @@ class osmChangeSource(object):
         return exit_code
 
     def downloadChange(self):
+        """Download map changes only. 
+
+        Used by other methods when either a base map data exists or when
+        this source is used by a merging map source for changes only.
+        """
         # return codes:
         # 0 - download successful
         # 21 - osmupdate: Your OSM file is already up-to-date.
         # otherwise - error
-        App.log("=== Downloading "+self.region+" map updates ===")
+        App.log("=== Downloading "+self.region+" map changes ===")
         status = self.status()
         if status == "base":
             base = self.base
@@ -90,33 +139,23 @@ class osmChangeSource(object):
         return exit_code
 
     def downloadUpdate(self):
-        # return codes:
-        # 0 - download successful
-        # 21 - osmupdate: Your OSM file is already up-to-date.
-        # otherwise - error
+        """Download updated map and its changes.
+        
+        Used when base map data exists.
+        """
+        # Create updated OSM file given an base OSM file and its changes
+        App.log("=== Downloading "+self.region+" latest map updates ===")
         status = self.status()
-        if status == "uninitialized":
-            App.log("=== Non-incremental Tile Generation ===")
-            return self.downloadBase()
-        elif status == "base":
-            return self.downloadChange() or self.createUpdate()
-        else:
+        if status != "base":
             App.log('Should not download an update for {} in status "{}".'.format(
                 self.region, status))
             raise RuntimeError
-
-    def createUpdate(self):
-        # Create updated OSM file given an base OSM file and its changes
-        App.log("=== Creating updated "+self.region+" map data ===")
-        if not os.path.exists(self.base):
-            App.log('Cannot create an update for {}: missing base file "{}".'.format(
-                self.region, self.base))
-        if not os.path.exists(self.changes):
-            App.log('Cannot create an update for {}: missing changes file "{}".'.format(
-                self.region, self.changes))
-        exit_code = App.run_program(
+        exit_code = (
+                self.downloadChange()
+                or App.run_program(
                 "osmconvert.exe", 7200, [self.base, self.changes, "-o="+self.updated]
                 + self.osmconvert_params)
+                )
         if exit_code:
             self.silent_remove(self.updated)
             App.log("  Program finished with exit code {}.".format(
@@ -295,12 +334,12 @@ class openstreetmap_fr(osmChangeSource):
             os.rename(timestamped_base, self.updated)
         return exit_code
 
-class osmChangeSourceMerge(osmChangeSource):
+class osmChangeMergingSource(osmChangeSource):
     """Source made by merging multiple sub-regions.
     Sub-regions are processed in the order they were added.
     Sub-regions can contain sub-regions of their own.
     Example:
-    osm_source = osmChangeSourceMerge(
+    osm_source = osmChangeMergingSource(
             os.path.join('Cache', 'israel-and-palestine-latest.osm.pbf'),
             os.path.join('Cache', 'israel-and-palestine-update.osc'),
             os.path.join('Cache', 'israel-and-palestine-updated.osm.pbf'),
@@ -320,8 +359,8 @@ class osmChangeSourceMerge(osmChangeSource):
     
     """
     def __init__(self, base, changes, updated, region):
-        # Merge sources do not use a tempdir as there is no direct download
-        # from servers
+        # Merging sources do no direct download from servers.
+        # tempdir is not used and the region used for log messages.
         osmChangeSource.__init__(self, base, changes, updated, ".", region)
         del self.tempfiles, self.tempdir
         self.sources = []
@@ -345,23 +384,23 @@ class osmChangeSourceMerge(osmChangeSource):
                     [source.updated,"-o="+source.updated+".o5m"]
                     + self.osmconvert_params)
             if exit_code:
-                return exit_code
-        App.log("=== Merging "+self.region+" latest map data ===")
-        earliest = "--timestamp={}Z".format(
-            min(map(lambda source:source.timestamp(source.updated),
-                self.sources)).isoformat())
-        exit_code = App.run_program(
-                "osmconvert.exe", 7200,
-                map(lambda source:source.updated+".o5m", self.sources)
-                + ["-o="+self.updated, earliest]
-                + self.osmconvert_params)
+                break
+        if not exit_code:
+            App.log("=== Merging "+self.region+" latest map data ===")
+            earliest = "--timestamp={}Z".format(
+                min(map(lambda source:source.timestamp(source.updated),
+                    self.sources)).isoformat())
+            exit_code = App.run_program(
+                    "osmconvert.exe", 7200,
+                    map(lambda source:source.updated+".o5m", self.sources)
+                    + ["-o="+self.updated, earliest]
+                    + self.osmconvert_params)
+        for source in self.sources:
+            self.silent_remove(source.updated+".o5m")
         if exit_code:
             self.silent_remove(self.updated)
             App.log("  Program finished with exit code {}.".format(
                 exit_code))
-        else:
-            for source in self.sources:
-                self.silent_remove(source.updated+".o5m")
         return exit_code
 
     def downloadChange(self):
@@ -435,10 +474,16 @@ class osmChangeSourceMerge(osmChangeSource):
                     return False
                 return True
 
-class osmChangeSourceFilter(osmChangeSource):
+class osmChangeOverlyFilterSource(osmChangeSource):
     """Source made by filtering elements from another source.
+    The baseline map source is taken "as-is": no downloads or updates
+    are performed on the other source!
+
+    A base for an overly filter can be created from a source in
+    incremantal status.
+
     Example:
-    osm_trails = osmChangeSourceFilter(
+    osm_trails = osmChangeOverlyFilterSource(
             os.path.join('Cache', 'israel-and-palestine-trails-latest.osm.pbf'),
             os.path.join('Cache', 'israel-and-palestine-trails-update.osc'),
             os.path.join('Cache', 'israel-and-palestine-trails-updated.osm.pbf'),
@@ -449,68 +494,27 @@ class osmChangeSourceFilter(osmChangeSource):
     
     """
     def __init__(self, base, changes, updated, region, osmfilter, source):
-        # Filter sources do not use a tempdir as there is no direct download
-        # from servers
+        # Filter sources do no direct download from servers.
+        # tempdir is not used and the region used for log messages.
         osmChangeSource.__init__(self, base, changes, updated, ".", region)
         self.osmfilter = osmfilter
         self.source = source
 
-    def __filter(self):
-        App.log("=== Filtering latest map data into "+self.region+" ===")
-        status = self.status()
-        exit_code = (
-                App.run_program(
-                    "osmconvert.exe", 7200,
-                    [self.source.updated,"-o="+self.source.updated+".o5m"]
-                    + self.osmconvert_params)
-                or App.run_program(
-                    "osmfilter.exe", 16200, 
-                    ["--parameter-file="+self.osmfilter,
-                        self.source.updated+".o5m",
-                        "-o="+self.updated+".o5m"]) 
-                or App.run_program(
-                    "osmconvert.exe", 7200,
-                    [self.updated+".o5m", "-o="+self.updated]
-                    + self.osmconvert_params)
-                )
-        if status == "base":
-                exit_code = (
-                    exit_code
-                    or App.run_program(
-                        "osmconvert.exe", 7200,
-                        ["--diff", self.base, self.updated+".o5m", "-o="+self.changes]
-                        + self.osmconvert_params)
-                    )
-        self.silent_remove(self.source.updated+".o5m")
-        self.silent_remove(self.updated+".o5m")
-        if exit_code:
-            self.silent_remove(self.updated)
-            App.log("  Program finished with exit code {}.".format(
-                exit_code))
-        return exit_code
-
     def downloadBase(self):
-        App.log("=== Downloading "+self.region+" latest map data ===")
+        App.log("=== Filtering "+self.region+" latest map data ===")
         self.silent_remove(self.base)
         self.silent_remove(self.updated)
         self.silent_remove(self.changes)
         self.silent_remove(self.changes+".old")
-        return self.source.downloadBase() or self.__filter()
+        return self.__filter(self.source.updated, self.updated)
 
-    def downloadChange(self):
-        App.log("=== Downloading "+self.region+" map changes ===")
-        status = self.status()
-        if status not in ["idle", "base"]:
-            App.log('Should not download changes for {} in status "{}".'.format(
-                self.region, status))
-            raise RuntimeError
-        status = self.source.status()
-        exit_code = 0
-        if status not in ["incremental", "non-incremental"]:
-            exit_code = (
-                    self.source.downloadUpdate()
-                    or self.__filter() 
-                    )
+    def downloadUpdate(self):
+        App.log("=== Filtering "+self.region+" latest map updates ===")
+        # if sourceStatus not in ["incremental", "non-incremental"]:
+        exit_code = (
+                self.__filter(self.source.updated, self.updated) 
+                or self.__diff()
+                )
         if exit_code:
             self.silent_remove(self.changes)
             self.silent_remove(self.updated)
@@ -518,25 +522,47 @@ class osmChangeSourceFilter(osmChangeSource):
                 exit_code))
         return exit_code
 
-    def createUpdate(self):
-        # Update creation is built into downloadChange()
-        return 0
+    def downloadChange(self):
+        # OverlayFilter cannot be used as a source for merging
+        App.log('Should not download changes only for {} Overlay".'.format(
+            self.region))
+        raise RuntimeError
 
     def advance(self):
         osmChangeSource.advance(self)
-        self.source.advance()
 
-    def consistent(self):
-        status = self.status()
-        if status == "changes":
-            App.log('Filtered {} in "{}" state'.format(
-                self.region, status))
-            return False
-        source_status = self.source.status()
-        if source_status != status:
-            App.log('Source {} in "{}" state while filtered {} in "{}" state'.format(
-                self.source.region, source_status, self.region, status))
-            return False
-        return True
+    def __filter(self, inFile, outFile):
+        exit_code = (
+                App.run_program(
+                    "osmconvert.exe", 7200,
+                    [self.source.updated,"-o="+inFile+".o5m"]
+                    + self.osmconvert_params)
+                or App.run_program(
+                    "osmfilter.exe", 16200, 
+                    ["--parameter-file="+self.osmfilter,
+                        inFile+".o5m",
+                        "-o="+outFile+".o5m"]) 
+                or App.run_program(
+                    "osmconvert.exe", 7200,
+                    [outFile+".o5m","-o="+outFile]
+                    + self.osmconvert_params)
+                )
+        self.silent_remove(inFile+".o5m")
+        self.silent_remove(outFile+".o5m")
+        return exit_code
+
+    def __diff(self):
+        exit_code = (
+                App.run_program(
+                    "osmconvert.exe", 7200,
+                    [self.base,"-o="+self.base+".o5m"]
+                    + self.osmconvert_params)
+                or App.run_program(
+                    "osmconvert.exe", 7200,
+                    ["--diff", self.base+".o5m", self.updated, "-o="+self.changes]
+                    + self.osmconvert_params)
+                )
+        self.silent_remove(self.base+".o5m")
+        return exit_code
 
 # vim: set shiftwidth=4 expandtab textwidth=0:
