@@ -99,12 +99,6 @@ mkdir_p(cache_file(''))
 #
 base_map =  IsraelHikingTileGenCommand()
 if language == "Hebrew":
-    #######
-    # TODO: the asia/israel_and_palestine source below does not provide
-    # base extract yet.
-    # For non-incremental Tile Generation, manually extract the data
-    # from the asia-latest.pbf file.
-    #######
     # Minute updates from openstreetmap.fr
     osm_source = openstreetmap_fr(
             cache_file('israel-and-palestine-latest.osm.pbf'),
