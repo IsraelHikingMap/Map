@@ -144,7 +144,7 @@ features
 		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
 		area residential : landuse=residential
-		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
+		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
@@ -317,6 +317,9 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/star.png
+			for : _urban =yes
+				define
+					min-zoom : 16
 		elsefor : natural=peak
 			define
 				min-zoom : 12
@@ -338,10 +341,14 @@ rules
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
-			
+					
 		for : natural=peak
 			define
 				min-zoom : 14
+				
+		for : _urban=yes
+			define
+				min-zoom : 16
 		for : ele
 			define
 				text : @elevation(ele)
@@ -752,7 +759,7 @@ rules
 		if : * motorway
 			define
 				min-zoom : 6
-				line-color : black white 65%
+				line-color : black white 80%
 				text-color : blue
 				border-style : solid
 				border-color : black
@@ -763,7 +770,7 @@ rules
 		elseif : * trunk
 			define
 				min-zoom : 7
-				line-color : black white 65%
+				line-color : black white 80%
 				text-color : red
 				border-style : solid
 				border-color : black
@@ -774,7 +781,7 @@ rules
 		elseif : * primary
 			define
 				min-zoom : 9
-				line-color : black white 65%
+				line-color : black white 80%
 				text-color : green
 				border-style : solid
 				border-color : black
@@ -785,7 +792,7 @@ rules
 		elseif : * secondary
 			define
 				min-zoom : 10
-				line-color : black white 65%
+				line-color : black white 80%
 				text-color : #a98770
 				border-style : solid
 				border-color : black
@@ -796,12 +803,15 @@ rules
 		elseif : * tertiary
 			define
 				min-zoom : 12
-				line-color : black white 65%
+				line-color : black white 80%
 				border-style : solid
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
 				line-width : 12:0.75;13:3;14:4;15:5
+			for : maxspeed < 31
+				define 
+					line-color : #bbf
 		elseif : * residential
 			
 			define
@@ -938,8 +948,8 @@ rules
 				min-zoom : 14
 				font-size : 14:9;15:10;16:11
 				font-weight : normal
+				text-offset-vertical : 0
 				
-
 		elseif : * unclassified
 			define
 				min-zoom : 14
@@ -1050,10 +1060,8 @@ rules
 			font-weight : bold
 			text-letter-spacing : 0.15
 			//text-func : WayName(e)
-		for : _urban = yes
-			define
-				min-zoom : 16
-		draw : text
+		for : not _urban = yes
+			draw : text
 		
 		define
 			min-zoom : 12
@@ -1075,8 +1083,8 @@ rules
 		for : highway=cycleway
 			define
 				line-style : solid
-				line-color : #090
-				fill-color : #090
+				line-color : #080
+				fill-color : #080
 				
 		for : highway=path
 			define
@@ -1101,13 +1109,13 @@ rules
 			for : (bicycle=designated AND foot=designated)
 				define
 					line-style : solid
-					line-color : #090
-					fill-color : #090
+					line-color : #080
+					fill-color : #080
 			
 		for : mtb:scale=0
 			define
-				line-color : #090
-				fill-color : #090
+				line-color : #080
+				fill-color : #080
 		
 		for : mtb:scale=1
 			define
@@ -1608,6 +1616,9 @@ rules
 			shape-orientation : fixed
 			shape-mode : center
 			painting-cycle : 801
+		for : _urban=yes
+			define
+				min-zoom : 16
 		draw : icon
 		
 		define
@@ -1669,7 +1680,7 @@ rules
 		if : * residential
 			define
 				line-style : solid
-				line-width : 30%
+				line-width : 10:30%
 				fill-color : #eee
 				line-color : #999
 				min-zoom : 9
@@ -1714,7 +1725,6 @@ rules
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 8
 				fill-color : #CFE5C5
 				painting-cycle : 402
 				min-zoom : 9
@@ -1779,29 +1789,26 @@ rules
 		if : * scrub
 			define
 				line-style : none
-				min-zoom : 10
+				min-zoom : 9
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
 				
 		if : * sand
 			define
 				//text-func : NodeName(e)
-				min-zoom : 13
-			for : not natural=beach
-				draw : text
-			
-			define
+				min-zoom : 9
 				line-style : none
 				line-width : 1
-				min-zoom : 8
 				fill-color : #fbf7e2
 				painting-cycle : 401
+			for : not natural=beach
+				draw : text
 		
 		if : * farmland
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 12
+				min-zoom : 9
 				fill-color :#f4e5d3
 				painting-cycle : 401
 		

@@ -71,7 +71,7 @@ for layer in Map.layers:
         for osmWay in osmData.find_ways(lambda x : (
                 x.has_tag("amenity") or x.has_tag("barrier")
                 or x.has_tag("building") or x.has_tag("construction")
-                or x.has_tag("highway") or x.has_tag("historic") or x.has_tag("shop")
+                or x.has_tag("highway") or x.has_tag("historic") or x.has_tag("shop") or x.has_tag("tourism") 
                 or x.has_tag("landuse"))) :
             elementBoundingBox = getBoundingBox(osmWay, osmData)
             for external in bboxes:
