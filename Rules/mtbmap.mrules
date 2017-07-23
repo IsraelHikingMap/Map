@@ -106,7 +106,7 @@ features
 		aeroway : aeroway
 		railway : @isOneOf(railway,rail,light_rail,tram,subway,funicular)
 		power line : @isOneOf(power, line, minor_line)
-		stream : @isOneOf(waterway, stream, river, canal, drain, ditch, riverbank)
+		stream : @isOneOf(waterway, stream, river, canal, drain, ditch)
 		coastline : natural=coastline
 		cliff : natural=cliff OR landuse=quarry
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
@@ -137,14 +137,14 @@ features
 		network cycle regional : relation[network = rcn]
 		network cycle national : relation[network = ncn]
 		
-//_______________________________________________________________________________
+//___________________________________
 			
 	areas
 		archaeological : historic=archaeological_site
 		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
 		area residential : landuse=residential
-		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR (man_made=wastewater_plant) OR (power=station)
+		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
 		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
@@ -168,72 +168,67 @@ features
 
 properties
 	curved : false
-	font-family : Arial
-	text-offset-vertical : -12%
-	text-halo-color : #fff
-	text-halo-width : 18%
-	text-halo-opacity : 0.9
-	text-line-spacing : 0.7
 	map-background-color : #fff9ef
 	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none
 	line-opacity : 100%
-	//text-direction : rtl
-	//text : @any([[name:he]], name)
+	font-weight : normal
+	font-size : 15:10;16:12
+	font-stretch : 1
+	text-offset-vertical : -8
+	min-zoom : 15
+	font-family : Arial
+	text-halo-color : #fff
+	text-halo-width : 18%
+	text-halo-opacity : 0.9
+	text-line-spacing : 0.7
+	text-color : black
+	text-align-vertical : far
+	text-direction : rtl
+	text : @any([[name:he]], name)
 
 rules
 
 // ___________________points________________________
 
 	target : barrier
-		define
-			min-zoom : 15
-			icon-width : 17
-		for : barrier=gate
-			for : access=no OR bicycle=no OR access=private
+		for : not _urban = yes
+			define
+				min-zoom : 15
+				icon-width : 17
+			for : barrier=gate
+				for : access=no OR bicycle=no OR access=private
+					define
+						icon-image : Icons/mtbmap/gate_closed.png
+				else
+					define
+						icon-image : Icons/mtbmap/gate_open.png
+			elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
 				define
-					icon-image : Icons/mtbmap/gate_closed.png
+					icon-image : Icons/mtbmap/gate_open.png
+			elsefor : barrier=cattle_grid
+				define
+					icon-image : Icons/mtbmap/cattle_grid.png
+					icon-width: 22
 			else
 				define
 					icon-image : Icons/mtbmap/gate_open.png
-		elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
-			define
-				icon-image : Icons/mtbmap/gate_open.png
-		elsefor : barrier=cattle_grid
-			define
-				icon-image : Icons/mtbmap/cattle_grid.png
-				icon-width: 22
-		else
-			define
-				icon-image : Icons/mtbmap/gate_open.png
-		
-		draw : icon
+			draw : icon
 		
 	target : place
-		define
-		
-			text-max-width : 3
-			text-align-horizontal : center
-			painting-cycle: 800
-		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
-			define
-				text-max-width : 15
-						
 		for : place=city
 			define
 				icon-image : Icons/mtbmap/dot.png
 				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
-				
 			draw : icon
 			define
-				text-offset-vertical : 80%
 				min-zoom : 8
 				max-zoom : 14
-				font-size : 8:12;10:16;14:20;15:22;16:24
+				font-size : 8:12;10:16;14:20
 				painting-cycle: 802
 				
 		elsefor : place=town
@@ -265,7 +260,15 @@ rules
 			stop
 		define
 			font-weight : bold
-			text-func : NodeName(e)
+			text-offset-vertical : 0
+			text-max-width : 3
+			text-align-horizontal : center
+			text-align-vertical : center
+			//text-func : NodeName(e)
+			painting-cycle: 800
+		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
+			define
+				text-max-width : 15
 		draw : text
 
 	target : POI
@@ -277,8 +280,7 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/viewpoint.png
-		
-		elsefor : historic=ruins
+		elsefor : historic=ruins and not _urban=yes
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/3stones.png
@@ -291,7 +293,6 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/tower.png
-		
 		elsefor : natural=cave_entrance
 			define
 				min-zoom : 14
@@ -301,11 +302,11 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/water_tower.png
-		elsefor : natural=tree
+		elsefor : natural=tree and not _urban=yes
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/tree.png
-		elsefor : (historic=memorial OR historic=monument)
+		elsefor : (historic=memorial OR historic=monument) and not _urban=yes
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/monument.png
@@ -316,12 +317,17 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/mtbmap/star.png
+			for : _urban =yes
+				define
+					min-zoom : 16
 		elsefor : natural=peak
 			define
 				min-zoom : 12
 				icon-image : Icons/mtbmap/dot.png
 				icon-width : 12:5;13:6;14:7;15:8
-
+		for: _urban = yes
+			define
+				min-zoom : 16
 		draw : icon
 	
 		define
@@ -335,10 +341,14 @@ rules
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
-			
+					
 		for : natural=peak
 			define
 				min-zoom : 14
+				
+		for : _urban=yes
+			define
+				min-zoom : 16
 		for : ele
 			define
 				text : @elevation(ele)
@@ -347,30 +357,22 @@ rules
 
 		for : NOT (natural=tree)
 			define
-				text-func : NodeName(e)
+				//text-func : NodeName(e)
+				text : name
 				text-offset-vertical : -8
 			draw : text
 
 	target: worship *
-		if : * church
+		if : * church 
 			define
-
-				font-weight : normal
-				font-size : 15:10;16:12
-				font-stretch : 1
-				text-offset-vertical : -8
-				min-zoom : 15
-				text-align-vertical : far
-				text-func : NodeName(e)
-			draw : text
-
+				//text-func : NodeName(e)
+			if : not _urban=yes
+				draw : text
 			define
 				icon-image : Icons/mtbmap/church.png
-				
 		elseif : * mosque
 			define
 				icon-image : Icons/mtbmap/mosque.png
-
 		elseif : * synagogue
 			define
 				icon-image : Icons/mtbmap/synagogue.png
@@ -382,6 +384,9 @@ rules
 		for : tourism=attraction
 			define
 				min-zoom : 13
+		for : _urban=yes
+			define
+				min-zoom : 16
 		else
 			define
 				min-zoom : 15
@@ -393,7 +398,7 @@ rules
 			icon-width : 15:12
 			align-vertical : center
 			min-zoom : 15
-		for : access=private
+		for : access=private or _urban=yes
 			stop
 		draw : icon
 		
@@ -403,35 +408,24 @@ rules
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
+		for : _urban=yes
+			stop
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 14:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target: food
-		define
-			icon-image : Icons/mtbmap/food.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-		define
-			font-weight : normal
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 16
-			text-align-vertical : near
-			text-func : NodeName(e)
-		draw : text
+		for : not _urban=yes
+			define
+				icon-image : Icons/mtbmap/food.png
+				icon-width : 17
+				align-vertical : center
+				min-zoom : 14
+			draw : icon
+			define
+				//text-func : NodeName(e)
+			draw : text
 
 	target: convenience
 		define
@@ -439,25 +433,21 @@ rules
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
+		for : _urban=yes
+			stop
 		draw : icon
 
 	target: lodging
-		define
-			icon-image : Icons/mtbmap/hotel.png
-			icon-width : 17
-			align-vertical : center
-			min-zoom : 14
-		draw : icon
-		define
-			font-weight : normal
-			text-color : black
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 16
-			text-align-vertical : near
-			text-func : NodeName(e)
-		draw : text
+		for : not _urban=yes
+			define
+				icon-image : Icons/mtbmap/hotel.png
+				icon-width : 17
+				align-vertical : center
+				min-zoom : 14
+			draw : icon
+			define
+				//text-func : NodeName(e)
+			draw : text
 
 	target: bikeshop
 		define
@@ -468,15 +458,8 @@ rules
 			painting-cycle : 799
 		draw : icon
 		define
-			font-weight : normal
-			text-color : black
-			font-size : 13:9;15:10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: bikepark
@@ -496,7 +479,7 @@ rules
 			min-zoom : 10
 			text-align-vertical : near
 			painting-cycle : 810
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 		
 	target: medical
@@ -508,23 +491,19 @@ rules
 			painting-cycle : 799
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
-			min-zoom : 15
-			text-align-vertical : near
 			painting-cycle : 799
-			text-func : NodeName(e)
+			min-zoom : 16
+			//text-func : NodeName(e)
 		draw : text	
 		
 	target: toilet
-		define
-			icon-image : Icons/mtbmap/toilet.png
-			icon-width : 15:17
-			align-vertical : center
-			min-zoom : 15
-		draw : icon
+		for : not _urban = yes
+			define
+				icon-image : Icons/mtbmap/toilet.png
+				icon-width : 15:17
+				align-vertical : center
+				min-zoom : 15
+			draw : icon
 
 	target : power tower
 		define
@@ -566,12 +545,7 @@ rules
 			
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 12
-			font-stretch : 1
-			text-offset-vertical : 10
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : iata
 			define
 				min-zoom : 12
@@ -599,6 +573,9 @@ rules
 				icon-image : Icons/mtbmap/tap.png
 				icon-width : 17
 				painting-cycle : 802
+			for : _urban = yes
+				define
+					min-zoom : 16
 		for : man_made=cistern	
 			define
 				icon-image : Icons/mtbmap/cistern.png
@@ -615,13 +592,9 @@ rules
 		
 		define
 			text-color : blue
-			font-weight : normal
-			font-size : 15:10;16:12
-			font-stretch : 1
+			text-max-width : 3
 			text-offset-vertical : -8
-			min-zoom : 15
-			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : NOT (amenity=drinking_water)
 			draw : text
 						
@@ -639,13 +612,8 @@ rules
 			icon-width : 17
 		draw : icon
 		define
-			font-weight : normal
-			font-size : 10
-			font-stretch : 1
-			text-offset-vertical : 10
 			min-zoom : 14
-			text-align-vertical : near
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 				
 	target : gas
@@ -791,7 +759,7 @@ rules
 		if : * motorway
 			define
 				min-zoom : 6
-				line-color : blue white 75%
+				line-color : black white 80%
 				text-color : blue
 				border-style : solid
 				border-color : black
@@ -802,7 +770,7 @@ rules
 		elseif : * trunk
 			define
 				min-zoom : 7
-				line-color : red white 75%
+				line-color : black white 80%
 				text-color : red
 				border-style : solid
 				border-color : black
@@ -813,7 +781,7 @@ rules
 		elseif : * primary
 			define
 				min-zoom : 9
-				line-color : green white 75%
+				line-color : black white 80%
 				text-color : green
 				border-style : solid
 				border-color : black
@@ -824,7 +792,7 @@ rules
 		elseif : * secondary
 			define
 				min-zoom : 10
-				line-color : brown white 75%
+				line-color : black white 80%
 				text-color : #a98770
 				border-style : solid
 				border-color : black
@@ -835,13 +803,17 @@ rules
 		elseif : * tertiary
 			define
 				min-zoom : 12
-				line-color : white
+				line-color : black white 80%
 				border-style : solid
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
 				line-width : 12:0.75;13:3;14:4;15:5
+			for : maxspeed < 31
+				define 
+					line-color : #bbf
 		elseif : * residential
+			
 			define
 				line-color : white
 				border-style : solid
@@ -850,6 +822,11 @@ rules
 				border-opacity : 1
 				min-zoom : 13
 				line-width : 13:2;14:3;15:4
+			for : maxspeed < 31
+				define 
+					line-color : #bbf
+					
+					
 		elseif : * unclassified
 			define
 				min-zoom : 13
@@ -971,8 +948,8 @@ rules
 				min-zoom : 14
 				font-size : 14:9;15:10;16:11
 				font-weight : normal
+				text-offset-vertical : 0
 				
-
 		elseif : * unclassified
 			define
 				min-zoom : 14
@@ -990,10 +967,11 @@ rules
 				text-halo-opacity : 0.66
 				text-align-horizontal : center
 				text-align-vertical : center
+				text-offset-vertical : 0
 				font-stretch : 0.9
 				font-size : 9
 		define
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : road *
@@ -1062,7 +1040,6 @@ rules
 				line-style : solid
 			draw : line
 		draw : line
-
 		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 15
@@ -1070,7 +1047,7 @@ rules
 			font-size : 14:10;15:11;16:12
 			font-weight : bold
 			text-offset-vertical : -8
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 		
 	target : path
@@ -1082,8 +1059,9 @@ rules
 			min-zoom : 14
 			font-weight : bold
 			text-letter-spacing : 0.15
-			text-func : WayName(e)
-		draw : text
+			//text-func : WayName(e)
+		for : not _urban = yes
+			draw : text
 		
 		define
 			min-zoom : 12
@@ -1098,12 +1076,15 @@ rules
 				min-zoom : 14
 				line-style : dot
 				line-color : #973
+			for : _urban=yes
+				define
+					min-zoom : 16
 		
 		for : highway=cycleway
 			define
 				line-style : solid
-				line-color : #090
-				fill-color : #090
+				line-color : #080
+				fill-color : #080
 				
 		for : highway=path
 			define
@@ -1128,13 +1109,13 @@ rules
 			for : (bicycle=designated AND foot=designated)
 				define
 					line-style : solid
-					line-color : #090
-					fill-color : #090
+					line-color : #080
+					fill-color : #080
 			
 		for : mtb:scale=0
 			define
-				line-color : #090
-				fill-color : #090
+				line-color : #080
+				fill-color : #080
 		
 		for : mtb:scale=1
 			define
@@ -1185,6 +1166,9 @@ rules
 				line-style : none
 				fill-color : red
 				min-zoom : 13
+			for : _urban=yes
+				define
+					min-zoom : 16
 			draw : shape
 
 // Background for cycle networks in MTB IL
@@ -1291,13 +1275,17 @@ rules
 			map.rendering.lflp.min-buffer-space : 5
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			painting-cycle : 800
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		draw : text
 
 	target : fence
+		for : _urban = yes
+			define 
+				min-zoom : 16
+		else 
+			define
+				line-color : #444
 		define
-			min-zoom : 14
-			line-color : #444
 			line-width : 14:1
 			shape-spacing : 15:2
 			shape : custom
@@ -1429,7 +1417,7 @@ rules
 			map.rendering.lflp.max-allowed-corner-angle : 45
 			text-color : #444
 			text-letter-spacing : 1.5
-			text-func : WayName(e)
+			//text-func : WayName(e)
 		for : length > 10
 			define
 				min-zoom : 10
@@ -1474,23 +1462,25 @@ rules
 		draw : fill
 	
 	target : building
-		define
-			min-zoom : 15
-			fill-color : #ccc
-			line-color : #999
-			line-style : solid
-			line-width : 1
-			painting-cycle : 406
-		draw : fill
+		for : not _urban = yes
+			define
+				min-zoom : 15
+				fill-color : #ccc
+				line-color : #999
+				line-style : solid
+				line-width : 1
+				painting-cycle : 406
+			draw : fill
 	target : building point
-		define
-			min-zoom : 14
-			fill-color : #999
-			line-style : none
-			shape : square
-			shape-size : 13:1;16:5
-			painting-cycle : 406
-		draw : shape
+		for : not _urban = yes
+			define
+				min-zoom : 14
+				fill-color : #999
+				line-style : none
+				shape : square
+				shape-size : 13:1;16:5
+				painting-cycle : 406
+			draw : shape
 
 	target : sports
 		define
@@ -1552,6 +1542,8 @@ rules
 			line-color : #999
 			fill-opacity : 0.5
 		draw : fill
+		for : _urban=yes
+			stop
 		define
 			icon-image : Icons/mtbmap/bulldozer.png
 			icon-width : 17
@@ -1585,18 +1577,19 @@ rules
 			text-offset-vertical : 10
 			text-align-vertical : near
 			min-zoom : 15
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 	
 	target : archaeological
-		define
-			icon-image : Icons/mtbmap/jar.png
-			icon-width : 17
-			min-zoom : 14
-			shape-orientation : fixed
-			shape-mode : center
-			painting-cycle : 801
-		draw : icon
+		for : not _urban = yes
+			define
+				icon-image : Icons/mtbmap/jar.png
+				icon-width : 17
+				min-zoom : 14
+				shape-orientation : fixed
+				shape-mode : center
+				painting-cycle : 801
+			draw : icon
 		
 		define
 			text-max-width : 3
@@ -1608,7 +1601,7 @@ rules
 			text-offset-vertical : -8
 			min-zoom : 15
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		for : @isMatch(name,"[!-.]") OR @isMatch(name:he,"[!-.]") 
 			define
 				text-max-width : 15
@@ -1623,6 +1616,9 @@ rules
 			shape-orientation : fixed
 			shape-mode : center
 			painting-cycle : 801
+		for : _urban=yes
+			define
+				min-zoom : 16
 		draw : icon
 		
 		define
@@ -1633,7 +1629,7 @@ rules
 			font-stretch : 1
 			text-offset-vertical : -8
 			text-align-vertical : far
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 		draw : text
 
 	target : Pal *
@@ -1668,7 +1664,7 @@ rules
 			min-zoom : 15
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
-			text-func : NodeName(e)
+			//text-func : NodeName(e)
 			
 		if : * commercial
 			define
@@ -1676,7 +1672,7 @@ rules
 			draw : text
 			define
 				line-style : none
-				line-width : 1
+				line-width : 30%
 				fill-color : #ddd
 				painting-cycle : 403
 				min-zoom : 13
@@ -1684,7 +1680,7 @@ rules
 		if : * residential
 			define
 				line-style : solid
-				line-width : 30%
+				line-width : 10:30%
 				fill-color : #eee
 				line-color : #999
 				min-zoom : 9
@@ -1698,6 +1694,8 @@ rules
 			define
 				fill-color : #eee
 				min-zoom : 12
+				line-width : 30%
+				line-color : #999
 				painting-cycle : 403
 							
 		if : * water
@@ -1707,14 +1705,15 @@ rules
 				painting-cycle : 503
 				line-style : solid
 				line-color : blue
-				line-width : 7:0.1;13:0.5
-				line-opacity : 0.5
+				line-width : 7:0 ; 13:0.5
+				line-opacity : 7:0; 13:0.5
 			for : intermittent
 				define
 					fill-color : #B8DBF7
 					fill-hatch : swne
 					fill-hatch-color : white
 					fill-hatch-opacity : 0
+					line-style : dash
 					painting-cycle : 403
 			define
 				min-zoom : 15
@@ -1726,7 +1725,6 @@ rules
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 8
 				fill-color : #CFE5C5
 				painting-cycle : 402
 				min-zoom : 9
@@ -1763,16 +1761,23 @@ rules
 			for : (landuse=cemetery OR amenity=grave_yard)
 				define
 					icon-image : Icons/mtbmap/cemetery.png
+				if : _urban=yes
+					define
+						min-zoom : 16
 				draw : icon
 			for : (leisure=playground)
 				define
 					icon-image : Icons/mtbmap/playground.png
+				if : _urban=yes
+					define
+						min-zoom : 16
 				draw : icon
 			define
 				line-style : none
 				min-zoom : 12
 				fill-color : #DEFED2
 				painting-cycle : 403
+
 					
 		if : * orchard
 			define
@@ -1784,29 +1789,26 @@ rules
 		if : * scrub
 			define
 				line-style : none
-				min-zoom : 10
+				min-zoom : 9
 				fill-texture : Textures/scrub.png
 				painting-cycle : 402
 				
 		if : * sand
 			define
-				text-func : NodeName(e)
-				min-zoom : 13
-			for : not natural=beach
-				draw : text
-			
-			define
+				//text-func : NodeName(e)
+				min-zoom : 9
 				line-style : none
 				line-width : 1
-				min-zoom : 8
 				fill-color : #fbf7e2
 				painting-cycle : 401
+			for : not natural=beach
+				draw : text
 		
 		if : * farmland
 			define
 				line-style : none
 				line-width : 1
-				min-zoom : 12
+				min-zoom : 9
 				fill-color :#f4e5d3
 				painting-cycle : 401
 		
