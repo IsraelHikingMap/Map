@@ -178,7 +178,6 @@ properties
 	font-size : 15:10;16:12
 	font-stretch : 1
 	text-offset-vertical : -8
-	min-zoom : 15
 	font-family : Arial
 	text-halo-color : #fff
 	text-halo-width : 18%
@@ -1223,6 +1222,7 @@ rules
 		
 	target : stream
 		define
+			map.rendering.lflp.max-allowed-corner-angle : 30
 			min-zoom : 10
 			line-color : #88aaff 
 			border-color : #88aaff
@@ -1292,6 +1292,7 @@ rules
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
 			shape-spacing : 3
 			shape-size : 6
+			min-zoom : 14
 			painting-cycle : 601
 		draw : shape
 		define
@@ -1541,6 +1542,7 @@ rules
 			line-width : 0.3
 			line-color : #999
 			fill-opacity : 0.5
+			min-zoom : 14
 		draw : fill
 		for : _urban=yes
 			stop
@@ -1680,11 +1682,17 @@ rules
 		if : * residential
 			define
 				line-style : solid
-				line-width : 10:30%
+				line-width : 30%
 				fill-color : #eee
 				line-color : #999
+				min-zoom : 12
+				painting-cycle : 402
+			draw : line
+			define
 				min-zoom : 9
 				painting-cycle : 402
+				line-style : none
+
 				
 		if : * industrial
 			define
