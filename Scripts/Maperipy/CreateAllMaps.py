@@ -91,78 +91,14 @@ if DataStore.has_data("Language"):
     language = DataStore.get_data("Language")
 # Output directory for the tiles of all maps
 site_dir = os.path.join(ProjectDir, language)
-if language == "Hebrew":
-    phases = [
-        'OverlayTiles',
-        'IsraelHiking15',
-        'IsraelMTB15',
-        'IsraelHiking16',
-        'IsraelMTB16']
-elif language == "English":
-    phases = [
-        'IsraelHiking15',
-        'IsraelMTB15',
-        'IsraelHiking16',
-        'IsraelMTB16']
 mkdir_p(os.path.join(site_dir, "Oruxmaps"))
 mkdir_p(cache_file(''))
 
-def done_file(phase):
-    return cache_file(phase+'.done')
-
-def mark_done(phase):
-    open(done_file(phase), 'a').close()
-    App.log(phase+' phase is done.')
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
-
+#
+# Map sources
+#
 base_map =  IsraelHikingTileGenCommand()
 if language == "Hebrew":
-    '''
-    # Daily updated from geofabric
-    osm_source = geofabric(
-            cache_file('israel-and-palestine-latest.osm.pbf'),
-            cache_file('israel-and-palestine-update.osc'),
-            cache_file('israel-and-palestine-updated.osm.pbf'),
-            os.path.join(ProjectDir, 'Cache', 'geofabrik'),
-            "asia/israel-and-palestine")
-    # TODO: the merge/israel_and_palestine source below provides corrupt
-    # diff files. It is commented out until the issue is fixed
-    osm_source = osmChangeSourceMerge(
-            cache_file('israel-and-palestine-latest.osm.pbf'),
-            cache_file('israel-and-palestine-update.osc'),
-            cache_file('israel-and-palestine-updated.osm.pbf'),
-            "asia/israel-and-palestine")
-    osm_source.addSource(openstreetmap_fr(
-            cache_file('palestine-latest.osm.pbf'),
-            cache_file('palestine-update.osc'),
-            cache_file('palestine-updated.osm.pbf'),
-            cache_file('openstreetmap_fr'),
-            "asia/palestine"))
-    osm_source.addSource(openstreetmap_fr(
-            cache_file('israel-latest.osm.pbf'),
-            cache_file('israel-update.osc'),
-            cache_file('israel-updated.osm.pbf'),
-            cache_file('openstreetmap_fr'),
-            "asia/israel"))
-    #######
-    # TODO: the merge/israel_and_palestine source below currently
-    # has data reliability issues and should not be used!
-    # It is kept here for reference only!
-    #######
-    # Minute updates from openstreetmap.fr
-    osm_source = openstreetmap_fr(
-            cache_file('israel-and-palestine-latest.osm.pbf'),
-            cache_file('israel-and-palestine-update.osc'),
-            cache_file('israel-and-palestine-updated.osm.pbf'),
-            os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
-            "merge/israel_and_palestine")
-    '''
-    #######
-    # TODO: the asia/israel_and_palestine source below does not provide
-    # base extract yet.
-    # For non-incremental Tile Generation, manually extract the data
-    # from the asia-latest.pbf file.
-    #######
     # Minute updates from openstreetmap.fr
     osm_source = openstreetmap_fr(
             cache_file('israel-and-palestine-latest.osm.pbf'),
@@ -170,6 +106,8 @@ if language == "Hebrew":
             cache_file('israel-and-palestine-updated.osm.pbf'),
             os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
             "asia/israel_and_palestine")
+    # Improve performance with prefetch
+    osm_source.osmupdate_params = ["--trust-tempfiles"]
     # DEBUG # osm_source.osmupdate_params = ["--keep-tempfiles", "--verbose", "--trust-tempfiles"]
 else:
     # Daily updated from geofabric
@@ -181,13 +119,32 @@ else:
             "asia/israel-and-palestine")
 
 trails_overlay =  IsraelHikingTileGenCommand()
-osm_trails = osmChangeSourceFilter(
+osm_trails = osmChangeOverlyFilterSource(
         cache_file('israel-and-palestine-trails-latest.osm.pbf'),
         cache_file('israel-and-palestine-trails-update.osc'),
         cache_file('israel-and-palestine-trails-updated.osm.pbf'),
         "hiking trails",
         os.path.join('Filters', 'trails_filter.txt'),
         osm_source)
+
+#
+# Map creation phases
+#
+phases = [
+    'IsraelHiking15',
+    'IsraelMTB15',
+    'IsraelHiking16',
+    'IsraelMTB16']
+if language == "Hebrew":
+    phases += ['OverlayTiles']
+
+def done_file(phase):
+    return cache_file(phase+'.done')
+
+def mark_done(phase):
+    open(done_file(phase), 'a').close()
+    App.log(phase+' phase is done.')
+    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
 # Create a new map if all phased were done
 remainingPhases = []
@@ -201,15 +158,18 @@ if remainingPhases == []:
         os.remove(done_file(phase))
     remainingPhases = phases
 
+#
+# Assess map creation mode and completion of previous execution
+#
 App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
 
-# Continue an incomplete run
-if osm_source.status() in ["non-incremental", "incremental", "changes"]:
+if osm_source.status() in ["non-incremental", "incremental"]:
+    # Continue an incomplete run
     App.log('=== Continueing execution of the previous tile generation ===')  
     App.log('Remaining phases: '+', '.join(remainingPhases))
     App.run_command("pause 15000")
 else:
-    exit_code = osm_trails.downloadUpdate()
+    exit_code = osm_source.downloadMap()
     if exit_code == 21:
         remainingPhases = []
     elif exit_code == 0:
@@ -254,6 +214,9 @@ elif remainingPhases:
     base_map.clean_tiles = True
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
+#
+# Execute map generation by phases
+#
 if remainingPhases:
     App.log("=== Executing Phases: {} ===".format(remainingPhases))
     if language == "Hebrew":
@@ -329,12 +292,18 @@ if remainingPhases:
         App.run_command("set-setting name=map.rendering.map-background-opacity value=0%")
         App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
         trails_overlay.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
-        (changed, guard) = trails_overlay.statistics(False)
-        App.collect_garbage()
-        if changed:
-            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        mark_done(phase)
+        if not osm_trails.downloadMap():
+            if osm_trails.status() == "incremental":
+                trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
+                (changed, guard) = trails_overlay.statistics(False)
+            else:
+                Map.add_osm_source(osm_trails.updated)
+                changed = True
+            App.collect_garbage()
+            if changed:
+                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
+            mark_done(phase)
+            osm_trails.advance()
     else:
         App.log(phase+' phase skipped.')
 
@@ -343,12 +312,16 @@ if remainingPhases:
             "Execution time:",
             (datetime.now()-start_time).total_seconds())))
 
+#
+# Cleanup and prepare for next execution
+#
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
 
-if osm_trails.status() != "base":
-    # No update was available
+osm_source.advance()
+if "OverlayTiles" in phases:
     osm_trails.advance()
+
 for phase in phases:
     silent_remove(done_file(phase))
 
