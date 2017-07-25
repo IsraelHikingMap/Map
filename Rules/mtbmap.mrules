@@ -1803,14 +1803,18 @@ rules
 				
 		if : * sand
 			define
+			
 				text-func : NodeName(e)
+				min-zoom : 12
+			for : not natural=beach
+				draw : text
+			define
 				min-zoom : 9
 				line-style : none
 				line-width : 1
 				fill-color : #fbf7e2
 				painting-cycle : 401
-			for : not natural=beach
-				draw : text
+			
 		
 		if : * farmland
 			define
