@@ -1249,7 +1249,7 @@ rules
 
 	// Annotate the inner side of natural reserve boundaries.
 	// Use the "clockwise" tag created by the Maperipy script
-	// AddWayLengthTags.py
+	// AddOsmTags.py
 	target : nature reserve boundary *
 		define
 			min-zoom : 13
