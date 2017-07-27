@@ -19,4 +19,3 @@
 git-cmd.exe git pull --verbose ^& EXIT
 
 :END
-EXIT

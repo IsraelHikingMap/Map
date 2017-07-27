@@ -14,7 +14,7 @@
 @REM https://creativecommons.org/licenses/by-nc-sa/3.0/
 @ECHO OFF
 
-SETLOCAL
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 SET QDIR=%~f1
 SET JOB=%~2
@@ -84,18 +84,29 @@ GOTO CheckQueue
 
 :QueueHead
 SET HEADPID=
+SET ABORT=TRUE
 FOR /F "USEBACKQ TOKENS=1* DELIMS=-" %%p IN (`DIR "%QDIR%" /O-D /B`) DO (
-  TASKLIST /FO TABLE /NH /FI "PID eq %%p"  | FINDSTR "%%p" >NUL
-  IF ERRORLEVEL 1 (
-    DEL "%QDIR%\%%p-%%q"
-    IF EXIST "%QDIR%\%%p-%%q" (
-      @ECHO Cannot remove "%HEADPID%-%HEADJOB%" job from head of "%~1" queue. 1>&2
-      EXIT /B 1
-    )
+  @REM Head of queue is seen last
+  SET HEADPID=%%p
+  SET HEADJOB=%%q
+  IF "!HEADPID!-!HEADJOB!"=="%PID%" (
+    @REM This job is still in the queue
+    SET ABORT=FALSE
   ) ELSE (
-    SET HEADPID=%%p
-    SET HEADJOB=%%q
+    TASKLIST /FO TABLE /NH /FI "PID eq !HEADPID!" | FINDSTR "!HEADPID!" >NUL
+    IF ERRORLEVEL 1 (
+      @REM Process !HEADPID! is no longer running, remove from queue
+      DEL "%QDIR%\!HEADPID!-!HEADJOB!"
+      IF EXIST "%QDIR%\!HEADPID!-!HEADJOB!" (
+        @ECHO Cannot remove "!HEADPID!-!HEADJOB!" job from "%~1" queue. 1>&2
+        EXIT /B 1
+      )
+    )
   )
+)
+IF "%ABORT%"=="TRUE" (
+  @REM This job is no longer in the queue
+  EXIT /B 1
 )
 GOTO :EOF
 
