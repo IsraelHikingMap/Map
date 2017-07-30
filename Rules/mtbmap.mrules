@@ -455,6 +455,9 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		define
 			painting-cycle : 799
@@ -488,6 +491,9 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		define
 			painting-cycle : 799
@@ -620,6 +626,9 @@ rules
 			min-zoom : 13
 			icon-image : Icons/mtbmap/gas.png
 			icon-width : 19
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		
 	target : railway station
@@ -1208,7 +1217,7 @@ rules
 			define
 				min-zoom : 13
 				line-color : #f1eee8
-				line-width : 12:3;13:5;14:8
+				line-width : 12:2;13:3;14:4
 				line-opacity : 1
 				line-style : solid
 				border-style : solid
@@ -1279,13 +1288,9 @@ rules
 		draw : text
 
 	target : fence
-		for : _urban = yes
-			define 
-				min-zoom : 16
-		else 
-			define
-				line-color : #444
+
 		define
+			line-color : #444
 			line-width : 14:1
 			shape-spacing : 15:2
 			shape : custom
@@ -1294,6 +1299,9 @@ rules
 			shape-size : 6
 			min-zoom : 14
 			painting-cycle : 601
+		for : _urban = yes
+			define 
+				min-zoom : 16
 		draw : shape
 		define
 			line-width : 13:1 ; 15:2
