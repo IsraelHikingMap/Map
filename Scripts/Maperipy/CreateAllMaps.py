@@ -23,6 +23,7 @@ from OsmChangeSource import *
 from PolygonTileGenCommand import pretty_timer
 
 start_time = datetime.now()
+App.run_command('clear-map')
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
 MaperitiveDir = os.path.dirname(os.path.dirname(os.path.normpath(os.__file__)))
@@ -163,9 +164,9 @@ if remainingPhases == []:
 #
 App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
 
-if osm_source.status() in ["non-incremental", "incremental"]:
+if osm_source.status() in ("non-incremental", "incremental"):
     # Continue an incomplete run
-    App.log('=== Continueing execution of the previous tile generation ===')  
+    App.log('=== Continuing execution of the previous tile generation ===')  
     App.log('Remaining phases: '+', '.join(remainingPhases))
     App.run_command("pause 15000")
 else:
@@ -228,7 +229,7 @@ if remainingPhases:
             pass
 
     # Tile generation
-    if [val for val in ['IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16']
+    if [val for val in ('IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16')
             if val in remainingPhases]:
         App.run_command("run-script file="+os.path.join("Scripts", "Maperitive", "IsraelDecoration.mscript"))
 
@@ -288,22 +289,28 @@ if remainingPhases:
     if phase in remainingPhases:
         App.log("=== Create Trails Overlay tiles ===")
         App.run_command("clear-map")
-        App.run_command("set-setting name=map.coastline.mode value=ignore")
-        App.run_command("set-setting name=map.rendering.map-background-opacity value=0%")
-        App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
-        trails_overlay.tile_removal_script = cache_file("rm_{}.sh".format(phase))
-        if not osm_trails.downloadMap():
-            if osm_trails.status() == "incremental":
-                trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
-                (changed, guard) = trails_overlay.statistics(False)
-            else:
-                Map.add_osm_source(osm_trails.updated)
-                changed = True
-            App.collect_garbage()
-            if changed:
-                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-            mark_done(phase)
-            osm_trails.advance()
+        App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
+        if osm_trails.status() in ("uninitialized", "base"):
+            # Not continuing execution of the previous tile generation 
+            if osm_trails.downloadMap():
+                raise RuntimeError
+        if osm_trails.status() == "non-incremental":
+            Map.add_osm_source(osm_trails.updated)
+            changed = True
+        else:
+            trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
+            (changed, guard) = trails_overlay.statistics(False)
+        App.collect_garbage()
+        if changed:
+            App.run_command("run-python file="+os.path.join("Scripts", "Maperipy", "AddOsmTags.py"))
+            App.run_command("set-setting name=map.coastline.mode value=ignore")
+            App.run_command("set-setting name=map.rendering.map-background-opacity value=0%")
+            App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
+            App.run_command("apply-ruleset")
+            trails_overlay.tile_removal_script = cache_file("rm_{}.sh".format(phase))
+            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
+        mark_done(phase)
+        osm_trails.advance()
     else:
         App.log(phase+' phase skipped.')
 

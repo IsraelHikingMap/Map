@@ -64,6 +64,8 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
 
     def __init__(self):
         OsmChangeTileGenCommand.__init__(self)
+        self.after_tile_save = self.collect_tiles
+        self.tiles_to_post_process = []
         self.subpixel_precision = 2
         self.use_fingerprint = True
         self.min_tile_file_size = 385  # No transparent tiles
@@ -78,6 +80,7 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     def execute(self):
         timer = time.time()
         OsmChangeTileGenCommand.execute(self)
+        self.post_process_tiles()
         timer = time.time() - timer
         print pretty_timer("   Tile generation time:", timer)
 
@@ -86,4 +89,19 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         OsmChangeTileGenCommand.osmChangeRead(self, *args)
         timer = time.time() - timer
         print pretty_timer("   Osm Change analysis time:", timer)
+
+    def collect_tiles(self, file_name):
+        self.tiles_to_post_process.append(file_name)
+        if len(self.tiles_to_post_process) >= 100:
+            self.post_process_tiles()
+
+    def post_process_tiles(self):
+        if self.tiles_to_post_process == []:
+            return
+        # Add Copyright property
+        args = ['-set', 'Copyright','"Israel Hiking, CC-BY-NC-SA 3.0"']
+        args.extend(self.tiles_to_post_process)
+        App.start_program('mogrify', args)
+        del self.tiles_to_post_process[:]
+
 # vim: set shiftwidth=4 expandtab textwidth=0:

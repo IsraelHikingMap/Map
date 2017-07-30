@@ -16,12 +16,8 @@ set-setting name=map.coastline.mode value=loose
 set-setting name=map.decoration.grid value=False
 set-setting name=map.rendering.map-background-opacity value=100%
 
-// Add way lengths to the OSM data sources and
-// create Forest labels data in "Forests.osm" 
-run-python file="Scripts\Maperipy\AddWayLengthTags.py"
-
-// Load the Forest labels data created using "AddWayLengthTags.py"
-load-source Cache\Forests.osm
+// Add computed tags for OSM layers 
+run-python file="Scripts\Maperipy\AddOsmTags.py"
 
 // Load the Grid lines created using "Israel Hiking Setup.mscript"
 load-source Cache\ITMGrid.osm
