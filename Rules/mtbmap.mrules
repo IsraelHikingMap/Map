@@ -40,7 +40,7 @@
 //Pal 410
 //cutline 440
 //wetland 450
-//stream 500
+//stream 602
 //river 502
 //water 503
 //cycle network local 597
@@ -49,7 +49,7 @@
 //ways 600
 //path 601
 //fence 601
-//bridge 602
+//bridge 603
 //medical 799
 //bikeshop  799
 //stream name 800
@@ -83,13 +83,12 @@ features
 		camping : tourism=camp_site
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
-		
+		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
 	//_______________________________________________________
 			
 	points
 		place : place OR landuse=farmyard
 		building point: building AND NOT building=entrance
-		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		barrier : barrier
@@ -143,7 +142,7 @@ features
 		archaeological : historic=archaeological_site
 		building : building
  		sports : leisure=stadium OR leisure=common OR leisure=track
-		area residential : landuse=residential
+		area residential : landuse=residential OR landuse = farmyard
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
@@ -244,7 +243,7 @@ rules
 				min-zoom : 13
 				font-size : 13:10;16:16
 		
-		elsefor : place=farm
+		elsefor : place=farm OR landuse = farmyard
 			define
 				min-zoom : 15
 				font-size : 15:8;16:13
@@ -455,6 +454,9 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		define
 			painting-cycle : 799
@@ -488,6 +490,9 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		define
 			painting-cycle : 799
@@ -620,6 +625,9 @@ rules
 			min-zoom : 13
 			icon-image : Icons/mtbmap/gas.png
 			icon-width : 19
+		for : _urban=yes
+			define
+				min-zoom : 15
 		draw : icon
 		
 	target : railway station
@@ -764,7 +772,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 10:1;13:4;14:5;15:6
+				line-width : 9:1.5;13:5;14:6;15:7
 				shape-def : p:white;pw:1.5;f:blue;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * trunk
 			define
@@ -775,7 +783,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 10:0.5;13:2;14:3;15:4
+				line-width : 9:1;13:4;14:5;15:6
 				shape-def    : p:white;pw:1.5;f:red;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * primary
 			define
@@ -786,7 +794,7 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 9:0.5;13:2;14:3;15:4
+				line-width : 9:1;13:3;14:4;15:5
 				shape-def : p:white;pw:1.5;f:green;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * secondary
 			define
@@ -807,10 +815,8 @@ rules
 				border-color : black
 				border-width : 30%
 				border-opacity : 0.7
-				line-width : 12:0.75;13:3;14:4;15:5
-			for : maxspeed < 31
-				define 
-					line-color : #bbf
+				line-width : 12:0.75;13:2;14:3;15:4
+
 		elseif : * residential
 			
 			define
@@ -820,10 +826,8 @@ rules
 				border-width : 10%
 				border-opacity : 1
 				min-zoom : 13
-				line-width : 13:2;14:3;15:4
-			for : maxspeed < 31
-				define 
-					line-color : #bbf
+				line-width : 13:1;14:2;15:4
+			
 					
 					
 		elseif : * unclassified
@@ -835,6 +839,10 @@ rules
 				border-width : 30%
 				border-opacity : 0.7
 				line-width : 10:0.5;13:2;14:3;15:4
+		
+		for : maxspeed < 31
+			define 
+				line-color : #bbf
 			
 		draw : line
 // shields
@@ -1067,7 +1075,7 @@ rules
 			line-color : #973
 			line-style : none
 			line-opacity : 1
-			line-width : 12:0.25;13:1;15:2.5
+			line-width : 12:0.25;13:1;15:2;16:3
 			curved : true
 		
 		for : highway=footway
@@ -1208,14 +1216,14 @@ rules
 			define
 				min-zoom : 13
 				line-color : #f1eee8
-				line-width : 12:3;13:5;14:8
+				line-width : 12:2;13:3;14:4
 				line-opacity : 1
 				line-style : solid
 				border-style : solid
 				border-color : #000
 				border-width : 1
 				border-opacity : 0.8
-				painting-cycle : 602
+				painting-cycle : 603
 		else
 			stop
 		draw : line
@@ -1227,7 +1235,7 @@ rules
 			line-color : #88aaff 
 			border-color : #88aaff
 			line-width : 10:1.5; 13:3; 14:5
-			painting-cycle : 500
+			painting-cycle : 602
 			curved : true
 		for : intermittent=yes
 			define
@@ -1279,13 +1287,9 @@ rules
 		draw : text
 
 	target : fence
-		for : _urban = yes
-			define 
-				min-zoom : 16
-		else 
-			define
-				line-color : #444
+
 		define
+			line-color : #444
 			line-width : 14:1
 			shape-spacing : 15:2
 			shape : custom
@@ -1294,6 +1298,9 @@ rules
 			shape-size : 6
 			min-zoom : 14
 			painting-cycle : 601
+		for : _urban = yes
+			define 
+				min-zoom : 16
 		draw : shape
 		define
 			line-width : 13:1 ; 15:2
