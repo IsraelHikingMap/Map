@@ -30,12 +30,17 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
 )
 
 @REM Script is located at IsraelHiking\Scripts\Batch 
-PUSHD "%~dp0"\..\..\Cache\%LANGUAGE%
+PUSHD %~dp0\..\..
+SET ISRAELHIKING="%CD%"
+CD %ISRAELHIKING%\Cache\%LANGUAGE%
+
+CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue
+IF ERRORLEVEL 1 EXIT /b
 
 IF EXIST "israel-and-palestine-updated.osm.pbf" (
   DIR
   ECHO.
-  ECHO === Tile generation was not completed, cannot un-advance ===
+  ECHO === Tile generation was not completed, cannot retreat ===
   POPD
   EXIT /B 1
 )
@@ -52,7 +57,11 @@ IF /I %LANGUAGE% == "Hebrew" (
   SET ALLPHASES=%ALLPHASES% OverlayTiles
 )
 
-IF NOT "%*"=="" (
+IF "%*"=="" (
+  IF EXIST *.done (
+    DEL *.done
+  )
+) ELSE (
   FOR %%P in ( %ALLPHASES% ) DO (
     (CALL) > %%P.done
     FOR %%M in ( %* ) DO (
