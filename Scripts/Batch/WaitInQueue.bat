@@ -5,7 +5,8 @@
 @REM Usage: CALL "%~n0" QueueDirectory [JobName]
 @REM.
 @REM Only one entry per JobName, if provided, is allowed.
-@REM If JobName is already in the queue, exit with ERRORLEVEL 2
+@REM If JobName is already in the queue or was removed from the queue,
+@REM exit with ERRORLEVEL 2
 @REM.
 @REM When the mutual exclusion is no longer needed, the caller may
 @REM DEL %%QUEUEFILE%%
@@ -37,14 +38,13 @@ CALL :QueueHead
 SET PID=
 FOR /F "USEBACKQ SKIP=1 TOKENS=1*" %%p IN (
       `wmic process where "CommandLine like '%COMSPEC:\=\\%%%%RANDOM%%%'" get ParentProcessID`
-  ) DO IF NOT "%%q"=="" (
-    @REM Real output line
-    IF "%%p"=="%HEADPID%" (
-      @ECHO Already in queue. 1>&2
-      EXIT /B 0
-    )
-    SET PID=%%p-%JOB%
+      ) DO IF NOT "%%q"=="" (
+  @REM Real output line
+  IF "%%p"=="%HEADPID%" (
+    @ECHO Process %%p already in queue. 1>&2
+    EXIT /B 2
   )
+  SET PID=%%p-%JOB%
 )
 IF NOT DEFINED PID (
   @ECHO Error: Could not determine the Process ID of the current script.  Exiting. 1>&2
@@ -69,6 +69,12 @@ IF ERRORLEVEL 1 (
 @ECHO Entering queue at %DATE% %TIME%. 1>&2
 :CheckQueue
 CALL :QueueHead
+IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
+IF "%ABORT%" == "TRUE" (
+  @ECHO Job was removed from the queue. 1>&2
+  ENDLOCAL
+  EXIT /B 2
+)
 IF "%HEADPID%-%HEADJOB%"=="%PID%" (
   @ECHO Top of queue reached at %DATE% %TIME%. 1>&2
   ENDLOCAL
@@ -103,10 +109,6 @@ FOR /F "USEBACKQ TOKENS=1* DELIMS=-" %%p IN (`DIR "%QDIR%" /O-D /B`) DO (
       )
     )
   )
-)
-IF "%ABORT%"=="TRUE" (
-  @REM This job is no longer in the queue
-  EXIT /B 1
 )
 GOTO :EOF
 

@@ -70,6 +70,8 @@ IF "%*"=="" (
   )
 )
 
+IF EXIST %QUEUEFILE% DEL %QUEUEFILE%
+ECHO.
 DIR
 POPD
 EXIT /B

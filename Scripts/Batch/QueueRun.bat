@@ -31,7 +31,7 @@ PUSHD %~dp0\..\..
 SET ISRAELHIKING=%CD%
 
 CALL .\Scripts\Batch\WaitInQueue "%ISRAELHIKING%\Cache\Queue" "%~n1"
-IF ERRORLEVEL 1 EXIT /b
+IF ERRORLEVEL 1 EXIT /b %ERRORLEVEL%
 
 IF "%~x1"==".py" (
   Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
@@ -46,7 +46,7 @@ IF "%~x1"==".py" (
   )
 )
 
-DEL %QUEUEFILE%
+IF EXIST %QUEUEFILE% DEL %QUEUEFILE%
 @ECHO Job completed at %DATE% %TIME%. 1>&2
 TIMEOUT 5
 EXIT /b
