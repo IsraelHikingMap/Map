@@ -302,9 +302,8 @@ if remainingPhases:
             (changed, guard) = trails_overlay.statistics(False)
         App.collect_garbage()
         if changed:
-            App.run_command("run-python file="+os.path.join("Scripts", "Maperipy", "AddOsmTags.py"))
-            App.run_command("set-setting name=map.coastline.mode value=ignore")
-            App.run_command("set-setting name=map.rendering.map-background-opacity value=0%")
+            App.run_command("run-script file="+os.path.join(
+                "Scripts", "Maperitive", "IsraelMinimalDecoration.mscript"))
             App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
             App.run_command("apply-ruleset")
             trails_overlay.tile_removal_script = cache_file("rm_{}.sh".format(phase))

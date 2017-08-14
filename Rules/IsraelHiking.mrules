@@ -1175,14 +1175,11 @@ rules
 			curved : true
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 520
-			map.rendering.contour.label : true
-		if : * minor
-			define
-				map.rendering.contour.label : false
+			map.rendering.contour.label : false
 		if : * major
 			define
 				min-zoom : 13
-				line-width : 11:0.75;13:1.25;15:2
+				line-width : 13:1.25;15:2
 				font-size : 10
 				font-style : italic
 				font-weight : normal
@@ -1193,6 +1190,24 @@ rules
 			define
 				min-zoom : 14
 				line-width : 0.75
+		draw : contour
+		define
+			line-color : #722d00
+			line-opacity : 100%
+			// Contour lines emphasis 
+			painting-cycle : 521
+			map.rendering.contour.label : true
+		if : * minor
+			define
+				map.rendering.contour.label : false
+		if : * major
+			define
+				min-zoom : 13
+				line-width : 1
+		else
+			define
+				min-zoom : 14
+				line-width : 0.5
 		draw : contour
 
 	target : grid label *

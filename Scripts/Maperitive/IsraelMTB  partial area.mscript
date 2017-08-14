@@ -19,8 +19,6 @@ use-ruleset location="Rules\empty.mrules"
 load-source Cache\Jerusalem.osm.pbf
 // Set the bounds according to the OSM snapshot bounds
 geo-bounds-use-source index=1
-// Set the printing bounds to match the map bounds
-set-print-bounds-geo
 
 // Load additional map layers and settings
 run-script file=Scripts\Maperitive\IsraelDecoration.mscript

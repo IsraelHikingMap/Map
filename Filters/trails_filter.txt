@@ -1,11 +1,15 @@
 --keep=
 
 --keep-ways= 
-    colour=
+    highway=
   OR
     landuse=military
   OR
     military=danger_area
+  OR
+    waterway=stream
+  OR
+    waterway=river
 
 --keep-relations=
     network=nwn 

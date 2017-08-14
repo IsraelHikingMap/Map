@@ -1,6 +1,6 @@
-﻿// ==========================================================
-// === Load additional map layers and settings for Israel ===
-// ==========================================================
+﻿// =========================================================
+// === Load map layers and settings for Israel Base maps ===
+// =========================================================
 
 // Allow the use of relative file names       
 use-script-dir
@@ -8,26 +8,15 @@ use-script-dir
 change-directory ..
 change-directory ..
 
-// Use empty map rules to speed-up source loading
-use-ruleset location="Rules\empty.mrules"
-
-// Ensure rendering settings
-set-setting name=map.coastline.mode value=loose
-set-setting name=map.decoration.grid value=False
-set-setting name=map.rendering.map-background-opacity value=100%
-
-// Add computed tags for OSM layers 
-run-python file="Scripts\Maperipy\AddOsmTags.py"
+// Load common map layers and settings for all Israel maps
+run-script file=Scripts\Maperitive\IsraelMinimalDecoration.mscript
 
 // Load the Grid lines created using "Israel Hiking Setup.mscript"
 load-source Cache\ITMGrid.osm
 
-// Load the ASTER contours files created using "CreateASTERContours.py"
-load-source Cache\ASTER-N29.contours
-load-source Cache\ASTER-N30.contours
-load-source Cache\ASTER-N31.contours
-load-source Cache\ASTER-N32.contours
-load-source Cache\ASTER-N33.contours
+// Ensure rendering settings
+set-setting name=map.coastline.mode value=loose
+set-setting name=map.rendering.map-background-opacity value=100%
 
 // Load the relief file created using "IsraelHikingSetup.mscript"
 load-image file=Cache\relief_Hiking_Igor.png background=false

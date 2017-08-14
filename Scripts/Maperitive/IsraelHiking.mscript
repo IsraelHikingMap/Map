@@ -2,7 +2,7 @@
 // === This script creates a OSM Hiking Map for Israel ===
 // =======================================================
 
-// Allow the use of relative file names       
+// Allow the use of relative file names
 use-script-dir
 // Change directory to Israel Hiking Directory
 change-directory ..

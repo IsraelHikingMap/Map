@@ -3,66 +3,19 @@
 // === based on the OSM Hiking Map for Israel ===
 // ==============================================
 
-// ===============================
-// === Start with an empty map ===
-// ===============================
+// Start with an empty map
 clear-map
-// ===============================
 
-// ============================================
-// === Allow the use of relative file names ===
-// ============================================
+// Allow the use of relative file names       
 use-script-dir
+// Change directory to Israel Hiking Directory
 change-directory ..
 change-directory ..
-// ============================================
 
-// =========================================
-// === Do not render the coasline & seas ===
-// =========================================
-set-setting name=map.coastline.mode value=ignore
-// =========================================
+// Use empty map rules to speed-up source loading
+use-ruleset location="Rules\empty.mrules"
 
-// =====================
-// === No WGS84 Grid ===
-// =====================
-set-setting name=map.decoration.grid value=False
-// =====================
+load-source Cache\Hebrew\israel-and-palestine-trails-latest.osm.pbf
 
-// ================================================
-// === Load the Israel Hiking Overlay Map rules ===
-// ================================================
-use-ruleset location="Rules\IsraelHikingOverlay.mrules"
-pause 1
-// ================================================
-
-// =============================================================================
-// === Load GeoFabric's Israel OSM map data snapshot downloaded from:        ===
-// === http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf ===
-// =============================================================================
-// http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf
-load-source Cache\israel-and-palestine-latest.osm.pbf
-
-// ===========================================================
-// === Set the bounds according to the OSM snapshot bounds ===
-// ===========================================================
-geo-bounds-use-source index=1
-// ===========================================================
-
-// ====================================================
-// === Alternatively, rather than using GeoFabric's ===
-// === snapshot, download from the overpass server  ===
-// ====================================================
-// set-geo-bounds 34.00842,29.32535,35.92745,33.398339999
-// download-osm-overpass query="(node($b$);rel(bn)->.x;way($b$);node(w)->.x;rel(bw););out;"
-// ========================================================
-
-// =======================================================
-// === Set the printing bounds to match the map bounds ===
-// =======================================================
-geo-bounds-use-source
-set-print-bounds-geo
-// =======================================================
-
-// generate-tiles minzoom=7 maxzoom=16 subpixel=3 min-tile-file-size=385 tilesdir=Site\OverlayTiles use-fprint=true
-// zip base-dir=Site zip-file=output\OverlayTiles.zip
+// Load additional map layers and settings
+run-script file=Scripts\Maperitive\IsraelMinimalDecoration.mscript

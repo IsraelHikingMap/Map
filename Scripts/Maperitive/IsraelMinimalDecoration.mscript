@@ -1,0 +1,30 @@
+﻿// ===============================================================
+// === Load common map layers and settings for all Israel maps ===
+// ===============================================================
+
+// Allow the use of relative file names       
+use-script-dir
+// Change directory to Israel Hiking Directory
+change-directory ..
+change-directory ..
+
+// Set the bounds according to the OSM source bounds
+geo-bounds-use-source index=1
+
+// Add computed tags for OSM layers 
+run-python file="Scripts\Maperipy\AddOsmTags.py"
+
+// Load the ASTER contours files created using "CreateASTERContours.py"
+load-source Cache\ASTER-N29.contours
+load-source Cache\ASTER-N30.contours
+load-source Cache\ASTER-N31.contours
+load-source Cache\ASTER-N32.contours
+load-source Cache\ASTER-N33.contours
+
+// Ensure rendering settings
+set-setting name=map.decoration.grid value=False
+// Base maps overide the following
+set-setting name=map.coastline.mode value=ignore
+set-setting name=map.rendering.map-background-opacity value=0%
+
+pause 20
