@@ -23,6 +23,7 @@ class PolygonTileGenCommand(TileGenCommand):
         self.tiles_dir = tiles_dir
         self.min_zoom = min_zoom
         self.max_zoom = max_zoom
+        self.rendering_bounds = Map.geo_bounds
         if self.clean_tiles and self.tile_removal_script:
             self.list_file.close()
             self.list_file = open(self.tile_removal_script, 'w')
