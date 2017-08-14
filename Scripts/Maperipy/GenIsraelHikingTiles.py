@@ -99,9 +99,9 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         if self.tiles_to_post_process == []:
             return
         # Add Copyright property
-        args = ['-set', 'Copyright','"Israel Hiking, CC-BY-NC-SA 3.0"']
+        args = ['/C' , 'START', '', '/MIN', 'mogrify', '-set', 'Copyright','"Israel Hiking, CC-BY-NC-SA 3.0"']
         args.extend(self.tiles_to_post_process)
-        App.start_program('mogrify', args)
+        App.start_program('cmd.exe', args)
         del self.tiles_to_post_process[:]
 
 # vim: set shiftwidth=4 expandtab textwidth=0:
