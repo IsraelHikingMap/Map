@@ -11,6 +11,15 @@
   OR
     waterway=river
 
+--keep-tags=
+    landuse=military
+    landuse=reservoir
+    landuse=basin
+
+--drop-tags=
+    amenity=
+    natural=
+
 --keep-relations=
     network=nwn 
   OR
@@ -19,4 +28,3 @@
     network=rcn 
   OR
     landuse=military
-  OR
