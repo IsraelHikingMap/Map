@@ -15,7 +15,6 @@ import os.path
 from datetime import *
 import string
 import errno
-from time import sleep
 from maperipy import *
 from maperipy.osm import *
 from GenIsraelHikingTiles import IsraelHikingTileGenCommand
@@ -155,6 +154,8 @@ for phase in phases:
 
 if remainingPhases == []:
     osm_source.advance()
+    if "OverlayTiles" in phases:
+        osm_trails.advance()
     for phase in phases:
         os.remove(done_file(phase))
     remainingPhases = phases
@@ -193,7 +194,6 @@ if os.path.exists(osm_source.changes):
             updated_time.isoformat()),
             (updated_time-base_time).total_seconds())
         App.log("=== Analyzing map changes {} ===".format(change_span))
-        sleep(10)  # Try to avoid CommandExecutionException
         App.collect_garbage()
         base_map.osmChangeRead(osm_source.changes, osm_source.base, osm_source.updated)
         (changed, guard) = base_map.statistics()
@@ -299,7 +299,7 @@ if remainingPhases:
             changed = True
         else:
             trails_overlay.osmChangeRead(osm_trails.changes, osm_trails.base, osm_trails.updated)
-            (changed, guard) = trails_overlay.statistics(False)
+            (changed, guard) = trails_overlay.statistics()
         App.collect_garbage()
         if changed:
             App.run_command("run-script file="+os.path.join(
@@ -325,8 +325,6 @@ Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
 
 osm_source.advance()
-if "OverlayTiles" in phases:
-    osm_trails.advance()
 
 for phase in phases:
     silent_remove(done_file(phase))
