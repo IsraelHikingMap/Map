@@ -20,7 +20,6 @@ Inputs for each analysis:
 import math
 import os
 from datetime import *
-from time import sleep
 from System.IO import TextReader
 from maperipy import *
 from maperipy.osm import *
@@ -96,17 +95,14 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 return
         if self.verbose:
             print "     Reading base OSM map from", base_map, "..."
-        sleep(10)  # Try to avoid CommandExecutionException
-        App.run_command('load-source file="{}"'.format(base_map))
-        sleep(10)  # Try to avoid CommandExecutionException
+        Map.add_osm_source(base_map)
         base_index = len(Map.layers)
         Map.layers[base_index-1].visible = False
         baseOsm = Map.layers[base_index-1].osm
         App.collect_garbage()
         if self.verbose:
             App.log("     Reading new OSM map from {} ...".format(new_map))
-        App.run_command('load-source file="{}"'.format(new_map))
-        sleep(10)  # Try to avoid CommandExecutionException
+        Map.add_osm_source(new_map)
         new_index = len(Map.layers)
         App.collect_garbage()
         newOsm = Map.layers[new_index-1].osm

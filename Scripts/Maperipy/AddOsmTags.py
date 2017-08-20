@@ -302,8 +302,8 @@ os.chdir(IsraelHikingDir)
 App.collect_garbage()
 
 # Create an osm file with forest name info
-sFileName = os.path.join(IsraelHikingDir, 'Cache', 'Forests.osm')
-osmFile = open(sFileName, 'w')
+ForestsFileName = os.path.join(IsraelHikingDir, 'Cache', 'Forests.osm')
+osmFile = open(ForestsFileName, 'w')
 osmFile.write('<?xml version="1.0" encoding="utf-8"?>\n'
 '<osm version="0.5" generator="AddOsmTags.py">\n')
 
@@ -328,6 +328,6 @@ App.collect_garbage()
 if osmData is None:
     raise AssertionError("There are no OSM map sources.")
 
-App.run_command('load-source "{}"'.format(sFileName))
+Map.add_osm_source(ForestsFileName)
 
 # vim: set shiftwidth=4 expandtab textwidth=0:
