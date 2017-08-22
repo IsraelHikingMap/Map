@@ -23,16 +23,16 @@
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
+@REM Script is located at IsraelHiking\Scripts\Batch 
+PUSHD %~dp0\..\..
+SET ISRAELHIKING="%CD%"
+CD %ISRAELHIKING%\Cache\%LANGUAGE%
+
 SET LANGUAGE="Hebrew"
 ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
   SET LANGUAGE="%~1"
   SHIFT
 )
-
-@REM Script is located at IsraelHiking\Scripts\Batch 
-PUSHD %~dp0\..\..
-SET ISRAELHIKING="%CD%"
-CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
 CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue
 IF ERRORLEVEL 1 EXIT /b
