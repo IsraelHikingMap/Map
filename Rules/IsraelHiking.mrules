@@ -1189,7 +1189,7 @@ rules
 		else
 			define
 				min-zoom : 14
-				line-width : 0.75
+				line-width : 14:0.75;16:1.25
 		draw : contour
 		define
 			line-color : #722d00
@@ -1207,7 +1207,7 @@ rules
 		else
 			define
 				min-zoom : 14
-				line-width : 0.5
+				line-width : 14:0.5;16:0.8
 		draw : contour
 
 	target : grid label *
