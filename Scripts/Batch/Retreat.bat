@@ -26,13 +26,13 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 @REM Script is located at IsraelHiking\Scripts\Batch 
 PUSHD %~dp0\..\..
 SET ISRAELHIKING="%CD%"
-CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
 SET LANGUAGE="Hebrew"
 ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
   SET LANGUAGE="%~1"
   SHIFT
 )
+CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
 CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue
 IF ERRORLEVEL 1 EXIT /b
@@ -54,7 +54,7 @@ IF EXIST israel-and-palestine-*trails* (
 
 SET ALLPHASES=IsraelHiking15 IsraelMTB15 IsraelHiking16 IsraelMTB16
 IF /I %LANGUAGE% == "Hebrew" (
-  SET ALLPHASES=%ALLPHASES% OverlayTiles
+  SET ALLPHASES=%ALLPHASES% OverlayTiles OverlayMTB
 )
 
 IF "%*"=="" (
