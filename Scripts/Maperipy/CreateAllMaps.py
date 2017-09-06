@@ -213,6 +213,7 @@ elif remainingPhases:
     App.log("=== Loading the {} ===".format(updated_time))
     with open(cache_file("Change Analysis.log"), 'a') as journal:
         journal.write("Base {}\n".format(updated_time))
+        journal.write("Creating {}.\n".format(", ".join(remainingPhases)))
     Map.add_osm_source(osm_source.updated)
     print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
 
