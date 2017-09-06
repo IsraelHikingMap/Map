@@ -222,7 +222,7 @@ elif remainingPhases:
 if remainingPhases:
     App.log("=== Executing Phases: {} ===".format(remainingPhases))
     if language == "Hebrew":
-        App.log("=== Update the site's search and routing DBs ===")
+        App.log("=== Updating the site's search and routing DBs ===")
         # Update the site's search and routing DBs
         try:
             App.start_program("UpdateDB.bat",[osm_source.updated])
@@ -240,7 +240,7 @@ if remainingPhases:
         App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
         App.run_command("apply-ruleset")
         App.collect_garbage()
-        App.log('=== creating tiles for Israel Hiking zoom levels up to 15 ===')  
+        App.log('=== Creating Israel Hiking tiles up to zoom 15 ===')  
         base_map.GenToDirectory(7, 15, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
@@ -252,7 +252,7 @@ if remainingPhases:
         App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
         App.run_command("apply-ruleset")
         App.collect_garbage()
-        App.log('=== creating tiles for Israel MTB zoom levels up to 15 ===')  
+        App.log('=== Creating Israel MTB tiles up to zoom 15 ===')  
         base_map.GenToDirectory(7, 15, os.path.join(site_dir, 'mtbTiles'))
         mark_done(phase)
     else:
@@ -264,7 +264,7 @@ if remainingPhases:
         App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
         App.run_command("apply-ruleset")
         App.collect_garbage()
-        App.log("=== Create tiles for Israel Hiking zoom level 16 ===")
+        App.log("=== Creating Israel Hiking zoom 16 tiles ===")
         base_map.GenToDirectory(16, 16, os.path.join(site_dir, 'Tiles'))
         mark_done(phase)
     else:
@@ -276,7 +276,7 @@ if remainingPhases:
         App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
         App.run_command("apply-ruleset")
         App.collect_garbage()
-        App.log('=== creating Israel MTB zoom level 16 ===')  
+        App.log('=== Creating Israel MTB zoom 16 tiles ===')  
         base_map.GenToDirectory(16, 16, os.path.join(site_dir, 'mtbTiles'))
         mark_done(phase)
     else:
@@ -285,7 +285,7 @@ if remainingPhases:
     # Overlay generation
     if [val for val in ('OverlayTiles', 'OverlayMTB')
             if val in remainingPhases]:
-        App.log("=== Create Overlay tiles ===")
+        App.log("=== Preparing Overlay tiles ===")
         App.run_command("clear-map")
         App.run_command("use-ruleset location="+os.path.join("Rules", "empty.mrules"))
         if osm_trails.status() in ("uninitialized", "base"):
@@ -305,6 +305,7 @@ if remainingPhases:
 
     phase = 'OverlayTiles'
     if phase in remainingPhases:
+        App.log("=== Creating Trails Overlay tiles ===")
         if changed:
             App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
             App.run_command("apply-ruleset")
@@ -315,6 +316,7 @@ if remainingPhases:
 
     phase = 'OverlayMTB'
     if phase in remainingPhases:
+        App.log("=== Creating MTB Overlay tiles ===")
         if changed:
             App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
             App.run_command("apply-ruleset")
