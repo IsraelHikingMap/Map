@@ -71,6 +71,7 @@ features
 		ruins : historic=ruins
 		archaeological : historic=archaeological_site
 		picnic : leisure=picnic_table OR tourism=picnic_site
+		cemetery : landuse=cemetery OR amenity=grave_yard
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -146,7 +147,6 @@ features
 
 	areas
 		building : building AND NOT @IsOneOf(building, no, construction, proposed)
-		cemetery : landuse=cemetery OR amenity=grave_yard
 		forest : landuse=forest OR natural=wood
 		grass : @isOneOf(landuse, grass, greenfield, village_green) OR @isOneOf(natural, scrub, heath, grassland) OR leisure=park
 		water : natural=water OR waterway=riverbank OR landuse=reservoir OR landuse=basin
@@ -1461,7 +1461,15 @@ rules
 			line-style : none
 			line-width : 1
 			fill-color : #CCCCCC
+			icon-image : Icons/mtbmap/cemetery.png
 		draw : fill
+		for : _urban=yes
+			define
+				min-zoom : 16
+		else
+			define
+				min-zoom : 15
+		draw : icon
 
 	target : forest label
 		for : width > 5
