@@ -245,7 +245,7 @@ def analyzeUrban(osmData):
     placeNames = ["Tel Aviv-Yafo", "Jerusalem", "Ramat Gan", "Givatyim",
         "Holon", "Bat Yam", "Bnei Brak", "Petah Tikva", "Ramat HaSharon",
         "Herzliya", "Kfar Sava", "Raanana", "Rishon LeZion", "Nes Ziona",
-        "Rehovot", "Be'er Sheva", "Haifa", "Ashdod"
+        "Rehovot", "Be'er Sheva", "Haifa", "Ashdod", "Modiin-Maccabim-Reut"
         ];
     placeBboxes = []
     for place in placeNames:

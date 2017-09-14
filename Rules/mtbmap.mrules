@@ -1,11 +1,9 @@
-// Maperitive rendering ruleset for Mountain Bike Map
+// Maperitive rendering ruleset for Mountain Bike Map in Israel
 // http://maperitive.net
 
-// Created by Ola Endre Reitstøen http://www.reitstoen.com/
-// Working example: http://osm.reitstoen.com/
-// Adapted for Israel by Zeev Stadler and Guy Shakhar - http://IsraelHiking.osm.org.il/IsraelMTBmap.html
-// Highly modified version of Hiking map by Igor Brejc
-// Released under the Creative Commons Attribution-ShareAlike 3.0 License (http://creativecommons.org/licenses/by-sa/3.0/)
+// Created by Guy Shakhar guy.shakhar@gmail.com
+
+// Released under the Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) (https://creativecommons.org/licenses/by-nc-sa/3.0/)
 
 // Icons
 // Map icons CC-0 from SJJB Management (http://www.sjjb.co.uk/mapicons)
@@ -17,7 +15,7 @@
 
 // History:
 // --------
-// For Israel adaptations, see https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
+// See https://github.com/IsraelHikingMap/Map/commits/master/Rules/mtbmap.mrules
 
 // ___________________Painting Cycle________________________
 //coastline 150
@@ -64,6 +62,7 @@ import-script:..\Scripts\Maperipy\names.py
 features
 	
 	points, areas
+		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		bikepark : landuse=recreation_ground and sport=mtb
 		cafe : amenity=cafe
@@ -151,7 +150,6 @@ features
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
 		area grassland : @isOneOf(landuse, grass, meadow) OR natural=grassland
 		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
 		area orchard : landuse=orchard OR landuse=vineyard
@@ -364,7 +362,7 @@ rules
 		if : * church 
 			define
 				text-func : NodeName(e)
-			if : not _urban=yes
+			for : not _urban=yes
 				draw : text
 			define
 				icon-image : Icons/mtbmap/church.png
@@ -831,14 +829,17 @@ rules
 					
 					
 		elseif : * unclassified
+			
 			define
-				min-zoom : 13
-				line-color : white
-				border-style : solid
+				line-color : black white 80%
+				line-style : solid
+				line-width : 12:0;13:1;14:1.5;15:2
+				line-opacity : 12:0;13:1
 				border-color : black
-				border-width : 30%
+				border-style : solid
+				border-width : 12:25%;13:70%
 				border-opacity : 0.7
-				line-width : 10:0.5;13:2;14:3;15:4
+				min-zoom : 12
 		
 		for : maxspeed < 31
 			define 
@@ -964,6 +965,9 @@ rules
 				font-size : 14:10;15:11;16:12
 				font-weight : normal
 				text-offset-vertical : -8
+				
+				
+				
 					
 		elseif : * residential
 			define
@@ -1362,7 +1366,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 12
-				line-width : 12:0.3;13:0.3;14:1;15:1.2
+				line-width : 12:0.3;13:0.3;14:1;15:1.5
 				font-size : 9
 				font-style : italic
 				font-weight : normal
@@ -1380,7 +1384,7 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 13
-				line-opacity : 0.75
+				line-opacity : 0.85
 				line-width : 13:0.3;15:1
 			draw : contour
 			define
@@ -1396,8 +1400,8 @@ rules
 			define
 				map.rendering.contour.label : false
 				min-zoom : 14
-				line-opacity : 0.6
-				line-width : 14:0.33;15:0.75
+				line-opacity : 0.7
+				line-width : 14:0.33;15:1
 			draw : contour
 		
 	target : cutline
@@ -1776,14 +1780,14 @@ rules
 			for : (landuse=cemetery OR amenity=grave_yard)
 				define
 					icon-image : Icons/mtbmap/cemetery.png
-				if : _urban=yes
+				for : _urban=yes
 					define
 						min-zoom : 16
 				draw : icon
 			for : (leisure=playground)
 				define
 					icon-image : Icons/mtbmap/playground.png
-				if : _urban=yes
+				for : _urban=yes
 					define
 						min-zoom : 16
 				draw : icon
