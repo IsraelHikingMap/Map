@@ -19,3 +19,6 @@ load-source Cache\Hebrew\israel-and-palestine-trails-latest.osm.pbf
 
 // Load additional map layers and settings
 run-script file=Scripts\Maperitive\IsraelMinimalDecoration.mscript
+
+use-ruleset location="Rules\IsraelHiking.mrules"
+apply-ruleset
