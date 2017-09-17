@@ -361,6 +361,7 @@ rules
 		if : * church 
 			define
 				text-func : NodeName(e)
+				min-zoom: 16
 			for : not _urban=yes
 				draw : text
 			define
@@ -378,8 +379,8 @@ rules
 			icon-width : 13:17
 		for : tourism=attraction
 			define
-				min-zoom : 13
-		for : _urban=yes
+				min-zoom : 14
+		elsefor : _urban=yes
 			define
 				min-zoom : 16
 		else
