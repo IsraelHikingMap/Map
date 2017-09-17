@@ -66,6 +66,7 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         OsmChangeTileGenCommand.__init__(self)
         self.after_tile_save = self.collect_tiles
         self.tiles_to_post_process = []
+        self.len_tiles_to_post_process = 0
         self.subpixel_precision = 2
         self.use_fingerprint = True
         self.min_tile_file_size = 385  # No transparent tiles
@@ -92,7 +93,8 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
 
     def collect_tiles(self, file_name):
         self.tiles_to_post_process.append(file_name)
-        if len(self.tiles_to_post_process) >= 100:
+        self.len_tiles_to_post_process += len(file_name) + 3
+        if self.len_tiles_to_post_process >= 7500:
             self.post_process_tiles()
 
     def post_process_tiles(self):
@@ -103,5 +105,6 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         args.extend(self.tiles_to_post_process)
         App.start_program('cmd.exe', args)
         del self.tiles_to_post_process[:]
+        self.len_tiles_to_post_process = 0
 
 # vim: set shiftwidth=4 expandtab textwidth=0:

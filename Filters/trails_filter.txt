@@ -2,21 +2,18 @@
 
 --keep-ways= 
     highway=
-  OR
     landuse=military
-  OR
     military=danger_area
-  OR
-    waterway=stream
-  OR
-    waterway=river
+    waterway=stream =river
+
+--keep-tags=
+    landuse=military =reservoir =basin
+
+--drop-tags=
+    amenity=
+    natural=
+    admin_level=
 
 --keep-relations=
-    network=nwn 
-  OR
-    network=rwn 
-  OR
-    network=rcn 
-  OR
+    network=nwn =rwn = lwn =ncn =rcn =lcn
     landuse=military
-  OR

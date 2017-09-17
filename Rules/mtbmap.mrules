@@ -166,7 +166,6 @@ features
 properties
 	curved : false
 	map-background-color : #fff9ef
-	map-background-opacity : 1
 	map-sea-color : #B8DBF7
 	line-end-cap : none
 	line-start-cap : none

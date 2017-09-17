@@ -26,5 +26,3 @@ set-setting name=map.decoration.grid value=False
 // Base maps overide the following
 set-setting name=map.coastline.mode value=ignore
 set-setting name=map.rendering.map-background-opacity value=0%
-
-pause 20
