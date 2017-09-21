@@ -765,6 +765,31 @@ rules
 			text-func : WayName(e)
 		draw : text
 
+	target : stream
+		define
+			curved : true
+			min-zoom : 13
+			line-color : #78C1C1
+			line-width : 10:1;15:3
+		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
+			define
+				line-style : dash
+		for : tunnel AND NOT tunnel=no
+			define
+				line-style : dot
+		define
+			min-zoom : 13
+			font-size : 13:8;15:10;17:17
+			font-style : italic
+			font-weight : bold
+			text-color : #78C1C1 black 10%
+			map.rendering.lflp.min-buffer-space : 5
+			map.rendering.lflp.max-allowed-corner-angle : 90
+			text-func : WayName(e)
+		for : NOT tunnel AND (NOT layer OR layer=0)
+			draw : text
+		draw : line
+
 	target : track*
 		define
 			line-width : 13:1.5;14:2
@@ -1048,31 +1073,6 @@ rules
 			line-width : 2
 			// line-opacity : 80%
 			line-color : orange
-		draw : line
-
-	target : stream
-		define
-			curved : true
-			min-zoom : 13
-			line-color : #78C1C1
-			line-width : 10:1;15:3
-		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
-			define
-				line-style : dash
-		for : tunnel AND NOT tunnel=no
-			define
-				line-style : dot
-		define
-			min-zoom : 13
-			font-size : 13:8;15:10;17:17
-			font-style : italic
-			font-weight : bold
-			text-color : #78C1C1 black 10%
-			map.rendering.lflp.min-buffer-space : 5
-			map.rendering.lflp.max-allowed-corner-angle : 90
-			text-func : WayName(e)
-		for : NOT tunnel AND (NOT layer OR layer=0)
-			draw : text
 		draw : line
 
 	target : aerialway
