@@ -60,9 +60,10 @@ Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) wh
 
 ### Tile URLs
 The following tile sources are currently available for zoom levels 7 to 16:
- * Israel Hiking Map: [`http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png)
- * Israel MTB Map: [`http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png)
- * Hiking Trails Overlay: [`http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png)
+ * Israel Hiking Map: [`https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png)
+ * Israel MTB Map: [`https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png)
+ * Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/Hebrew/OverlayTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayTiles/{z}/{x}/{y}.png)
+* MTB Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/Hebrew/OverlayMTB/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayMTB/{z}/{x}/{y}.png) 
 
  The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.
 
