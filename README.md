@@ -184,6 +184,6 @@ This is an optional stage in case you want to make the locally generated tiles a
 6. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 29-Nov-16
+Created by Harel Mazor and Zeev Stadler 31-Mar-13.
 
 <!-- vim: set autoindent shiftwidth=2: -->
