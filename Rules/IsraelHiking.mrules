@@ -394,25 +394,25 @@ rules
 		define
 			min-zoom : 15
 			icon-width : 16
-		for : @IsOneOf(access, no, private) OR @IsOneOf(motor_vehicle, no, private)
+		for : @IsOneOf(access, no, private)
 			define
 				icon-image : Icons/SJJB/barrier_gate.n.32.png
-		elsefor : @IsOneOf(barrier, gate, hampshire_gate)
+		elsefor : @IsOneOf(barrier, block, debris) OR @IsOneOf(motor_vehicle, no, private)
 			define
-				icon-image : Icons/SJJB/barrier_gate.glow.32.png
-		elsefor : barrier=kissing_gate OR barrier=stile
+				icon-image : Icons/jersey_barrier.png
+		elsefor : @IsOneOf(barrier, stile, kissing_gate)
 			define
 				icon-image : Icons/SJJB/barrier_kissing_gate.glow.32.png
 		elsefor : barrier=lift_gate
 			define
 				icon-image : Icons/SJJB/barrier_lift_gate.glow.32.png
-		elsefor : barrier=block OR barrier=debris
-			define
-				icon-image : Icons/jersey_barrier.png
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/SJJB/barrier_cattle_grid.glow.32.png
 				icon-width: 24
+		elsefor : @IsOneOf(barrier, gate, hampshire_gate)
+			define
+				icon-image : Icons/SJJB/barrier_gate.glow.32.png
 		draw : icon
 
 // by using this statement we make sure only one label is written for POI with more than one tag
@@ -834,7 +834,9 @@ rules
 				define
 					// min-zoom for non-coloured trails
 					min-zoom : 14
-					line-color : black white 50%
+					line-color : black
+					line-width : 13:1;14:1.5
+					line-offset : 12:0;13:1.1;16:2.1
 // Left colour
 		if : * left
 			define
@@ -861,7 +863,9 @@ rules
 				define
 					// min-zoom for non-coloured trails
 					min-zoom : 14
-					line-color : black white 50%
+					line-color : black
+					line-width : 13:1;14:1.5
+					line-offset : 12:0;13:1.1;16:2.1
 		for : tunnel AND NOT tunnel=no
 			define
 				border-width : 80%
