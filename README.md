@@ -54,21 +54,24 @@ Setup instructions:
   * Select _"osm.org.il"_ in the available maps
 
 ## Tile Access
-The tiles on the the [Israel Hiking server](http://IsraelHiking.OSM.org.il) are currently available for private, non-commercial use.
-
+The tiles on the the [Israel Hiking server](http://IsraelHiking.OSM.org.il) are available according to the [Licence terms](LICENSE.md).  
+The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.  
 Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) where possible to minimize the the load.
 
 ### Tile URLs
 The following tile sources are currently available for zoom levels 7 to 16:
- * Israel Hiking Map: [`https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png)
- * Israel MTB Map: [`https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png)
- * Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayTiles/{z}/{x}/{y}.png)
-* MTB Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayMTB/{z}/{x}/{y}.png)
-* Israel Hiking Map (English): [`https://israelhiking.osm.org.il/English/Tiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png)
- * Israel MTB Map (English): [`https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/English/mtbTiles/{z}/{x}/{y}.png)
 
+#### Hebrew Base Maps
+* Israel Hiking Map: `https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`
+* Israel MTB Map: `https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`
 
- The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.
+#### English Base Maps
+* Israel Hiking Map (English): `https://israelhiking.osm.org.il/English/Tiles/{z}/{x}/{y}.png`
+* Israel MTB Map (English): `https://israelhiking.osm.org.il/English/mtbTiles/{z}/{x}/{y}.png`
+
+#### Trails Overlays
+* Hiking Trails Overlay with roads and elevation countours: `https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`
+* MTB Trails Overlay with roads and elevation countours: `https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`
 
 ### QGIS Integration
 The maps can be added to QGIS, by by the following steps:
