@@ -60,9 +60,13 @@ Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) wh
 
 ### Tile URLs
 The following tile sources are currently available for zoom levels 7 to 16:
- * Israel Hiking Map: [`http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png)
- * Israel MTB Map: [`http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png)
- * Hiking Trails Overlay: [`http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png)
+ * Israel Hiking Map: [`https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png)
+ * Israel MTB Map: [`https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png)
+ * Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayTiles/{z}/{x}/{y}.png)
+* MTB Hiking Trails, roads and topo countours Overlay: [`https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/OverlayMTB/{z}/{x}/{y}.png)
+* Israel Hiking Map (English): [`https://israelhiking.osm.org.il/English/Tiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png)
+ * Israel MTB Map (English): [`https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`](https://israelhiking.osm.org.il/English/mtbTiles/{z}/{x}/{y}.png)
+
 
  The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.
 
@@ -82,7 +86,7 @@ The maps can be added to QGIS, by by the following steps:
 
    <img width="300" alt="createservice" src="https://cloud.githubusercontent.com/assets/1304610/20642358/550f7236-b415-11e6-8dcf-9af256f8099d.png">
 
-   Note: The <img width="16" alt="favicon-32x32" src="https://github.com/IsraelHikingMap/Site/raw/master/IsrealHiking.Web/content/images/favicons/favicon-32x32.png"> icon can be downloaded from [here](https://github.com/IsraelHikingMap/Site/raw/master/IsrealHiking.Web/content/images/favicons/favicon-32x32.png)
+   Note: The <img width="16" alt="favicon-32x32" src="https://github.com/IsraelHikingMap/Site/blob/master/IsraelHiking.Web/sources/content/favicons/favicon-32x32.png"> icon can be downloaded from [here](https://github.com/IsraelHikingMap/Site/blob/master/IsraelHiking.Web/sources/content/favicons/favicon-32x32.png)
 7. Open the "TMS" tab and fill the form with one of the [Tile URLs](#tile-urls)
 
    <img width="300" alt="tms" src="https://cloud.githubusercontent.com/assets/1304610/20642389/5b10fc26-b416-11e6-9226-08cc705224b6.png">
