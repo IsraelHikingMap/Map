@@ -1,4 +1,4 @@
-https://israelhiking.osm.org.il/OverlayTiles/# Israel Hiking Map
+# Israel Hiking Map
 This Repository is part of the Israel Hiking Map project, and it holds all the file and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to Israel Trails Committee (ITC).
 
 The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
