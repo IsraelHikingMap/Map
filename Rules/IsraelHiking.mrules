@@ -113,9 +113,9 @@ features
 		hiking national : relation[network = nwn]
 		land-feature : natural=ridge OR natural=valley
 
-		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
-		path : highway=path AND NOT bicycle=designated
-		foot path : highway=footway OR highway=pedestrian
+		cycle path : highway=cycleway AND NOT @isOneOf(foot, yes, permissive)
+		path : (highway=path AND NOT bicycle=no) OR (highway=cycleway AND @isOneOf(foot, yes, permissive))
+		foot path : highway=footway OR highway=pedestrian OR (highway=path AND bicycle=no)
 		steps path : highway=steps
 		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
