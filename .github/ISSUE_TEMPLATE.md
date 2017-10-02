@@ -24,7 +24,7 @@
 
 
 
-## Possible Fix - תיקון מוצע
+## Proposed Cause or Fix - סיבה או תיקון מוצעים
 <!--- אפשר להציע פתרון או סיבה אפשרית לבעיה --->
 <!--- Not obligatory, but suggest a fix or reason for the bug -->
 
