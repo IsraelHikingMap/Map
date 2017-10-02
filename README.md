@@ -5,7 +5,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ## Contents
 * [Ready-to-use maps](#ready-to-use-maps)
-  * [OruxMaps for Android](#oruxmaps-for-android)
+  * [Android supported applications](#android-supported-applications)
   * [Galileo for iOS](#galileo-for-ios)
   * [Marble](#marble)
 * [Tile Access](#tile-access)
