@@ -17,7 +17,7 @@ The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
 
 ## Ready-to-use maps
 
-For offline usage of the maps follow the instructions in the [download dialog in our site](https://israelhiking.osm.org.il/#!/?download):
+For offline use of the maps on android devices follow the instructions in the [download dialog](https://israelhiking.osm.org.il/#!/?download).
       
 ### Android supported applications
   * The map is available for Online use as part of OruxMaps built-in maps.
