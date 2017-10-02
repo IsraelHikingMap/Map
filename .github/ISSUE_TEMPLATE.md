@@ -33,10 +33,10 @@
 ## Steps to Reproduce - הוראות לשיחזור הבעיה
 <!--- הוסיפו סדרת צעדים ברורה שתאפשר לנו לשחזר את הבעיה --->
 <!--- Provide a an unambiguous set of steps to reproduce this bug -->
-1.
-2.
-3.
-4.
+1. 
+2. 
+3. 
+4. 
 
 ## Impact - השפעה
 <!--- ?מהי ההשפעה של הבעיה עליכם -->
