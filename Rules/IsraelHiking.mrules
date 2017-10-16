@@ -95,7 +95,7 @@ features
 
 	lines
 		aerialway : aerialway AND NOT aerialway=station
-		aeroway : aeroway AND NOT aeroway=helipad
+		aeroway : @isOneOf(aeroway, runway, taxiway)
 		contour major : contour[@isMulti(elevation, 100)]
 		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
@@ -1122,8 +1122,6 @@ rules
 			define
 				min-zoom : 13
 				line-width : 11:1;12:1;13:3;14:6;15:12
-		else
-			stop
 		draw : line
 
 	target : helipad
