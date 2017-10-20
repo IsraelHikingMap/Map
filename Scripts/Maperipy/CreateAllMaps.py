@@ -137,8 +137,8 @@ phases = [
     'IsraelMTB16']
 if language == "Hebrew":
     phases += [
-            'OverlayTiles',
-            'OverlayMTB']
+            'IsraelHikingOverlay',
+            'IsraelMTBOverlay']
 
 def done_file(phase):
     return cache_file(phase+'.done')
@@ -156,7 +156,7 @@ for phase in phases:
 
 if remainingPhases == []:
     osm_source.advance()
-    if "OverlayTiles" in phases:
+    if "IsraelHikingOverlay" in phases:
         osm_trails.advance()
     for phase in phases:
         os.remove(done_file(phase))
@@ -284,7 +284,7 @@ if remainingPhases:
         App.log(phase+' phase skipped.')
 
     # Overlay generation
-    if [val for val in ('OverlayTiles', 'OverlayMTB')
+    if [val for val in ('IsraelHikingOverlay', 'IsraelMTBOverlay')
             if val in remainingPhases]:
         App.log("=== Preparing Overlay tiles ===")
         App.run_command("clear-map")
@@ -304,7 +304,7 @@ if remainingPhases:
             App.run_command("run-script file="+os.path.join(
                 "Scripts", "Maperitive", "IsraelMinimalDecoration.mscript"))
 
-    phase = 'OverlayTiles'
+    phase = 'IsraelHikingOverlay'
     if phase in remainingPhases:
         App.log("=== Creating Trails Overlay tiles ===")
         if changed:
@@ -315,7 +315,7 @@ if remainingPhases:
     else:
         App.log(phase+' phase skipped.')
 
-    phase = 'OverlayMTB'
+    phase = 'IsraelMTBOverlay'
     if phase in remainingPhases:
         App.log("=== Creating MTB Overlay tiles ===")
         if changed:
