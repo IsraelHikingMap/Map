@@ -54,7 +54,7 @@ IF EXIST israel-and-palestine-*trails* (
 
 SET ALLPHASES=IsraelHiking15 IsraelMTB15 IsraelHiking16 IsraelMTB16
 IF /I %LANGUAGE% == "Hebrew" (
-  SET ALLPHASES=%ALLPHASES% OverlayTiles OverlayMTB
+  SET ALLPHASES=%ALLPHASES% IsraelHikingOverlay IsraelMTBOverlay
 )
 
 IF "%*"=="" (
