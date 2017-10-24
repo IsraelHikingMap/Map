@@ -837,7 +837,9 @@ rules
 				define
 					// min-zoom for non-coloured trails
 					min-zoom : 14
-					line-color : brown
+					line-width : 14:0.7;16:2
+					line-offset : 14:1.5;16:2.5
+					line-color : #722d00
 // Left colour
 		if : * left
 			define
@@ -864,7 +866,9 @@ rules
 				define
 					// min-zoom for non-coloured trails
 					min-zoom : 14
-					line-color : brown
+					line-width : 14:0.7;16:2
+					line-offset : 14:1.5;16:2.5
+					line-color : #722d00
 		for : tunnel AND NOT tunnel=no
 			define
 				border-color : black
@@ -894,7 +898,7 @@ rules
 			define
 				min-zoom : 13
 				max-zoom : 14
-				line-color : black white 75%
+				line-color : #722d00 white 75%
 				line-width : 1
 				line-style : solid
 				border-style : none
@@ -939,8 +943,9 @@ rules
 			define
 				// min-zoom for non-coloured trails
 				min-zoom : 14
-				line-color : brown
-				fill-color : brown
+				line-width : 13:1;14:1.5
+				line-color : #722d00
+				fill-color : #722d00
 		if : cycle*
 			define
 				// cycle paths
