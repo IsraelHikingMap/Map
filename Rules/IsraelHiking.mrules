@@ -914,6 +914,29 @@ rules
 			border-style : solid
 			// min-zoom for coloured trails
 			min-zoom : 13
+		if : cycle*
+			define
+				// cycle paths
+				line-style : dashdot
+		elseif : foot*
+			// foot paths
+			define
+				line-style : dot
+				line-width : 13:2;14:2.5
+		elseif : steps*
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1.5;16:2;20:3
+				shape-aspect : 3
+				line-style : none
+			draw : shape
+		for : tunnel AND NOT tunnel=no
+			define
+				border-color : black
+				border-width : 80%
+				border-style : dot
 		// Also set fill-color for steps
 		for : colour = red
 			define
@@ -943,32 +966,9 @@ rules
 			define
 				// min-zoom for non-coloured trails
 				min-zoom : 14
-				line-width : 13:1;14:1.5
+				line-width : 14:1.5;16:2
 				line-color : #722d00
 				fill-color : #722d00
-		if : cycle*
-			define
-				// cycle paths
-				line-style : dashdot
-		elseif : foot*
-			// foot paths
-			define
-				line-style : dot
-				line-width : 13:2;14:2.5
-		elseif : steps*
-			define
-				shape : custom
-				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
-				shape-spacing : 2
-				shape-size : 13:1.5;16:2;20:3
-				shape-aspect : 3
-				line-style : none
-			draw : shape
-		for : tunnel AND NOT tunnel=no
-			define
-				border-color : black
-				border-width : 80%
-				border-style : dot
 		draw : line
 		for : bridge AND NOT bridge=no
 			define
