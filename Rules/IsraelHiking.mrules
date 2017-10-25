@@ -156,8 +156,8 @@ features
 		farmland : @isOneOf(landuse, meadow, farmland, farm)
 		plantation : @isOneOf(landuse, orchard, vineyard)
 		residential : landuse=residential
-		Area A : relation[boundary=administrative AND name="Area A"]
-		Area B : relation[boundary=administrative AND name="Area B"]
+		Area A : relation[boundary=administrative AND name:en="Area A"]
+		Area B : relation[boundary=administrative AND name:en="Area B"]
 		helipad : aeroway=helipad
 
 properties
