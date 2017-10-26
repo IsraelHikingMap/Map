@@ -55,6 +55,10 @@
 import-script:..\Scripts\Maperipy\names.py
 
 features
+	// By using one feature for tag values belew, we make sure only one label is written
+	// when a POI has more than one tag. It also reduces code duplication and creates unity among the labels.
+	POI text : area[@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station] node[@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station]
+
 	points, areas
 		church worship: amenity=place_of_worship AND (religion=christian OR religion=Christian)
 		mosque worship: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
@@ -63,8 +67,6 @@ features
 		railway station : railway=station
 		parking : amenity=parking
 		power tower : @isOneOf(power, tower, station, sub_station)
-		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
-		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station
 		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
@@ -85,11 +87,11 @@ features
 		view : tourism=viewpoint
 		memorial : historic=memorial
 		cave : natural=cave_entrance OR tomb=hypogeum
-		tree : node[natural=tree]
+		tree : natural=tree
 		guidepost : information=guidepost
 		watertower : man_made=water_tower
 		monument : historic=monument
-		gate : node[barrier]
+		gate : barrier
 		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
 
@@ -415,8 +417,6 @@ rules
 				icon-image : Icons/SJJB/barrier_gate.glow.32.png
 		draw : icon
 
-// by using this statement we make sure only one label is written for POI with more than one tag
-// it also reduces code duplication and creates unity among the labels
 	target : POI text
 		define
 			min-zoom : 15
@@ -1437,6 +1437,7 @@ rules
 					painting-cycle : 510
 		draw : line
 		draw : fill
+	target : water
 		define
 			min-zoom : 14.1
 			font-size : 15:10;17:17
