@@ -640,5 +640,76 @@
                 <point>5032161/3386800</point>
             </polygon>
         </PolygonMap>
+        <PolygonMap name="Israel Hiking 16" zoom="16" mapSource="Israel Hiking Online" minTileCoordinate="9982464/6738432" maxTileCoordinate="10064894/6949886">
+            <polygon>
+                <point>10064568/6738504</point>
+                <point>10054556/6738448</point>
+                <point>10054552/6738948</point>
+                <point>10044224/6738908</point>
+                <point>10044192/6750952</point>
+                <point>10044044/6751158</point>
+                <point>10034512/6751136</point>
+                <point>10034516/6751444</point>
+                <point>10022032/6751450</point>
+                <point>10022044/6761468</point>
+                <point>10014570/6761492</point>
+                <point>10014626/6781474</point>
+                <point>10012148/6781484</point>
+                <point>10012172/6791432</point>
+                <point>10011782/6791430</point>
+                <point>10011400/6794376</point>
+                <point>10011272/6796422</point>
+                <point>10010760/6801390</point>
+                <point>10004804/6801424</point>
+                <point>10004844/6811330</point>
+                <point>10004524/6811346</point>
+                <point>10004108/6814282</point>
+                <point>10003916/6816272</point>
+                <point>10003766/6821258</point>
+                <point>9995052/6821310</point>
+                <point>9995112/6831190</point>
+                <point>9992348/6831212</point>
+                <point>9991946/6834150</point>
+                <point>9991814/6836102</point>
+                <point>9992368/6840080</point>
+                <point>9991580/6841076</point>
+                <point>9982912/6841160</point>
+                <point>9983096/6860838</point>
+                <point>9985540/6860814</point>
+                <point>9985704/6880418</point>
+                <point>9993490/6880360</point>
+                <point>9993556/6890134</point>
+                <point>9995500/6890122</point>
+                <point>9995624/6909616</point>
+                <point>10003854/6909570</point>
+                <point>10003898/6919292</point>
+                <point>10005346/6919288</point>
+                <point>10005438/6938676</point>
+                <point>10010250/6938660</point>
+                <point>10010288/6949780</point>
+                <point>10020858/6949746</point>
+                <point>10020850/6938632</point>
+                <point>10024702/6938624</point>
+                <point>10024696/6928942</point>
+                <point>10025006/6928938</point>
+                <point>10025016/6922184</point>
+                <point>10025172/6922136</point>
+                <point>10025184/6921780</point>
+                <point>10025020/6921696</point>
+                <point>10025012/6919748</point>
+                <point>10025370/6919234</point>
+                <point>10029516/6919230</point>
+                <point>10029522/6890016</point>
+                <point>10034378/6890016</point>
+                <point>10034390/6880240</point>
+                <point>10039256/6880248</point>
+                <point>10039284/6870454</point>
+                <point>10047564/6870476</point>
+                <point>10047890/6781498</point>
+                <point>10055336/6781528</point>
+                <point>10055378/6773546</point>
+                <point>10064322/6773600</point>
+            </polygon>
+        </PolygonMap>
     </Layer>
 </atlas>
