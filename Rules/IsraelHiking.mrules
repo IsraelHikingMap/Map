@@ -792,13 +792,20 @@ rules
 
 	target : track*
 		define
-			line-width : 13:1.5;14:2
-			line-offset : 12:0;13:1.5;16:2.5
-			border-width : 0.5
+			border-width : 25%
 			border-color : white
 			border-style : solid
-			// min-zoom for coloured trails
-			min-zoom : 11
+		for : colour
+			define
+				line-width : 13:1.5;14:2
+				line-offset : 12:0;13:1.5;16:2.5
+				min-zoom : 11
+		else
+			define
+				line-width : 14:0.9;16:2
+				line-offset : 14:1.5;16:2.5
+				line-color : #722d00
+				min-zoom : 14
 		if : * major*
 			define
 				line-style : solid
@@ -811,7 +818,7 @@ rules
 		elseif : * grade5*
 			define
 				line-style : dashdotdot
-// Right colour
+		// Right colour
 		if : * right
 			define
 				line-offset-sides : right
@@ -833,14 +840,7 @@ rules
 			elsefor : @isMatch(colour, "^orange;") OR colour = "orange"
 				define
 					line-color : orange
-			else
-				define
-					// min-zoom for non-coloured trails
-					min-zoom : 14
-					line-width : 14:0.7;16:2
-					line-offset : 14:1.5;16:2.5
-					line-color : #722d00
-// Left colour
+		// Left colour
 		if : * left
 			define
 				line-offset-sides : left
@@ -862,13 +862,6 @@ rules
 			elsefor : @isMatch(colour, ";orange$") OR colour = "orange"
 				define
 					line-color : orange black 5%
-			else
-				define
-					// min-zoom for non-coloured trails
-					min-zoom : 14
-					line-width : 14:0.7;16:2
-					line-offset : 14:1.5;16:2.5
-					line-color : #722d00
 		for : tunnel AND NOT tunnel=no
 			define
 				border-color : black
@@ -907,13 +900,20 @@ rules
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
 		define
-			line-width : 13:1.5;14:2
-			line-style : dash
-			border-width : 0.5
+			border-width : 25%
 			border-color : white
 			border-style : solid
-			// min-zoom for coloured trails
-			min-zoom : 13
+			line-style : dash
+		for : colour
+			define
+				line-width : 13:1.5;14:2
+				min-zoom : 13
+		else
+			define
+				line-width : 14:0.9;16:2
+				line-color : #722d00
+				fill-color : #722d00
+				min-zoom : 14
 		if : cycle*
 			define
 				// cycle paths
@@ -962,13 +962,6 @@ rules
 			define
 				line-color : orange black 5%
 				fill-color : orange black 5%
-		else
-			define
-				// min-zoom for non-coloured trails
-				min-zoom : 14
-				line-width : 14:1.5;16:2
-				line-color : #722d00
-				fill-color : #722d00
 		draw : line
 		for : bridge AND NOT bridge=no
 			define
@@ -1186,17 +1179,18 @@ rules
 			curved : true
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 520
+			font-size : 10
+			font-style : italic
+			font-weight : normal
+			text-color : #722d00
+			text-halo-width : 35%
+			text-halo-opacity : 1
+			text-halo-color : #F1EEE8
 			map.rendering.contour.label : false
 		if : * major
 			define
 				min-zoom : 13
 				line-width : 13:1.25;15:2
-				font-size : 10
-				font-style : italic
-				font-weight : normal
-				text-halo-width : 35%
-				text-halo-opacity : 1
-				text-halo-color : #F1EEE8
 		else
 			define
 				min-zoom : 14
