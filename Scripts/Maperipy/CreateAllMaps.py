@@ -304,27 +304,31 @@ if remainingPhases:
             App.run_command("run-script file="+os.path.join(
                 "Scripts", "Maperitive", "IsraelMinimalDecoration.mscript"))
 
-    phase = 'IsraelHikingOverlay'
-    if phase in remainingPhases:
-        App.log("=== Creating Trails Overlay tiles ===")
-        if changed:
-            App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
-            App.run_command("apply-ruleset")
-            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        mark_done(phase)
-    else:
-        App.log(phase+' phase skipped.')
+        phase = 'IsraelHikingOverlay'
+        if phase in remainingPhases:
+            App.log("=== Creating Trails Overlay tiles ===")
+            if changed:
+                App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
+                App.run_command("apply-ruleset")
+                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
+            mark_done(phase)
+        else:
+            App.log(phase+' phase skipped.')
 
-    phase = 'IsraelMTBOverlay'
-    if phase in remainingPhases:
-        App.log("=== Creating MTB Overlay tiles ===")
-        if changed:
-            App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
-            App.run_command("apply-ruleset")
-            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayMTB'))
-        mark_done(phase)
-    else:
-        App.log(phase+' phase skipped.')
+        phase = 'IsraelMTBOverlay'
+        if phase in remainingPhases:
+            App.log("=== Creating MTB Overlay tiles ===")
+            if changed:
+                App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
+                App.run_command("apply-ruleset")
+                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayMTB'))
+            mark_done(phase)
+        else:
+            App.log(phase+' phase skipped.')
+
+        osm_trails.advance()
+
+    osm_source.advance()
 
     with open(cache_file("Change Analysis.log"), 'a') as journal:
         journal.write("{}\n".format(pretty_timer(
@@ -336,9 +340,6 @@ if remainingPhases:
 #
 Map.clear()  # DEBUG
 App.collect_garbage()  # DEBUG
-
-osm_trails.advance()
-osm_source.advance()
 
 for phase in phases:
     silent_remove(done_file(phase))
