@@ -67,6 +67,7 @@ IF ERRORLEVEL 1 (
 )
 
 @ECHO Entering queue at %DATE% %TIME%. 1>&2
+TIMEOUT /T 1 >NUL
 :CheckQueue
 CALL :QueueHead
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
