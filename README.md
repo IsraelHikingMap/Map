@@ -32,6 +32,9 @@ The maps are available for online use with several applications:
 The map is available for Online use as part of OruxMaps' built-in maps.    
 Selected the maps using _Maps &rarr; Switch map &rarr; ONLINE_
 
+For online use please refer to [this onlinemapsources.xml file](https://lookaside.fbsbx.com/file/onlinemapsources.xml?token=AWxzCQ3s-4Bwhn8z8Y90nwVTEJJTbGK4XRZmwOvc8aYKJvlZctKnysqBKKDsrwBotyz_MzOZwYZ1QSDtaG94Rg7uimKVKC0xzGEedO1k5JUllXLSDW8hEuP2MJm-KSzwVj1hhIo99-MQWrZUJ2-pXLvIFuUvBBuGFMKssNraJZGM8af1-VYpWuDTGLXa2r9Baz8u3cyl_nszIse8jekTD04r). Replace it with onlinemapsources.xml in oruxsmaps/mapfiles folder in your Android device. This xml will gain you access to many more web services.
+
+
 ### [Off-Road](http://off-road.io/)
 Off-Road is available for Android and iOS devices. Selected the maps for online and offline viewing from the "Maps" menu.
 
