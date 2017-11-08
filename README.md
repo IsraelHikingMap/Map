@@ -128,6 +128,8 @@ Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) wh
 The following tile sources are currently available for zoom levels 7 to 16.    
 The trails overlays also include roads and elevation countours.
 
+_Note:_ Different applications and sites may use different syntax for specifying the `{x}`, `{y}`, and `{z}` parts of the URL. Please modify the URL below accordingly.
+
 | Israel Hiking         | URL                                                             |
 |:----------------------|:----------------------------------------------------------------|
 | Hebrew Base Map       | `https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`  |
