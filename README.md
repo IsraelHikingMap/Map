@@ -42,26 +42,11 @@ Add the maps using _Maps &rarr; ONLINE &rarr; "+"_
 The maps can be added to QGIS as a tiles layer.
 
 1. Install the "QuickMapServices" plug-in into QGIS.
-2. Click on the QuickMapServices icon.
-
-   <img width="110" alt="createservice" src="https://cloud.githubusercontent.com/assets/1304610/20640313/e45942ba-b3e2-11e6-8cc3-7d9e09c3105c.png">
-3. Choose "Settings".
-4. Open the "Add/Edit/Remove" tab and add new service by clicking the "+" button under "My services".
-
-   <img width="330" alt="create a new service" src="https://cloud.githubusercontent.com/assets/1304610/20640842/36f86144-b3f3-11e6-930d-3f074c2644fa.png">
-6. Fill the form in the "General" tab.
-
-   <img width="300" alt="general tab" src="https://cloud.githubusercontent.com/assets/1304610/20642358/550f7236-b415-11e6-8dcf-9af256f8099d.png">
-
-   Note: The <img width="16" alt="favicon-32x32" src="https://github.com/IsraelHikingMap/Site/blob/master/IsraelHiking.Web/sources/content/favicons/favicon-32x32.png"> icon can be downloaded from [here](https://github.com/IsraelHikingMap/Site/blob/master/IsraelHiking.Web/sources/content/favicons/favicon-32x32.png)
-7. Open the "TMS" tab and fill the form with one of the [Tile URLs](#tile-urls) and the other values as shown below.
-
-   <img width="300" alt="tms" src="https://cloud.githubusercontent.com/assets/1304610/20642389/5b10fc26-b416-11e6-9226-08cc705224b6.png">
-
-8. Click "OK"
-9. Click "Save"
-
-The new map is now available in the OSM group under the QuickMapServices button
+2. Click on the Search QMS icon.    
+   <img width="22" alt="Search QMS icon" src="https://user-images.githubusercontent.com/1304610/32561290-a5639d7e-c4b4-11e7-99e6-0643ecfd395c.png">
+3. Type the word "Israel" in the search box and wait for the search results.    
+   <img width="326" alt="search resulls" src="https://user-images.githubusercontent.com/1304610/32561610-556ce360-c4b5-11e7-9569-16e831dbfbe4.png">
+4. Click "Add" next to the required map.
 
 ### [Marble](https://marble.kde.org/install.php)
 Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
