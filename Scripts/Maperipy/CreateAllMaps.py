@@ -21,7 +21,7 @@ from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 from OsmChangeSource import *
 from PolygonTileGenCommand import pretty_timer
 
-start_time = datetime.now()
+start_time = datetime.utcnow()
 App.run_command('clear-map')
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
@@ -146,7 +146,10 @@ def done_file(phase):
 def mark_done(phase):
     open(done_file(phase), 'a').close()
     App.log(phase+' phase is done.')
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
+
+def print_duration():
+    print pretty_timer("Current duration:", (datetime.utcnow()-start_time).total_seconds())
 
 # Create a new map if all phased were done
 remainingPhases = []
@@ -180,7 +183,7 @@ else:
         pass
     else:
         raise RuntimeError
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
 
 # Incremental tile generation?
 if os.path.exists(osm_source.changes):
@@ -201,21 +204,25 @@ if os.path.exists(osm_source.changes):
         (changed, guard) = base_map.statistics()
         if changed:
             with open(cache_file("Change Analysis.log"), 'a') as journal:
-                journal.write("Changes {}\n".format(change_span))
+                now = start_time - timedelta(microseconds=start_time.microsecond)
+                journal.write("{}Z: Changes {}\n".format(
+                    now.isoformat(), change_span))
         else:
             remainingPhases = []
         App.collect_garbage()
-        print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+        print_duration()
 elif remainingPhases:
     # 
     updated_time = "map dated {}Z".format(
             osm_source.timestamp(osm_source.updated).isoformat())
     App.log("=== Loading the {} ===".format(updated_time))
     with open(cache_file("Change Analysis.log"), 'a') as journal:
-        journal.write("Base {}\n".format(updated_time))
-        journal.write("Creating {}.\n".format(", ".join(remainingPhases)))
+        now = datetime.utcnow()
+        now -= timedelta(microseconds=now.microsecond)
+        journal.write("{}Z: Base {}\n".format(now.isoformat(), updated_time))
+        journal.write("{}Z: Creating {}.\n".format(now.isoformat(), ", ".join(remainingPhases)))
     Map.add_osm_source(osm_source.updated)
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
 
 #
 # Execute map generation by phases
@@ -331,9 +338,11 @@ if remainingPhases:
     osm_source.advance()
 
     with open(cache_file("Change Analysis.log"), 'a') as journal:
-        journal.write("{}\n".format(pretty_timer(
+        now = datetime.utcnow()
+        now -= timedelta(microseconds=now.microsecond)
+        journal.write("{}Z: {}\n".format(now.isoformat(), pretty_timer(
             "Execution time:",
-            (datetime.now()-start_time).total_seconds())))
+            (datetime.utcnow()-start_time).total_seconds())))
 
 #
 # Cleanup and prepare for next execution
@@ -344,6 +353,6 @@ App.collect_garbage()  # DEBUG
 for phase in phases:
     silent_remove(done_file(phase))
 
-print pretty_timer("Total time:", (datetime.now()-start_time).total_seconds())
+print pretty_timer("Total time:", (datetime.utcnow()-start_time).total_seconds())
 
 # vim: shiftwidth=4 expandtab
