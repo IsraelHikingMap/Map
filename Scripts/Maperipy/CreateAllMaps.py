@@ -335,8 +335,6 @@ if remainingPhases:
 
         osm_trails.advance()
 
-    osm_source.advance()
-
     with open(cache_file("Change Analysis.log"), 'a') as journal:
         now = datetime.utcnow()
         now -= timedelta(microseconds=now.microsecond)
@@ -347,8 +345,9 @@ if remainingPhases:
 #
 # Cleanup and prepare for next execution
 #
-Map.clear()  # DEBUG
-App.collect_garbage()  # DEBUG
+osm_source.advance()
+# Map.clear()  # DEBUG
+# App.collect_garbage()  # DEBUG
 
 for phase in phases:
     silent_remove(done_file(phase))
