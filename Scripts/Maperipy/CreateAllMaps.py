@@ -354,4 +354,7 @@ for phase in phases:
 
 print pretty_timer("Total time:", (datetime.utcnow()-start_time).total_seconds())
 
+if __name__ == '<module>':
+    App.run_command("exit")
+
 # vim: shiftwidth=4 expandtab
