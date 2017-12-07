@@ -34,7 +34,7 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
 )
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
-CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue
+CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue "%~n0 %*"
 IF ERRORLEVEL 1 EXIT /b
 
 IF EXIST "israel-and-palestine-updated.osm.pbf" (
