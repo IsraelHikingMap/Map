@@ -119,17 +119,17 @@ features
 		path : (highway=path AND NOT bicycle=no AND NOT foot=no) OR (highway=cycleway AND @isOneOf(foot, yes, permissive)) OR (highway=footway AND @isOneOf(bicycle, yes, permissive))
 		foot path : (highway=footway AND NOT @isOneOf(bicycle, yes, permissive)) OR highway=pedestrian OR (highway=path AND bicycle=no AND NOT foot=no)
 		steps path : highway=steps
-		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street paved residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
-		road street paved track : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
-		track left  : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
-		track right : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
-		track unclassified left  : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
-		track unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		road motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road paved residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		road paved track : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved track left  : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved track right : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved unclassified left  : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		unpaved unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		railway rail : @isOneOf(railway, rail, funicular)
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi, canal)
@@ -628,7 +628,7 @@ rules
 			define
 				border-width : 150%
 		draw : line
-		// 1px line for paved
+		// Single line for non-coloured paved
 		if : * paved *
 			for : NOT colour AND NOT tunnel
 				define
@@ -787,7 +787,8 @@ rules
 			draw : text
 		draw : line
 
-	target : track *
+	// unpaved and thin coloured paved
+	target : *paved *
 		define
 			border-width : 25%
 			border-color : white
@@ -815,6 +816,14 @@ rules
 		else
 			define
 				line-style : dash
+		if : road paved *
+			for : colour
+				// thin line only
+				define
+					max-zoom : 13
+					line-style : solid
+			else
+				stop
 		// Right colour
 		if : * right
 			define
@@ -837,8 +846,8 @@ rules
 			elsefor : @isMatch(colour, "^orange;") OR colour = "orange"
 				define
 					line-color : orange
-		// Left colour
-		if : * left
+		// Left and thin paved colour
+		else
 			define
 				line-offset-sides : left
 			for : @isMatch(colour, ";red$") OR colour = "red"
@@ -882,7 +891,7 @@ rules
 			text-func : WayName(e)
 		draw : text
 
-	target : track *
+	target : unpaved *
 		for :  NOT colour
 			// Show non-coloured tracks as thin lines in zoom 13
 			define
