@@ -229,13 +229,6 @@ elif remainingPhases:
 #
 if remainingPhases:
     App.log("=== Executing Phases: {} ===".format(remainingPhases))
-    if language == "Hebrew":
-        App.log("=== Updating the site's search and routing DBs ===")
-        # Update the site's search and routing DBs
-        try:
-            App.start_program("UpdateDB.bat",[osm_source.updated])
-        except:
-            pass
 
     # Tile generation
     if [val for val in ('IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16')
