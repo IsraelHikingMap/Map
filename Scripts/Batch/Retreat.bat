@@ -63,7 +63,7 @@ IF /I %LANGUAGE% == "Hebrew" (
   SET ALLPHASES=%ALLPHASES% IsraelHikingOverlay IsraelMTBOverlay
 )
 
-IF "%*"=="" (
+IF "%1"=="" (
   IF EXIST *.done (
     DEL *.done
   )
