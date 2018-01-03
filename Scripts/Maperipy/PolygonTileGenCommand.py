@@ -202,6 +202,44 @@ class PolygonTileGenCommand(TileGenCommand):
         self.tile_removal_script = 'Output\\rm_tiles.sh'  # Optional: tile removal script name
         self.list_file = open(os.devnull, 'w')
 
+    def mobac_polygon(self, zoom):
+        return map((lambda point: self.deg2num(point.y, point.x, zoom+8)),
+                self.generation_polygon.exterior.coords)
+
+    def create_MOBAC_profile(self, directory, profile_name, atlas_name, map_source, max_zoom = 16, min_zoom = 7, map_format = "OruxMapsSqlite"):
+        bbox = self.generation_polygon.bounding_box
+        profile_filename = os.path.join(directory, "mobac-profile-{}.xml".format(profile_name))
+        with open(profile_filename, "w") as fout:
+            fout.write('''\
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<atlas outputFormat="{1}" name="{0}" version="1">
+    <Layer name="{0}">
+'''
+                .format(atlas_name, map_format))
+            for zoom in range(min_zoom, max_zoom+1):
+                (min_tile_x, max_tile_y) = self.deg2num(bbox.min_y, bbox.min_x, zoom+8)
+                (max_tile_x, min_tile_y) = self.deg2num(bbox.max_y, bbox.max_x, zoom+8)
+                fout.write('''\
+        <PolygonMap name="{0} {1:02}" zoom="{1}" mapSource="{2}" minTileCoordinate="{3}/{4}" maxTileCoordinate="{5}/{6}">
+            <polygon>
+'''
+                    .format(atlas_name, zoom, map_source, min_tile_x, min_tile_y, max_tile_x, max_tile_y))
+                for tile in self.mobac_polygon(zoom):
+                    fout.write('''\
+                <point>{0[0]}/{0[1]}</point>
+'''
+                        .format(tile))
+                fout.write('''\
+            </polygon>
+        </PolygonMap>
+'''
+                    )
+            fout.write('''\
+    </Layer>
+</atlas>
+'''
+                )
+
 def pretty_timer(prefix, timer):
     days = timer // 3600*24
     if timer > 86400:

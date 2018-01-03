@@ -27,3 +27,6 @@ run-python "Scripts\Maperipy\GenASTERContours.py"
 
 // Create and save grid lines file
 run-python "Scripts\Maperipy\CreateITMGridOsm.py"
+
+// Create and save the MOBAC profiles
+run-python "Scripts\Maperipy\CreateMOBACProfiles.py"
