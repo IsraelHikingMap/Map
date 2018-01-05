@@ -143,6 +143,7 @@ class PolygonTileGenCommand(TileGenCommand):
     def generation_filter (self, zoom, x, y, width, height):
         """Avoid generating tile batches outside the polygon"""
         self._progress_update(zoom, width*height)
+        self._cg_check()
         generate = self.tiles_overlapps_polygon(zoom, x, y, width, height)
         if self.verbose:
             print "     PolygonTileGenCommand - Generating {}x{} super-tile: {}/{}/{}: {}".format(
@@ -169,6 +170,7 @@ class PolygonTileGenCommand(TileGenCommand):
 
     def execute(self):
         self._progress_zoom = None
+        self._last_gc_check = 0
         try:
             TileGenCommand.execute(self)
         except BaseException as e:
@@ -190,6 +192,11 @@ class PolygonTileGenCommand(TileGenCommand):
                 self._progress_count*100//self._progress_target, zoom)
             self._progress_last_report = self._progress_count
         self._progress_count += size
+
+    def _cg_check(self):
+        if self._last_gc_check > self._progress_count - self._progress_last_report:
+            App.collect_garbage()
+        self._last_gc_check = self._progress_count - self._progress_last_report
 
     def __init__(self):
         # Derived classes can overide the save_filter and generation_filter methods
