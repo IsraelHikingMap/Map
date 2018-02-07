@@ -59,7 +59,7 @@ IF EXIST "%ATLASDIR%\" (
 )
 
 @ECHO %DATE% %TIME%: Creating Atlas: %ATLASNAME%
-"java" -Xms64m -jar Mobile_Atlas_Creator.jar create "%ATLASNAME%" "%ATLASDIR%"
+"java" -Xms512m -Xmx512m -jar Mobile_Atlas_Creator.jar create "%ATLASNAME%" "%ATLASDIR%"
 
 @ECHO %DATE% %TIME%
 
