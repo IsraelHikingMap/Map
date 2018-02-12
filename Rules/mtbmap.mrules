@@ -158,8 +158,8 @@ features
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
-		pal A : relation[boundary=administrative AND name="Area A"]
-		pal B : relation[boundary=administrative AND name="Area B"]
+		pal A : relation[boundary=administrative AND name:en="Area A"]
+		pal B : relation[boundary=administrative AND name:en="Area B"]
 		quarry : landuse=quarry
 		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 
