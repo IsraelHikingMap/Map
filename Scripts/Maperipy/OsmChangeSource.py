@@ -10,6 +10,7 @@ import os
 import errno
 from maperipy import *
 from datetime import *
+from PolygonTileGenCommand import pretty_timer
 
 class osmChangeSource(object):
     """Providing a web-based source for OSM change files.
@@ -335,6 +336,39 @@ class openstreetmap_fr(osmChangeSource):
         self.silent_remove(self.base)
         self.silent_remove(self.changes)
         return exit_code
+
+    def downloadUpdate(self):
+        # Optimize openstreetmap.fr updates for periods longer than 30 hours
+        period = (datetime.utcnow() - self.timestamp(self.base)).total_seconds()
+        if self.status() == "base" and period > 30*3600:
+            period -= period % 60
+            App.log("=== {} ===".format(pretty_timer("Optimizing an update period of", period)))
+            saved_base = self.base
+            self.base = self.base + ".temp.pbf"
+            self.silent_remove(self.base)
+            exit_code = self.downloadBase()
+            self.silent_remove(self.base)
+            self.silent_remove(self.changes)
+            if exit_code:
+                self.silent_remove(self.updated)
+                return exit_code
+            self.base = saved_base
+            exit_code = (
+                    App.run_program(
+                        "osmconvert.exe", 7200, [ self.updated, "-o="+self.updated+".o5m"]
+                        + self.osmconvert_params)
+                    or
+                    App.run_program(
+                        "osmconvert.exe", 7200, ["--diff", self.base, self.updated+".o5m", "-o="+self.changes]
+                        + self.osmconvert_params)
+                    )
+            self.silent_remove(self.updated+".o5m")
+            if exit_code:
+                self.silent_remove(self.changes)
+                self.silent_remove(self.updated)
+            return exit_code
+        else:
+            return osmChangeSource.downloadUpdate(self)
 
 class osmChangeMergingSource(osmChangeSource):
     """Source made by merging multiple sub-regions.
