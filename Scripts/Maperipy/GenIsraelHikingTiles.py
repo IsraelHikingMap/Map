@@ -16,6 +16,7 @@ License: public domain
 
 import time
 import os.path
+import re
 from maperipy import *
 from OsmChangeTileGenCommand import OsmChangeTileGenCommand
 from PolygonTileGenCommand import pretty_timer
@@ -80,12 +81,19 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         self.use_fingerprint = True
         self.min_tile_file_size = 385  # No transparent tiles
 
-    def rel_members_bbox(self, relation):
-        return not (
+    def rel_to_fill(self, relation):
+        return (
             relation.has_tag("type") and relation.get_tag("type") == "multipolygon"
-            or
+                and (set(relation.tags.keys())
+                    & {"landuse", "natural", "waterway", "military", "building", "boundary", "leisure"})
+            or 
             relation.has_tag("boundary")
-            and relation.get_tag("boundary") in ("national_park", "protected_area"))
+            and (
+                relation.get_tag("boundary") in ("national_park", "protected_area")
+                or
+                relation.has_tag("name:en") and re.match("Area [AB]$", relation.get_tag("name:en"))
+            )
+        )
 
     def execute(self):
         timer = time.time()
