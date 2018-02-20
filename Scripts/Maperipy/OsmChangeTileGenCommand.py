@@ -139,7 +139,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         PolygonTileGenCommand.__init__(self)
         self.changed = None
         self.guard = None
-        self.changed_bbox = BoundingBox(Srid.Wgs84LonLat)  # bboxes accumulator
 
     def execute(self):
         if self.changed is not None:
@@ -148,38 +147,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             else:
                 # Change analysis was done, but nothing was changed
                 return
-            # Reduce the rendering_bounds using guard bounds
-            try:
-                min_zoom = self.min_zoom
-                max_zoom = self.max_zoom
-                rendering_bounds = self.rendering_bounds
-                # print "Original bounds: {}".format(self.rendering_bounds)
-                # print "Changes bounds: {}".format(self.changed_bbox)
-                for zoom in range(min_zoom, max_zoom+1):
-                    self.min_zoom = zoom
-                    self.max_zoom = zoom
-                    # Calculate zoom-specific tile bounds of the changes
-                    (left, top) = self.deg2num(self.changed_bbox.max_y, self.changed_bbox.min_x, zoom)
-                    (right, bottom) = self.deg2num(self.changed_bbox.min_y, self.changed_bbox.max_x, zoom)
-                    # Create a zoom-based guard
-                    guard_bounds = self.num2deg(left-0.5, top-0.5, zoom).bounding_box # Center of NW guard tile
-                    guard_bounds.extend_with(
-                            self.num2deg(right+1.5, bottom+1.5, zoom).bounding_box) # Center of SE guard tile
-                    # Use the intersection of the original bounds and the guard
-                    self.rendering_bounds = BoundingBox(
-                            Srid.Wgs84LonLat,
-                            max(rendering_bounds.min_x, guard_bounds.min_x),
-                            max(rendering_bounds.min_y, guard_bounds.min_y),
-                            min(rendering_bounds.max_x, guard_bounds.max_x),
-                            min(rendering_bounds.max_y, guard_bounds.max_y))
-                    # print "Zoom {} bounds: {}".format(zoom, self.rendering_bounds)
-                    PolygonTileGenCommand.execute(self)
-            finally:
-                self.min_zoom = min_zoom
-                self.max_zoom = max_zoom
-                self.rendering_bounds = rendering_bounds
-        else:
-            PolygonTileGenCommand.execute(self)
+        PolygonTileGenCommand.execute(self)
 
     def updated(self, zoom, x, y, width, height):
         if self.verbose:
@@ -288,7 +256,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if not self.linear_ring_overlapps_polygon(bbox.polygon.exterior):
             # Ignore changes outside the generation polygon
             return
-        self.changed_bbox.extend_with(bbox)
         zoom = max(self.changed)
         (left, top) = self.deg2num(bbox.max_y, bbox.min_x, zoom)
         (right, bottom) = self.deg2num(bbox.min_y, bbox.max_x, zoom)
