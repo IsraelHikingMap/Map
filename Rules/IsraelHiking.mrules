@@ -74,23 +74,23 @@ features
 		archaeological : historic=archaeological_site
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		cemetery : landuse=cemetery OR amenity=grave_yard
+		memorial : historic=memorial
+		monument : historic=monument
+		place : place OR landuse=farmyard OR landuse=farmland
+		camp site : tourism=camp_site
+		view : tourism=viewpoint
 
 	points
-		place : place OR landuse=farmyard OR landuse=farmland
 		peak : natural=peak
 		water spring : natural=spring OR water=pond
 		water well : man_made=water_well
 		water cistern : man_made=cistern
 		water waterhole : natural=waterhole
 		drinking : amenity=drinking_water
-		camp site : tourism=camp_site
-		view : tourism=viewpoint
-		memorial : historic=memorial
 		cave : natural=cave_entrance OR tomb=hypogeum
 		tree : natural=tree
 		guidepost : information=guidepost
 		watertower : man_made=water_tower
-		monument : historic=monument
 		gate : barrier
 		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
