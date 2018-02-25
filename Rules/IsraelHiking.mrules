@@ -163,7 +163,7 @@ properties
 	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
-	map-sea-color : #00BFFF
+	map-sea-color : #8AC0FF
 	line-opacity : 100%
 
 rules
@@ -609,7 +609,7 @@ rules
 				border-color : black
 		elsefor : colour = green
 			define
-				border-color : #00C000
+				border-color : #00A000
 		elsefor : colour = purple
 			define
 				border-color : purple
@@ -762,31 +762,6 @@ rules
 			text-func : WayName(e)
 		draw : text
 
-	target : stream
-		define
-			curved : true
-			min-zoom : 13
-			line-color : #78C1C1
-			line-width : 10:1;15:3
-		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
-			define
-				line-style : dash
-		for : tunnel AND NOT tunnel=no
-			define
-				line-style : dot
-		define
-			min-zoom : 13
-			font-size : 13:8;15:10;17:17
-			font-style : italic
-			font-weight : bold
-			text-color : #78C1C1 black 10%
-			map.rendering.lflp.min-buffer-space : 5
-			map.rendering.lflp.max-allowed-corner-angle : 90
-			text-func : WayName(e)
-		for : NOT tunnel AND (NOT layer OR layer=0)
-			draw : text
-		draw : line
-
 	// unpaved and thin coloured paved
 	target : *paved *
 		define
@@ -839,7 +814,7 @@ rules
 					line-color : black
 			elsefor : @isMatch(colour, "^green;") OR colour = "green"
 				define
-					line-color : #00C000
+					line-color : #00A000
 			elsefor : @isMatch(colour, "^purple;") OR colour = "purple"
 				define
 					line-color : purple
@@ -861,7 +836,7 @@ rules
 					line-color : black
 			elsefor : @isMatch(colour, ";green$") OR colour = "green"
 				define
-					line-color : #00C000
+					line-color : #00A000
 			elsefor : @isMatch(colour, ";purple$") OR colour = "purple"
 				define
 					line-color : purple
@@ -906,7 +881,7 @@ rules
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
 		define
-			border-width : 25%
+			border-width : 50%
 			border-color : white
 			border-style : solid
 			line-style : dash
@@ -958,8 +933,8 @@ rules
 				fill-color : black
 		elsefor : colour = green
 			define
-				line-color : #00C000
-				fill-color : #00C000
+				line-color : #00A000
+				fill-color : #00A000
 		elsefor : colour = purple
 			define
 				line-color : purple
@@ -1085,6 +1060,34 @@ rules
 			line-width : 2
 			// line-opacity : 80%
 			line-color : orange
+		draw : line
+
+	target : stream
+		define
+			curved : true
+			min-zoom : 13
+			line-color : #8AC0FF
+			line-width : 13:3;15:5
+		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
+			define
+				line-style : dash
+		for : tunnel AND NOT tunnel=no
+			define
+				line-style : dot
+		define
+			min-zoom : 13
+			font-size : 8:12;10:16;14:20
+			text-letter-spacing : 50%
+			font-style : italic
+			font-weight : bold
+			text-color : #8AC0FF
+			text-halo-color : #0000FF
+			text-halo-width : 15%
+			map.rendering.lflp.min-buffer-space : 50
+			map.rendering.lflp.max-allowed-corner-angle : 90
+			text-func : WayName(e)
+		for : NOT tunnel AND (NOT layer OR layer=0)
+			draw : text
 		draw : line
 
 	target : aerialway
@@ -1414,8 +1417,8 @@ rules
 	target : water
 		define
 			line-width : 2
-			line-color : #00BFFF blue 10%
-			fill-color : #00BFFF
+			line-color : #8AC0FF blue 10%
+			fill-color : #8AC0FF
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 530
 		for : intermittent = yes OR (seasonal AND NOT seasonal = no)
@@ -1423,16 +1426,15 @@ rules
 				min-zoom : 13
 				line-style : dashlong
 				fill-hatch : nwse
-				fill-hatch-color : #78C1C1 white 10%
+				fill-hatch-color : #8AC0FF white 10%
 				fill-hatch-opacity : 80%
 				fill-opacity : 0
 			for : waterway=riverbank
 				define
-					line-width : 1.5
+					line-width : 1
 					fill-hatch-opacity : 0
 					fill-opacity : 50%
-					line-color : #78C1C1
-					fill-color : #78C1C1
+					line-color : #8AC0FF
 					// Contour lines above inntermittent riverbanks
 					painting-cycle : 510
 		draw : line
