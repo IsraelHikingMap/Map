@@ -76,11 +76,11 @@ features
 		cemetery : landuse=cemetery OR amenity=grave_yard
 		memorial : historic=memorial
 		monument : historic=monument
-		place : place OR landuse=farmyard OR landuse=farmland
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
 
 	points
+		place : place OR landuse=farmyard OR landuse=farmland
 		peak : natural=peak
 		water spring : natural=spring OR water=pond
 		water well : man_made=water_well
