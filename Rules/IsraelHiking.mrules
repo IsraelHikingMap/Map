@@ -1080,9 +1080,7 @@ rules
 			text-letter-spacing : 50%
 			font-style : italic
 			font-weight : bold
-			text-color : #8AC0FF
-			text-halo-color : #0000FF
-			text-halo-width : 15%
+			text-color : #8AC0FF blue 35%
 			map.rendering.lflp.min-buffer-space : 50
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			text-func : WayName(e)
