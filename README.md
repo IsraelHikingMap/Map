@@ -13,7 +13,6 @@ Enjoy, open a OSM account, and add trails to make these map even better :-)
   * [Off-Road](#off-road)
   * [Locus Map](#locus-map)
   * [QGIS](#qgis)
-  * [Marble](#marble)
 * [Offline maps](#offline-maps)
   * [Ready to download](ready-to-download)
   * [Preparing offline maps](#preparing-offline-maps)
@@ -47,17 +46,6 @@ The maps can be added to QGIS as a tiles layer.
 3. Type the word "Israel" in the search box and wait for the search results.    
    <img width="326" alt="search resulls" src="https://user-images.githubusercontent.com/1304610/32561610-556ce360-c4b5-11e7-9569-16e831dbfbe4.png">
 4. Click "Add" next to the required map.
-
-### [Marble](https://marble.kde.org/install.php)
-Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
-Setup instructions:
-* Maps folder location is
-  * Windows: `%programfiles%\Marble\data\maps\earth\`
-  * Linux  : `/usr/share/apps/marble/data/maps/earth/`
-* Copy the [osm.org.il folder](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to maps folder
-* Copy the [mtb folder](https://github.com/shtrb/marble/tree/master/earth/mtb) to maps folder
-* Copy the [routes folder](https://github.com/shtrb/marble/tree/master/earth/routes) to maps folder
-* Select _"osm.org.il"_ in the available maps
 
 ## Offline maps
 ### Ready to download
