@@ -1476,7 +1476,6 @@ rules
 			line-width : 1
 			fill-color : #CCCCCC
 			icon-image : Icons/mtbmap/cemetery.png
-		draw : fill
 		for : _urban=yes
 			define
 				min-zoom : 16
@@ -1484,6 +1483,9 @@ rules
 			define
 				min-zoom : 15
 		draw : icon
+		define
+			painting-cycle : 250
+		draw : fill
 
 	target : forest label
 		for : width > 5
@@ -1511,6 +1513,7 @@ rules
 			line-width : 1
 			min-zoom : 9
 			fill-texture : Textures/ForestNoiseLighter.jpg
+			painting-cycle : 250
 		draw : fill
 
 	target : beach
@@ -1518,16 +1521,17 @@ rules
 			define
 				fill-opacity : 10%
 		define
-			line-style : none
-			line-width : 1
-			fill-color : #FFEC8B
-		draw : fill
-		define
 			min-zoom : 13
 			font-size : 12
 			text-color : black
 			text-func : NodeName(e)
 		draw : text
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #FFEC8B
+			painting-cycle : 250
+		draw : fill
 
 	target : quarry
 		define
@@ -1536,7 +1540,6 @@ rules
 			line-width : 1
 			min-zoom : 12
 			fill-texture : Textures/Rendering-landuse-quarry-mapnik-light.png
-		draw : fill
 		draw : line
 		define
 			min-zoom : 13
@@ -1544,6 +1547,9 @@ rules
 			text-color : black
 			text-func : NodeName(e)
 		draw : text
+		define
+			painting-cycle : 250
+		draw : fill
 
 	target : farmland
 		define
@@ -1552,6 +1558,7 @@ rules
 			//fill-color : #E6DDD0
 			fill-texture : Textures/farmland.png
 			fill-opacity : 0.3
+			painting-cycle : 250
 		draw : fill
 
 	target : grass
@@ -1559,6 +1566,7 @@ rules
 			line-style : none
 			line-width : 1
 			fill-color : #E9FDE0
+			painting-cycle : 250
 		draw : fill
 
 	target : plantation
@@ -1567,22 +1575,24 @@ rules
 			line-style : none
 			line-width : 0
 			fill-texture : Textures/plantation-light.png
+			painting-cycle : 250
 		draw : fill
 
 
 // residential should be last
 	target : residential
 		define
+			min-zoom : 17
+			text-func : NodeName(e)
+		draw : text
+		define
 			line-style : solid
 			line-color : black white 40%
 			line-width : 1
 			fill-color : white black 10%
 			min-zoom : 12
+			painting-cycle : 250
 		draw : fill
 		draw : line
-		define
-			min-zoom : 17
-			text-func : NodeName(e)
-		draw : text
 
 // vim: set autoindent noexpandtab:
