@@ -11,7 +11,7 @@ Inputs for each analysis:
 """
 
 # TODO:
-# - mark center of rel_bbox for relations using members_bbox?
+# - mark center of rel_bbox for relations using fill_bbox?
 # - Check the removal of the guardband given the "map.rendering.tiles.rendering-bounds-buffer"
 #   settings which "specifies the additional buffer around the tile rendering bounds to prevent 
 #   labels being cut off at neighboring tiles. Specified as percentage of value, the default is 10%"
@@ -291,8 +291,8 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 if self.verbose:
                     App.log("     mark_bbox        new_tile_upwards(({}, {}), {})".format(x, y, zoom))
 
-    def rel_members_bbox(self, relation):
-        return not (relation.has_tag("type") and relation.get_tag("type") == "multipolygon")
+    def rel_to_fill(self, relation):
+        return (relation.has_tag("type") and relation.get_tag("type") == "multipolygon")
 
     def bboxes(self, osm_data, element_type, element_id):
         if self.verbose:
@@ -303,7 +303,7 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             yield osm_data.get_way_geometry(element_id).bounding_box
         elif element_type == "relation":
             relation = osm_data.relation(element_id) 
-            members_bbox = self.rel_members_bbox(relation) # Yield each member's bbox?
+            fill_bbox = self.rel_to_fill(relation) # Yield each member's bbox?
             rel_bbox = BoundingBox(Srid.Wgs84LonLat)  # Members bboxes accumulator, if needed
             for member in relation.members:
                 member_type = None
@@ -314,12 +314,12 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 elif member.ref_type==OsmReferenceType.RELATION and osm_data.has_relation(member.ref_id):
                     member_type = "relation"
                 for bbox in self.bboxes(osm_data, member_type, member.ref_id):
-                    if members_bbox:
+                    if fill_bbox:
+                        rel_bbox.extend_with(bbox)
+                    else:
                         # Yield each member's bbox
                         yield bbox
-                    else:
-                        rel_bbox.extend_with(bbox)
-                if not members_bbox:
+                if fill_bbox:
                     # Yield the accumulated bbox of all members
                     yield rel_bbox
 

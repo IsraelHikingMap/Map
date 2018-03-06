@@ -28,13 +28,19 @@ PUSHD %~dp0\..\..
 SET ISRAELHIKING="%CD%"
 
 SET LANGUAGE="Hebrew"
+IF "%*" == "" (
+  SET TASKNAME=%~n0 Hebrew
+) ELSE (
+  SET TASKNAME=%~n0 Hebrew %*
+)
 ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
   SET LANGUAGE="%~1"
+  SET TASKNAME=%~n0 %*
   SHIFT
 )
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
-CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue
+CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue "%TASKNAME%"
 IF ERRORLEVEL 1 EXIT /b
 
 IF EXIST "israel-and-palestine-updated.osm.pbf" (
@@ -54,10 +60,10 @@ IF EXIST israel-and-palestine-*trails* (
 
 SET ALLPHASES=IsraelHiking15 IsraelMTB15 IsraelHiking16 IsraelMTB16
 IF /I %LANGUAGE% == "Hebrew" (
-  SET ALLPHASES=%ALLPHASES% OverlayTiles OverlayMTB
+  SET ALLPHASES=%ALLPHASES% IsraelHikingOverlay IsraelMTBOverlay
 )
 
-IF "%*"=="" (
+IF "%1"=="" (
   IF EXIST *.done (
     DEL *.done
   )

@@ -56,4 +56,7 @@ if os.path.isdir(mobacTargetDir):
     App.log("Copy other new files, if any, to the Mobile Atlas Creator Installation")
     App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+mobacSourceDir+'"', '"'+mobacTargetDir+'"'])
 
+if __name__ == '<module>':
+    App.run_command("exit")
+
 # vim: set shiftwidth=4 expandtab textwidth=0:

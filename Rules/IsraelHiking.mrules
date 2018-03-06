@@ -55,6 +55,10 @@
 import-script:..\Scripts\Maperipy\names.py
 
 features
+	// By using one feature for tag values belew, we make sure only one label is written
+	// when a POI has more than one tag. It also reduces code duplication and creates unity among the labels.
+	POI text : area[@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station] node[@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station]
+
 	points, areas
 		church worship: amenity=place_of_worship AND (religion=christian OR religion=Christian)
 		mosque worship: amenity=place_of_worship AND (religion=muslim OR religion=Muslim)
@@ -63,8 +67,6 @@ features
 		railway station : railway=station
 		parking : amenity=parking
 		power tower : @isOneOf(power, tower, station, sub_station)
-		// text for point/area is used in order to group all the text rendering into one place and to avoid multiple labels.
-		POI text : @isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR amenity=parking OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction) OR @isOneOf(historic, ruins, archaeological_site, memorial, monument, tomb) OR railway=station
 		forest label: (landuse=forest OR natural=wood) AND width
 		fuel: amenity=fuel
 		nature reserve label : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
@@ -72,6 +74,10 @@ features
 		archaeological : historic=archaeological_site
 		picnic : leisure=picnic_table OR tourism=picnic_site
 		cemetery : landuse=cemetery OR amenity=grave_yard
+		memorial : historic=memorial
+		monument : historic=monument
+		camp site : tourism=camp_site
+		view : tourism=viewpoint
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -81,21 +87,17 @@ features
 		water cistern : man_made=cistern
 		water waterhole : natural=waterhole
 		drinking : amenity=drinking_water
-		camp site : tourism=camp_site
-		view : tourism=viewpoint
-		memorial : historic=memorial
 		cave : natural=cave_entrance OR tomb=hypogeum
-		tree : node[natural=tree]
+		tree : natural=tree
 		guidepost : information=guidepost
 		watertower : man_made=water_tower
-		monument : historic=monument
-		gate : node[barrier]
+		gate : barrier
 		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
 
 	lines
 		aerialway : aerialway AND NOT aerialway=station
-		aeroway : aeroway AND NOT aeroway=helipad
+		aeroway : @isOneOf(aeroway, runway, taxiway)
 		contour major : contour[@isMulti(elevation, 100)]
 		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
@@ -113,24 +115,21 @@ features
 		hiking national : relation[network = nwn]
 		land-feature : natural=ridge OR natural=valley
 
-		cycle path : highway=cycleway OR (highway=path AND bicycle=designated)
-		path : highway=path AND NOT bicycle=designated
-		foot path : highway=footway OR highway=pedestrian
+		cycle path : (highway=cycleway AND NOT @isOneOf(foot, yes, permissive)) OR (highway=path AND foot=no AND NOT bicycle=no)
+		path : (highway=path AND NOT bicycle=no AND NOT foot=no) OR (highway=cycleway AND @isOneOf(foot, yes, permissive)) OR (highway=footway AND @isOneOf(bicycle, yes, permissive))
+		foot path : (highway=footway AND NOT @isOneOf(bicycle, yes, permissive)) OR highway=pedestrian OR (highway=path AND bicycle=no AND NOT foot=no)
 		steps path : highway=steps
-		road major motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		track major left : highway=track AND @isOneOf(tracktype, grade1, grade2)
-		track minor left : highway=track AND (tracktype=grade3 OR NOT tracktype)
-		track grade4 left : highway=track AND tracktype=grade4
-		track grade5 left : highway=track AND tracktype=grade5
-		track major right : highway=track AND @isOneOf(tracktype, grade1, grade2)
-		track minor right : highway=track AND (tracktype=grade3 OR NOT tracktype)
-		track grade4 right : highway=track AND tracktype=grade4
-		track grade5 right : highway=track AND tracktype=grade5
+		road motorway : @isOneOf(highway, motorway, motorway_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road trunk : @isOneOf(highway, trunk, trunk_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		road paved residential: @isOneOf(highway, residential, unclassified, living_street, service, road) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		road paved track : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved track left  : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved track right : highway=track AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		unpaved unclassified left  : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		unpaved unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		railway rail : @isOneOf(railway, rail, funicular)
 		power line : @isOneOf(power, line, minor_line)
 		stream : @isOneOf(waterway, stream, river, wadi, canal)
@@ -156,15 +155,15 @@ features
 		farmland : @isOneOf(landuse, meadow, farmland, farm)
 		plantation : @isOneOf(landuse, orchard, vineyard)
 		residential : landuse=residential
-		Area A : relation[boundary=administrative AND name="Area A"]
-		Area B : relation[boundary=administrative AND name="Area B"]
+		Area A : relation[boundary=administrative AND name:en="Area A"]
+		Area B : relation[boundary=administrative AND name:en="Area B"]
 		helipad : aeroway=helipad
 
 properties
 	text-halo-width : 20%
 	text-halo-opacity : 0.75
 	map-background-color : white
-	map-sea-color : #00BFFF
+	map-sea-color : #8AC0FF
 	line-opacity : 100%
 
 rules
@@ -394,29 +393,27 @@ rules
 		define
 			min-zoom : 15
 			icon-width : 16
-		for : @IsOneOf(access, no, private) OR @IsOneOf(motor_vehicle, no, private)
+		for : @IsOneOf(access, no, private)
 			define
 				icon-image : Icons/SJJB/barrier_gate.n.32.png
-		elsefor : @IsOneOf(barrier, gate, hampshire_gate)
+		elsefor : @IsOneOf(barrier, block, debris) OR @IsOneOf(motor_vehicle, no, private)
 			define
-				icon-image : Icons/SJJB/barrier_gate.glow.32.png
-		elsefor : barrier=kissing_gate OR barrier=stile
+				icon-image : Icons/jersey_barrier.png
+		elsefor : @IsOneOf(barrier, stile, kissing_gate)
 			define
 				icon-image : Icons/SJJB/barrier_kissing_gate.glow.32.png
 		elsefor : barrier=lift_gate
 			define
 				icon-image : Icons/SJJB/barrier_lift_gate.glow.32.png
-		elsefor : barrier=block OR barrier=debris
-			define
-				icon-image : Icons/jersey_barrier.png
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/SJJB/barrier_cattle_grid.glow.32.png
 				icon-width: 24
+		elsefor : @IsOneOf(barrier, gate, hampshire_gate)
+			define
+				icon-image : Icons/SJJB/barrier_gate.glow.32.png
 		draw : icon
 
-// by using this statement we make sure only one label is written for POI with more than one tag
-// it also reduces code duplication and creates unity among the labels
 	target : POI text
 		define
 			min-zoom : 15
@@ -592,7 +589,7 @@ rules
 				min-zoom : 13
 				line-width : 13:1;16:3
 				line-color : #FFE66B
-		elseif : * residential
+		elseif : * paved *
 			define
 				min-zoom : 15
 				line-width : 15:2;16:3
@@ -612,7 +609,7 @@ rules
 				border-color : black
 		elsefor : colour = green
 			define
-				border-color : green
+				border-color : #00A000
 		elsefor : colour = purple
 			define
 				border-color : purple
@@ -631,8 +628,8 @@ rules
 			define
 				border-width : 150%
 		draw : line
-		// 1px line for residential
-		if : * residential
+		// Single line for non-coloured paved
+		if : * paved *
 			for : NOT colour AND NOT tunnel
 				define
 					min-zoom : 14
@@ -765,25 +762,44 @@ rules
 			text-func : WayName(e)
 		draw : text
 
-	target : track*
+	// unpaved and thin coloured paved
+	target : *paved *
 		define
-			line-width : 13:1.5;14:2
-			line-offset : 12:0;13:1.5;16:2.5
-			// min-zoom for coloured trails
-			min-zoom : 11
-		if : * major*
+			border-width : 25%
+			border-color : white
+			border-style : solid
+		for : colour
+			define
+				line-width : 13:1.5;14:2
+				line-offset : 12:0;13:1.5;16:2.5
+				min-zoom : 11
+		else
+			define
+				line-width : 14:0.9;16:2
+				line-offset : 14:1.5;16:2.5
+				line-color : #722d00
+				min-zoom : 14
+		for :  @isOneOf(tracktype, grade1, grade2) OR @isOneOf(highway, residential, unclassified, living_street, service, road)
 			define
 				line-style : solid
-		elseif : * minor*
-			define
-				line-style : dash
-		elseif : * grade4*
+		elsefor : tracktype=grade4
 			define
 				line-style : dashdot
-		elseif : * grade5*
+		elsefor : tracktype=grade5
 			define
 				line-style : dashdotdot
-// Right colour
+		else
+			define
+				line-style : dash
+		if : road paved *
+			for : colour
+				// thin line only
+				define
+					max-zoom : 13
+					line-style : solid
+			else
+				stop
+		// Right colour
 		if : * right
 			define
 				line-offset-sides : right
@@ -798,20 +814,15 @@ rules
 					line-color : black
 			elsefor : @isMatch(colour, "^green;") OR colour = "green"
 				define
-					line-color : green
+					line-color : #00A000
 			elsefor : @isMatch(colour, "^purple;") OR colour = "purple"
 				define
 					line-color : purple
 			elsefor : @isMatch(colour, "^orange;") OR colour = "orange"
 				define
 					line-color : orange
-			else
-				define
-					// min-zoom for non-coloured trails
-					min-zoom : 14
-					line-color : black white 50%
-// Left colour
-		if : * left
+		// Left and thin paved colour
+		else
 			define
 				line-offset-sides : left
 			for : @isMatch(colour, ";red$") OR colour = "red"
@@ -825,20 +836,16 @@ rules
 					line-color : black
 			elsefor : @isMatch(colour, ";green$") OR colour = "green"
 				define
-					line-color : green
+					line-color : #00A000
 			elsefor : @isMatch(colour, ";purple$") OR colour = "purple"
 				define
 					line-color : purple
 			elsefor : @isMatch(colour, ";orange$") OR colour = "orange"
 				define
 					line-color : orange black 5%
-			else
-				define
-					// min-zoom for non-coloured trails
-					min-zoom : 14
-					line-color : black white 50%
 		for : tunnel AND NOT tunnel=no
 			define
+				border-color : black
 				border-width : 80%
 				border-style : dot
 		draw : line
@@ -859,13 +866,13 @@ rules
 			text-func : WayName(e)
 		draw : text
 
-	target : track *
+	target : unpaved *
 		for :  NOT colour
 			// Show non-coloured tracks as thin lines in zoom 13
 			define
 				min-zoom : 13
 				max-zoom : 14
-				line-color : black white 75%
+				line-color : #722d00 white 75%
 				line-width : 1
 				line-style : solid
 				border-style : none
@@ -874,10 +881,43 @@ rules
 	target : *path
 		// foot paths, steps, generic paths, and cycle paths
 		define
-			line-width : 13:1.5;14:2
+			border-width : 50%
+			border-color : white
+			border-style : solid
 			line-style : dash
-			// min-zoom for coloured trails
-			min-zoom : 13
+		for : colour
+			define
+				line-width : 13:1.5;14:2
+				min-zoom : 13
+		else
+			define
+				line-width : 14:0.9;16:2
+				line-color : #722d00
+				fill-color : #722d00
+				min-zoom : 14
+		if : cycle*
+			define
+				// cycle paths
+				line-style : dashdot
+		elseif : foot*
+			// foot paths
+			define
+				line-style : dot
+				line-width : 13:2;14:2.5
+		elseif : steps*
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 2
+				shape-size : 13:1.5;16:2;20:3
+				shape-aspect : 3
+				line-style : none
+			draw : shape
+		for : tunnel AND NOT tunnel=no
+			define
+				border-color : black
+				border-width : 80%
+				border-style : dot
 		// Also set fill-color for steps
 		for : colour = red
 			define
@@ -893,8 +933,8 @@ rules
 				fill-color : black
 		elsefor : colour = green
 			define
-				line-color : green
-				fill-color : green
+				line-color : #00A000
+				fill-color : #00A000
 		elsefor : colour = purple
 			define
 				line-color : purple
@@ -903,34 +943,6 @@ rules
 			define
 				line-color : orange black 5%
 				fill-color : orange black 5%
-		else
-			define
-				// min-zoom for non-coloured trails
-				min-zoom : 14
-				line-color : black white 40%
-				fill-color : black white 40%
-		if : cycle*
-			define
-				// cycle paths
-				line-style : dashdot
-		elseif : foot*
-			// foot paths
-			define
-				line-style : dot
-				line-width : 13:1.8;14:2
-		elseif : steps*
-			define
-				shape : custom
-				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
-				shape-spacing : 2
-				shape-size : 13:1.5;16:2;20:3
-				shape-aspect : 3
-				line-style : none
-			draw : shape
-		for : tunnel AND NOT tunnel=no
-			define
-				border-width : 80%
-				border-style : dot
 		draw : line
 		for : bridge AND NOT bridge=no
 			define
@@ -1054,8 +1066,8 @@ rules
 		define
 			curved : true
 			min-zoom : 13
-			line-color : #78C1C1
-			line-width : 10:1;15:3
+			line-color : #8AC0FF
+			line-width : 13:3;15:5
 		for : waterway = wadi OR intermittent = yes OR (seasonal AND NOT seasonal = no)
 			define
 				line-style : dash
@@ -1064,11 +1076,12 @@ rules
 				line-style : dot
 		define
 			min-zoom : 13
-			font-size : 13:8;15:10;17:17
+			font-size : 8:12;10:16;14:20
+			text-letter-spacing : 50%
 			font-style : italic
 			font-weight : bold
-			text-color : #78C1C1 black 10%
-			map.rendering.lflp.min-buffer-space : 5
+			text-color : #8AC0FF blue 35%
+			map.rendering.lflp.min-buffer-space : 50
 			map.rendering.lflp.max-allowed-corner-angle : 90
 			text-func : WayName(e)
 		for : NOT tunnel AND (NOT layer OR layer=0)
@@ -1118,8 +1131,6 @@ rules
 			define
 				min-zoom : 13
 				line-width : 11:1;12:1;13:3;14:6;15:12
-		else
-			stop
 		draw : line
 
 	target : helipad
@@ -1175,17 +1186,18 @@ rules
 			curved : true
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 520
+			font-size : 10
+			font-style : italic
+			font-weight : normal
+			text-color : #722d00
+			text-halo-width : 35%
+			text-halo-opacity : 1
+			text-halo-color : #F1EEE8
 			map.rendering.contour.label : false
 		if : * major
 			define
 				min-zoom : 13
 				line-width : 13:1.25;15:2
-				font-size : 10
-				font-style : italic
-				font-weight : normal
-				text-halo-width : 35%
-				text-halo-opacity : 1
-				text-halo-color : #F1EEE8
 		else
 			define
 				min-zoom : 14
@@ -1403,8 +1415,8 @@ rules
 	target : water
 		define
 			line-width : 2
-			line-color : #00BFFF blue 10%
-			fill-color : #00BFFF
+			line-color : #8AC0FF blue 10%
+			fill-color : #8AC0FF
 			// Contour lines below water areas and above all other area fills
 			painting-cycle : 530
 		for : intermittent = yes OR (seasonal AND NOT seasonal = no)
@@ -1412,20 +1424,20 @@ rules
 				min-zoom : 13
 				line-style : dashlong
 				fill-hatch : nwse
-				fill-hatch-color : #78C1C1 white 10%
+				fill-hatch-color : #8AC0FF white 10%
 				fill-hatch-opacity : 80%
 				fill-opacity : 0
 			for : waterway=riverbank
 				define
-					line-width : 1.5
+					line-width : 1
 					fill-hatch-opacity : 0
 					fill-opacity : 50%
-					line-color : #78C1C1
-					fill-color : #78C1C1
+					line-color : #8AC0FF
 					// Contour lines above inntermittent riverbanks
 					painting-cycle : 510
 		draw : line
 		draw : fill
+	target : water
 		define
 			min-zoom : 14.1
 			font-size : 15:10;17:17
@@ -1462,7 +1474,6 @@ rules
 			line-width : 1
 			fill-color : #CCCCCC
 			icon-image : Icons/mtbmap/cemetery.png
-		draw : fill
 		for : _urban=yes
 			define
 				min-zoom : 16
@@ -1470,6 +1481,9 @@ rules
 			define
 				min-zoom : 15
 		draw : icon
+		define
+			painting-cycle : 250
+		draw : fill
 
 	target : forest label
 		for : width > 5
@@ -1497,6 +1511,7 @@ rules
 			line-width : 1
 			min-zoom : 9
 			fill-texture : Textures/ForestNoiseLighter.jpg
+			painting-cycle : 250
 		draw : fill
 
 	target : beach
@@ -1504,16 +1519,17 @@ rules
 			define
 				fill-opacity : 10%
 		define
-			line-style : none
-			line-width : 1
-			fill-color : #FFEC8B
-		draw : fill
-		define
 			min-zoom : 13
 			font-size : 12
 			text-color : black
 			text-func : NodeName(e)
 		draw : text
+		define
+			line-style : none
+			line-width : 1
+			fill-color : #FFEC8B
+			painting-cycle : 250
+		draw : fill
 
 	target : quarry
 		define
@@ -1522,7 +1538,6 @@ rules
 			line-width : 1
 			min-zoom : 12
 			fill-texture : Textures/Rendering-landuse-quarry-mapnik-light.png
-		draw : fill
 		draw : line
 		define
 			min-zoom : 13
@@ -1530,6 +1545,9 @@ rules
 			text-color : black
 			text-func : NodeName(e)
 		draw : text
+		define
+			painting-cycle : 250
+		draw : fill
 
 	target : farmland
 		define
@@ -1538,6 +1556,7 @@ rules
 			//fill-color : #E6DDD0
 			fill-texture : Textures/farmland.png
 			fill-opacity : 0.3
+			painting-cycle : 250
 		draw : fill
 
 	target : grass
@@ -1545,6 +1564,7 @@ rules
 			line-style : none
 			line-width : 1
 			fill-color : #E9FDE0
+			painting-cycle : 250
 		draw : fill
 
 	target : plantation
@@ -1553,22 +1573,24 @@ rules
 			line-style : none
 			line-width : 0
 			fill-texture : Textures/plantation-light.png
+			painting-cycle : 250
 		draw : fill
 
 
 // residential should be last
 	target : residential
 		define
+			min-zoom : 17
+			text-func : NodeName(e)
+		draw : text
+		define
 			line-style : solid
 			line-color : black white 40%
 			line-width : 1
 			fill-color : white black 10%
 			min-zoom : 12
+			painting-cycle : 250
 		draw : fill
 		draw : line
-		define
-			min-zoom : 17
-			text-func : NodeName(e)
-		draw : text
 
 // vim: set autoindent noexpandtab:

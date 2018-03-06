@@ -1,153 +1,156 @@
 # Israel Hiking Map
-This Repository is part of the Israel Hiking Map project, and it holds all the file and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to Israel Trails Committee (ITC).
+This Repository is part of the Israel Hiking Map project. It contains all the files and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to trail maps published by the Israel Trails Committee and the Israel MTB Map - a topographic map for MTB trails and urban bike lanes.
 
-The output of the map can be [seen here](http://IsraelHiking.osm.org.il/).
+The maps can be seen at [IsraelHiking.osm.org.il](https://IsraelHiking.osm.org.il/). The site has additional facilities including customized trip planning and sharing, points of interest, trails, and route upload and download.
+
+Please see the [Licence terms](LICENSE.md) for using the repository and any tiles created using it.
+
+Enjoy, open a OSM account, and add trails to make these map even better :-)
 
 ## Contents
-* [Ready-to-use maps](#ready-to-use-maps)
-  * [OruxMaps for Android](#oruxmaps-for-android)
-  * [Galileo for iOS](#galileo-for-ios)
-  * [Marble](#marble)
+* [Online maps](#online-maps)
+  * [OruxMaps](#oruxmaps)
+  * [Off-Road](#off-road)
+  * [Locus Map](#locus-map)
+  * [QGIS](#qgis)
+* [Offline maps](#offline-maps)
+  * [Ready to download](ready-to-download)
+  * [Preparing offline maps](#preparing-offline-maps)
 * [Tile Access](#tile-access)
   * [Tile URLs](#tile-urls)
-  * [QGIS Integration](#qgis-integration)
   * [Tile Mirroring](#tile-mirroring)
-* [Prepare a map for offline use](#prepare-a-map-for-offline-use)
 * [Building the map](#building-the-map)
+ * [Minimal recommended configuration](#minimal-recommended-configuration)
+ * [One-time setup](#one-time-setup)
+ * [Map tiles generation](#map-tiles-generation)
 
-## Ready-to-use maps
+## Online maps
+The maps are available for online use with several applications:
 
-### [OruxMaps for Android](http://www.oruxmaps.com/index_en.html): 
-  * The map is available for Online use as part of OruxMaps built-in maps.
-    * Select the map using  _"Maps &rarr; Switch map &rarr; ONLINE &rarr; Israel Hiking"_
-  * For offline use:
-    * <a id="oruxmaps-offline-android"></a>From your Android device, with OruxMaps 6.5.4 or later
-      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
-      * Click on the link of the requested map. 
-      * The download may take several minutes. 
-      * After the installation please refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrows)"_
-      * Note: The free space required for the instalation is twice the size of the downloaded map.
-    * <a id="oruxmaps-offline-pc"></a>From a PC connected to your Android device with a USB cable
-      * Go to the [Israel Hiking and Biking offline maps for OruxMaps](http://IsraelHiking.osm.org.il/OruxMapsDownload.html) page.
-      * Click on the link to the requested map. 
-      * Connect the Android device to your PC.
-      * On your Android device select "File transfers" instead of "USB for charging", if needed.
-      * On your PC
-        * Open the downloaded zip file and copy the directory it contains to a temporary locaton, such as your Desktop.
-	* Move the above directory onto the ```Oruxmaps\mapfiles``` directory of the connected Android device.
-    * Open OruxMaps and refresh the offline map list using _"Maps &rarr; Switch map &rarr; OFFLINE &rarr; Refresh (the counter-clockwise arrows)"_
-    * You can now enjoy the map with no need for a network connection.
-    * To update an offline map, repeat the same steps above. The new map will replace the old one.
+### [OruxMaps](http://www.oruxmaps.com/cs/en)
+The map is available for Online use as part of OruxMaps' built-in maps.    
+Selected the maps using _Maps &rarr; Switch map &rarr; ONLINE_
 
-### [Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)
-This is the only app for iOS that we know is supported, please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf) in order to use it.
+### [Off-Road](http://off-road.io/)
+Off-Road is available for Android and iOS devices. Selected the maps for online and offline viewing from the "Maps" menu.
 
-### [Marble](https://marble.kde.org/install.php)
-Marble is available for various Linux Desktop distributions, Windows Desktop. The Mac OS X version may require compilation.
-Setup instructions:
-  * Maps folder location is
-    * Windows: `%programfiles%\Marble\data\maps\earth\`
-    * Linux  : `/usr/share/apps/marble/data/maps/earth/`
-  * Copy the [osm.org.il folder](https://github.com/shtrb/marble/tree/master/earth/osm.org.il) to maps folder
-  * Copy the [mtb folder](https://github.com/shtrb/marble/tree/master/earth/mtb) to maps folder
-  * Copy the [routes folder](https://github.com/shtrb/marble/tree/master/earth/routes) to maps folder
-  * Select _"osm.org.il"_ in the available maps
+### [Locus Map](http://www.locusmap.eu/)
+Add the maps using _Maps &rarr; ONLINE &rarr; "+"_
 
-## Tile Access
-The tiles on the the [Israel Hiking server](http://IsraelHiking.OSM.org.il) are currently available for private, non-commercial use.
+### [QGIS](http://qgis.org)
+The maps can be added to QGIS as a tiles layer.
 
-Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) where possible to minimize the the load.
+1. Install the "QuickMapServices" plug-in into QGIS.
+2. Click on the Search QMS icon.    
+   <img width="22" alt="Search QMS icon" src="https://user-images.githubusercontent.com/1304610/32561290-a5639d7e-c4b4-11e7-99e6-0643ecfd395c.png">
+3. Type the word "Israel" in the search box and wait for the search results.    
+   <img width="326" alt="search resulls" src="https://user-images.githubusercontent.com/1304610/32561610-556ce360-c4b5-11e7-9569-16e831dbfbe4.png">
+4. Click "Add" next to the required map.
 
-### Tile URLs
-The following tile sources are currently available for zoom levels 7 to 16:
- * Israel Hiking Map: [`http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OldTiles/{z}/{x}/{y}.png)
- * Israel MTB Map: [`http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/mtbTiles/{z}/{x}/{y}.png)
- * Hiking Trails Overlay: [`http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png`](http://IsraelHiking.OSM.org.il/OverlayTiles/{z}/{x}/{y}.png)
+## Offline maps
+### Ready to download
+#### OroxMaps, Off-Road, and Lucus Map    
+Please open the [download dialog](https://israelhiking.osm.org.il/#!/?download) from your Android device and follow the instructions.
 
- The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.
+_Notes:_
+* [Off-Road](#off-road) allows offline use of the maps on both iOS and Android.
+* [Locus Map](#locus-map) allows the use of OruxMaps offline maps using:
+   * _Maps &rarr; Offline &rarr; "+" &rarr; External maps &rarr; "+"_
+   * _Menu &rarr; Local drives_
+   * Navigate to the `oruxmaps` &gt; `mapfiles` folder
+   * Approve
 
-### QGIS Integration
-The maps can be added to QGIS, by by the following steps:
+#### [Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)    
+Please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf).
 
-1. Install the "QuickMapServices" plug-in into QGIS
-2. Click on the QuickMapServices icon
 
-   <img width="110" alt="createservice" src="https://cloud.githubusercontent.com/assets/1304610/20640313/e45942ba-b3e2-11e6-8cc3-7d9e09c3105c.png">
-3. Choose "Settings" 
-4. Open the "Add/Edit/Remove" tab
-5. Under "My services", create a new service by clicking the "+" button
+### Preparing offline maps
 
-   <img width="330" alt="createservice" src="https://cloud.githubusercontent.com/assets/1304610/20640842/36f86144-b3f3-11e6-930d-3f074c2644fa.png">
-6. Fill the form in the "General" tab
+[MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/) is used to create offline maps for many [navigation applications](http://mobac.sourceforge.net/#features). It is a JAVA program that runs on Windows, Linux, macOS, and more.
 
-   <img width="300" alt="createservice" src="https://cloud.githubusercontent.com/assets/1304610/20642358/550f7236-b415-11e6-8dcf-9af256f8099d.png">
+1. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
+2. Download the [`Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking%20Online.xml)
+or [`Israel MTB Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20MTB%20Online.xml)
+map source to the `{MOBAC installation folder}\mapsources` folder.    
+Other [`*Online.xml` _map sources_](https://github.com/IsraelHikingMap/Map/tree/master/Mobile%20Atlas%20Creator/mapsources) can also be used.
+3. Download the [`mobac-profile-Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mobac-profile-Israel%20Hiking%20Online.xml)
+or [`mobac-profile-Israel MTB Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/blob/master/Mobile%20Atlas%20Creator/mobac-profile-Israel%20MTB%20English%20Online.xml)
+profile to the `{MOBAC installation folder}` folder.    
+Other [`*Online.xml` _profiles_](https://github.com/IsraelHikingMap/Map/tree/master/Mobile%20Atlas%20Creator) can also be downloaded using the `RAW` button.
+4. Open MOBAC. It takes some time since it runs on Java.
+5. Move the map by **right-click and drag** in order to show Israel and then use the mouse scroll or the zoom slide to reach a zoom between 7 and 16.
+6. Choose your preferred _"Map Source"_ on the left pane and verify that you see the desired map.
+7. Choose one of the _"Saved Profiles"_ on the left pane and _"Load"_ it.
+8. Use _Atlas &rarr; Convert Atlas Format_ to select the atlas format accepted by the target map application.
+9. Expand the _"Atlas Content"_ and delete unrequired zoom levels, if any.
+10. Click _"Create Atlas"_. An "Atlas" is the map prepared for offline use. 
+11. A window should pop up with progress, make sure to check "ignore download errors", the operation should take about 20 Minutes, depending on the zoom levels selected, your Internet speed, and the performance of your PC.
+12. Once finished, click _"Open Atlas Folder"_, look for a folder named _`{Atlas Name}_{Date}_{Time}`_ and copy __its contents__ (not the folder) to the application.
 
-   Note: The <img width="16" alt="favicon-32x32" src="https://github.com/IsraelHikingMap/Site/raw/master/IsrealHiking.Web/content/images/favicons/favicon-32x32.png"> icon can be downloaded from [here](https://github.com/IsraelHikingMap/Site/raw/master/IsrealHiking.Web/content/images/favicons/favicon-32x32.png)
-7. Open the "TMS" tab and fill the form with one of the [Tile URLs](#tile-urls)
-
-   <img width="300" alt="tms" src="https://cloud.githubusercontent.com/assets/1304610/20642389/5b10fc26-b416-11e6-9226-08cc705224b6.png">
-
-   Fill the other values as shown above.
-8. Click "OK"
-9. Click "Save"
-
-The new map is now available in the OSM group under the QuickMapServices button
-### Tile Mirroring
-Sites and application owners are encouraged to create a mirror of latest tiles on their servers.
-
-We have found that wget is a simple and effective tool to create such a mirror mechanism. For example:
-```bash
-cd public_html/IsraelHiking
-wget --recursive --timestamping --accept=png --no-parent --no-host-directories --no-verbose --limit-rate=200k http://israelhiking.osm.org.il/Tiles/ http://israelhiking.osm.org.il/OverlayTiles/ http://israelhiking.osm.org.il/mtbTiles/ > temp/wget_tiles.log 2>&1 
-```
-
-wget comes pre-installed with most Unix/Linux distributions.
-A free MS-windows version of wget is available for download [online](https://eternallybored.org/misc/wget/).
-
-A daily task for refreshing the mirror tiles can be created:
-* MS-Windows: [Windows' Task Scheduler](https://technet.microsoft.com/en-us/library/cc748993(v=ws.11).aspx)
-* Unix/Linux: the [cron](https://help.ubuntu.com/community/CronHowto) utility. 
-
-## Prepare a map for offline use
-
-[MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/) is used to create offline maps for  for [many navigation applications](http://mobac.sourceforge.net/#features), including OruxMaps. It is a JAVA program that runs on Windows, Linux, MAC, and more.
-
-iPhone and iOS users can find instructions for using MOBAC to create offline maps for
+iPhone and iOS users can find instructions for using MOBAC to create and install offline maps for
 [Galileo](https://galileo-app.com/manual.html#offline_maps)
 and
 [Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac).
 
-1. Download [MOBAC - MOBile Atlas Creator](http://mobac.sourceforge.net/).
-2. Download [`Israel Hiking Online.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking%20Online.xml) to the `{MOBAC installtion folder}\mapsources` folder.
-3. Open MOBAC (it takes some time since it runs on Java) and choose _"oruxmaps sqlite"_ or any other atlas format, as accepted by the map application.
-4. On the left side under _"Map Source"_ choose _"Isreal Hiking Online"_.
-5. Move zoom on the top of the screen to 7 and by mouse drag select the whole country (the selected area should be red)
-   * Alternatively, you can select the required area using a polygon and avoid spending disk space for the Mediterranean Sea and foreign countries.
-6. Under _"Zoom levels"_ choose 7,8,...,15
-...You may also choose to add zoom level 16, but because of size limitation, the map area cannot contain all of Israel.
-7. Click _"Settings"_. Choose _"Map size"_ tab and change the Maximum size of rectangular maps to 1048575 if needed.
-8. Under _"Atlas Content"_ set name to _"Israel Hiking"_ and click on _"Add Selection"_.
-...this should result in adding the name to the tree, opening the tree should show the selected zoom levels (7 - 15).
-9. Click _"Create Atlas"_. An "Atlas" is the map prepared for offline use. 
-10. A window should pop up with progress, make sure to check "ignore download errors", the operation should take about 20 Minutes, depending on the polygon selection, zoom levels selected, your Internet speed and the power of your PC.
-11. Once finished you should be able to find the atlas at the `{MOBAC installation folder}\atlases\Israel Hiking\{Creation Date}\Israel Hiking` folder.
-12. Copy the inner `Israel Hiking` folder (__not `{MOBAC installation folder}\atlases\Israel Hiking`!__) into the `oruxmaps/mapfiles` folder on your Android device or follow the installation instructions of your map application.
-13. Enjoy, open a OSM account and add trails to make this map better :-)
+## Tile Access
+The tiles on the the [Israel Hiking server](https://IsraelHiking.OSM.org.il) are available according to the [Licence terms](LICENSE.md).  
+The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.  
+Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) where possible to minimize the the load.
 
+### Tile URLs
+The following tile sources are currently available for zoom levels 7 to 16.    
+The trails overlays also include roads and elevation countours.
+
+_Note:_ Different applications and sites may use different syntax for specifying the `{x}`, `{y}`, and `{z}` parts of the URL. Please modify the URL below accordingly.
+
+| Israel Hiking         | URL                                                             |
+|:----------------------|:----------------------------------------------------------------|
+| Hebrew Base Map       | `https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`  |
+| English Base Map      | `https://israelhiking.osm.org.il/English/Tiles/{z}/{x}/{y}.png` |
+| Hiking Trails Overlay | `https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`  |
+
+| Israel MTB            | URL                                                                |
+|:----------------------|:-------------------------------------------------------------------|
+| Hebrew Base Map       | `https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`  |
+| English Base Map      | `https://israelhiking.osm.org.il/English/mtbTiles/{z}/{x}/{y}.png` |
+| MTB Trails Overlay    | `https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`       |
+
+### Tile Mirroring
+Sites and application owners are encouraged to create a mirror of latest tiles on their servers.
+
+We have found that wget is a simple and effective tool to maintain a tile mirror for a site. For example:
+```bash
+cd IsraelHiking
+wget --recursive --timestamping --accept=png --no-parent --no-host-directories --no-verbose --limit-rate=200k http://israelhiking.osm.org.il/Hebrew/Tiles/ http://israelhiking.osm.org.il/Hebrew/mtbTiles/ > temp/wget_tiles.log 2>&1 
+```
+
+`wget` comes pre-installed with most Unix and Linux distributions.
+A free MS-windows version of `wget` is available for download [online](https://eternallybored.org/misc/wget/).
+
+A periodic task for updating the tiles mirror can be created.
+* MS-Windows: [Windows' Task Scheduler](https://technet.microsoft.com/en-us/library/cc748993(v=ws.11).aspx)
+* Unix/Linux: the [cron](https://help.ubuntu.com/community/CronHowto) utility. 
 
 ## Building the map
 
 Follow the process below if you want to create your own tiles or modify the map style.
-[Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and MAC.
-Note that this might be tricky on PCs that has windows 32bit and less than 8GB RAM).
+[Maperitive](http://maperitive.net/) is used to create the map tiles and it runs on Windows, Linux and macOS.
 
-### One-time setup for Maperitive and the Israel Hiking Map generation:
+### Minimal recommended configuration
+* A 64-bit Windows PC
+* 8 Gb RAM
+* 20 Gb free disk space
+
+_Notes:_
+* This repository was not tested on Linux or macOS. Please submit your questions, comments and updates as [new issues](https://github.com/IsraelHikingMap/Map/issues/new).
+* Linux and MacOS require the use of [Mono](http://www.mono-project.com/Main_Page) in order to run Maperitive.
+
+### One-time setup
 
 1. Download the [latest Maperitive version](http://maperitive.net/download/Maperitive-latest.zip) from the [Maperitive site](http://maperitive.net/)
 2. Extract the contents of the zip file to a desired location. 
    * If you have Administrator permission for your Windows machine, you can unzip to the `Program Files` folder, but this is not a requirement.
    * If MOBAC will be used for creation of offline maps, the two installation directories need to have the same parent directory or the MOBAC directory needs to be added to the `PATH` environment variable.
-   * On Linux and MacOS, Maperitive requires the use of [Mono](http://www.mono-project.com/Main_Page).
 3. Download the [Israel Hiking Map zip file](https://github.com/IsraelHikingMap/Map/archive/master.zip) from the [IsraelHikingMap/Map on GitHub](https://github.com/IsraelHikingMap/Map) site (this site if you read this file in GitHub).
 4. Choose a location on a disk with no less than 10GB of free space. Our favorite locations are in the Maperitive Install folder, or within the Documents folders hierarchy.
 5. Unzip the zip file to chosen location.
@@ -156,7 +159,7 @@ Note that this might be tricky on PCs that has windows 32bit and less than 8GB R
 6. Create a `wget` directory in the same parent directory as the Maperitive installation directory. Alternatively, place the wget directory elsewhere and add it to the `PATH` environment variable.
 7. Extract the contents of the zip file to the wget directory.
 
-### Map tiles generation:
+### Map tiles generation
 
 1. Ensure you have Internet connection to enable downloading of the latest OpenStreetMap data.
 2. Double-click on the `IsraelHikingMap\Scripts\Maperipy\CreateOruxMap.py` script file.
@@ -165,18 +168,18 @@ Note that this might be tricky on PCs that has windows 32bit and less than 8GB R
 This should generate 256x256 png tile files inside the `IsraelHikingMap\Site\Tiles` folder and would take several hours.
 You may choose to do it overnight, but you need to make sure you don't get out of memory.
 
-### Preparing locally generated map for offline use
+### Preparing offline use
 
-This is an optional stage in case you want to make the locally generated tiles available for offline use.
+To make the locally generated tiles available for offline use.
 
 1. Follow the instructions to [prepare a map for offline use](#prepare-a-map-for-offline-use), and exit MOBAC. 
 2. Download [`Israel Hiking.xml`](https://raw.githubusercontent.com/IsraelHikingMap/Map/master/Mobile%20Atlas%20Creator/mapsources/Israel%20Hiking.xml) to the `{MOBAC installtion folder}\mapsources` folder.
-3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the directory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Site\Tiles`.
+3. Edit the `IsraelHiking.xml` file and change the `\<sourceFolder\>` tag to the full path of the directory were the tiles were created, such as `...\{IsraelHikingMap Install folder}\Hebrew\Tiles`.
 4. Run MOBAC
 5. On the left side under _"Map Source"_ choose _"Isreal Hiking Local"_.
 6. Re-create the atlas using your locally generated map.
 
 -------------------------
-Created by Harel Mazor and Zeev Stadler 31-Mar-13. Last Updated: 29-Nov-16
+Created by Harel Mazor and Zeev Stadler 31-Mar-13.
 
 <!-- vim: set autoindent shiftwidth=2: -->

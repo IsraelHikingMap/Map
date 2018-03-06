@@ -21,7 +21,7 @@ from GenIsraelHikingTiles import IsraelHikingTileGenCommand
 from OsmChangeSource import *
 from PolygonTileGenCommand import pretty_timer
 
-start_time = datetime.now()
+start_time = datetime.utcnow()
 App.run_command('clear-map')
 
 # http://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically
@@ -137,8 +137,8 @@ phases = [
     'IsraelMTB16']
 if language == "Hebrew":
     phases += [
-            'OverlayTiles',
-            'OverlayMTB']
+            'IsraelHikingOverlay',
+            'IsraelMTBOverlay']
 
 def done_file(phase):
     return cache_file(phase+'.done')
@@ -146,7 +146,10 @@ def done_file(phase):
 def mark_done(phase):
     open(done_file(phase), 'a').close()
     App.log(phase+' phase is done.')
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
+
+def print_duration():
+    print pretty_timer("Current duration:", (datetime.utcnow()-start_time).total_seconds())
 
 # Create a new map if all phased were done
 remainingPhases = []
@@ -156,7 +159,7 @@ for phase in phases:
 
 if remainingPhases == []:
     osm_source.advance()
-    if "OverlayTiles" in phases:
+    if "IsraelHikingOverlay" in phases:
         osm_trails.advance()
     for phase in phases:
         os.remove(done_file(phase))
@@ -180,7 +183,7 @@ else:
         pass
     else:
         raise RuntimeError
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
 
 # Incremental tile generation?
 if os.path.exists(osm_source.changes):
@@ -201,34 +204,31 @@ if os.path.exists(osm_source.changes):
         (changed, guard) = base_map.statistics()
         if changed:
             with open(cache_file("Change Analysis.log"), 'a') as journal:
-                journal.write("Changes {}\n".format(change_span))
+                now = start_time - timedelta(microseconds=start_time.microsecond)
+                journal.write("{}Z: Changes {}\n".format(
+                    now.isoformat(), change_span))
         else:
             remainingPhases = []
         App.collect_garbage()
-        print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+        print_duration()
 elif remainingPhases:
     # 
     updated_time = "map dated {}Z".format(
             osm_source.timestamp(osm_source.updated).isoformat())
     App.log("=== Loading the {} ===".format(updated_time))
     with open(cache_file("Change Analysis.log"), 'a') as journal:
-        journal.write("Base {}\n".format(updated_time))
-        journal.write("Creating {}.\n".format(", ".join(remainingPhases)))
+        now = datetime.utcnow()
+        now -= timedelta(microseconds=now.microsecond)
+        journal.write("{}Z: Base {}\n".format(now.isoformat(), updated_time))
+        journal.write("{}Z: Creating {}.\n".format(now.isoformat(), ", ".join(remainingPhases)))
     Map.add_osm_source(osm_source.updated)
-    print pretty_timer("Current duration:", (datetime.now()-start_time).total_seconds())
+    print_duration()
 
 #
 # Execute map generation by phases
 #
 if remainingPhases:
     App.log("=== Executing Phases: {} ===".format(remainingPhases))
-    if language == "Hebrew":
-        App.log("=== Updating the site's search and routing DBs ===")
-        # Update the site's search and routing DBs
-        try:
-            App.start_program("UpdateDB.bat",[osm_source.updated])
-        except:
-            pass
 
     # Tile generation
     if [val for val in ('IsraelHiking15', 'IsraelMTB15', 'IsraelHiking16', 'IsraelMTB16')
@@ -284,7 +284,7 @@ if remainingPhases:
         App.log(phase+' phase skipped.')
 
     # Overlay generation
-    if [val for val in ('OverlayTiles', 'OverlayMTB')
+    if [val for val in ('IsraelHikingOverlay', 'IsraelMTBOverlay')
             if val in remainingPhases]:
         App.log("=== Preparing Overlay tiles ===")
         App.run_command("clear-map")
@@ -304,45 +304,50 @@ if remainingPhases:
             App.run_command("run-script file="+os.path.join(
                 "Scripts", "Maperitive", "IsraelMinimalDecoration.mscript"))
 
-    phase = 'OverlayTiles'
-    if phase in remainingPhases:
-        App.log("=== Creating Trails Overlay tiles ===")
-        if changed:
-            App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
-            App.run_command("apply-ruleset")
-            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
-        mark_done(phase)
-    else:
-        App.log(phase+' phase skipped.')
+        phase = 'IsraelHikingOverlay'
+        if phase in remainingPhases:
+            App.log("=== Creating Trails Overlay tiles ===")
+            if changed:
+                App.run_command("use-ruleset "+os.path.join("Rules", "IsraelHiking.mrules"))
+                App.run_command("apply-ruleset")
+                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayTiles'))
+            mark_done(phase)
+        else:
+            App.log(phase+' phase skipped.')
 
-    phase = 'OverlayMTB'
-    if phase in remainingPhases:
-        App.log("=== Creating MTB Overlay tiles ===")
-        if changed:
-            App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
-            App.run_command("apply-ruleset")
-            trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayMTB'))
-        mark_done(phase)
-    else:
-        App.log(phase+' phase skipped.')
+        phase = 'IsraelMTBOverlay'
+        if phase in remainingPhases:
+            App.log("=== Creating MTB Overlay tiles ===")
+            if changed:
+                App.run_command("use-ruleset "+os.path.join("Rules", "mtbmap.mrules"))
+                App.run_command("apply-ruleset")
+                trails_overlay.GenToDirectory(7, 16, os.path.join(site_dir, 'OverlayMTB'))
+            mark_done(phase)
+        else:
+            App.log(phase+' phase skipped.')
+
+        osm_trails.advance()
 
     with open(cache_file("Change Analysis.log"), 'a') as journal:
-        journal.write("{}\n".format(pretty_timer(
+        now = datetime.utcnow()
+        now -= timedelta(microseconds=now.microsecond)
+        journal.write("{}Z: {}\n".format(now.isoformat(), pretty_timer(
             "Execution time:",
-            (datetime.now()-start_time).total_seconds())))
+            (datetime.utcnow()-start_time).total_seconds())))
 
 #
 # Cleanup and prepare for next execution
 #
-Map.clear()  # DEBUG
-App.collect_garbage()  # DEBUG
-
-osm_trails.advance()
 osm_source.advance()
+# Map.clear()  # DEBUG
+# App.collect_garbage()  # DEBUG
 
 for phase in phases:
     silent_remove(done_file(phase))
 
-print pretty_timer("Total time:", (datetime.now()-start_time).total_seconds())
+print pretty_timer("Total time:", (datetime.utcnow()-start_time).total_seconds())
+
+if __name__ == '<module>':
+    App.run_command("exit")
 
 # vim: shiftwidth=4 expandtab

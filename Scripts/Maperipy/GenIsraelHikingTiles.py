@@ -1,22 +1,31 @@
 """Tile generation setup for IsraelHiking.osm.org.il maps
 
 - Zoom levels 7 to 16
-- Tile generation restriction within a polygon using
-  http://download.geofabrik.de/asia/israel-and-palestine.poly
-  with a reduced sea area.
-- Allow generation reduction based on an OSM change file
+- Tile generation restriction within a polygon
+- Integrated with tile generation optimization based on an OSM change file
+- Add configurable tile batch post-processing
+- Add copyright to tile's meta data using batch post-processing
+
+If run directly by the 'run-python' command, the script will generate tiles of
+the current layers, using the default settings, to the Output\Tiles directory.
+Copyright notice is not added.
 
 Author: Zeev Stadler
 License: public domain
 """
 
 import time
+import os.path
+import re
 from maperipy import *
 from OsmChangeTileGenCommand import OsmChangeTileGenCommand
 from PolygonTileGenCommand import pretty_timer
 
 class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     def __new__(cls, *args):
+        # israel_and_palestine polygon defined using
+        # http://download.geofabrik.de/asia/israel-and-palestine.poly
+        # with a reduced sea area.
         israel_and_palestine = Polygon((  # Modifications from Geofabrik's poly file:
             (34.65362, 32.08569), # Closer to the Tel-Aviv Coast. Replaces (34.64563, 32.92073)
             (34.98374, 33.13352),
@@ -56,7 +65,7 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
             (34.69667, 30.10714),
             (34.52423, 30.40912),
             (34.48879, 30.64515),
-            (34.15870, 31.35333), # Closer to the Gaza Coast.  Replaces (34.07929, 31.52265),
+            (34.15870, 31.35333), # Closer to the Gaza Coast. Replaces (34.07929, 31.52265)
             (34.65362, 32.08569)  # Closer to the Tel-Aviv Coast. Replaces (34.64563, 32.92073)
             ))
         cmd = OsmChangeTileGenCommand.__new__(cls, israel_and_palestine, 7, 16)
@@ -65,23 +74,32 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     def __init__(self):
         OsmChangeTileGenCommand.__init__(self)
         self.after_tile_save = self.collect_tiles
+        self.post_process_tiles = self.add_copyright
         self.tiles_to_post_process = []
         self.len_tiles_to_post_process = 0
         self.subpixel_precision = 2
         self.use_fingerprint = True
         self.min_tile_file_size = 385  # No transparent tiles
 
-    def rel_members_bbox(self, relation):
-        return not (
+    def rel_to_fill(self, relation):
+        return (
             relation.has_tag("type") and relation.get_tag("type") == "multipolygon"
-            or
-            relation.has_tag("boundary") 
-            and relation.get_tag("boundary") in ("national_park", "protected_area"))
+                and (set(relation.tags.keys())
+                    & {"landuse", "natural", "waterway", "military", "building", "boundary", "leisure"})
+            or 
+            relation.has_tag("boundary")
+            and (
+                relation.get_tag("boundary") in ("national_park", "protected_area")
+                or
+                relation.has_tag("name:en") and re.match("Area [AB]$", relation.get_tag("name:en"))
+            )
+        )
 
     def execute(self):
         timer = time.time()
         OsmChangeTileGenCommand.execute(self)
-        self.post_process_tiles()
+        if self.post_process_tiles:
+            self.post_process_tiles()
         timer = time.time() - timer
         print pretty_timer("   Tile generation time:", timer)
 
@@ -94,10 +112,11 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
     def collect_tiles(self, file_name):
         self.tiles_to_post_process.append(file_name)
         self.len_tiles_to_post_process += len(file_name) + 3
-        if self.len_tiles_to_post_process >= 7500:
-            self.post_process_tiles()
+        if self.post_process_tiles:
+            if self.len_tiles_to_post_process >= 7500:
+                self.post_process_tiles()
 
-    def post_process_tiles(self):
+    def add_copyright(self):
         if self.tiles_to_post_process == []:
             return
         # Add Copyright property
@@ -106,5 +125,13 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         App.start_program('cmd.exe', args)
         del self.tiles_to_post_process[:]
         self.len_tiles_to_post_process = 0
+
+if __name__ == '<module>':
+    ProjectDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
+    base_map =  IsraelHikingTileGenCommand()
+    base_map.post_process_tiles = None
+    # Alternatively:
+    # base_map.after_tile_save = lambda x : None
+    base_map.GenToDirectory(7, 16, os.path.join(ProjectDir, 'Output', 'Tiles'))
 
 # vim: set shiftwidth=4 expandtab textwidth=0:

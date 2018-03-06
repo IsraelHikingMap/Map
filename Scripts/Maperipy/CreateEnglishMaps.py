@@ -13,4 +13,7 @@ os.chdir(ProjectDir)
 import English
 import CreateAllMaps
 
+if __name__ == '<module>':
+    App.run_command("exit")
+
 # vim: shiftwidth=4 expandtab

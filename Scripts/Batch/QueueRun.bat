@@ -20,10 +20,10 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 @REM Add this script's dircetory to the path
-PATH %PATH%;%~dp0
+PATH %~dp0;%PATH%
 @REM Add Maperitive and Mobile Atlas Creator to the path
 SET PROGDIRS=%programfiles%;%programfiles(x86)%;%~d0%programfiles:~2%;%~d0%programfiles(x86):~2%
-FOR %%p in (Maperitive "Mobile Atlas Creator") DO IF NOT "%%~dpn$PROGDIRS:p"=="" PATH !PATH!;%%~dpn$PROGDIRS:p
+FOR %%p in (Maperitive "Mobile Atlas Creator") DO IF NOT "%%~dpn$PROGDIRS:p"=="" PATH %%~dpn$PROGDIRS:p;!PATH!
 SET PROGDIRS=
 
 @REM Script is located at IsraelHiking\Scripts\Batch 

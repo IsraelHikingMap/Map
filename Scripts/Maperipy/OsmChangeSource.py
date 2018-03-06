@@ -10,6 +10,7 @@ import os
 import errno
 from maperipy import *
 from datetime import *
+from PolygonTileGenCommand import pretty_timer
 
 class osmChangeSource(object):
     """Providing a web-based source for OSM change files.
@@ -150,13 +151,14 @@ class osmChangeSource(object):
             App.log('Should not download an update for {} in status "{}".'.format(
                 self.region, status))
             raise RuntimeError
-        exit_code = (
-                self.downloadChange()
-                or App.run_program(
+        exit_code = self.downloadChange()
+        if exit_code:
+            return exit_code
+        exit_code = App.run_program(
                 "osmconvert.exe", 7200, [self.base, self.changes, "-o="+self.updated]
                 + self.osmconvert_params)
-                )
         if exit_code:
+            self.silent_remove(self.changes)
             self.silent_remove(self.updated)
             App.log("  Program finished with exit code {}.".format(
                 exit_code))
@@ -305,13 +307,7 @@ class openstreetmap_fr(osmChangeSource):
         self.change_resolution = "--minute"
 
     def downloadBase(self):
-        self.silent_remove(self.base)
-        self.silent_remove(self.updated)
-        self.silent_remove(self.changes)
-        self.silent_remove(self.changes+".old")
-        # The timestamp must be downloaded separately and added ro the diff
-        timestamped_base = os.path.join(os.path.dirname(self.updated),
-                "timestamped."+os.path.basename(self.updated))
+        # The timestamp must be downloaded separately and inserted to the base
         cmd = ["wget", "-O", "-", self.state_url]
         stdout, stderr, exit_code = self.run_command(cmd)
         if exit_code:
@@ -320,19 +316,59 @@ class openstreetmap_fr(osmChangeSource):
                 exit_code))
             return exit_code
         timestamp = "--timestamp="+(stdout.splitlines()[2].replace("\\", ""))
-        exit_code = osmChangeSource.downloadBase(self) or App.run_program(
-                "osmconvert.exe", 7200,
-                [self.updated, 
-                "-o="+timestamped_base, timestamp]
-                + self.osmconvert_params)
+        # Download latest extract and timestamp it as temporary base
+        exit_code = osmChangeSource.downloadBase(self) 
+        if exit_code:
+            return exit_code
+        exit_code = App.run_program(
+                    "osmconvert.exe", 7200,
+                    [self.updated, 
+                    "-o="+self.base, timestamp]
+                    + self.osmconvert_params)
         self.silent_remove(self.updated)
         if exit_code:
-            self.silent_remove("timestamped."+self.updated)
+            self.silent_remove(self.base)
             App.log("  Program finished with exit code {}.".format(
                 exit_code))
-        else:
-            os.rename(timestamped_base, self.updated)
+            return exit_code
+        # Download all updates since latest extract
+        exit_code = osmChangeSource.downloadUpdate(self)
+        self.silent_remove(self.base)
+        self.silent_remove(self.changes)
         return exit_code
+
+    def downloadUpdate(self):
+        # Optimize openstreetmap.fr updates for periods longer than 30 hours
+        period = (datetime.utcnow() - self.timestamp(self.base)).total_seconds()
+        if self.status() == "base" and period > 30*3600:
+            period -= period % 60
+            App.log("=== {} ===".format(pretty_timer("Optimizing an update period of", period)))
+            saved_base = self.base
+            self.base = self.base + ".temp.pbf"
+            self.silent_remove(self.base)
+            exit_code = self.downloadBase()
+            self.silent_remove(self.base)
+            self.silent_remove(self.changes)
+            if exit_code:
+                self.silent_remove(self.updated)
+                return exit_code
+            self.base = saved_base
+            exit_code = (
+                    App.run_program(
+                        "osmconvert.exe", 7200, [ self.updated, "-o="+self.updated+".o5m"]
+                        + self.osmconvert_params)
+                    or
+                    App.run_program(
+                        "osmconvert.exe", 7200, ["--diff", self.base, self.updated+".o5m", "-o="+self.changes]
+                        + self.osmconvert_params)
+                    )
+            self.silent_remove(self.updated+".o5m")
+            if exit_code:
+                self.silent_remove(self.changes)
+                self.silent_remove(self.updated)
+            return exit_code
+        else:
+            return osmChangeSource.downloadUpdate(self)
 
 class osmChangeMergingSource(osmChangeSource):
     """Source made by merging multiple sub-regions.

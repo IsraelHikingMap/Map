@@ -14,12 +14,8 @@ geo-bounds-use-source index=1
 // Add computed tags for OSM layers 
 run-python file="Scripts\Maperipy\AddOsmTags.py"
 
-// Load the ASTER contours files created using "CreateASTERContours.py"
-load-source Cache\ASTER-N29.contours
-load-source Cache\ASTER-N30.contours
-load-source Cache\ASTER-N31.contours
-load-source Cache\ASTER-N32.contours
-load-source Cache\ASTER-N33.contours
+// Add contour tiles
+run-python file="Scripts\Maperipy\AddContourTiles.py"
 
 // Ensure rendering settings
 set-setting name=map.decoration.grid value=False

@@ -22,8 +22,8 @@ generate-relief-igor
 set-source index=1 visible=False
 save-source "Cache\relief_Hiking_Igor.png"
 
-// Create and save the contours
-run-python "Scripts\Maperipy\GenASTERContours.py"
-
 // Create and save grid lines file
 run-python "Scripts\Maperipy\CreateITMGridOsm.py"
+
+// Create and save the MOBAC profiles
+run-python "Scripts\Maperipy\CreateMOBACProfiles.py"

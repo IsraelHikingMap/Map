@@ -108,7 +108,6 @@ features
 		coastline : natural=coastline
 		cliff : natural=cliff OR landuse=quarry
 		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
-		bridge : bridge AND NOT bridge=no
 		wall : barrier=wall
 		fence : way[barrier=fence]
 		Separation-barrier : relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
@@ -126,10 +125,13 @@ features
 		road major primary : @isOneOf(highway, primary, primary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road major secondary : @isOneOf(highway, secondary, secondary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		road street tertiary : @isOneOf(highway, tertiary, tertiary_link) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		road street unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
-		track : highway=track
-		path : @isOneOf(highway, path, cycleway, footway, bridleway, steps)
+		road street residential: @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		road street paved unclassified: @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		road street paved track : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		offroad track unpaved : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
+		offroad track unclassified : @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		offroad track residential : @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
+		offroad path : @isOneOf(highway, path, cycleway, footway, bridleway, steps) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		//  background for cycle networks in MTB IL
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
@@ -156,8 +158,8 @@ features
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
 		breakwater : man_made=breakwater
 		area island : @isOneOf(place,island,islet)
-		pal A : relation[boundary=administrative AND name="Area A"]
-		pal B : relation[boundary=administrative AND name="Area B"]
+		pal A : relation[boundary=administrative AND name:en="Area A"]
+		pal B : relation[boundary=administrative AND name:en="Area B"]
 		quarry : landuse=quarry
 		attraction : tourism=attraction and not (amenity=place_of_worship OR amenity=restaurant)
 
@@ -828,7 +830,7 @@ rules
 			
 					
 					
-		elseif : * unclassified
+		elseif : * paved *
 			
 			define
 				line-color : black white 80%
@@ -958,7 +960,7 @@ rules
 				font-weight : normal
 				text-offset-vertical : 0
 				
-		elseif : * unclassified
+		elseif : * paved *
 			define
 				min-zoom : 14
 				map.rendering.lflp.max-allowed-corner-angle : 15
@@ -1001,7 +1003,7 @@ rules
 					min-zoom : 13
 					line-color : white
 					max-zoom : 14
-			elseif : * unclassified
+			elseif : * paved *
 				define
 					min-zoom : 12
 					line-color : white
@@ -1010,7 +1012,7 @@ rules
 			stop
 		draw : line
 	
-	target : track
+	target : offroad track *
 		
 		define
 			line-color : white
@@ -1061,7 +1063,7 @@ rules
 			text-func : WayName(e)
 		draw : text
 		
-	target : path
+	target : offroad path
 		
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 30
@@ -1215,8 +1217,8 @@ rules
 		
 		draw : line
 		
-	target : bridge
-		for : @isOneOf(highway,pedestrian,footway,cycleway,bridleway,path,steps) OR highway=track
+	target : offroad *
+		for : bridge AND NOT bridge=no
 			define
 				min-zoom : 13
 				line-color : #f1eee8
