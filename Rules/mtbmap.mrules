@@ -19,18 +19,18 @@
 
 // ___________________Painting Cycle________________________
 //coastline 150
-//farmland 401
-//sand 401
-//grassland 401
-//scrub 402
-//wood 402
-//quarry 402
-//residential 402
-//orchard 402
-//intermittent water 403
-//industrial 403
-//commercial 403
-//lawn 403
+//farmland 251
+//sand 251
+//grassland 251
+//scrub 252
+//wood 252
+//quarry 252
+//residential 252
+//orchard 252
+//intermittent water 253
+//industrial 253
+//commercial 253
+//lawn 253
 //contour 404
 //cemetery and playground icon 405
 //building 406
@@ -131,7 +131,7 @@ features
 		offroad track unpaved : highway=track AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND NOT @isOneOf(surface, paved, asphalt, sett, concrete, concrete:lanes, concrete:plates, paving_stones, cobblestone, cobblestone:flattened, metal, wood)
 		offroad track unclassified : @isOneOf(highway, unclassified, service, road, minor) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		offroad track residential : @isOneOf(highway, residential, living_street) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon") AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
-		offroad path : @isOneOf(highway, path, cycleway, footway, bridleway, steps) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
+		offroad path : @isOneOf(highway, path, cycleway, footway, bridleway, steps, pedestrian) AND NOT @isMatch(is_in, "Jordan|Egypt|Syria|Lebanon")
 		//  background for cycle networks in MTB IL
 		network cycle local : relation[network = lcn]
 		network cycle regional : relation[network = rcn]
@@ -1084,7 +1084,7 @@ rules
 			line-width : 12:0.25;13:1;15:2;16:3
 			curved : true
 		
-		for : highway=footway
+		for : highway=footway  
 			define
 				min-zoom : 14
 				line-style : dot
@@ -1092,6 +1092,15 @@ rules
 			for : _urban=yes
 				define
 					min-zoom : 16
+		for : highway=pedestrian
+			define
+				min-zoom : 14
+				line-style : dot
+				line-color : #973
+			for : _urban=yes
+				define
+					min-zoom : 15
+				draw : text
 		
 		for : highway=cycleway
 			define
@@ -1571,7 +1580,7 @@ rules
 			line-style : solid
 			line-width : 0.5
 			line-color : #999
-			painting-cycle : 403
+			painting-cycle : 253
 			fill-opacity : 1
 			min-zoom : 10
 		draw : fill
@@ -1689,7 +1698,7 @@ rules
 				line-style : none
 				line-width : 30%
 				fill-color : #ddd
-				painting-cycle : 403
+				painting-cycle : 253
 				min-zoom : 13
 							
 		if : * residential
@@ -1699,11 +1708,11 @@ rules
 				fill-color : #eee
 				line-color : #999
 				min-zoom : 12
-				painting-cycle : 402
+				painting-cycle : 252
 			draw : line
 			define
 				min-zoom : 9
-				painting-cycle : 402
+				painting-cycle : 252
 				line-style : none
 
 				
@@ -1717,7 +1726,7 @@ rules
 				min-zoom : 12
 				line-width : 30%
 				line-color : #999
-				painting-cycle : 403
+				painting-cycle : 253
 							
 		if : * water
 			define
@@ -1739,7 +1748,7 @@ rules
 					fill-hatch-color : white
 					fill-hatch-opacity : 0
 					line-style : dash
-					painting-cycle : 403
+					painting-cycle : 253
 					min-zoom : 15
 					
 		if : * wood
@@ -1747,7 +1756,7 @@ rules
 				line-style : none
 				line-width : 1
 				fill-color : #CFE5C5
-				painting-cycle : 402
+				painting-cycle : 252
 				min-zoom : 9
 				
 		if : * grassland
@@ -1756,7 +1765,7 @@ rules
 				line-width : 1
 				min-zoom : 12
 				fill-color : #DEFED2
-				painting-cycle : 401
+				painting-cycle : 251
 				min-zoom : 9
 
 		if : * wetland
@@ -1797,14 +1806,14 @@ rules
 				line-style : none
 				min-zoom : 12
 				fill-color : #DEFED2
-				painting-cycle : 403
+				painting-cycle : 253
 
 					
 		if : * orchard
 			define
 				line-style : none
 				fill-texture : Textures/orchard.png
-				painting-cycle : 402
+				painting-cycle : 252
 				min-zoom : 12
 				
 		if : * scrub
@@ -1812,7 +1821,7 @@ rules
 				line-style : none
 				min-zoom : 9
 				fill-texture : Textures/scrub.png
-				painting-cycle : 402
+				painting-cycle : 252
 				
 		if : * sand
 			define
@@ -1826,7 +1835,7 @@ rules
 				line-style : none
 				line-width : 1
 				fill-color : #fbf7e2
-				painting-cycle : 401
+				painting-cycle : 251
 			
 		
 		if : * farmland
@@ -1835,7 +1844,7 @@ rules
 				line-width : 1
 				min-zoom : 9
 				fill-color :#f4e5d3
-				painting-cycle : 401
+				painting-cycle : 251
 		
 		draw : fill
 	
