@@ -75,8 +75,12 @@ The offline maps  can be automatically downloaded and updated on Android devices
 * Open this [offline map collection](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing) link and verify that you see the map/s you need.    
    <img width="20%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37708968-54e26cfc-2d11-11e8-9dde-2d8fe703d096.jpg">    
    _If needed, login using your Google account._
-* Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application
+* Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.
 * Open Autosync Google Drive
+* Review the _Menu_ &rarr; _Settings_ &rarr; _Autosync_ page, and the following in particular:
+  * _Enable Autosync_ or not
+  * _Autosync interval_
+  * _Internet connection_ to use _Mobile_ data or not
 * Switch to the "Synced Folders" tab
 * Add a new folder pair using `+` button    
    <img width="20%" alt="Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37709626-7d981406-2d13-11e8-97ed-87a9aa5c5979.jpg">
@@ -91,12 +95,12 @@ The offline maps  can be automatically downloaded and updated on Android devices
    *Notes:*
    * OruxMaps mapfiles folder is specified at "Maps" &rarr; "Maps Settings" &rarr; "Maps directory".
    * If you never downloaded the map before, please create the `Israel Hiking` or `Israel MTB` folders as appropriate.
-   * If Oruxmaps is not installed on your device, and you want to use offline maps for Off-Road ot Locus Map, please also create the folder `/storage/emulated/0/oruxmaps/mapfiles`.
+   * If Oruxmaps is not installed on your device, and you want to use offline maps for Off-Road or Locus Map, please also create the folder `/storage/emulated/0/oruxmaps/mapfiles`.
 * Choose "Download only" Sync method and `SAVE`    
    <img width="20%" alt="Completed Israel Hiking Folder Pair" src="https://user-images.githubusercontent.com/1304610/37712982-3461c42a-2d1e-11e8-9df9-69f0ff6334c2.jpg"> 
-   <img width="20%" alt="Completed Israel MTB Folder Pair" src="https://user-images.githubusercontent.com/1304610/37713937-fc0c7252-2d20-11e8-9533-6b657fe5c8ca.jpg">    
+   <img width="20%" alt="Completed Israel MTB Folder Pair" src="https://user-images.githubusercontent.com/1304610/37713937-fc0c7252-2d20-11e8-9533-6b657fe5c8ca.jpg">
 * Enable Auto-Sync or perform manual syncs when desired.    
-   <img width="20%" alt="Completed Synced Folders tab" src="https://user-images.githubusercontent.com/1304610/37713938-fc3aae74-2d20-11e8-9639-0d3823208f36.jpg">   
+   <img width="20%" alt="Completed Synced Folders tab" src="https://user-images.githubusercontent.com/1304610/37713938-fc3aae74-2d20-11e8-9639-0d3823208f36.jpg">
 
 ### Preparing offline maps
 
