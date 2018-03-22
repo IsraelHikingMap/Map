@@ -91,6 +91,7 @@ The offline maps  can be automatically downloaded and updated on Android devices
    <img width="20%" alt="Choose Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37711058-35572de4-2d18-11e8-8849-ed0b175ad4d8.png">
    <img width="20%" alt="Choose Oruxmaps" src="https://user-images.githubusercontent.com/1304610/37711301-f35bd16e-2d18-11e8-975f-65b345c62b1b.png">
    <img width="20%" alt="Choose desired map" src="https://user-images.githubusercontent.com/1304610/37710795-6c8d695a-2d17-11e8-995a-f0fd9529734b.jpg">    
+   
    _If the "Oruxmaps" folder is not showing in the "Shared with me" list, please wait a few minutes and try again._
 * Choose the local folder in Device: Navigating to the `Israel Hiking` or `Israel MTB` folder under the OruxMaps mapfiles folder and touch `SELECT`    
    
