@@ -75,8 +75,9 @@ The offline maps  can be automatically downloaded and updated on Android devices
 * Open this [offline map collection](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing) link and verify that you see the map/s you need.    
    <img width="20%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37708968-54e26cfc-2d11-11e8-9dde-2d8fe703d096.jpg">    
    _If needed, login using your Google account._
-* Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.
-* Open Autosync Google Drive
+* Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.    
+  If you will be happy with it, please consider supporting the developer by buying the premium version.
+* Open _Autosync Google Drive_
 * Review the _Menu_ &rarr; _Settings_ &rarr; _Autosync_ page, and the following in particular:
   * _Enable Autosync_ or not
   * _Autosync interval_
@@ -89,7 +90,8 @@ The offline maps  can be automatically downloaded and updated on Android devices
    <img width="20%" alt="Choose Shared with me" src="https://user-images.githubusercontent.com/1304610/37709627-7dc76738-2d13-11e8-881f-661336a4d0fc.jpg">
    <img width="20%" alt="Choose Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37711058-35572de4-2d18-11e8-8849-ed0b175ad4d8.png">
    <img width="20%" alt="Choose Oruxmaps" src="https://user-images.githubusercontent.com/1304610/37711301-f35bd16e-2d18-11e8-975f-65b345c62b1b.png">
-   <img width="20%" alt="Choose desired map" src="https://user-images.githubusercontent.com/1304610/37710795-6c8d695a-2d17-11e8-995a-f0fd9529734b.jpg">
+   <img width="20%" alt="Choose desired map" src="https://user-images.githubusercontent.com/1304610/37710795-6c8d695a-2d17-11e8-995a-f0fd9529734b.jpg">    
+   _If the "Oruxmaps" folder is not showing in the "Shared with me" list, please wait a few minutes and try again._
 * Choose the local folder in Device: Navigating to the `Israel Hiking` or `Israel MTB` folder under the OruxMaps mapfiles folder and touch `SELECT`    
    
    *Notes:*
