@@ -72,9 +72,11 @@ Please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/6187
 ### Automatic updates for Android
 The offline maps  can be automatically downloaded and updated on Android devices using the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application
 
-* Open this [offline map collection](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing) link and verify that you see the map/s you need.    
-   <img width="20%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37708968-54e26cfc-2d11-11e8-9dde-2d8fe703d096.jpg">    
-   _If needed, login using your Google account._
+* Add the offline maps to your Google Drive's "Shared with me" collection by opening the [offline map collection link](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing).
+If needed, login using your Google account.    
+_Maps in the "Shared with me" collection do not reduce the space on your Google Drive._
+* Check that you see the map/s you need. You cannot complete the next steps without them.   
+   <img width="20%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37708968-54e26cfc-2d11-11e8-9dde-2d8fe703d096.jpg">     
 * Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.    
   If you will be happy with it, please consider supporting the developer by buying the premium version.
 * Open _Autosync Google Drive_
