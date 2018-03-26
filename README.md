@@ -55,16 +55,16 @@ Please open the [download dialog](https://israelhiking.osm.org.il/#!/?download) 
 
 _Notes:_
 * [Off-Road](#off-road) allows offline use of the maps on both iOS and Android. On Android, Off-Road can re-use OruxMaps' offline maps using:
-   * _Maps &rarr; Offline_
-   * Select desired map
-   * _Link existing map_
-   * Navigate to Oruxmaps' `mapfiles` folder. 
-   * _CHOOSE_
+  * _Maps &rarr; Offline_
+  * Select desired map
+  * _Link existing map_
+  * Navigate to Oruxmaps' `mapfiles` folder. 
+  * _CHOOSE_
 * [Locus Map](#locus-map) allows the use of OruxMaps offline maps using:
-   * _Maps &rarr; Offline &rarr; "+" &rarr; External maps &rarr; "+"_
-   * _Menu &rarr; Local drives_
-   * Navigate to the `oruxmaps` &gt; `mapfiles` folder
-   * Approve
+  * _Maps &rarr; Offline &rarr; "+" &rarr; External maps &rarr; "+"_
+  * _Menu &rarr; Local drives_
+  * Navigate to the `oruxmaps` &gt; `mapfiles` folder
+  * Approve
 
 #### [Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)    
 Please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf).
@@ -72,11 +72,12 @@ Please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/6187
 ### Automatic updates for Android
 The offline maps  can be automatically downloaded and updated on Android devices using the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application
 
-* Add the offline maps to your Google Drive's "Shared with me" collection by opening the [offline map collection link](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing).
-If needed, login using your Google account.    
-_Maps in the "Shared with me" collection do not reduce the space on your Google Drive._
-* Check that you see the map/s you need. You cannot complete the next steps without them.   
-   <img width="20%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37708968-54e26cfc-2d11-11e8-9dde-2d8fe703d096.jpg">     
+* Open the [offline map collection link](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing) **from your PC**.
+* Navigate to to your Google Drive's "Shared with me" collection and check that you see "Oruxmaps" in the list. You cannot complete the next steps without it.   
+  
+  <img width="75%" alt="offline map collection" src="https://user-images.githubusercontent.com/1304610/37892664-3845d6f0-30e1-11e8-87de-9b813b779ee4.png">   
+  
+  _Maps in the "Shared with me" collection do not reduce the space on your Google Drive._
 * Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.    
   If you will be happy with it, please consider supporting the developer by buying the premium version.
 * Open _Autosync Google Drive_
@@ -86,26 +87,26 @@ _Maps in the "Shared with me" collection do not reduce the space on your Google 
   * _Internet connection_ to use _Mobile_ data or not
 * Switch to the "Synced Folders" tab
 * Add a new folder pair using `+` button    
-   <img width="20%" alt="Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37709626-7d981406-2d13-11e8-97ed-87a9aa5c5979.jpg">
+  <img width="20%" alt="Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37709626-7d981406-2d13-11e8-97ed-87a9aa5c5979.jpg">
 * Choose the remote folder in Google Drive: Navigating to "Shared with me" &rarr; "Oruxmaps" &rarr; _&lt;Map Name&gt;_ and `SELECT`    
    
-   <img width="20%" alt="Choose Shared with me" src="https://user-images.githubusercontent.com/1304610/37709627-7dc76738-2d13-11e8-881f-661336a4d0fc.jpg">
-   <img width="20%" alt="Choose Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37711058-35572de4-2d18-11e8-8849-ed0b175ad4d8.png">
-   <img width="20%" alt="Choose Oruxmaps" src="https://user-images.githubusercontent.com/1304610/37711301-f35bd16e-2d18-11e8-975f-65b345c62b1b.png">
-   <img width="20%" alt="Choose desired map" src="https://user-images.githubusercontent.com/1304610/37710795-6c8d695a-2d17-11e8-995a-f0fd9529734b.jpg">    
+  <img width="20%" alt="Choose Shared with me" src="https://user-images.githubusercontent.com/1304610/37709627-7dc76738-2d13-11e8-881f-661336a4d0fc.jpg">
+  <img width="20%" alt="Choose Add to My Drive" src="https://user-images.githubusercontent.com/1304610/37711058-35572de4-2d18-11e8-8849-ed0b175ad4d8.png">
+  <img width="20%" alt="Choose Oruxmaps" src="https://user-images.githubusercontent.com/1304610/37711301-f35bd16e-2d18-11e8-975f-65b345c62b1b.png">
+  <img width="20%" alt="Choose desired map" src="https://user-images.githubusercontent.com/1304610/37710795-6c8d695a-2d17-11e8-995a-f0fd9529734b.jpg">    
    
-   _If the "Oruxmaps" folder is not showing in the "Shared with me" list, please wait a few minutes and try again._
+  _If the "Oruxmaps" folder is not showing in the "Shared with me" list, please wait a few minutes and try again._
 * Choose the local folder in Device: Navigating to the `Israel Hiking` or `Israel MTB` folder under the OruxMaps mapfiles folder and touch `SELECT`    
    
-   *Notes:*
-   * OruxMaps mapfiles folder is specified at "Maps" &rarr; "Maps Settings" &rarr; "Maps directory".
-   * If you never downloaded the map before, please create the `Israel Hiking` or `Israel MTB` folders as appropriate.
-   * If Oruxmaps is not installed on your device, and you want to use offline maps for Off-Road or Locus Map, please also create the folder `/storage/emulated/0/oruxmaps/mapfiles`.
+  *Notes:*
+  * OruxMaps mapfiles folder is specified at "Maps" &rarr; "Maps Settings" &rarr; "Maps directory".
+  * If you never downloaded the map before, please create the `Israel Hiking` or `Israel MTB` folders as appropriate.
+  * If Oruxmaps is not installed on your device, and you want to use offline maps for Off-Road or Locus Map, please also create the folder `/storage/emulated/0/oruxmaps/mapfiles`.
 * Choose "Download only" Sync method and `SAVE`    
-   <img width="20%" alt="Completed Israel Hiking Folder Pair" src="https://user-images.githubusercontent.com/1304610/37712982-3461c42a-2d1e-11e8-9df9-69f0ff6334c2.jpg"> 
-   <img width="20%" alt="Completed Israel MTB Folder Pair" src="https://user-images.githubusercontent.com/1304610/37713937-fc0c7252-2d20-11e8-9533-6b657fe5c8ca.jpg">
+  <img width="20%" alt="Completed Israel Hiking Folder Pair" src="https://user-images.githubusercontent.com/1304610/37712982-3461c42a-2d1e-11e8-9df9-69f0ff6334c2.jpg"> 
+  <img width="20%" alt="Completed Israel MTB Folder Pair" src="https://user-images.githubusercontent.com/1304610/37713937-fc0c7252-2d20-11e8-9533-6b657fe5c8ca.jpg">
 * Enable Auto-Sync or perform manual syncs when desired.    
-   <img width="20%" alt="Completed Synced Folders tab" src="https://user-images.githubusercontent.com/1304610/37713938-fc3aae74-2d20-11e8-9639-0d3823208f36.jpg">
+  <img width="20%" alt="Completed Synced Folders tab" src="https://user-images.githubusercontent.com/1304610/37713938-fc3aae74-2d20-11e8-9639-0d3823208f36.jpg">
 
 ### Preparing offline maps
 
