@@ -447,6 +447,7 @@ rules
 			define
 				text-color : blue
 				min-zoom : 13
+				painting-cycle : 820
 		define
 			text-func : NodeName(e)
 		draw : text
