@@ -79,7 +79,7 @@ The offline maps  can be automatically downloaded and updated on Android devices
   
   _Maps in the "Shared with me" collection do not reduce the space on your Google Drive._
 * Install the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application.    
-  If you will be happy with it, please consider supporting the developer by buying the premium version.
+  If you are happy with it, please consider supporting the developer by buying the Pro version.
 * Open _Autosync Google Drive_
 * Review the _Menu_ &rarr; _Settings_ &rarr; _Autosync_ page, and the following in particular:
   * _Enable Autosync_ or not
@@ -107,6 +107,8 @@ The offline maps  can be automatically downloaded and updated on Android devices
   <img width="20%" alt="Completed Israel MTB Folder Pair" src="https://user-images.githubusercontent.com/1304610/37713937-fc0c7252-2d20-11e8-9533-6b657fe5c8ca.jpg">
 * Enable Auto-Sync or perform manual syncs when desired.    
   <img width="20%" alt="Completed Synced Folders tab" src="https://user-images.githubusercontent.com/1304610/37713938-fc3aae74-2d20-11e8-9639-0d3823208f36.jpg">
+  * For Autosync Google Drive to work properly on Android 6.0 and later, please consider disablng battery optimization for this app.
+  * The Pro version is required in order to syncronize more than one folder, as shown above.
 
 ### Preparing offline maps
 
