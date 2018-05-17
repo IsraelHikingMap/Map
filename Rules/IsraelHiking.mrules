@@ -447,6 +447,7 @@ rules
 			define
 				text-color : blue
 				min-zoom : 13
+				painting-cycle : 820
 		define
 			text-func : NodeName(e)
 		draw : text
@@ -527,6 +528,15 @@ rules
 	target : railway rail
 		define
 			min-zoom : 13
+			line-color : gray
+			line-width : 3
+		for : bridge AND NOT bridge=no
+			define
+				border-style : solid
+				border-width : 1.5
+				border-color : black
+		draw : line
+		define
 			line-style : dashlong
 			line-color : white
 			line-width : 2
@@ -535,17 +545,8 @@ rules
 			border-width : 25%
 		for : tunnel AND NOT tunnel=no
 			define
-				// border-style : dot
 				line-style : dash
 		draw : line
-		for : bridge AND NOT bridge=no
-			define
-				line-style : solid
-				line-color : black
-				line-offset : 2
-				line-width : 2
-				line-offset-sides : both
-			draw : line
 
 	target : road *
 		define
@@ -747,7 +748,8 @@ rules
 			shield-padding-bottom : 6
 			shield-resize-mode : free
 		draw : shield
-// Road names
+
+	// Road names
 	target : road *
 		define
 			min-zoom : 14.5
@@ -876,6 +878,20 @@ rules
 				line-width : 1
 				line-style : solid
 				border-style : none
+			draw : line
+
+	target : unpaved *
+		for :  @isOneOf(tracktype, grade1, grade2) OR @isOneOf(highway, residential, unclassified, living_street, service, road)
+			// draw brown fill between solid double-tracks
+			define
+				line-width : 3
+				line-style : solid
+				line-color : #722d00
+				line-opacity : 15%
+				min-zoom : 14
+			for : colour
+				define
+					min-zoom : 13
 			draw : line
 
 	target : *path
