@@ -47,14 +47,13 @@
 //ways 600
 //path 601
 //fence 601
-//bridge 603
+//nature reserve 711
 //medical 799
 //bikeshop  799
 //stream name 800
 //archaeological 801
 //attraction 801
 //drinking_water 802
-//nature reserve 810
 //bikepark 810
 
 import-script:..\Scripts\Maperipy\names.py
@@ -66,7 +65,7 @@ features
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		bikepark : landuse=recreation_ground and sport=mtb
 		cafe : amenity=cafe
-		convenience : shop=convenience OR shop=supermarket
+		convenience : shop=convenience OR shop=supermarket or Shop=dairy
 		food : amenity=restaurant OR amenity=fast_food
 		lodging : @isOneOf(tourism, guest_house, hotel, resort)
 		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
@@ -722,6 +721,14 @@ rules
 		draw : line
 
 	target : railway
+
+		for : bridge = yes
+			define
+				line-opacity : 1
+				line-color : black
+				line-width : 8:3;14:5
+		draw : line
+		
 		for : railway=rail
 			define
 				min-zoom : 8
@@ -846,7 +853,11 @@ rules
 		for : maxspeed < 31
 			define 
 				line-color : #bbf
-			
+		for : bridge = yes
+			define
+				border-width : 50%
+				border-opacity : 90%
+							
 		draw : line
 // shields
 		define
@@ -1052,6 +1063,10 @@ rules
 				line-offset-sides : left
 				line-style : solid
 			draw : line
+		for : bridge = yes
+			define
+				border-width : 50%
+				border-opacity : 90%
 		draw : line
 		
 		define
@@ -1076,12 +1091,27 @@ rules
 		for : not _urban = yes
 			draw : text
 		
+		for : bridge = yes
+		
+			define
+				line-color : white
+				border-style : solid
+				border-color : black
+				border-width : 30%
+				border-opacity : 1
+				min-zoom : 13
+				line-width : 12:2;13:2;15:3;16:4
+				curved : true
+			draw : line
+			
 		define
 			min-zoom : 12
 			line-color : #973
 			line-style : none
+			border-style : none
 			line-opacity : 1
 			line-width : 12:0.25;13:1;15:2;16:3
+			line-offset : 0
 			curved : true
 		
 		for : highway=footway  
@@ -1158,6 +1188,10 @@ rules
 				fill-color : #000
 		define
 			painting-cycle : 601
+		for : tunnel = yes
+			define
+				painting-cycle : 595
+			
 		draw : line
 		
 		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
@@ -1225,24 +1259,7 @@ rules
 				painting-cycle : 599
 		
 		draw : line
-		
-	target : offroad *
-		for : bridge AND NOT bridge=no
-			define
-				min-zoom : 13
-				line-color : #f1eee8
-				line-width : 12:2;13:3;14:4
-				line-opacity : 1
-				line-style : solid
-				border-style : solid
-				border-color : #000
-				border-width : 1
-				border-opacity : 0.8
-				painting-cycle : 603
-		else
-			stop
-		draw : line
-		
+			
 	target : stream
 		define
 			map.rendering.lflp.max-allowed-corner-angle : 30
@@ -1266,11 +1283,12 @@ rules
 				painting-cycle : 502
 			for : intermittent=yes
 				define
+					min-zoom : 10
 					line-width : 13:1; 14:2
-					line-style : dash
-					line-offset : 10:1; 11:1.5; 12:2; 13:2.5; 14:3; 15:4; 16:5
+					line-offset :10:0; 12:0; 13:3; 14:6
 					border-style : none
-
+					line-style : dash
+					
 		for : @isOneOf(waterway, stream, drain, ditch, canal)
 
 			define
@@ -1479,7 +1497,7 @@ rules
 			icon-width : 12:20;14:25
 			align-vertical : center
 			min-zoom : 13
-			painting-cycle : 810
+			painting-cycle : 711
 			
 		draw : icon
 		draw : fill
