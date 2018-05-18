@@ -724,10 +724,11 @@ rules
 
 		for : bridge = yes
 			define
+				min-zoom : 11
 				line-opacity : 1
 				line-color : black
-				line-width : 8:3;14:5
-		draw : line
+				line-width : 11:3;14:5
+			draw : line
 		
 		for : railway=rail
 			define
