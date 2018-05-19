@@ -102,7 +102,7 @@ features
 		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
-		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
+		hiking regional golan trail: relation[network = rwn "name:en"="Golan Trail"]
 		hiking regional kinneret perimeter cycle route : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
 		hiking regional kinneret trail : relation[network = rwn @isMatch(name:en,"Kinneret Trail")]
 		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
