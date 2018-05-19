@@ -40,8 +40,10 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
 )
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
-CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue "%TASKNAME%"
-IF ERRORLEVEL 1 EXIT /b
+IF %LANGUAGE% == "Hebrew" (
+  CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue "%TASKNAME%"
+  IF ERRORLEVEL 1 EXIT /b
+)
 
 IF EXIST "israel-and-palestine-updated.osm.pbf" (
   DIR
@@ -76,7 +78,8 @@ IF "%1"=="" (
   )
 )
 
-IF EXIST %QUEUEFILE% DEL %QUEUEFILE%
+IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
+
 ECHO.
 DIR
 POPD
