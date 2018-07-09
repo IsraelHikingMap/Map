@@ -595,7 +595,7 @@ rules
 				min-zoom : 15
 				line-width : 15:2;16:3
 				line-color : white
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				define
 					min-zoom : 13
 		// Colors for Hiking Trail on roads
@@ -631,7 +631,7 @@ rules
 		draw : line
 		// Single line for non-coloured paved
 		if : * paved *
-			for : NOT colour AND NOT tunnel
+			for : NOT @isOneOf(colour, red, blue, black, green, purple, orange) AND NOT tunnel
 				define
 					min-zoom : 14
 					max-zoom : 15
@@ -770,7 +770,7 @@ rules
 			border-width : 25%
 			border-color : white
 			border-style : solid
-		for : colour
+		for : @isOneOf(colour, red, blue, black, green, purple, orange)
 			define
 				line-width : 13:1.5;14:2
 				line-offset : 12:0;13:1.5;16:2.5
@@ -794,7 +794,7 @@ rules
 			define
 				line-style : dash
 		if : road paved *
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				// thin line only
 				define
 					max-zoom : 13
@@ -869,7 +869,7 @@ rules
 		draw : text
 
 	target : unpaved *
-		for :  NOT colour
+		for :  NOT @isOneOf(colour, red, blue, black, green, purple, orange)
 			// Show non-coloured tracks as thin lines in zoom 13
 			define
 				min-zoom : 13
@@ -889,7 +889,7 @@ rules
 				line-color : #722d00
 				line-opacity : 15%
 				min-zoom : 14
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				define
 					min-zoom : 13
 			draw : line
@@ -901,7 +901,7 @@ rules
 			border-color : white
 			border-style : solid
 			line-style : dash
-		for : colour
+		for : @isOneOf(colour, red, blue, black, green, purple, orange)
 			define
 				line-width : 13:1.5;14:2
 				min-zoom : 13
