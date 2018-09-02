@@ -78,6 +78,7 @@ features
 		monument : historic=monument
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
+		water tank : content=water man_made=storage_tank
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -230,6 +231,12 @@ rules
 				fill-color : blue
 				fill-opacity : 100%
 				line-style : none
+		elseif: water tank
+			define
+				fill-color : #8AC0FF
+				fill-opacity : 100%
+				shape-size : 3.5
+				line-color : black
 		elseif: water waterhole
 			define
 				shape : custom
