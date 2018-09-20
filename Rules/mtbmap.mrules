@@ -6,12 +6,9 @@
 // Released under the Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) (https://creativecommons.org/licenses/by-nc-sa/3.0/)
 
 // Icons
-// Map icons CC-0 from SJJB Management (http://www.sjjb.co.uk/mapicons)
-// Ghost http://iconbug.com/detail/icon/2017/cute-ghost/
-// http://norgedigitalt.no/Norge_digitalt/Norsk/Teknologi/Tegneregler_og_symboler/
-// Map icons CC-0 from https://github.com/gmgeo/osmic
-// Map icons CC-0 from https://www.mapbox.com/maki-icons/
-// Map icons CC-0 from https://www.mapbox.com/maki-icons/https://www.nps.gov/hfc/carto/map-symbols.cfm
+
+// Plane icon CC-0 from https://github.com/gmgeo/osmic
+// Map icons CC-0 from https://www.nps.gov/hfc/carto/map-symbols.cfm
 
 // History:
 // --------
@@ -51,9 +48,9 @@
 //medical 799
 //bikeshop  799
 //stream name 800
-//archaeological 801
+//archaeological 791
 //attraction 801
-//drinking_water 802
+//drinking_water 792
 //bikepark 810
 
 import-script:..\Scripts\Maperipy\names.py
@@ -72,7 +69,7 @@ features
 		worship church : amenity=place_of_worship AND religion=christian
 		worship other : amenity=place_of_worship AND @isOneOf(religion, bahai, druze, budhist)
 		worship mosque : amenity=place_of_worship AND religion=muslim
-		worship synagogue : amenity=place_of_worship AND religion=jewish AND (tourism or historic)
+		worship synagogue : amenity=place_of_worship AND religion=jewish
 		parking : amenity=parking
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
@@ -141,12 +138,12 @@ features
 	areas
 		archaeological : historic=archaeological_site
 		building : building
- 		sports : leisure=stadium OR leisure=common OR leisure=track
+ 		sports : leisure=stadium OR leisure=common OR leisure=track OR leisure = pitch
 		area residential : landuse=residential OR landuse = farmyard
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
 		area commercial : landuse=commercial OR landuse=retail
 		area wood : landuse=forest OR natural=wood
-		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank
+		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank OR leisure=swimming_pool
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
@@ -197,26 +194,28 @@ rules
 			for : barrier=gate
 				for : access=no OR bicycle=no OR access=private
 					define
-						icon-image : Icons/mtbmap/gate_closed.png
+						icon-image : Icons/Shared/gate_closed.png
+				elsefor : access=yes and motor_vehicle=no
+					define
+						icon-image : Icons/Shared/bollards.png
 				else
 					define
-						icon-image : Icons/mtbmap/gate_open.png
+						icon-image : Icons/Shared/gate_open.png
 			elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
 				define
-					icon-image : Icons/mtbmap/gate_open.png
+					icon-image : Icons/Shared/bollards.png
 			elsefor : barrier=cattle_grid
 				define
-					icon-image : Icons/mtbmap/cattle_grid.png
-					icon-width: 22
+					icon-image : Icons/Shared/cattle_grid.png
 			else
 				define
-					icon-image : Icons/mtbmap/gate_open.png
+					icon-image : Icons/Shared/gate_open.png
 			draw : icon
 		
 	target : place
 		for : place=city
 			define
-				icon-image : Icons/mtbmap/dot.png
+				icon-image : Icons/Shared/dot.png
 				icon-width : 7:5;8:8;9:9
 				min-zoom : 7
 				max-zoom : 9
@@ -275,52 +274,57 @@ rules
 		for : tourism=viewpoint
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/viewpoint.png
+				icon-image : Icons/Shared/viewpoint.png
 		elsefor : historic=ruins and not _urban=yes
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/3stones.png
+				icon-image : Icons/Shared/3stones.png
 				icon-width : 15
 		elsefor : (man_made=tower AND tower:type=communication)
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/antenna.png
+				icon-image : Icons/Shared/antenna.png
 		elsefor : man_made=tower
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/tower.png
+				icon-image : Icons/Shared/tower.png
 		elsefor : natural=cave_entrance
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/cave.png
-				icon-width : 13
-		elsefor : man_made=water_tower OR man_made=storage_tank
+				icon-image : Icons/Shared/cave.png
+				icon-width : 17
+		elsefor : man_made=water_tower
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/water_tower.png
+				icon-image : Icons/Shared/water_tower.png
+		elsefor : man_made=storage_tank
+			define
+				min-zoom : 14
+				icon-image : Icons/Shared/water_tank.png
+				icon-width : 15
 		elsefor : natural=tree and not _urban=yes
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/tree.png
+				icon-image : Icons/Shared/tree.png
 		elsefor : (historic=memorial OR historic=monument) and not _urban=yes
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/monument.png
+				icon-image : Icons/Shared/monument.png
 			for : (religion=muslim or religion=jewish)
 				define
-					icon-image : Icons/mtbmap/holy_place.png
+					icon-image : Icons/Shared/holy_place.png
 		elsefor : tourism=attraction
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/star.png
+				icon-image : Icons/Shared/star.png
 			for : _urban =yes
 				define
 					min-zoom : 16
 		elsefor : natural=peak
 			define
 				min-zoom : 12
-				icon-image : Icons/mtbmap/dot.png
-				icon-width : 12:5;13:6;14:7;15:8
+				icon-image : Icons/Shared/dot.png
+				icon-width : 12:7;13:9;14:13;15:17
 		for: _urban = yes
 			define
 				min-zoom : 16
@@ -366,16 +370,16 @@ rules
 			for : not _urban=yes
 				draw : text
 			define
-				icon-image : Icons/mtbmap/church.png
+				icon-image : Icons/Shared/church.png
 		elseif : * mosque
 			define
-				icon-image : Icons/mtbmap/mosque.png
+				icon-image : Icons/Shared/mosque.png
 		elseif : * synagogue
 			define
-				icon-image : Icons/mtbmap/synagogue.png
+				icon-image : Icons/Shared/synagogue.png
 		elseif : * other
 			define
-				icon-image : Icons/mtbmap/holy_place.png
+				icon-image : Icons/Shared/holy_place.png
 		define
 			icon-width : 13:17
 		for : tourism=attraction
@@ -391,8 +395,8 @@ rules
 		
 	target : parking
 		define
-			icon-image : Icons/mtbmap/parking.png
-			icon-width : 15:12
+			icon-image : Icons/Shared/parking.png
+			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
 		for : access=private or _urban=yes
@@ -401,7 +405,7 @@ rules
 		
 	target: cafe
 		define
-			icon-image : Icons/mtbmap/cup.png
+			icon-image : Icons/Shared/cup.png
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
@@ -415,7 +419,7 @@ rules
 	target: food
 		for : not _urban=yes
 			define
-				icon-image : Icons/mtbmap/food.png
+				icon-image : Icons/Shared/food.png
 				icon-width : 17
 				align-vertical : center
 				min-zoom : 14
@@ -426,7 +430,7 @@ rules
 
 	target: convenience
 		define
-			icon-image : Icons/mtbmap/shopping.png
+			icon-image : Icons/Shared/shopping.png
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
@@ -437,7 +441,7 @@ rules
 	target: lodging
 		for : not _urban=yes
 			define
-				icon-image : Icons/mtbmap/hotel.png
+				icon-image : Icons/Shared/hotel.png
 				icon-width : 17
 				align-vertical : center
 				min-zoom : 14
@@ -448,7 +452,7 @@ rules
 
 	target: bikeshop
 		define
-			icon-image : Icons/mtbmap/bike-red.png
+			icon-image : Icons/Shared/bike-red.png
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 13
@@ -464,7 +468,7 @@ rules
 		
 	target: bikepark
 		define
-			icon-image : Icons/mtbmap/MTBiker.png
+			icon-image : Icons/Shared/MTBiker.png
 			icon-width : 9:16;10:18;12:23
 			align-vertical : center
 			min-zoom : 9
@@ -484,7 +488,7 @@ rules
 		
 	target: medical
 		define
-			icon-image : Icons/mtbmap/first_aid.png
+			icon-image : Icons/Shared/first_aid.png
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 13
@@ -502,7 +506,7 @@ rules
 	target: toilet
 		for : not _urban = yes
 			define
-				icon-image : Icons/mtbmap/toilet.png
+				icon-image : Icons/Shared/toilet.png
 				icon-width : 15:17
 				align-vertical : center
 				min-zoom : 15
@@ -523,13 +527,13 @@ rules
 
 	target: information
 		define
-			icon-image : Icons/mtbmap/info.png
+			icon-image : Icons/Shared/info.png
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 15
 		for : (information=guidepost OR information=board OR information=map)
 			define
-				icon-image : Icons/mtbmap/sign.png
+				icon-image : Icons/Shared/sign.png
 		draw : icon
 
 	target: airport
@@ -537,14 +541,13 @@ rules
 			
 			icon-width : 17
 			align-vertical : center
+			icon-image : Icons/Shared/airfield.png
 		for : iata
 			define
 				min-zoom : 10
-				icon-image : Icons/mtbmap/plane.png
 		else
 			define
 				min-zoom : 14
-				icon-image : Icons/mtbmap/airfield.png
 			
 		draw : icon
 		define
@@ -564,33 +567,33 @@ rules
 			align-vertical : center
 		for : natural=spring
 			define
-				icon-image : Icons/mtbmap/spring.png
-				icon-width : 9
+				icon-image : Icons/Shared/spring.png
+				icon-width : 21
 		for : man_made=water_well	
 			define
-				icon-image : Icons/mtbmap/well.png
-				icon-width : 9
+				icon-image : Icons/Shared/water_well.png
+				icon-width : 13
 
 		for : amenity=drinking_water	
 			define
-				icon-image : Icons/mtbmap/tap.png
+				icon-image : Icons/Shared/tap.png
 				icon-width : 17
-				painting-cycle : 802
+				painting-cycle : 792
 			for : _urban = yes
 				define
 					min-zoom : 16
 		for : man_made=cistern	
 			define
-				icon-image : Icons/mtbmap/cistern.png
-				icon-width : 9				
+				icon-image : Icons/Shared/cistern.png
+				icon-width : 14:13 ; 15:15				
 		for : natural=waterhole	
 			define
-				icon-image : Icons/mtbmap/water_hole.png
+				icon-image : Icons/Shared/water_hole.png
 				icon-width : 12
 		for : waterway=waterfall	
 			define
-				icon-image : Icons/mtbmap/waterfall.png
-				icon-width : 17
+				icon-image : Icons/Shared/waterfall.png
+				icon-width : 14:13; 15:17
 		draw : icon
 		
 		define
@@ -604,14 +607,14 @@ rules
 	target : picnic
 		define
 			min-zoom : 14
-			icon-image : Icons/mtbmap/picnic.png
+			icon-image : Icons/Shared/picnic.png
 			icon-width : 14
 		draw : icon
 		
 	target : camping
 		define
 			min-zoom : 13
-			icon-image : Icons/mtbmap/camping.png
+			icon-image : Icons/Shared/camping.png
 			icon-width : 17
 		draw : icon
 		define
@@ -622,7 +625,7 @@ rules
 	target : gas
 		define
 			min-zoom : 13
-			icon-image : Icons/mtbmap/gas.png
+			icon-image : Icons/Shared/gas.png
 			icon-width : 19
 		for : _urban=yes
 			define
@@ -828,7 +831,7 @@ rules
 		elseif : * residential
 			
 			define
-				line-color : white
+				line-color : black white 80%
 				border-style : solid
 				border-color : black
 				border-width : 10%
@@ -1494,8 +1497,8 @@ rules
 			fill-opacity : 0.35
 			fill-hatch : nwse
 			fill-hatch-opacity : 0
-			icon-image : Icons/mtbmap/rtg.png
-			icon-width : 12:20;14:25
+			icon-image : Icons/Shared/rtg.png
+			icon-width : 12:17;14:34
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 711
@@ -1531,7 +1534,12 @@ rules
 			line-color : #ccc
 			line-style : solid
 			line-width : 13:0.25;14:0.5;15:1
+			icon-image : Icons/Shared/ball.png
+			icon-width : 14:13;16:17
 		draw : fill
+		define
+			min-zoom : 16
+		draw : icon
 		
 	target : dam 
 		define
@@ -1588,7 +1596,7 @@ rules
 		for : _urban=yes
 			stop
 		define
-			icon-image : Icons/mtbmap/bulldozer.png
+			icon-image : Icons/Shared/bulldozer.png
 			icon-width : 17
 			min-zoom : 15
 		draw : icon
@@ -1605,7 +1613,7 @@ rules
 		draw : fill
 		
 		define
-			icon-image : Icons/mtbmap/quarry.png
+			icon-image : Icons/Shared/quarry.png
 			icon-width : 13:17
 			min-zoom : 13
 			shape-orientation : fixed
@@ -1626,12 +1634,12 @@ rules
 	target : archaeological
 		for : not _urban = yes
 			define
-				icon-image : Icons/mtbmap/jar.png
+				icon-image : Icons/Shared/jar.png
 				icon-width : 17
 				min-zoom : 14
 				shape-orientation : fixed
 				shape-mode : center
-				painting-cycle : 801
+				painting-cycle : 791
 			draw : icon
 		
 		define
@@ -1653,7 +1661,7 @@ rules
 	
 	target : attraction
 		define
-			icon-image : Icons/mtbmap/star.png
+			icon-image : Icons/Shared/star.png
 			icon-width : 17
 			min-zoom : 14
 			shape-orientation : fixed
@@ -1809,14 +1817,15 @@ rules
 			
 			for : (landuse=cemetery OR amenity=grave_yard)
 				define
-					icon-image : Icons/mtbmap/cemetery.png
+					icon-image : Icons/Shared/cemetery.png
 				for : _urban=yes
 					define
 						min-zoom : 16
 				draw : icon
-			for : (leisure=playground)
+			for : leisure=playground
 				define
-					icon-image : Icons/mtbmap/playground.png
+					icon-image : Icons/Shared/playground.png
+					painting-cycle : 695
 				for : _urban=yes
 					define
 						min-zoom : 16
