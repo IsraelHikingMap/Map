@@ -608,7 +608,7 @@ rules
 		define
 			min-zoom : 14
 			icon-image : Icons/Shared/picnic.png
-			icon-width : 14
+			icon-width : 17
 		draw : icon
 		
 	target : camping
@@ -626,7 +626,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/gas.png
-			icon-width : 19
+			icon-width : 17
 		for : _urban=yes
 			define
 				min-zoom : 15
@@ -1618,7 +1618,7 @@ rules
 			min-zoom : 13
 			shape-orientation : fixed
 			shape-mode : center
-			painting-cycle : 404
+			painting-cycle : 704
 		draw : icon
 		
 		define
@@ -1821,6 +1821,7 @@ rules
 				for : _urban=yes
 					define
 						min-zoom : 16
+						painting-cycle : 695
 				draw : icon
 			for : leisure=playground
 				define
