@@ -78,6 +78,7 @@ features
 		monument : historic=monument
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
+		water tank : content=water man_made=storage_tank
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -102,7 +103,7 @@ features
 		contour medium : contour[@isMulti(elevation, 20) AND NOT @isMulti(elevation, 100)]
 		contour minor : contour[@isMulti(elevation, 10) AND NOT @isMulti(elevation, 20)]
 		hiking regional jesus trail: relation[network = rwn @isMatch(name:en,"Jesus Trail")].way[NOT colour=orange]
-		hiking regional golan trail: relation[network = rwn @isMatch(name:en1,"Golan Trail")]
+		hiking regional golan trail: relation[network = rwn "name:en"="Golan Trail"]
 		hiking regional kinneret perimeter cycle route : relation[network = rcn @isMatch(name:en1,"Sea of Galilee Bicycle Route")]
 		hiking regional kinneret trail : relation[network = rwn @isMatch(name:en,"Kinneret Trail")]
 		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
@@ -230,6 +231,12 @@ rules
 				fill-color : blue
 				fill-opacity : 100%
 				line-style : none
+		elseif: water tank
+			define
+				fill-color : #8AC0FF
+				fill-opacity : 100%
+				shape-size : 3.5
+				line-color : black
 		elseif: water waterhole
 			define
 				shape : custom
@@ -595,7 +602,7 @@ rules
 				min-zoom : 15
 				line-width : 15:2;16:3
 				line-color : white
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				define
 					min-zoom : 13
 		// Colors for Hiking Trail on roads
@@ -631,7 +638,7 @@ rules
 		draw : line
 		// Single line for non-coloured paved
 		if : * paved *
-			for : NOT colour AND NOT tunnel
+			for : NOT @isOneOf(colour, red, blue, black, green, purple, orange) AND NOT tunnel
 				define
 					min-zoom : 14
 					max-zoom : 15
@@ -770,7 +777,7 @@ rules
 			border-width : 25%
 			border-color : white
 			border-style : solid
-		for : colour
+		for : @isOneOf(colour, red, blue, black, green, purple, orange)
 			define
 				line-width : 13:1.5;14:2
 				line-offset : 12:0;13:1.5;16:2.5
@@ -794,7 +801,7 @@ rules
 			define
 				line-style : dash
 		if : road paved *
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				// thin line only
 				define
 					max-zoom : 13
@@ -869,7 +876,7 @@ rules
 		draw : text
 
 	target : unpaved *
-		for :  NOT colour
+		for :  NOT @isOneOf(colour, red, blue, black, green, purple, orange)
 			// Show non-coloured tracks as thin lines in zoom 13
 			define
 				min-zoom : 13
@@ -889,7 +896,7 @@ rules
 				line-color : #722d00
 				line-opacity : 15%
 				min-zoom : 14
-			for : colour
+			for : @isOneOf(colour, red, blue, black, green, purple, orange)
 				define
 					min-zoom : 13
 			draw : line
@@ -901,7 +908,7 @@ rules
 			border-color : white
 			border-style : solid
 			line-style : dash
-		for : colour
+		for : @isOneOf(colour, red, blue, black, green, purple, orange)
 			define
 				line-width : 13:1.5;14:2
 				min-zoom : 13
