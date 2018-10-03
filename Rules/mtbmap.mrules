@@ -61,16 +61,16 @@ features
 		area lawn : @isOneOf(landuse,recreation_ground,cemetery)  OR @isOneOf(leisure,golf_course,pitch,park,garden,playground)
 		bikeshop : shop=bicycle OR service:bicycle:retail=yes
 		bikepark : landuse=recreation_ground and sport=mtb
-		cafe : amenity=cafe
-		convenience : shop=convenience OR shop=supermarket or Shop=dairy
-		food : amenity=restaurant OR amenity=fast_food
-		lodging : @isOneOf(tourism, guest_house, hotel, resort)
+		cafe : amenity=cafe AND NOT _urban
+		convenience : (shop=convenience OR shop=supermarket or shop=dairy) AND NOT _urban
+		food : (amenity=restaurant OR amenity=fast_food) AND NOT _urban
+		lodging : @isOneOf(tourism, guest_house, hotel, resort) AND NOT _urban
 		medical : (amenity=hospital OR amenity=clinic) AND NOT emergency=no
 		worship church : amenity=place_of_worship AND religion=christian
 		worship other : amenity=place_of_worship AND @isOneOf(religion, bahai, druze, budhist)
 		worship mosque : amenity=place_of_worship AND religion=muslim
 		worship synagogue : amenity=place_of_worship AND religion=jewish
-		parking : amenity=parking
+		parking : amenity=parking AND NOT (access=private OR _urban)
 		archaeological : historic=archaeological_site
 		ruins : historic=ruins
 		airport : aeroway=aerodrome
@@ -78,18 +78,18 @@ features
 		camping : tourism=camp_site
 		railway station : railway=station
 		nature reserve : boundary=national_park OR boundary=protected_area OR leisure=nature_reserve
-		POI : @isOneOf(natural, peak, cave_entrance, tree) OR @isOneOf(historic, ruins, memorial, monument) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
+		POI : @isOneOf(natural, peak, cave_entrance) OR (natural=tree AND NOT _urban) OR historic=ruins OR (@isOneOf(historic, memorial, monument) AND NOT _urban) OR @isOneOf(man_made, tower, water_tower, communications_tower, storage_tank) OR @isOneOf(tourism, attraction, viewpoint)
 	//_______________________________________________________
 			
 	points
 		place : place OR landuse=farmyard
-		building point: building AND NOT building=entrance
+		building point: building AND NOT building=entrance AND NOT _urban
 		power tower : @isOneOf(power, tower, pole, station, sub_station)
 		picnic : leisure=picnic_table OR tourism=picnic_site
-		barrier : barrier
+		barrier : barrier AND NOT _urban
 		information : tourism=information
 		turningcircle : highway=turning_circle
-		toilet : amenity=toilets
+		toilet : amenity=toilets AND NOT _urban
 		watersource : @isOneOf(natural, spring, waterhole) OR @isOneOf(man_made, water_well, cistern) OR amenity=drinking_water OR waterway=waterfall
 		
 	//________________________________________________
@@ -137,7 +137,7 @@ features
 			
 	areas
 		archaeological : historic=archaeological_site
-		building : building
+		building : building AND NOT _urban
  		sports : leisure=stadium OR leisure=common OR leisure=track OR leisure = pitch
 		area residential : landuse=residential OR landuse = farmyard
 		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
@@ -187,31 +187,30 @@ rules
 // ___________________points________________________
 
 	target : barrier
-		for : not _urban = yes
-			define
-				min-zoom : 15
-				icon-width : 17
-			for : barrier=gate
-				for : access=no OR bicycle=no OR access=private
-					define
-						icon-image : Icons/Shared/gate_closed.png
-				elsefor : access=yes and motor_vehicle=no
-					define
-						icon-image : Icons/Shared/bollards.png
-				else
-					define
-						icon-image : Icons/Shared/gate_open.png
-			elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
+		define
+			min-zoom : 15
+			icon-width : 17
+		for : barrier=gate
+			for : access=no OR bicycle=no OR access=private
+				define
+					icon-image : Icons/Shared/gate_closed.png
+			elsefor : access=yes and motor_vehicle=no
 				define
 					icon-image : Icons/Shared/bollards.png
-			elsefor : barrier=cattle_grid
-				define
-					icon-image : Icons/Shared/cattle_grid.png
 			else
 				define
 					icon-image : Icons/Shared/gate_open.png
-			draw : icon
-		
+		elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
+			define
+				icon-image : Icons/Shared/bollards.png
+		elsefor : barrier=cattle_grid
+			define
+				icon-image : Icons/Shared/cattle_grid.png
+		else
+			define
+				icon-image : Icons/Shared/gate_open.png
+		draw : icon
+
 	target : place
 		for : place=city
 			define
@@ -275,10 +274,10 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/Shared/viewpoint.png
-		elsefor : historic=ruins and not _urban=yes
+		elsefor : historic=ruins
 			define
 				min-zoom : 14
-				icon-image : Icons/Shared/3stones.png
+				icon-image : Icons/Shared/ruins.png
 				icon-width : 15
 		elsefor : (man_made=tower AND tower:type=communication)
 			define
@@ -302,30 +301,27 @@ rules
 				min-zoom : 14
 				icon-image : Icons/Shared/water_tank.png
 				icon-width : 15
-		elsefor : natural=tree and not _urban=yes
+		elsefor : natural=tree
 			define
 				min-zoom : 14
 				icon-image : Icons/Shared/tree.png
-		elsefor : (historic=memorial OR historic=monument) and not _urban=yes
+		elsefor : historic=memorial OR historic=monument
 			define
 				min-zoom : 14
 				icon-image : Icons/Shared/monument.png
-			for : (religion=muslim or religion=jewish)
+			for : religion=muslim or religion=jewish
 				define
 					icon-image : Icons/Shared/holy_place.png
 		elsefor : tourism=attraction
 			define
 				min-zoom : 14
 				icon-image : Icons/Shared/star.png
-			for : _urban =yes
-				define
-					min-zoom : 16
 		elsefor : natural=peak
 			define
 				min-zoom : 12
 				icon-image : Icons/Shared/dot.png
 				icon-width : 12:7;13:9;14:13;15:17
-		for: _urban = yes
+		for: _urban
 			define
 				min-zoom : 16
 		draw : icon
@@ -346,7 +342,7 @@ rules
 			define
 				min-zoom : 14
 				
-		for : _urban=yes
+		for : _urban
 			define
 				min-zoom : 16
 		for : ele
@@ -364,10 +360,10 @@ rules
 
 	target: worship *
 		if : * church 
-			define
-				text-func : NodeName(e)
-				min-zoom: 16
-			for : not _urban=yes
+			for : not _urban
+				define
+					text-func : NodeName(e)
+					min-zoom: 16
 				draw : text
 			define
 				icon-image : Icons/Shared/church.png
@@ -385,7 +381,7 @@ rules
 		for : tourism=attraction
 			define
 				min-zoom : 14
-		elsefor : _urban=yes
+		elsefor : _urban
 			define
 				min-zoom : 16
 		else
@@ -399,8 +395,6 @@ rules
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
-		for : access=private or _urban=yes
-			stop
 		draw : icon
 		
 	target: cafe
@@ -409,24 +403,21 @@ rules
 			icon-width : 17
 			align-vertical : center
 			min-zoom : 14
-		for : _urban=yes
-			stop
 		draw : icon
 		define
 			text-func : NodeName(e)
 		draw : text
 
 	target: food
-		for : not _urban=yes
-			define
-				icon-image : Icons/Shared/food.png
-				icon-width : 17
-				align-vertical : center
-				min-zoom : 14
-			draw : icon
-			define
-				text-func : NodeName(e)
-			draw : text
+		define
+			icon-image : Icons/Shared/food.png
+			icon-width : 17
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+		define
+			text-func : NodeName(e)
+		draw : text
 
 	target: convenience
 		define
@@ -434,21 +425,18 @@ rules
 			icon-width : 15:17
 			align-vertical : center
 			min-zoom : 15
-		for : _urban=yes
-			stop
 		draw : icon
 
 	target: lodging
-		for : not _urban=yes
-			define
-				icon-image : Icons/Shared/hotel.png
-				icon-width : 17
-				align-vertical : center
-				min-zoom : 14
-			draw : icon
-			define
-				text-func : NodeName(e)
-			draw : text
+		define
+			icon-image : Icons/Shared/hotel.png
+			icon-width : 17
+			align-vertical : center
+			min-zoom : 14
+		draw : icon
+		define
+			text-func : NodeName(e)
+		draw : text
 
 	target: bikeshop
 		define
@@ -457,7 +445,7 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
-		for : _urban=yes
+		for : _urban
 			define
 				min-zoom : 15
 		draw : icon
@@ -493,7 +481,7 @@ rules
 			align-vertical : center
 			min-zoom : 13
 			painting-cycle : 799
-		for : _urban=yes
+		for : _urban
 			define
 				min-zoom : 15
 		draw : icon
@@ -504,13 +492,12 @@ rules
 		draw : text	
 		
 	target: toilet
-		for : not _urban = yes
-			define
-				icon-image : Icons/Shared/toilet.png
-				icon-width : 15:17
-				align-vertical : center
-				min-zoom : 15
-			draw : icon
+		define
+			icon-image : Icons/Shared/toilet.png
+			icon-width : 15:17
+			align-vertical : center
+			min-zoom : 15
+		draw : icon
 
 	target : power tower
 		define
@@ -579,7 +566,7 @@ rules
 				icon-image : Icons/Shared/tap.png
 				icon-width : 17
 				painting-cycle : 792
-			for : _urban = yes
+			for : _urban
 				define
 					min-zoom : 16
 		for : man_made=cistern	
@@ -627,7 +614,7 @@ rules
 			min-zoom : 13
 			icon-image : Icons/Shared/gas.png
 			icon-width : 17
-		for : _urban=yes
+		for : _urban
 			define
 				min-zoom : 15
 		draw : icon
@@ -1092,7 +1079,7 @@ rules
 			font-weight : bold
 			text-letter-spacing : 0.15
 			text-func : WayName(e)
-		for : not _urban = yes
+		for : not _urban
 			draw : text
 		
 		for : bridge = yes
@@ -1123,7 +1110,7 @@ rules
 				min-zoom : 14
 				line-style : dot
 				line-color : #973
-			for : _urban=yes
+			for : _urban
 				define
 					min-zoom : 16
 		for : highway=pedestrian
@@ -1131,7 +1118,7 @@ rules
 				min-zoom : 14
 				line-style : dot
 				line-color : #973
-			for : _urban=yes
+			for : _urban
 				define
 					min-zoom : 15
 				draw : text
@@ -1226,7 +1213,7 @@ rules
 				line-style : none
 				fill-color : red
 				min-zoom : 13
-			for : _urban=yes
+			for : _urban
 				define
 					min-zoom : 16
 			draw : shape
@@ -1335,7 +1322,7 @@ rules
 			shape-size : 6
 			min-zoom : 14
 			painting-cycle : 601
-		for : _urban = yes
+		for : _urban
 			define 
 				min-zoom : 16
 		draw : shape
@@ -1507,25 +1494,23 @@ rules
 		draw : fill
 	
 	target : building
-		for : not _urban = yes
-			define
-				min-zoom : 15
-				fill-color : #ccc
-				line-color : #999
-				line-style : solid
-				line-width : 1
-				painting-cycle : 406
-			draw : fill
+		define
+			min-zoom : 15
+			fill-color : #ccc
+			line-color : #999
+			line-style : solid
+			line-width : 1
+			painting-cycle : 406
+		draw : fill
 	target : building point
-		for : not _urban = yes
-			define
-				min-zoom : 14
-				fill-color : #999
-				line-style : none
-				shape : square
-				shape-size : 13:1;16:5
-				painting-cycle : 406
-			draw : shape
+		define
+			min-zoom : 14
+			fill-color : #999
+			line-style : none
+			shape : square
+			shape-size : 13:1;16:5
+			painting-cycle : 406
+		draw : shape
 
 	target : sports
 		define
@@ -1593,7 +1578,7 @@ rules
 			fill-opacity : 0.5
 			min-zoom : 14
 		draw : fill
-		for : _urban=yes
+		for : _urban
 			stop
 		define
 			icon-image : Icons/Shared/bulldozer.png
@@ -1632,16 +1617,18 @@ rules
 		draw : text
 	
 	target : archaeological
-		for : not _urban = yes
+		define
+			icon-image : Icons/Shared/jar.png
+			icon-width : 17
+			min-zoom : 14
+			shape-orientation : fixed
+			shape-mode : center
+			painting-cycle : 791
+		for : _urban
 			define
-				icon-image : Icons/Shared/jar.png
-				icon-width : 17
-				min-zoom : 14
-				shape-orientation : fixed
-				shape-mode : center
-				painting-cycle : 791
-			draw : icon
-		
+				min-zoom : 16
+		draw : icon
+
 		define
 			text-max-width : 3
 			text-align-horizontal : center
@@ -1667,7 +1654,7 @@ rules
 			shape-orientation : fixed
 			shape-mode : center
 			painting-cycle : 801
-		for : _urban=yes
+		for : _urban
 			define
 				min-zoom : 16
 		draw : icon
@@ -1818,7 +1805,7 @@ rules
 			for : (landuse=cemetery OR amenity=grave_yard)
 				define
 					icon-image : Icons/Shared/cemetery.png
-				for : _urban=yes
+				for : _urban
 					define
 						min-zoom : 16
 						painting-cycle : 695
@@ -1827,7 +1814,7 @@ rules
 				define
 					icon-image : Icons/Shared/playground.png
 					painting-cycle : 695
-				for : _urban=yes
+				for : _urban
 					define
 						min-zoom : 16
 				draw : icon
