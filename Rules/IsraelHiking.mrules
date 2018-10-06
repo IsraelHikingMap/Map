@@ -307,7 +307,7 @@ rules
 				min-zoom : 16
 		draw : icon
 
-	target : memorial
+	target : monument
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/monument.png
