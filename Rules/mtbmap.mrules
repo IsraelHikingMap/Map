@@ -278,7 +278,7 @@ rules
 			define
 				min-zoom : 14
 				icon-image : Icons/Shared/ruins.png
-				icon-width : 15
+				icon-width : 17
 		elsefor : (man_made=tower AND tower:type=communication)
 			define
 				min-zoom : 14
