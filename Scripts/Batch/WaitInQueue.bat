@@ -1,17 +1,17 @@
 @REM WaitInQueue - Wait in queue for mutual exclusion
-@REM
-@REM WaitInQueue - Wait in queue for mutual exclusion
 @REM.
 @REM Usage: CALL "%~n0" QueueDirectory [JobName]
 @REM.
 @REM Only one entry per JobName, if provided, is allowed.
-@REM If JobName is already in the queue or was removed from the queue,
-@REM exit with ERRORLEVEL 2
+@REM If JobName is already in the queue or is removed while waiting 
+@REM in the queue, exit with ERRORLEVEL 2
 @REM.
 @REM When the mutual exclusion is no longer needed, the caller may
-@REM DEL %%QUEUEFILE%%
+@REM DEL "%QUEUEFILE%"
+@REM Otherwise, other processes in the queue wait for the caller 
+@REM process to terminate.
 @REM
-@REM Copyright 2017 Zeev Stadler CC BY-NC-SA 3.0
+@REM Copyright 2017-2018 Zeev Stadler CC BY-NC-SA 3.0
 @REM https://creativecommons.org/licenses/by-nc-sa/3.0/
 @ECHO OFF
 
@@ -60,7 +60,8 @@ IF NOT "%JOB%"=="" (
 )
 
 @REM Create a file in the queue directory
-CALL >"%QDIR%\%PID%" && ICACLS "%QDIR%\%PID%" /GRANT BUILTIN\Users:F >NUL
+SET QUEUEFILE=%QDIR%\%PID%
+CALL >"%QUEUEFILE%" && ICACLS "%QUEUEFILE%" /GRANT BUILTIN\Users:F >NUL
 IF ERRORLEVEL 1 (
   @ECHO Error: Cannot add job to queue. 1>&2
   EXIT /B %ERRORLEVEL%
@@ -73,13 +74,13 @@ CALL :QueueHead
 IF ERRORLEVEL 1 EXIT /B %ERRORLEVEL%
 IF "%ABORT%" == "TRUE" (
   @ECHO Job was removed from the queue. 1>&2
-  ENDLOCAL
   EXIT /B 2
 )
 IF "%HEADPID%-%HEADJOB%"=="%PID%" (
   @ECHO Top of queue reached at %DATE% %TIME%. 1>&2
   ENDLOCAL
-  SET QUEUEFILE="%QDIR%\%PID%"
+  @REM Keep QUEUEFILE after ENDLOCAL
+  SET QUEUEFILE=%QUEUEFILE%
   EXIT /B 0
 )
 
