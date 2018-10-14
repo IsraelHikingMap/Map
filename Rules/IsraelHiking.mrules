@@ -237,7 +237,7 @@ rules
 		define
 			min-zoom : 14
 			icon-image : Icons/Shared/tap.png
-			icon-width : 14:10;15:13
+			icon-width : 10
 		for : _urban
 			define
 				min-zoom : 16
@@ -247,7 +247,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/picnic.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		draw : icon
 
 	target : parking
@@ -271,7 +271,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/camping.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -281,7 +281,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/viewpoint.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -291,7 +291,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/ruins.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -301,7 +301,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/jar.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -311,7 +311,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/monument.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -321,7 +321,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/tree.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -331,7 +331,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/cave.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		draw : icon
 
 	target: worship
@@ -348,7 +348,7 @@ rules
 			define
 				icon-image : Icons/Shared/holy_place.png
 		define
-			icon-width : 14:17;20:30
+			icon-width : 17
 		for : tourism=attraction
 			define
 				min-zoom : 13
@@ -391,7 +391,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/sign.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 			align-vertical : far
 		for : _urban
 			define
@@ -402,7 +402,7 @@ rules
 		define
 			min-zoom : 13
 			icon-image : Icons/Shared/water_tower.png
-			icon-width : 14:17;15:24
+			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -421,7 +421,7 @@ rules
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/Shared/cattle_grid.png
-				icon-width: 24
+				icon-width: 17
 		elsefor : @IsOneOf(barrier, gate, hampshire_gate, lift_gate)
 			define
 				icon-image : Icons/Shared/gate_open.png
