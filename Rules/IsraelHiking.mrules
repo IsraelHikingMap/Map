@@ -1455,6 +1455,10 @@ rules
 			min-zoom : 12
 			line-width : 0.5
 			line-color : red
+		for: military=training_area
+			define
+				fill-hatch : nwse
+				fill-opacity : 25%
 		draw : fill
 
 	target : water
