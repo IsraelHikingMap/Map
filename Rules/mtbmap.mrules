@@ -1547,20 +1547,23 @@ rules
 
 	target : military
 		define
+			line-color : #ee0000
+			line-width : 2
 			fill-color : #ee0000
 			fill-hatch : nwse
-			fill-hatch-opacity : 0.2
+			fill-hatch-opacity : 0.15
 			fill-opacity : 0.7
-			line-opacity : 0
+			line-opacity : 0.5
+			
 			painting-cycle : 410
 			min-zoom : 12
 		for : (military=training_area or military=range)
 			define
 				fill-color : #ee0000
 				fill-hatch : swne
-				fill-hatch-opacity : 0
-				fill-opacity : 0.5
-				line-opacity : 0
+				fill-hatch-opacity : 0.05
+				fill-opacity : 0.55
+				line-opacity : 0.5
 				painting-cycle : 410
 				min-zoom : 10
 			
