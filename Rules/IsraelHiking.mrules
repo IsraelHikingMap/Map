@@ -1458,7 +1458,7 @@ rules
 		for: military=training_area
 			define
 				fill-hatch : nwse
-				fill-opacity : 25%
+				fill-opacity : 40%
 		draw : fill
 
 	target : water
