@@ -46,7 +46,7 @@ IF "%~x1"==".py" (
   )
 )
 
-IF EXIST %QUEUEFILE% DEL %QUEUEFILE%
+IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
 @ECHO Job completed at %DATE% %TIME%. 1>&2
 TIMEOUT 5
 EXIT /b
