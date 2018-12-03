@@ -167,7 +167,7 @@ Sites and application owners are encouraged to create a mirror of latest tiles o
 We have found that wget is a simple and effective tool to maintain a tile mirror for a site. For example:
 ```bash
 cd IsraelHiking
-wget --recursive --timestamping --accept=png --no-parent --no-host-directories --no-verbose --limit-rate=200k http://israelhiking.osm.org.il/Hebrew/Tiles/ http://israelhiking.osm.org.il/Hebrew/mtbTiles/ > temp/wget_tiles.log 2>&1 
+wget --recursive --timestamping --accept=png --no-parent --no-host-directories --no-verbose --limit-rate=200k https://israelhiking.osm.org.il/Hebrew/Tiles/ https://israelhiking.osm.org.il/Hebrew/mtbTiles/ > temp/wget_tiles.log 2>&1 
 ```
 
 `wget` comes pre-installed with most Unix and Linux distributions.
