@@ -190,25 +190,22 @@ rules
 		define
 			min-zoom : 15
 			icon-width : 17
-		for : barrier=gate
-			for : access=no OR bicycle=no OR access=private
-				define
-					icon-image : Icons/Shared/gate_closed.png
-			elsefor : access=yes and motor_vehicle=no
-				define
-					icon-image : Icons/Shared/bollards.png
-			else
-				define
-					icon-image : Icons/Shared/gate_open.png
-		elsefor : @isOneOf(barrier,kissing_gate,stile,lift_gate,block,debris)
+		for : @IsOneOf(access, no, private)
+			define
+				icon-image : Icons/Shared/gate_closed.png
+		elsefor : @IsOneOf(barrier, block, debris, stile, kissing_gate) OR @IsOneOf(motor_vehicle, no, private)
 			define
 				icon-image : Icons/Shared/bollards.png
 		elsefor : barrier=cattle_grid
 			define
 				icon-image : Icons/Shared/cattle_grid.png
-		else
+				icon-width: 17
+		elsefor : @IsOneOf(barrier, gate, hampshire_gate, lift_gate)
 			define
 				icon-image : Icons/Shared/gate_open.png
+		for : _urban
+			define
+				min-zoom : 16
 		draw : icon
 
 	target : place
@@ -298,9 +295,9 @@ rules
 				icon-image : Icons/Shared/water_tower.png
 		elsefor : man_made=storage_tank
 			define
-				min-zoom : 14
+				min-zoom : 15
 				icon-image : Icons/Shared/water_tank.png
-				icon-width : 15
+				icon-width : 13
 		elsefor : natural=tree
 			define
 				min-zoom : 14
@@ -313,9 +310,10 @@ rules
 				define
 					icon-image : Icons/Shared/holy_place.png
 		elsefor : tourism=attraction
-			define
-				min-zoom : 14
-				icon-image : Icons/Shared/star.png
+			For : not amenity=restaurant
+				define
+					min-zoom : 14
+					icon-image : Icons/Shared/star.png
 		elsefor : natural=peak
 			define
 				min-zoom : 12
@@ -1234,7 +1232,7 @@ rules
 
 		if : * local
 			define
-				border-color : yellow  white 60%
+				border-color : yellow  white 20%
 				painting-cycle : 597
 
 		elseif : * regional
@@ -1548,7 +1546,7 @@ rules
 	target : military
 		define
 			line-color : #ee0000
-			line-width : 2
+			line-width : 1
 			fill-color : #ee0000
 			fill-hatch : nwse
 			fill-hatch-opacity : 0.15
@@ -1736,7 +1734,8 @@ rules
 		if : * industrial
 			define
 				min-zoom : 14
-			draw : text
+			for : landuse = industrial
+				draw : text
 			
 			define
 				fill-color : #eee
