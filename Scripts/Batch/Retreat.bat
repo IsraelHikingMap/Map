@@ -23,11 +23,12 @@
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-@REM Script is located at IsraelHiking\Scripts\Batch 
-PUSHD %~dp0\..\..
-SET ISRAELHIKING="%CD%"
+IF NOT DEFINED LANGUAGE (
+  SET LANGUAGE="Hebrew"
+  START "%~n0 %*" "%~f0" %*
+  EXIT /B
+)
 
-SET LANGUAGE="Hebrew"
 IF "%*" == "" (
   SET TASKNAME=%~n0 Hebrew
 ) ELSE (
@@ -38,11 +39,15 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
   SET TASKNAME=%~n0 %*
   SHIFT
 )
+
+@REM Script is located at IsraelHiking\Scripts\Batch 
+PUSHD %~dp0\..\..
+SET ISRAELHIKING="%CD%"
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
 IF %LANGUAGE% == "Hebrew" (
   CALL %ISRAELHIKING%\Scripts\Batch\WaitInQueue %ISRAELHIKING%\Cache\Queue "%TASKNAME%"
-  IF ERRORLEVEL 1 EXIT /b
+  IF ERRORLEVEL 1 EXIT 
 )
 
 IF EXIST "israel-and-palestine-updated.osm.pbf" (
@@ -83,5 +88,5 @@ IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
 ECHO.
 DIR
 POPD
-EXIT /B
+EXIT
 @REM vim:sw=2:ai:ic:expandtab
