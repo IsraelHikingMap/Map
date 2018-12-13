@@ -435,7 +435,10 @@ rules
 			min-zoom : 15
 			font-size : 10
 			text-offset-vertical : 120%
-		for : _urban AND NOT tourism=attraction
+		for : tourism=attraction
+			define
+				text-offset-vertical : 0
+		elsefor : _urban
 			define
 				min-zoom : 16
 		for : natural=peak OR tourism=viewpoint
