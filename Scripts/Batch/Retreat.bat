@@ -41,7 +41,7 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
 )
 
 @REM Script is located at IsraelHiking\Scripts\Batch 
-PUSHD %~dp0\..\..
+PUSHD "%~dp0\..\.."
 SET ISRAELHIKING="%CD%"
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
