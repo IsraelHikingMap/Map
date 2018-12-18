@@ -58,10 +58,9 @@ features
 		// when a POI has more than one tag. It also reduces code duplication and creates unity among the labels.
 		POI text : railway=station OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR (NOT _urban AND (@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR tomb=hypogeum OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR (amenity=parking AND NOT access=private) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction)))
 
-		worship: amenity=place_of_worship
+		worship: amenity=place_of_worship OR amenity=monastery
 		railway station : railway=station
 		parking : amenity=parking AND NOT (access=private OR _urban)
-		power tower : @isOneOf(power, tower, station, sub_station)
 		forest label: (landuse=forest OR natural=wood) AND width > 0.5
 		fuel: amenity=fuel
 		nature reserve label : (boundary=national_park OR (boundary=protected_area AND @isOneOf(protect_class, 1, 2, 16)) OR leisure=nature_reserve) AND NOT (inner_boundary OR inner_leisure)
@@ -86,6 +85,7 @@ features
 		tree : natural=tree AND NOT _urban
 		guidepost : information=guidepost
 		watertower : man_made=water_tower
+		power tower : power=tower
 		gate : barrier
 		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
 		grid label east : grid AND @isMulti(north, 10) AND @isMulti(east, 2)
@@ -126,7 +126,7 @@ features
 		unpaved unclassified left  : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		unpaved unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		railway rail : @isOneOf(railway, rail, funicular)
-		power line : @isOneOf(power, line, minor_line)
+		power line : @isOneOf(power, line, minor_line, plant, substation)
 		stream : @isOneOf(waterway, stream, river, wadi, canal)
 		cliff : natural=cliff
 		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
@@ -335,7 +335,7 @@ rules
 		draw : icon
 
 	target: worship
-		for: religion=christian OR religion=Christian
+		for: religion=christian OR religion=Christian OR amenity=monastery
 			define
 				icon-image : Icons/Shared/church.png
 		elsefor : religion=muslim OR religion=Muslim
@@ -378,10 +378,11 @@ rules
 	target : power tower
 		define
 			min-zoom : 15
-			shape : square
-			shape-size : 16:7;20:12
-			fill-color : black
-			line-style : none
+			line-width : 1
+			line-color : gray
+			shape : circle
+			shape-size : 2.5
+			fill-opacity : 0
 		for : _urban
 			define
 				min-zoom : 16
@@ -434,7 +435,9 @@ rules
 		define
 			min-zoom : 15
 			font-size : 10
-			text-offset-vertical : 120%
+		for : railway OR historic OR natural OR tomb OR water OR man_made OR leisure OR amenity
+			define
+				text-offset-vertical : 120%
 		for : _urban AND NOT tourism=attraction
 			define
 				min-zoom : 16
@@ -537,16 +540,11 @@ rules
 			curved : false
 			min-zoom : 15
 			line-width : 1
+			line-color : gray
 		for : _urban
 			define
 				min-zoom : 16
 		draw : line
-		define
-			shape : circle
-			shape-spacing : 20
-			shape-size : 2.5
-			fill-opacity : 0
-		draw : shape
 
 	target : railway rail
 		define
@@ -1209,15 +1207,15 @@ rules
 		define
 			min-zoom : 14
 			line-color : black
-			line-width : 2
+			line-width : 1.5
 			line-style : solid
 		draw : line
 
 	target : fence
 		define
 			min-zoom : 14
-			line-color : black
-			line-width : 1.5
+			line-color : black white 10%
+			line-width : 1
 		for : _urban
 			define
 				min-zoom : 16
@@ -1226,7 +1224,7 @@ rules
 			shape : custom
 			shape-def : 4,7;-4,-7;m:4,-7;-4,7
 			shape-spacing : 3
-			shape-size : 5
+			shape-size : 4
 		draw : shape
 
 	target: contour*
