@@ -435,7 +435,8 @@ rules
 		define
 			min-zoom : 15
 			font-size : 10
-		for : railway OR historic OR natural OR tomb OR water OR man_made OR leisure OR amenity
+		for : railway OR historic OR natural OR tomb OR water OR man_made OR leisure OR amenity OR @isOneOf(tourism, picnic_site, camp_site, viewpoint)
+			// More than just tourism=attraction
 			define
 				text-offset-vertical : 120%
 		for : _urban AND NOT tourism=attraction
