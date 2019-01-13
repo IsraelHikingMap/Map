@@ -242,13 +242,19 @@ def isBoundingBoxWithin(external, internal):
 def analyzeUrban(osmData):
     """Add _urban=yes tags to certain elements located in urban areas."""
     # Unfortunately, could not find a way for Meperitive to accept Hebrew strings in this file
-    placeNames = ["Acre", "Afula", "Ashdod", "Ashkelon", "Bat Yam", "Be'er Sheva", "Bnei Brak", "Carmiel", "Daliyat al-Karmel", "Eilat", "Givatyim", "Hadera", "Haifa", "Herzliya", "Holon", "Jerusalem", "Kfar Sava", "Modiin-Maccabim-Reut", "Nazareth", "Nahariyya", "Nes Ziona", "Netanya", "Petah Tikva", "Raanana", "Ramat Gan", "Ramat HaSharon", "Rehovot", "Rishon LeZion", "Safed", "Tel Aviv-Yafo"
+    RelNames = ["Bat Yam","Bnei Brak", "Givatyim", "Jerusalem", "Netanya", "Ramat Gan", "Ramat HaSharon", "Tel Aviv-Yafo"
+        ];
+    WayNames = ["Acre", "Afula", "Ashdod", "Ashkelon", "Be'er Sheva", "Carmiel", "Daliyat al-Karmel", "Eilat", "Hadera", "Haifa", "Herzliya", "Holon", "Kfar Sava", "Modiin-Maccabim-Reut", "Nazareth", "Nahariyya", "Ness Ziona", "Petah Tikva", "Ra'anana", "Rehovot", "Rishon LeZion", "Zefat"
         ];
     placeBboxes = []
-    for place in placeNames:
+    for place in RelNames:
         for osmRelation in osmData.find_relations(lambda x : (
                 x.has_tag("place") and x.has_tag("name:en", place))):
             placeBboxes.append(getBoundingBox(osmRelation, osmData))
+    for place in WayNames:
+        for osmWay in osmData.find_ways(lambda x : (
+                x.has_tag("place") and x.has_tag("name:en", place))):
+            placeBboxes.append(getBoundingBox(osmWay, osmData))
     analyzeUrbanNodes(osmData, placeBboxes)
     analyzeUrbanWays(osmData, placeBboxes)
     analyzeUrbanRelations(osmData, placeBboxes)
