@@ -244,7 +244,7 @@ def analyzeUrban(osmData):
     # Unfortunately, could not find a way for Meperitive to accept Hebrew strings in this file
     RelNames = ["Bat Yam","Bnei Brak", "Givatyim", "Jerusalem", "Netanya", "Ramat Gan", "Ramat HaSharon", "Tel Aviv-Yafo"
         ];
-    WayNames = ["Acre", "Afula", "Ashdod", "Ashkelon", "Be'er Sheva", "Carmiel", "Daliyat al-Karmel", "Eilat", "Hadera", "Haifa", "Herzliya", "Holon", "Kfar Sava", "Modiin-Maccabim-Reut", "Nazareth", "Nahariyya", "Ness Ziona", "Petah Tikva", "Ra'anana", "Rehovot", "Rishon LeZion", "Zefat"
+    WayNames = ["Acre", "Afula", "Ashdod", "Ashkelon", "Be'er Sheva", "Carmiel", "Daliyat al-Karmel", "Eilat", "Hadera", "Haifa", "Herzliya", "Holon", "Kfar Sava", "Lod", "Modiin-Maccabim-Reut", "Nazareth", "Nazerat Illit", "Nahariyya", "Ness Ziona", "Petah Tikva", "Ra'anana", "Ramla", "Rehovot", "Rishon LeZion", "Zefat"
         ];
     placeBboxes = []
     for place in RelNames:

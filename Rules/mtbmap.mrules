@@ -289,11 +289,7 @@ rules
 				min-zoom : 14
 				icon-image : Icons/Shared/cave.png
 				icon-width : 17
-		elsefor : man_made=water_tower
-			define
-				min-zoom : 14
-				icon-image : Icons/Shared/water_tower.png
-		elsefor : man_made=storage_tank
+		elsefor : man_made=storage_tank OR man_made=water_tower
 			define
 				min-zoom : 15
 				icon-image : Icons/Shared/water_tank.png
@@ -1183,7 +1179,7 @@ rules
 			
 		draw : line
 		
-		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes)
+		for : (oneway=yes OR oneway:bicycle=yes OR oneway:mtb=yes) AND (bicycle=yes OR bicycle=designated)
 			define
 				min-zoom : 15
 				shape : custom
@@ -1478,8 +1474,8 @@ rules
 			line-color : green
 			line-width : 12:2;13:4
 			line-style : dashdot
-			line-opacity : 0.5
-			fill-opacity : 0.35
+			line-opacity : 0.7
+			fill-opacity : 0.5
 			fill-hatch : nwse
 			fill-hatch-opacity : 0
 			icon-image : Icons/Shared/rtg.png
@@ -1814,7 +1810,7 @@ rules
 				draw : icon
 			for : leisure=playground
 				define
-					icon-image : Icons/Shared/playground.png
+					icon-image : Icons/Shared/ball.png
 					painting-cycle : 695
 				for : _urban
 					define
