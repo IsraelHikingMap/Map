@@ -72,6 +72,7 @@ features
 		camp site : tourism=camp_site
 		view : tourism=viewpoint
 		water tank : content=water man_made=storage_tank
+		water tower : man_made=water_tower
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -84,7 +85,6 @@ features
 		cave : natural=cave_entrance OR tomb=hypogeum
 		tree : natural=tree AND NOT _urban
 		guidepost : information=guidepost
-		watertower : man_made=water_tower
 		power tower : power=tower
 		gate : barrier
 		grid label north : grid AND @isMulti(east, 10) AND @isMulti(north, 2)
@@ -216,6 +216,9 @@ rules
 			icon-width : 10
 			min-zoom : 12
 		if : water tank
+			define
+				icon-image : Icons/Shared/water_tank.png
+		elseif : water tower
 			define
 				icon-image : Icons/Shared/water_tank.png
 		elseif : water spring
@@ -394,16 +397,6 @@ rules
 			icon-image : Icons/Shared/sign.png
 			icon-width : 17
 			align-vertical : far
-		for : _urban
-			define
-				min-zoom : 16
-		draw : icon
-
-	target : watertower
-		define
-			min-zoom : 13
-			icon-image : Icons/Shared/water_tower.png
-			icon-width : 17
 		for : _urban
 			define
 				min-zoom : 16
@@ -1519,7 +1512,7 @@ rules
 			line-style : none
 			line-width : 1
 			fill-color : #CCCCCC
-			icon-image : Icons/mtbmap/cemetery.png
+			icon-image : Icons/Shared/cemetery.png
 			min-zoom : 15
 		for : _urban
 			define
