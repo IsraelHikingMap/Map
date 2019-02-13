@@ -931,24 +931,6 @@ rules
 			for : _urban
 				define
 					min-zoom : 15
-		if : cycle*
-			define
-				// cycle paths
-				line-style : dashdot
-		elseif : foot*
-			// foot paths
-			define
-				line-style : dot
-				line-width : 13:2;14:2.5
-		elseif : steps*
-			define
-				shape : custom
-				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
-				shape-spacing : 2
-				shape-size : 13:1.5;16:2;20:3
-				shape-aspect : 3
-				line-style : none
-			draw : shape
 		for : tunnel AND NOT tunnel=no
 			define
 				border-color : black
@@ -979,7 +961,29 @@ rules
 			define
 				line-color : orange black 5%
 				fill-color : orange black 5%
-		draw : line
+		if : steps*
+			define
+				shape : custom
+				shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+				shape-spacing : 1.5
+				shape-size : 13:2.5;16:3;20:4
+				shape-aspect : 3
+				line-style : solid
+				line-color : white
+				line-opacity : 50%
+				line-width: 1
+			draw : shape
+		else
+			if : cycle*
+				// cycle paths
+				define
+					line-style : dashdot
+			elseif : foot*
+				// foot paths
+				define
+					line-style : dot
+					line-width : 13:2;14:2.5
+			draw : line
 		for : bridge AND NOT bridge=no
 			define
 				line-width : 13:1.5;14:2
