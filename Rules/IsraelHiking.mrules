@@ -134,7 +134,7 @@ features
 		// which are likely agriculture retaining walls 
 		// http://overpass-turbo.eu/s/hc8
 		wall  : way[@isOneOf(barrier, wall, city_wall) AND NOT source=ENSG]
-		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline AND NOT maritime=yes AND NOT note = "DMZ"
+		boundary country : relation[boundary=administrative AND admin_level=2].way[NOT maritime=yes]
 		grid : grid
 		nature reserve boundary outer : way[@isOneOf(outer_boundary, boundary, leisure)]
 		nature reserve boundary inner : way[@isOneOf(inner_boundary, boundary, leisure)]

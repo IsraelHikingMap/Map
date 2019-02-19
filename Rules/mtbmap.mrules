@@ -103,7 +103,7 @@ features
 		stream : @isOneOf(waterway, stream, river, canal, drain, ditch)
 		coastline : natural=coastline
 		cliff : natural=cliff OR landuse=quarry
-		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
+		borders : relation[boundary=administrative AND admin_level=2].way[NOT maritime=yes]
 		wall : barrier=wall
 		fence : way[barrier=fence]
 		Separation-barrier : relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
@@ -629,15 +629,12 @@ rules
 			curved : false
 			min-zoom : 5
 			line-style: dashdot
-			line-width : 6:0.75;15:2
 			line-color : #747
 			border-style : solid
 			border-color : #969
 			border-opacity : 0.5
 			border-width : 100%
-		for : admin_level=2
-			define
-				line-width : 6:1;15:4
+			line-width : 6:1;15:4
 		draw : line
 
 	target : aerialway
