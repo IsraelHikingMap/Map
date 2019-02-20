@@ -133,7 +133,7 @@ features
 		// Avoid rendering more than 7500 barrier=wall around Battir 
 		// which are likely agriculture retaining walls 
 		// http://overpass-turbo.eu/s/hc8
-		wall  : way[@isOneOf(barrier, wall, city_wall) AND NOT source=ENSG]
+		wall  : way[@isOneOf(barrier, wall, city_wall)]
 		boundary country : relation[boundary=administrative AND admin_level=2].way[NOT maritime=yes]
 		grid : grid
 		nature reserve boundary outer : way[@isOneOf(outer_boundary, boundary, leisure)]
