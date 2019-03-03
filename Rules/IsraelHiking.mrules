@@ -1406,7 +1406,7 @@ rules
 			line-width : 6:1;9:3;16:4
 			line-opacity : 0.75
 		if : boundary country
-			for : @isMatch(name, "1949 .*$")
+			for : @isMatch("name:en", "1949 .*$")
 				// 1949 armistice line - "The Green Line"
 				define
 					line-color : #2BB32B
