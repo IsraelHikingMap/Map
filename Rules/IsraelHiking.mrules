@@ -149,7 +149,7 @@ features
 		quarry : landuse=quarry
 		farmland : @isOneOf(landuse, meadow, farmland, farm)
 		plantation : @isOneOf(landuse, orchard, vineyard)
-		residential : landuse=residential OR man_made=breakwater
+		residential : @isOneOf(landuse, residential, industrial) OR man_made=breakwater
 		Area A : relation[boundary=administrative AND name:en="Area A"]
 		Area B : relation[boundary=administrative AND name:en="Area B"]
 		helipad : aeroway=helipad
