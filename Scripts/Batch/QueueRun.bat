@@ -34,16 +34,12 @@ CALL .\Scripts\Batch\WaitInQueue "%ISRAELHIKING%\Cache\Queue" "%~n1"
 IF ERRORLEVEL 1 EXIT /b %ERRORLEVEL%
 
 IF "%~x1"==".py" (
-  Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
+  START "" /ABOVENORMAL /WAIT /B Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
 ) ELSE IF "%~x1"==".mscript" (
-  Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
+  START "" /ABOVENORMAL /WAIT /B Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
 ) ELSE (
   IF NOT "%~dp$PATH:1"=="" CD "%~dp$PATH:1"
-  IF "%~x1"==".bat" (
-    CALL %*
-  ) ELSE (
-    %*
-  )
+  START "" /ABOVENORMAL /WAIT /B %*
 )
 
 IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
