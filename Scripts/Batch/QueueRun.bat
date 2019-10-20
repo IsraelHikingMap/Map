@@ -34,16 +34,17 @@ CALL .\Scripts\Batch\WaitInQueue "%ISRAELHIKING%\Cache\Queue" "%~n1"
 IF ERRORLEVEL 1 EXIT /b %ERRORLEVEL%
 
 IF "%~x1"==".py" (
-  START "" /ABOVENORMAL /WAIT /B Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
+  START "" /ABOVENORMAL /WAIT Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperipy\%~1"
 ) ELSE IF "%~x1"==".mscript" (
-  START "" /ABOVENORMAL /WAIT /B Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
+  START "" /ABOVENORMAL /WAIT Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
 ) ELSE (
   IF NOT "%~dp$PATH:1"=="" CD "%~dp$PATH:1"
-  START "" /ABOVENORMAL /WAIT /B %*
+  START "" /ABOVENORMAL /WAIT cmd.exe /C %*
 )
 
 IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
 @ECHO Job completed at %DATE% %TIME%. 1>&2
 TIMEOUT 5
 EXIT /b
+
 @REM vim:sw=2:ai:ic:expandtab
