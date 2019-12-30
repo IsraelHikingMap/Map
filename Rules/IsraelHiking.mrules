@@ -127,7 +127,7 @@ features
 		unpaved unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		railway rail : @isOneOf(railway, rail, funicular)
 		power line : @isOneOf(power, line, minor_line, plant, substation)
-		stream : @isOneOf(waterway, stream, river, wadi, canal)
+		stream : @isOneOf(waterway, stream, river, wadi, canal, drain, ditch)
 		cliff : natural=cliff
 		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		// Avoid rendering more than 7500 barrier=wall around Battir 
