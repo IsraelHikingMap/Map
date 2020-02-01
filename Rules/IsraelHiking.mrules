@@ -634,8 +634,7 @@ rules
 				border-color : orange black 5%
 		else
 			define
-				border-color : black
-				border-opacity : 0.8
+				border-color : black white 20%
 		for : tunnel AND NOT tunnel=no
 			define
 				border-style : dot
