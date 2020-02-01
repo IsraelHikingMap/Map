@@ -597,9 +597,9 @@ rules
 			define
 				min-zoom : 12
 				line-width : 12:1;13:1.5;16:3
-				line-color : #8B4513
-				text-color : #8B4513
-				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+				line-color : black
+				text-color : black
+				shape-def : p:white;pw:1.5;f:black;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
 				min-zoom : 13
