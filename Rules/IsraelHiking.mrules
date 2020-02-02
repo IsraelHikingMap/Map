@@ -1280,9 +1280,12 @@ rules
 				text-offset-vertical : -120%
 		define
 			font-size : 14
-			min-zoom : 13
+			min-zoom : 14
 			text-opacity : 80%
 			painting-cycle : 560
+		for : @isMulti(east, 10) AND @isMulti(north, 10)
+			define
+				min-zoom : 12
 		draw : text
 
 	target : grid
