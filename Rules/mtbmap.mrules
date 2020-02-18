@@ -1753,7 +1753,7 @@ rules
 				line-width : 7:0 ; 13:0.5
 				line-opacity : 7:0; 13:0.5
 				min-zoom : 7
-			for : intermittent
+			for : intermittent = yes
 				define
 					fill-color : #B8DBF7
 					fill-hatch : swne
