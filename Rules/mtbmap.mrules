@@ -19,14 +19,11 @@
 //farmland 251
 //sand 251
 //grassland 251
-//scrub 252
 //wood 252
 //quarry 252
 //residential 252
 //orchard 252
 //intermittent water 253
-//industrial 253
-//commercial 253
 //lawn 253
 //contour 404
 //cemetery and playground icon 405
@@ -103,7 +100,7 @@ features
 		stream : @isOneOf(waterway, stream, river, canal, drain, ditch)
 		coastline : natural=coastline
 		cliff : natural=cliff OR landuse=quarry
-		borders : boundary=administrative AND admin_level=2 AND NOT maritime=yes
+		borders : relation[boundary=administrative AND admin_level=2].way[NOT maritime=yes]
 		wall : barrier=wall
 		fence : way[barrier=fence]
 		Separation-barrier : relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
@@ -139,17 +136,14 @@ features
 		archaeological : historic=archaeological_site
 		building : building AND NOT _urban
  		sports : leisure=stadium OR leisure=common OR leisure=track OR leisure = pitch
-		area residential : landuse=residential OR landuse = farmyard
-		area industrial : landuse=industrial OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
-		area commercial : landuse=commercial OR landuse=retail
+		area residential : @isOneOf(landuse, residential, farmyard, industrial, commercial, retail) OR @isOneOf(power,substation,sub_station,plant) OR @isOneOf(man_made, wastewater_plant, water_works) OR (power=station) OR (amenity=fire_station)
 		area wood : landuse=forest OR natural=wood
 		area water : natural=water OR landuse=reservoir OR landuse=basin OR waterway=riverbank OR leisure=swimming_pool
 		military : landuse=military OR military=danger_area
 		construction : @isOneOf(landuse,construction,brownfield)
 		area wetland : natural=wetland
 		area farmland : landuse=farmland OR landuse=farm
-		area grassland : @isOneOf(landuse, grass, meadow) OR natural=grassland
-		area scrub : @isOneOf(natural,heath,fell,tundra,scrub,moor)
+		area grassland : @isOneOf(landuse, grass, meadow) OR @isOneOf(natural,heath,fell,tundra,scrub,moor,grassland)
 		area orchard : landuse=orchard OR landuse=vineyard
 		area sand : @isOneOf(natural,sand,beach) OR surface=sand
 		breakwater : man_made=breakwater
@@ -629,15 +623,12 @@ rules
 			curved : false
 			min-zoom : 5
 			line-style: dashdot
-			line-width : 6:0.75;15:2
 			line-color : #747
 			border-style : solid
 			border-color : #969
 			border-opacity : 0.5
 			border-width : 100%
-		for : admin_level=2
-			define
-				line-width : 6:1;15:4
+			line-width : 6:1;15:4
 		draw : line
 
 	target : aerialway
@@ -1700,18 +1691,7 @@ rules
 			font-size : 14:10; 15:11; 16:12
 			line-width : 0.5
 			text-func : NodeName(e)
-			
-		if : * commercial
-			define
-				min-zoom : 14
-			draw : text
-			define
-				line-style : none
-				line-width : 30%
-				fill-color : #ddd
-				painting-cycle : 253
-				min-zoom : 13
-							
+
 		if : * residential
 			define
 				line-style : solid
@@ -1726,20 +1706,6 @@ rules
 				painting-cycle : 252
 				line-style : none
 
-				
-		if : * industrial
-			define
-				min-zoom : 14
-			for : landuse = industrial
-				draw : text
-			
-			define
-				fill-color : #eee
-				min-zoom : 12
-				line-width : 30%
-				line-color : #999
-				painting-cycle : 253
-							
 		if : * water
 			define
 				min-zoom : 15
@@ -1774,9 +1740,8 @@ rules
 		if : * grassland
 			define
 				line-style : none
-				line-width : 1
 				min-zoom : 12
-				fill-color : #DEFED2
+				fill-texture : Textures/scrub.png
 				painting-cycle : 251
 				min-zoom : 9
 
@@ -1829,14 +1794,7 @@ rules
 				fill-texture : Textures/orchard.png
 				painting-cycle : 252
 				min-zoom : 12
-				
-		if : * scrub
-			define
-				line-style : none
-				min-zoom : 9
-				fill-texture : Textures/scrub.png
-				painting-cycle : 252
-				
+
 		if : * sand
 			define
 			

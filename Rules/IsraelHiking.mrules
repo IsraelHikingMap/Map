@@ -127,14 +127,14 @@ features
 		unpaved unclassified right : @isOneOf(highway, residential, unclassified, living_street, service, road) AND @isOneOf(surface, unpaved, compacted, dirt, earth, grass, grass_paver, gravel_turf, fine_gravel, gravel, ground, ice, mud, pebblestone, salt, sand, snow, woodchips)
 		railway rail : @isOneOf(railway, rail, funicular)
 		power line : @isOneOf(power, line, minor_line, plant, substation)
-		stream : @isOneOf(waterway, stream, river, wadi, canal)
+		stream : @isOneOf(waterway, stream, river, wadi, canal, drain, ditch)
 		cliff : natural=cliff
 		fence : way[barrier=fence] relation[route = fence AND @isMatch(name:en,"Israeli West Bank barrier")]
 		// Avoid rendering more than 7500 barrier=wall around Battir 
 		// which are likely agriculture retaining walls 
 		// http://overpass-turbo.eu/s/hc8
-		wall  : way[@isOneOf(barrier, wall, city_wall) AND NOT source=ENSG]
-		boundary country : boundary=administrative AND admin_level=2 AND NOT natural=coastline AND NOT maritime=yes AND NOT note = "DMZ"
+		wall  : way[@isOneOf(barrier, wall, city_wall)]
+		boundary country : relation[boundary=administrative AND admin_level=2].way[NOT maritime=yes]
 		grid : grid
 		nature reserve boundary outer : way[@isOneOf(outer_boundary, boundary, leisure)]
 		nature reserve boundary inner : way[@isOneOf(inner_boundary, boundary, leisure)]
@@ -149,7 +149,7 @@ features
 		quarry : landuse=quarry
 		farmland : @isOneOf(landuse, meadow, farmland, farm)
 		plantation : @isOneOf(landuse, orchard, vineyard)
-		residential : landuse=residential
+		residential : @isOneOf(landuse, residential, industrial) OR man_made=breakwater
 		Area A : relation[boundary=administrative AND name:en="Area A"]
 		Area B : relation[boundary=administrative AND name:en="Area B"]
 		helipad : aeroway=helipad
@@ -597,9 +597,9 @@ rules
 			define
 				min-zoom : 12
 				line-width : 12:1;13:1.5;16:3
-				line-color : #8B4513
-				text-color : #8B4513
-				shape-def : p:white;pw:1.5;f:#8B4513;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
+				line-color : black
+				text-color : black
+				shape-def : p:white;pw:1.5;f:black;m:-26,-21;l:-31,-16,-31,16,-26,21,26,21,31,16,31,-16,26,-21,-26,-21;z;pw:0;f:white;m:-26,0;l:-24,12,0,16,24,12,26,0,24,-12,0,-16,-24,-12,-26,0;z
 		elseif : * tertiary
 			define
 				min-zoom : 13
@@ -634,8 +634,7 @@ rules
 				border-color : orange black 5%
 		else
 			define
-				border-color : black
-				border-opacity : 0.8
+				border-color : black white 20%
 		for : tunnel AND NOT tunnel=no
 			define
 				border-style : dot
@@ -1281,9 +1280,12 @@ rules
 				text-offset-vertical : -120%
 		define
 			font-size : 14
-			min-zoom : 13
+			min-zoom : 14
 			text-opacity : 80%
 			painting-cycle : 560
+		for : @isMulti(east, 10) AND @isMulti(north, 10)
+			define
+				min-zoom : 12
 		draw : text
 
 	target : grid
@@ -1406,7 +1408,7 @@ rules
 			line-width : 6:1;9:3;16:4
 			line-opacity : 0.75
 		if : boundary country
-			for : @isMatch(name, "1949 .*$")
+			for : @isMatch("name:en", "1949 .*$")
 				// 1949 armistice line - "The Green Line"
 				define
 					line-color : #2BB32B
