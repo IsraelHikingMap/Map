@@ -56,7 +56,7 @@ features
 	points, areas
 		// By using one feature for tag values belew, we make sure only one label is written
 		// when a POI has more than one tag. It also reduces code duplication and creates unity among the labels.
-		POI text : railway=station OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR (NOT _urban AND (@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR tomb=hypogeum OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR (amenity=parking AND NOT access=private) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction)))
+		POI text : railway=station OR @isOneOf(historic, ruins, archaeological_site, memorial, monument) OR (NOT _urban AND (@isOneOf(natural, peak, spring, tree, cave_entrance, waterhole) OR @isOneOf(tomb, hypogeum, rock-cut) OR water=pond OR @isOneOf(man_made, water_well, cistern) OR leisure=picnic_table OR (amenity=parking AND NOT access=private) OR @isOneOf(tourism, picnic_site, camp_site, viewpoint, attraction)))
 
 		worship: amenity=place_of_worship OR amenity=monastery
 		railway station : railway=station
@@ -73,6 +73,7 @@ features
 		view : tourism=viewpoint
 		water tank : content=water man_made=storage_tank
 		water tower : man_made=water_tower
+		cave : natural=cave_entrance OR @isOneOf(tomb, hypogeum, rock-cut)
 
 	points
 		place : place OR landuse=farmyard OR landuse=farmland
@@ -82,7 +83,6 @@ features
 		water cistern : man_made=cistern
 		water waterhole : natural=waterhole
 		drinking : amenity=drinking_water
-		cave : natural=cave_entrance OR tomb=hypogeum
 		tree : natural=tree AND NOT _urban
 		guidepost : information=guidepost
 		power tower : power=tower
