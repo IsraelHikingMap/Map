@@ -44,7 +44,6 @@ class PolygonTileGenCommand(TileGenCommand):
             Map.zoom_area(self.rendering_bounds)
         self.execute()
         self.list_file.close()
-        App.collect_garbage()
 
     def num2deg(self, xtile, ytile, zoom):
         # This returns the NW-corner of the square. Use the function with xtile+1
