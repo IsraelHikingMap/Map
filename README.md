@@ -1,4 +1,7 @@
 # Israel Hiking Map
+
+### This Repository is not actively maintained after the transition to vector maps.
+
 This Repository is part of the Israel Hiking Map project. It contains all the files and instructions needed to create the tiles and offline copies of the Israel Hiking Map - a topographic map with style similar to trail maps published by the Israel Trails Committee and the Israel MTB Map - a topographic map for MTB trails and urban bike lanes.
 
 The maps can be seen at [IsraelHiking.osm.org.il](https://IsraelHiking.osm.org.il/). The site has additional facilities including customized trip planning and sharing, points of interest, trails, and route upload and download.
