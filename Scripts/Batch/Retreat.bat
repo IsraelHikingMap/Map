@@ -24,8 +24,10 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 IF NOT DEFINED LANGUAGE (
+  PUSHD "%~dp0"
   SET LANGUAGE="Hebrew"
-  START "%~n0 %*" "%~f0" %*
+  START "%~n0 %*" %~n0 %*
+  POPD
   EXIT /B
 )
 
@@ -41,7 +43,7 @@ ECHO " Hebrew English " | FIND /I " %~1 " > NUL && (
 )
 
 @REM Script is located at IsraelHiking\Scripts\Batch 
-PUSHD "%~dp0\..\.."
+CD ..\..
 SET ISRAELHIKING="%CD%"
 CD %ISRAELHIKING%\Cache\%LANGUAGE%
 
@@ -87,6 +89,5 @@ IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"
 
 ECHO.
 DIR
-POPD
 EXIT
 @REM vim:sw=2:ai:ic:expandtab
