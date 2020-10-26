@@ -135,10 +135,15 @@ phases = [
     'IsraelMTB15',
     'IsraelHiking16',
     'IsraelMTB16']
+
+""" Overlay tiles are no longer needed
+https://github.com/IsraelHikingMap/Map/issues/251
+
 if language == "Hebrew":
     phases += [
             'IsraelHikingOverlay',
             'IsraelMTBOverlay']
+"""
 
 def done_file(phase):
     return cache_file(phase+'.done')
