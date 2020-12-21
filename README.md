@@ -156,13 +156,13 @@ _Note:_ Different applications and sites may use different syntax for specifying
 |:----------------------|:----------------------------------------------------------------|
 | Hebrew Base Map       | `https://israelhiking.osm.org.il/Hebrew/Tiles/{z}/{x}/{y}.png`  |
 | English Base Map      | `https://israelhiking.osm.org.il/English/Tiles/{z}/{x}/{y}.png` |
-| Hiking Trails Overlay | `https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`  |
+| <s>Hiking Trails Overlay</s> | <s>`https://israelhiking.osm.org.il/OverlayTiles/{z}/{x}/{y}.png`</s>  |
 
 | Israel MTB            | URL                                                                |
 |:----------------------|:-------------------------------------------------------------------|
 | Hebrew Base Map       | `https://israelhiking.osm.org.il/Hebrew/mtbTiles/{z}/{x}/{y}.png`  |
 | English Base Map      | `https://israelhiking.osm.org.il/English/mtbTiles/{z}/{x}/{y}.png` |
-| MTB Trails Overlay    | `https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`       |
+| <s>MTB Trails Overlay<s>    | <s>`https://israelhiking.osm.org.il/OverlayMTB/{z}/{x}/{y}.png`</s>       |
 
 ### Tile Mirroring
 Sites and application owners are encouraged to create a mirror of latest tiles on their servers.
