@@ -98,25 +98,14 @@ mkdir_p(cache_file(''))
 # Map sources
 #
 base_map =  IsraelHikingTileGenCommand()
-if language == "Hebrew":
-    # Minute updates from openstreetmap.fr
-    osm_source = openstreetmap_fr(
-            cache_file('israel-and-palestine-latest.osm.pbf'),
-            cache_file('israel-and-palestine-update.osc'),
-            cache_file('israel-and-palestine-updated.osm.pbf'),
-            os.path.join(ProjectDir, 'Cache', 'openstreetmap_fr'),
-            "asia/israel_and_palestine")
-    # Improve performance with prefetch
-    osm_source.osmupdate_params = ["--trust-tempfiles"]
-    # DEBUG # osm_source.osmupdate_params = ["--keep-tempfiles", "--verbose", "--trust-tempfiles"]
-else:
-    # Daily updated from geofabric
-    osm_source = geofabric(
-            cache_file('israel-and-palestine-latest.osm.pbf'),
-            cache_file('israel-and-palestine-update.osc'),
-            cache_file('israel-and-palestine-updated.osm.pbf'),
-            os.path.join(ProjectDir, 'Cache', 'geofabrik'),
-            "asia/israel-and-palestine")
+
+# Daily updated from geofabric
+osm_source = geofabric(
+        cache_file('israel-and-palestine-latest.osm.pbf'),
+        cache_file('israel-and-palestine-update.osc'),
+        cache_file('israel-and-palestine-updated.osm.pbf'),
+        os.path.join(ProjectDir, 'Cache', 'geofabrik'),
+        "asia/israel-and-palestine")
 
 trails_overlay =  IsraelHikingTileGenCommand()
 osm_trails = osmChangeOverlyFilterSource(
