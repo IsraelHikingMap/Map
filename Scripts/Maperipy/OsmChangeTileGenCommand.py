@@ -101,13 +101,33 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         baseOsm = Map.layers[base_index-1].osm
         App.collect_garbage()
         if self.verbose:
+            print "     Analyzing changes to base map ..."
+        for element in osmChange.SelectNodes("./osmChange/*/*"):
+            action = element.ParentNode.Name  # "delete", "modify", or "create"`
+            element_type = element.Name  # "node", "way", or "relation"
+            element_id = long(element.Attributes.GetNamedItem("id").Value)
+            # DEBUG EXAMPLE
+            # self.verbose = ((element_type == "relation") and (element_id == 3791784))
+            if self.verbose:
+                print "     {} {} id={}:".format(action, element_type, element_id)
+            try:
+                if action in ("delete", "modify"):
+                    for bbox in self.bboxes(baseOsm, element_type, element_id):
+                            self.mark_bbox(bbox)
+            except KeyError:
+                # An element does not exist in the map,
+                # no need to redraw its position
+                pass
+        App.run_command('remove-source index="{}"'.format(base_index))
+        App.collect_garbage()
+        if self.verbose:
             App.log("     Reading new OSM map from {} ...".format(new_map))
         Map.add_osm_source(new_map)
         new_index = len(Map.layers)
         App.collect_garbage()
         newOsm = Map.layers[new_index-1].osm
         if self.verbose:
-            print "     Analyzing change file ..."
+            print "     Analyzing changes in new map ..."
         sum = {key : 0 for key in ("node", "way", "relation")}
         for element in osmChange.SelectNodes("./osmChange/*/*"):
             action = element.ParentNode.Name  # "delete", "modify", or "create"`
@@ -119,9 +139,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
             if self.verbose:
                 print "     {} {} id={}:".format(action, element_type, element_id)
             try:
-                if action in ("delete", "modify"):
-                    for bbox in self.bboxes(baseOsm, element_type, element_id):
-                            self.mark_bbox(bbox)
                 if action in ("create", "modify"):
                     for bbox in self.bboxes(newOsm, element_type, element_id):
                         self.mark_bbox(bbox)
@@ -133,7 +150,6 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
         if self.verbose:
             print "     Analyzed {} nodes, {} ways, and {} relations.".format(
                     sum["node"], sum["way"], sum["relation"])
-        App.run_command('remove-source index="{}"'.format(base_index))
 
     def __init__(self, *args):
         PolygonTileGenCommand.__init__(self)
