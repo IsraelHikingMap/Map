@@ -315,7 +315,7 @@ class openstreetmap_fr(osmChangeSource):
             App.log("  Program finished with exit code {}.".format(
                 exit_code))
             return exit_code
-        timestamp = "--timestamp="+(stdout.splitlines()[2].replace("\\", ""))
+        timestamp = "--"+(stdout.splitlines()[-1].replace("\\", ""))
         # Download latest extract and timestamp it as temporary base
         exit_code = osmChangeSource.downloadBase(self) 
         if exit_code:
