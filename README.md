@@ -53,16 +53,10 @@ The maps can be added to QGIS as a tiles layer.
 
 ## Offline maps
 ### Ready to download
-#### OruxMaps, Off-Road, and Lucus Map
+#### OruxMaps and Lucus Map
 Please open the [download dialog](https://israelhiking.osm.org.il/#!/?download) from your Android device and follow the instructions.
 
 _Notes:_
-* [Off-Road](#off-road) allows offline use of the maps on both iOS and Android. On Android, Off-Road can re-use OruxMaps' offline maps using:
-  * _Maps &rarr; Offline_
-  * Select desired map
-  * _Link existing map_
-  * Navigate to Oruxmaps' `mapfiles` folder. 
-  * _CHOOSE_
 * [Locus Map](#locus-map) allows the use of OruxMaps offline maps using:
   * _Maps &rarr; Offline &rarr; "+" &rarr; External maps &rarr; "+"_
   * _Menu &rarr; Local drives_
