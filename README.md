@@ -201,6 +201,8 @@ _Notes:_
 7. Download the [wget zip file](https://eternallybored.org/misc/wget/releases/wget-1.18-win32.zip).
 6. Create a `wget` directory in the same parent directory as the Maperitive installation directory. Alternatively, place the wget directory elsewhere and add it to the `PATH` environment variable.
 7. Extract the contents of the zip file to the wget directory.
+10. Download and install [osmconvert](https://wiki.openstreetmap.org/wiki/Osmconvert) in a derectory included in `%PATH%`
+11. Download and install [osmupdate](https://wiki.openstreetmap.org/wiki/Osmupdate) in a derectory included in `%PATH%`. Rename `osmupdate.exe` to `osmup.exe`.
 
 ### Map tiles generation
 
