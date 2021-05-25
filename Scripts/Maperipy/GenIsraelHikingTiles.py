@@ -120,9 +120,10 @@ class IsraelHikingTileGenCommand(OsmChangeTileGenCommand):
         if self.tiles_to_post_process == []:
             return
         # Add Copyright property
-        args = ['/C' , 'START', '', '/MIN', 'mogrify', '-set', 'Copyright','"Israel Hiking, CC-BY-NC-SA 3.0"']
-        args.extend(self.tiles_to_post_process)
-        App.start_program('cmd.exe', args)
+        # args = ['/C' , 'START', '', '/MIN', 'mogrify', '-set', 'Copyright','"Israel Hiking, CC-BY-NC-SA 3.0"']
+        # args.extend(self.tiles_to_post_process)
+        # Avoid copyright post-processing in development mode
+        # App.start_program('cmd.exe', args)
         del self.tiles_to_post_process[:]
         self.len_tiles_to_post_process = 0
 
