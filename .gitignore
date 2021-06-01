@@ -15,3 +15,5 @@
 /Hebrew
 /osmupdate_temp
 *~
+*.swp 
+logs/ 

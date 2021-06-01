@@ -14,8 +14,7 @@ REM To create a hard link from a command prompt, use:
 REM 	mklink /h "Create <new Atlas Name>.bat" "Create <existing Atlas Name>.bat"
 REM
 
-%~d0
-CD "%~dp0"
+PUSHD "%~dp0"
 
 REM Set the AtlasName
 REM
@@ -33,6 +32,8 @@ IF NOT EXIST "logs\*" (
 @REM FOR DEBUG CALL :MAIN > "logs\%ATLASNAME%-%DATE:~-4%-%DATE:~4,2%-%DATE:~7,2%_%time:~0,2%%time:~3,2%%time:~6,2%.log" 2>&1
 CALL :MAIN > logs\"%ATLASNAME%.log" 2>&1
 
+POPD
+
 EXIT /B
 
 @REM ===================
@@ -46,13 +47,14 @@ REM Wait for tilestore unlock
 @REM http://stackoverflow.com/questions/10518151/how-to-check-in-command-line-if-a-given-file-or-directory-is-locked-used-by-any/10520609#10520609
 @REM
 
+IF NOT EXIST "tilestore\" MKDIR tilestore
 :CheckLock
 2>NUL (2>>"tilestore\lock" (CALL )) || ( (ECHO Another MOBAC is running... ) && TIMEOUT > NUL: /T 300 /NOBREAK  && GOTO CheckLock)
 
 @REM Add 7-Zip directories to path
 PATH %PATH%;%~d0\Program Files\7-Zip;%~d0\Program Files\7-ZipPortable\App\7-Zip
 
-SET ATLASDIR=%~d0\Users\%USERNAME%\Documents\Maps\OruxMaps\%ATLASNAME%
+SET ATLASDIR=%~d0\Users\%USERNAME%\Documents\Maps\OruxMaps.tmp\%ATLASNAME%
 IF EXIST "%ATLASDIR%\" (
     RMDIR /S /Q "%ATLASDIR%"
     TIMEOUT > NUL: /T 3 /NOBREAK
@@ -81,8 +83,8 @@ FOR /D %%A IN ( * ) DO (
 @REM Create a zip file of the map
 @ECHO Creatting %ZIPNAME%
 "7z.exe" a -tzip -mx9 "%ZIPNAME%" *
-FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% D:%HOMEPATH% ) DO (
-    FOR %%P IN ( "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" "%%~D\Documents\GitHub\IsraelHiking\Map\%LANG%\Oruxmaps" ) DO (
+FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% ) DO (
+    FOR %%P IN ( "M:\%LANG%\Oruxmaps" "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" ) DO (
 	IF EXIST "%%~P\%DESTDIR%\" (
 	    @ECHO Updating "%%~P\%DESTDIR%"
 	    XCOPY /Y /S %ATLASSUBDIR% "%%~P\%DESTDIR%"
@@ -95,6 +97,8 @@ FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% D:%HOMEPATH% ) DO (
     )
 )
 POPD
+
+RMDIR /Q/S "%ATLASDIR%"
 
 @ECHO %DATE% %TIME%: Completed Creating Atlas: %ATLASNAME%
 
