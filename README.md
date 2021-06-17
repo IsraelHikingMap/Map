@@ -18,7 +18,7 @@ Enjoy, open a OSM account, and add trails to make these map even better :-)
   * [QGIS](#qgis)
 * [Offline maps](#offline-maps)
   * [Ready to download](#ready-to-download)
-  * [Automatic updates for Android](#automatic-updates-for-android)
+  * [<s>Automatic updates for Android</s>](#automatic-updates-for-android)
   * [Preparing offline maps](#preparing-offline-maps)
 * [Tile Access](#tile-access)
   * [Tile URLs](#tile-urls)
@@ -66,7 +66,9 @@ _Notes:_
 #### [Galileo for iOS](https://itunes.apple.com/us/app/galileo-offline-maps/id321745474?mt=8)    
 Please consult [this pdf file](https://github.com/IsraelHikingMap/Map/files/618705/IHM.iOS.pdf).
 
-### Automatic updates for Android
+### <s>Automatic updates for Android</s>
+_Notice: **Automatic updates for Android are no longer available**_
+
 The offline maps  can be automatically downloaded and updated on Android devices using the free [Autosync Google Drive](https://play.google.com/store/apps/details?id=com.ttxapps.drivesync) application
 
 * Open the [offline map collection link](https://drive.google.com/drive/folders/143Lm21Z7IPaxPEHkc2AQZ_iRhs63tSC-?usp=sharing) **from your PC**.
