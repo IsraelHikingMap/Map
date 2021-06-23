@@ -91,7 +91,7 @@ if DataStore.has_data("Language"):
     language = DataStore.get_data("Language")
 # Output directory for the tiles of all maps
 # site_dir = os.path.join(ProjectDir, language)
-site_dir = os.path.join("M:\\", language)
+site_dir = os.path.join("\\\\OSM-XUBUNTO\Maperitive", language)
 App.log("Output directory is "+site_dir)
 mkdir_p(os.path.join(site_dir, "Oruxmaps"))
 mkdir_p(cache_file(''))

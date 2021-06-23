@@ -95,11 +95,9 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 return
         if self.verbose:
             print "     Reading base OSM map from", base_map, "..."
-        Map.add_osm_source(base_map)
+        App.run_command("load-source file="+base_map)
         base_index = len(Map.layers)
-        Map.layers[base_index-1].visible = False
         baseOsm = Map.layers[base_index-1].osm
-        App.collect_garbage()
         if self.verbose:
             print "     Analyzing changes to base map ..."
         for element in osmChange.SelectNodes("./osmChange/*/*"):
@@ -118,13 +116,13 @@ class OsmChangeTileGenCommand(PolygonTileGenCommand):
                 # An element does not exist in the map,
                 # no need to redraw its position
                 pass
-        App.run_command('remove-source index="{}"'.format(base_index))
+        App.run_command('clear-map')
         App.collect_garbage()
         if self.verbose:
             App.log("     Reading new OSM map from {} ...".format(new_map))
-        Map.add_osm_source(new_map)
+        App.run_command("load-source file="+new_map)
+        App.run_command("pause 15000")
         new_index = len(Map.layers)
-        App.collect_garbage()
         newOsm = Map.layers[new_index-1].osm
         if self.verbose:
             print "     Analyzing changes in new map ..."

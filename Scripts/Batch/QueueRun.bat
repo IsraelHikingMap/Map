@@ -39,7 +39,7 @@ IF "%~x1"==".py" (
   START "" /ABOVENORMAL /WAIT Maperitive -exitafter "%ISRAELHIKING%\Scripts\Maperitive\%~1"
 ) ELSE (
   IF NOT "%~dp$PATH:1"=="" CD "%~dp$PATH:1"
-  START "" /ABOVENORMAL /WAIT cmd.exe /C %*
+  START "" /ABOVENORMAL /WAIT cmd.exe "/C %* > %ISRAELHIKING%\Scripts\Batch\logs\%~n1.log 2>&1"
 )
 
 IF EXIST "%QUEUEFILE%" DEL "%QUEUEFILE%"

@@ -81,21 +81,20 @@ FOR /D %%A IN ( * ) DO (
     SET ATLASSUBDIR="%%~A"
 )
 @REM Create a zip file of the map
-@ECHO Creatting %ZIPNAME%
+@ECHO Creating %ZIPNAME%
 "7z.exe" a -tzip -mx9 "%ZIPNAME%" *
-FOR  %%D IN ( %HOMEDRIVE%%HOMEPATH% ) DO (
-    FOR %%P IN ( "M:\%LANG%\Oruxmaps" "%%~D\Google Drive\oruxmaps\oruxmaps mapfiles" "%%~D\Dropbox\Folder Sharing\dropsync\oruxmaps\mapfiles" "%%~D\Dropbox\Folder Sharing\GF\mapfiles" "%%~D\Dropbox\Public\Israel Hiking\oruxmaps mapfiles" ) DO (
-	IF EXIST "%%~P\%DESTDIR%\" (
-	    @ECHO Updating "%%~P\%DESTDIR%"
-	    XCOPY /Y /S %ATLASSUBDIR% "%%~P\%DESTDIR%"
-	)
-	IF EXIST "%%~P\%ZIPNAME%" (
-	    @ECHO Updating %%~P\%ZIPNAME%
-	    @ECHO COPY /Y "%ZIPNAME%" "%%~P"
-	    COPY /Y "%ZIPNAME%" "%%~P"
-	)
+FOR %%P IN ( "\\OSM-XUBUNTO\Maperitive\%LANG%\Oruxmaps" ) DO (
+    IF EXIST "%%~P\%DESTDIR%\" (
+	@ECHO Updating "%%~P\%DESTDIR%"
+	XCOPY /Y /S %ATLASSUBDIR% "%%~P\%DESTDIR%"
+    )
+    IF EXIST "%%~P\%ZIPNAME%" (
+	@ECHO Updating %%~P\%ZIPNAME%
+	@ECHO COPY /Y "%ZIPNAME%" "%%~P"
+	COPY /Y "%ZIPNAME%" "%%~P"
     )
 )
+
 POPD
 
 RMDIR /Q/S "%ATLASDIR%"

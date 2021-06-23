@@ -1,6 +1,5 @@
 @TITLE Hebrew Tiles and offline files
 
-@ECHO OFF
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 @TASKLIST /FI "IMAGENAME eq Maperitive.exe" | find "Maperitive.exe" && (
@@ -16,6 +15,7 @@ POPD
 
 @REM Set Language
 SET LANGUAGE=%~n0
+@ECHO Creating %LANGUAGE% raster tiles
 
 git pull
 CALL IsraelHikingInstallOnce.py
@@ -26,6 +26,7 @@ IF %LANGUAGE%==Hebrew (
 ) ELSE (
   CALL CreateEnglishMaps.py
 )
+echo ERRORLEVEL: %ERRORLEVEL%
 
 @REM PUSHD to the MOBAC directory
 SET PROGDIRS=%programfiles%;%programfiles(x86)%;%~d0%programfiles:~2%;%~d0%programfiles(x86):~2%
@@ -34,9 +35,11 @@ FOR %%p in ("Mobile Atlas Creator") DO PUSHD %%~dpn$PROGDIRS:p
 FOR %%S IN ("" " 16") DO (
   FOR %%M IN (Hiking MTB) DO (
     IF %LANGUAGE%==Hebrew (
+      @ECHO CALLing "Create Israel %%~M%%~S.bat"
       CALL "Create Israel %%~M%%~S.bat"
     ) ELSE (
-      CALL "Create Israel %%~M% English%~S.bat"
+      @ECHO CALLing "Create Israel %%~M English%%~S.bat"
+      CALL "Create Israel %%~M English%%~S.bat"
     )
   )
 )
