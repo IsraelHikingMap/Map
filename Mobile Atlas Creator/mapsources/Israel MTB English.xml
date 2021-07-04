@@ -2,6 +2,6 @@
 <localTileFiles>
    <name>Israel MTB English</name>
    <sourceType>DIR_ZOOM_X_Y</sourceType>
-   <sourceFolder>C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map\English\mtbTiles</sourceFolder>
+   <sourceFolder>\\OSM-XUBUNTO\Maperitive\English\mtbTiles</sourceFolder>
    <backgroundColor>#00000000</backgroundColor>
 </localTileFiles>

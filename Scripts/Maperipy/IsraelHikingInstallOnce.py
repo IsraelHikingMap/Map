@@ -15,8 +15,11 @@ App.log('MaperitiveDir: ' + MaperitiveDir)
 IsraelHikingDir = os.path.dirname(os.path.dirname(os.path.normpath(App.script_dir)))
 App.log('IsraelHikingDir: ' + IsraelHikingDir)
 
+# Tiles directory
+TilesDir="\\OSM-XUBUNTO\Maperitive"
+
 #
-# TODO: The following was tested only on MS-Windows platforms
+# Note: The following works only on MS-Windows platforms
 #
 App.log("Copy new DEM files, if any, to the Maperitive Installation")
 App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Cache", "Rasters")+'"', '"'+os.path.join(MaperitiveDir, "Cache", "Rasters")+'"'])
@@ -26,6 +29,10 @@ App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikin
 
 App.log("Copy new Textures, if any, to the Maperitive Installation")
 App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Textures")+'"', '"'+os.path.join(MaperitiveDir, "Textures")+'"'])
+
+App.log("Copy new LocusMap files, if any, to the Tiles directory")
+App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "Hebrew", "LocusMap")+'"', '"'+os.path.join(TilesDir, "Hebrew", "LocusMap")+'"'])
+App.run_program('xcopy.exe', 1200, ["/S/I/D/F/R/Y", '"'+os.path.join(IsraelHikingDir, "English", "LocusMap")+'"', '"'+os.path.join(TilesDir, "English", "LocusMap")+'"'])
 
 App.run_command("set-setting name=map.decoration.grid value=False")
 App.run_command("set-setting name=map.decoration.scale value=False")
@@ -46,7 +53,7 @@ if os.path.isdir(mobacTargetDir):
                     for line in fin:
                         fout.write(line.replace(
                             "C:\Users\yourself\Documents\GitHub\IsraelHikingMap\Map",
-                            IsraelHikingDir))
+                            TilesDir))
             App.log("{} -> {}".format(sourceFile, targetFile))
             numFiles += 1
     App.log("{} File(s) copied.".format(numFiles))
