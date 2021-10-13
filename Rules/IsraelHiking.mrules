@@ -102,7 +102,6 @@ features
 		hiking regional kinneret trail : relation[network = rwn @isMatch(name:en,"Kinneret Trail")]
 		hiking regional jerusalem trail: relation[network = rwn @isMatch(name:en,"Jerusalem Trail")]
 		hiking regional northern galilee trail: relation[network = rwn @isMatch(name:en,"Northern Galilee Regional Trail")].way[NOT colour=purple]
-		hiking regional coast to coast: relation[network = rwn @isMatch(name:en,"Coast to Coast")]
 		hiking regional haifa wadis: relation[network = rwn @isMatch(int_name,"Haifa Wadis Trail")]
 		hiking regional ramat menashe: relation[network = rwn @isMatch(name:en,"Ramat Menashe Regional Trail")].way[NOT colour=orange]
 		hiking regional purple : relation[network = rwn "osmc:symbol"="purple:white:purple_stripe"].way[NOT colour=purple]
@@ -1024,9 +1023,6 @@ rules
 		elseif : * northern galilee trail
 			define
 				line-color : purple
-		elseif : * coast to coast
-			define
-				line-color : yellow
 		elseif : * haifa wadis
 			define
 				line-color : green
