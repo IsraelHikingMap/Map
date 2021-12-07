@@ -6,7 +6,7 @@ This Repository is part of the Israel Hiking Map project. It contains all the fi
 
 The maps can be seen at [IsraelHiking.osm.org.il](https://IsraelHiking.osm.org.il/). The site has additional facilities including customized trip planning and sharing, points of interest, trails, and route upload and download.
 
-Please see the [Licence terms](LICENSE.md) for using the repository and any tiles created using it.
+Please see the [License terms](LICENSE.md) for using the repository and any tiles created using it.
 
 Enjoy, open a OSM account, and add trails to make these map even better :-)
 
@@ -138,7 +138,7 @@ and
 [Looking4Cache](https://www.looking4cache.com/manual/create-offline-maps-with-mobac).
 
 ## Tile Access
-The tiles on the the [Israel Hiking server](https://IsraelHiking.OSM.org.il) are available according to the [Licence terms](LICENSE.md).  
+The tiles on the the [Israel Hiking server](https://IsraelHiking.OSM.org.il) are available according to the [License terms](LICENSE.md).  
 The URLs are following the [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) naming conventions.  
 Please avoid overloading the server and use [Tile Mirroring](#tile-mirroring) where possible to minimize the the load.
 
