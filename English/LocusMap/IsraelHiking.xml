@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <locusActions>
   <download>
-    <source><![CDATA[https://israelhiking.osm.org.il/English/OruxMaps/IsraelHiking.zip]]></source>
+    <source><![CDATA[https://israelhiking.osm.org.il/English/Oruxmaps/IsraelHiking.zip]]></source>
     <dest><![CDATA[/maps/IsraelHiking.zip]]></dest>
     <after>extract|deleteSource|refreshMap</after>
   </download>
