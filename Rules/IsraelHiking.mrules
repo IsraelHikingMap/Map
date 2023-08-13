@@ -106,7 +106,7 @@ features
 		hiking regional ramat menashe: relation[network = rwn @isMatch(name:en,"Ramat Menashe Regional Trail")].way[NOT colour=orange]
 		hiking regional purple : relation[network = rwn "osmc:symbol"="purple:white:purple_stripe"].way[NOT colour=purple]
 		hiking regional orange : relation[network = rwn "osmc:symbol"="orange:white:orange_stripe"].way[NOT colour=orange]
-		hiking national : relation[network = nwn]
+		hiking national : relation[network = nwn "osmc:symbol"="orange:orange:white_right:blue_stripe"]
 		land-feature : natural=ridge OR natural=valley
 
 		cycle path : (highway=cycleway AND NOT @isOneOf(foot, yes, permissive)) OR (highway=path AND foot=no AND NOT bicycle=no)
